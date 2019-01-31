@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目传送门。">
+<meta name="keywords" content="CTF,Crypro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CBC字节翻转攻击">
+<meta property="og:url" content="http://chaosec.top/2018/03/23/CBC-Attack/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目传送门。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/1.png">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/2.png">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/3.png">
+<meta property="og:updated_time" content="2019-01-30T11:44:12.629Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CBC字节翻转攻击">
+<meta name="twitter:description" content="前言最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目传送门。">
+<meta name="twitter:image" content="http://chaosec.top/2018/03/23/CBC-Attack/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/03/23/CBC-Attack/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CBC字节翻转攻击 | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/03/23/CBC-Attack/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CBC字节翻转攻击
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-23 19:44:31" itemprop="dateCreated datePublished" datetime="2018-03-23T19:44:31+08:00">2018-03-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-30 19:44:12" itemprop="dateModified" datetime="2019-01-30T19:44:12+08:00">2019-01-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/资料/" itemprop="url" rel="index"><span itemprop="name">资料</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/03/23/CBC-Attack/" class="leancloud_visitors" data-flag-title="CBC字节翻转攻击">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h1><p>最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目<a href="http://118.89.219.210:49168/index.php" target="_blank" rel="noopener">传送门</a>。</p>
+<a id="more"></a>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a><strong>原理</strong></h1><p>CBC攻击方法的精髓在于通过损坏密文字节来改变明文字节，从而达到绕过过滤器或者提权等目的。贴一张图片</p>
+<p><img src="/2018/03/23/CBC-Attack/1.png" alt="加密原理"></p>
+<blockquote>
+<p><font face="futura">plaintext:</font>待加密的数据</p>
+<p><font face="futura">Ⅳ：</font>用于随机化加密的比特块，保证即使对相同明文多次加密，也可以得到不同的密文</p>
+<p><font face="“futura">Ciphertext：</font>加密后的数据</p>
+</blockquote>
+<p><strong>注意：</strong>CBC工作于一个固定长度的比特组，称之为块(BLOCK)，本文中将使用16字节的块。</p>
+<p><strong>加密过程：</strong></p>
+<p>1.首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。<br>2.生成一个随机的初始化向量(IV)和一个密钥。<br>3.将IV和第一组明文异或。<br>4.用密钥对3中xor后产生的密文加密。<br>5.用4中产生的密文对第二组明文进行xor操作。<br>6.用密钥对5中产生的密文加密。<br>7.重复4-7，到最后一组明文。<br>8.将IV和加密后的密文拼接在一起，得到最终的密文。</p>
+<p>从第一块开始，首先与一个初始向量iv异或（iv只在第一处作用），然后把异或的结果配合key进行加密，得到第一块的密文，并且把加密的结果与下一块的明文进行异或，一直这样进行下去。因此这种模式最重要的特点就是：<em>前一块的密文用来产生后一块的密文</em>。</p>
+<p><strong>解密过程：</strong></p>
+<p><img src="/2018/03/23/CBC-Attack/2.png" alt="解密过程"></p>
+<p>解密过程就是加密过程的逆过程</p>
+<p>1.从密文中提取出IV，然后将密文分组。<br>2.使用密钥对第一组的密文解密，然后和IV进行xor得到明文。<br>3.使用密钥对第二组密文解密，然后和2中的密文xor得到明文。<br>4.重复2-3，直到最后一组密文。</p>
+<p><strong>攻击原理图</strong></p>
+<p><img src="/2018/03/23/CBC-Attack/3.png" alt="攻击过程"></p>
+<p>这里可以注意到前一块Ciphertext用来产生下一块明文，如果我们改变前一块Ciphertext中的一个字节，然后和下一块解密后的密文xor，就可以得到一个不同的明文，而这个明文是我们可以控制的。利用这一点，我们就欺骗服务端或者绕过过滤器。</p>
+<p>介绍一下异或的概念</p>
+<blockquote>
+<p>当我们的一个值C是由A和B异或得到<br>C = A XOR B<br>那么<br>A XOR B XOR C很明显是=0的<br>当我们知道B和C之后，想要得到A的值也很容易<br>A = B XOR C<br>因此，A XOR B XOR C等于0。有了这个公式，我们可以在XOR运算的末尾处设置我们自己的值，即可改变。</p>
+</blockquote>
+<h1 id="上手题目"><a href="#上手题目" class="headerlink" title="上手题目"></a><strong>上手题目</strong></h1><p>存在目录泄露 <code>.index.php.swp</code>，会下载到一个源码，需要用vim恢复一下，使用下面的命令</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -r &#123;your <span class="built_in">file</span> <span class="built_in">name</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>然后用下面的命令删除swp文件，不然每一次编辑时总是有这个提示。 </p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm .&#123;your <span class="built_in">file</span> <span class="built_in">name</span>&#125;.swp</span><br></pre></td></tr></table></figure>
+<p>再输入7即可恢复代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html <span class="keyword">PUBLIC</span> <span class="string">"-//W3C//DTD XHTML 1.0 Transitional//EN"</span> <span class="string">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</span>&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span><br><span class="line">&lt;title&gt;Login Form&lt;/title&gt;</span><br><span class="line">&lt;link href=<span class="string">"static/css/style.css"</span> rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span> /&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"static/js/jquery.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">$(document).ready(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	$(<span class="string">".username"</span>).focus(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$(<span class="string">".user-icon"</span>).css(<span class="string">"left"</span>,<span class="string">"-48px"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">	$(<span class="string">".username"</span>).blur(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$(<span class="string">".user-icon"</span>).css(<span class="string">"left"</span>,<span class="string">"0px"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	$(<span class="string">".password"</span>).focus(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$(<span class="string">".pass-icon"</span>).css(<span class="string">"left"</span>,<span class="string">"-48px"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">	$(<span class="string">".password"</span>).blur(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$(<span class="string">".pass-icon"</span>).css(<span class="string">"left"</span>,<span class="string">"0px"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">define(<span class="string">"SECRET_KEY"</span>, file_get_contents(<span class="string">'/root/key'</span>));</span><br><span class="line">define(<span class="string">"METHOD"</span>, <span class="string">"aes-128-cbc"</span>);</span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_random_iv</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $random_iv=<span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">16</span>;$i++)&#123;</span><br><span class="line">        $random_iv.=chr(rand(<span class="number">1</span>,<span class="number">255</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $random_iv;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">($info)</span></span>&#123;</span><br><span class="line">    $iv = get_random_iv();</span><br><span class="line">    $plain = serialize($info);</span><br><span class="line">    $cipher = openssl_encrypt($plain, METHOD, SECRET_KEY, OPENSSL_RAW_DATA, $iv);</span><br><span class="line">    $_SESSION[<span class="string">'username'</span>] = $info[<span class="string">'username'</span>];</span><br><span class="line">    setcookie(<span class="string">"iv"</span>, base64_encode($iv));</span><br><span class="line">    setcookie(<span class="string">"cipher"</span>, base64_encode($cipher));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_login</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($_COOKIE[<span class="string">'cipher'</span>]) &amp;&amp; <span class="keyword">isset</span>($_COOKIE[<span class="string">'iv'</span>]))&#123;</span><br><span class="line">        $cipher = base64_decode($_COOKIE[<span class="string">'cipher'</span>]);</span><br><span class="line">        $iv = base64_decode($_COOKIE[<span class="string">"iv"</span>]);</span><br><span class="line">        <span class="keyword">if</span>($plain = openssl_decrypt($cipher, METHOD, SECRET_KEY, OPENSSL_RAW_DATA, $iv))&#123;</span><br><span class="line">            $info = unserialize($plain) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">"&lt;p&gt;base64_decode('"</span>.base64_encode($plain).<span class="string">"') can't unserialize&lt;/p&gt;"</span>);</span><br><span class="line">            $_SESSION[<span class="string">'username'</span>] = $info[<span class="string">'username'</span>];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"ERROR!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show_homepage</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_SESSION[<span class="string">"username"</span>]===<span class="string">'admin'</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;Hello admin&lt;/p&gt;'</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;Flag is $flag&lt;/p&gt;'</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;hello '</span>.$_SESSION[<span class="string">'username'</span>].<span class="string">'&lt;/p&gt;'</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;p&gt;Only admin can see flag&lt;/p&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;p&gt;&lt;a href="loginout.php"&gt;Log out&lt;/a&gt;&lt;/p&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'username'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'password'</span>]))&#123;</span><br><span class="line">    $username = (string)$_POST[<span class="string">'username'</span>];</span><br><span class="line">    $password = (string)$_POST[<span class="string">'password'</span>];</span><br><span class="line">    <span class="keyword">if</span>($username === <span class="string">'admin'</span>)&#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">'&lt;p&gt;admin are not allowed to login&lt;/p&gt;'</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        $info = <span class="keyword">array</span>(<span class="string">'username'</span>=&gt;$username,<span class="string">'password'</span>=&gt;$password);</span><br><span class="line">        login($info);</span><br><span class="line">        show_homepage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($_SESSION[<span class="string">"username"</span>]))&#123;</span><br><span class="line">        check_login();</span><br><span class="line">        show_homepage();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;body class="login-body"&gt;</span></span><br><span class="line"><span class="string">                &lt;div id="wrapper"&gt;</span></span><br><span class="line"><span class="string">                    &lt;div class="user-icon"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">                    &lt;div class="pass-icon"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">                    &lt;form name="login-form" class="login-form" action="" method="post"&gt;</span></span><br><span class="line"><span class="string">                        &lt;div class="header"&gt;</span></span><br><span class="line"><span class="string">                        &lt;h1&gt;Login Form&lt;/h1&gt;</span></span><br><span class="line"><span class="string">                        &lt;span&gt;Fill out the form below to login to my super awesome imaginary control panel.&lt;/span&gt;</span></span><br><span class="line"><span class="string">                        &lt;/div&gt;</span></span><br><span class="line"><span class="string">                        &lt;div class="content"&gt;</span></span><br><span class="line"><span class="string">                        &lt;input name="username" type="text" class="input username" value="Username" onfocus="this.value=\'\'" /&gt;</span></span><br><span class="line"><span class="string">                        &lt;input name="password" type="password" class="input password" value="Password" onfocus="this.value=\'\'" /&gt;</span></span><br><span class="line"><span class="string">                        &lt;/div&gt;</span></span><br><span class="line"><span class="string">                        &lt;div class="footer"&gt;</span></span><br><span class="line"><span class="string">                        &lt;input type="submit" name="submit" value="Login" class="button" /&gt;</span></span><br><span class="line"><span class="string">                        &lt;/div&gt;</span></span><br><span class="line"><span class="string">                    &lt;/form&gt;</span></span><br><span class="line"><span class="string">                &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;/body&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">t</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>一直也不行，心态崩了(2333333…)</p>
+<hr>
+<p>一个星期之后…..</p>
+<hr>
+<p>我胡汉三又回来了！！！！</p>
+<p>我们把返回的cipher值进行翻转，想要翻转第二块的 <code>m</code>为 <code>a</code>只需要把第一行对应第九位翻转一下即可，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">iv = <span class="string">'sDGucEcgR9ixzDNVm6IrpA%3D%3D'</span></span><br><span class="line">cipher_raw = <span class="string">'xhp6%2B1A%2FKctfyU%2BbQeuRx3lUMrDUN%2FOuXg96c%2FJ%2Byn5DX2UVNMavsdocAGjmu6SmuRD6kY8Ef4rLKYADlEeUjQ%3D%3D'</span></span><br><span class="line">print(<span class="string">"[*]原始iv和cipher"</span>)</span><br><span class="line">print(<span class="string">'翻转前：'</span>)</span><br><span class="line">print(<span class="string">'cipher_raw:'</span>,cipher_raw)</span><br><span class="line">print(<span class="string">'iv_raw:'</span>,iv)</span><br><span class="line">print(<span class="string">'翻转后：'</span>)</span><br><span class="line">tmp1 = urllib.parse.unquote(cipher_raw)</span><br><span class="line"></span><br><span class="line">cipher = base64.b64decode(tmp1)</span><br><span class="line"><span class="comment"># a:2:&#123;s:8:"userna</span></span><br><span class="line"><span class="comment"># me";s:5:"mdmin";</span></span><br><span class="line"><span class="comment"># s:8:"password";s</span></span><br><span class="line"><span class="comment"># :6:"123456";&#125;</span></span><br><span class="line"></span><br><span class="line">cipher = cipher.decode(<span class="string">'unicode_escape'</span>)</span><br><span class="line">xor_cipher = cipher[<span class="number">0</span>:<span class="number">9</span>] + chr(ord(cipher[<span class="number">9</span>]) ^ ord(<span class="string">'m'</span>) ^ ord(<span class="string">'a'</span>)) + cipher[<span class="number">10</span>:]</span><br><span class="line">xor_cipher = urllib.parse.quote(base64.b64encode(xor_cipher.encode(<span class="string">'latin-1'</span>)))</span><br><span class="line"></span><br><span class="line">print(xor_cipher)</span><br></pre></td></tr></table></figure>
+<p>写完这个脚本，我心中又不禁对python的编码问题骂了无数次mmp，真的太多坑了…..</p>
+<p>然后修改cookie中的cipher值，刷新页面（注意此时不能提交数据,要把post数据清空）之后，页面会提示反序列化失败，这是因为我们修改mdmin为admin的时候，是通过修改第一块数据来修改的，所以第一个块数据（16字节）被破坏了。因为程序中要求username要等于admin所以不能利用文章里的说的填充字符。 又因为是第一个块数据被破坏，第一个块数据是和IV有关，所以只要将在CBC字符翻转攻击，得到新的IV就可以修复第一块数据。 </p>
+<p>贴一下代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 得到新的iv值</span></span><br><span class="line">iv = <span class="string">'sDGucEcgR9ixzDNVm6IrpA%3D%3D'</span> <span class="comment"># 填写未修改过的iv</span></span><br><span class="line">cipher = <span class="string">'SjeC+xtTva24pYSPdWXIsm1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtzOjU6IjEyMzQ1Ijt9'</span>  <span class="comment"># 填写提示反序列化错误的字符串</span></span><br><span class="line">cipher = base64.b64decode(cipher).decode(<span class="string">'unicode_escape'</span>)</span><br><span class="line">print(<span class="string">'cipher:'</span>,cipher)</span><br><span class="line">iv = base64.b64decode(urllib.parse.unquote(iv))</span><br><span class="line">iv = iv.decode(<span class="string">'unicode_escape'</span>)</span><br><span class="line">newIv = <span class="string">''</span></span><br><span class="line">right = <span class="string">'a:2:&#123;s:8:"userna'</span>  <span class="comment"># 被损坏前正确的明文</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):</span><br><span class="line">    newIv += chr( ord(right[i]) ^ ord(iv[i]) ^ ord(cipher[i])) </span><br><span class="line">print(urllib.parse.quote(base64.b64encode(newIv.encode(<span class="string">'latin-1'</span>))))</span><br></pre></td></tr></table></figure>
+<p>将得到的iv替换cookie中的iv，刷新一下页面即可以admin身份登录获取flag。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/03/23/CBC-Attack/" title="CBC字节翻转攻击">http://chaosec.top/2018/03/23/CBC-Attack/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+            <a href="/tags/Crypro/" rel="tag"># Crypro</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/12/bugkuwriteup/" rel="next" title="BUGKU-CTF题解">
+                <i class="fa fa-chevron-left"></i> BUGKU-CTF题解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/03/bugku-writeup续/" rel="prev" title="bugku-writeup续">
+                bugku-writeup续 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a><strong>&#x524D;&#x8A00;</strong></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x539F;&#x7406;" class="headerlink" title="&#x539F;&#x7406;"></a><strong>&#x539F;&#x7406;</strong></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#上手题目"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E0A;&#x624B;&#x9898;&#x76EE;" class="headerlink" title="&#x4E0A;&#x624B;&#x9898;&#x76EE;"></a><strong>&#x4E0A;&#x624B;&#x9898;&#x76EE;</strong></span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

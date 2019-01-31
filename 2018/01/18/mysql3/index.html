@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Mysql操作表,例如SELECT语句等。">
+<meta name="keywords" content="SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL学习笔记(三)">
+<meta property="og:url" content="http://chaosec.top/2018/01/18/mysql3/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="Mysql操作表,例如SELECT语句等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-31T01:40:59.947Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL学习笔记(三)">
+<meta name="twitter:description" content="Mysql操作表,例如SELECT语句等。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2018/01/18/mysql3/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>MySQL学习笔记(三) | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/01/18/mysql3/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL学习笔记(三)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-18 13:13:19" itemprop="dateCreated datePublished" datetime="2018-01-18T13:13:19+08:00">2018-01-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-31 09:40:59" itemprop="dateModified" datetime="2018-07-31T09:40:59+08:00">2018-07-31</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/资料/" itemprop="url" rel="index"><span itemprop="name">资料</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2018/01/18/mysql3/" class="leancloud_visitors" data-flag-title="MySQL学习笔记(三)">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Mysql操作表,例如SELECT语句等。<br><a id="more"></a></p>
+<h3 id="SELECT语句"><a href="#SELECT语句" class="headerlink" title="SELECT语句"></a>SELECT语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">	[all|<span class="keyword">distinct</span>|<span class="keyword">distinctrow</span>] # 指定是否重复行应被返回，如不指定默认值为all</span><br><span class="line">	[<span class="keyword">high_priority</span>] # 优先级设置</span><br><span class="line">	[<span class="keyword">straight_join</span>] # 促使mysql把表联合在一起,加快查询速度</span><br><span class="line">	[<span class="keyword">sql_small_result</span>] [<span class="keyword">sql_big_result</span>] [<span class="keyword">sql_buffer_result</span>] # 设置结果集的显示</span><br><span class="line">	[<span class="keyword">sql_cache</span>|sql_no_cache] [<span class="keyword">sql_calc_found_rows</span>] # <span class="keyword">cache</span>指定是否要把结果集存储在查询表缓存中，第三个选项指定结果集的行数，忽略<span class="keyword">limit</span></span><br><span class="line">	列名表达式 ...</span><br><span class="line">	[<span class="keyword">from</span> 表或视图 ... [...]]</span><br><span class="line">	[<span class="keyword">where</span> 条件]</span><br><span class="line">	[<span class="keyword">group</span> <span class="keyword">by</span> &#123;列名|表达式|<span class="keyword">position</span>&#125; [<span class="keyword">asc</span>|<span class="keyword">desc</span>],... [<span class="keyword">with</span> <span class="keyword">rollup</span>]]</span><br><span class="line">	[<span class="keyword">having</span> 条件]</span><br><span class="line">	[<span class="keyword">order</span> <span class="keyword">by</span> &#123;列名|表达式|<span class="keyword">position</span>&#125; [<span class="keyword">asc</span>|<span class="keyword">desc</span>],...]</span><br><span class="line">	[<span class="keyword">limit</span> &#123;[<span class="keyword">offset</span>,] <span class="keyword">row_count</span>|<span class="keyword">row_count</span> <span class="keyword">OFFSET</span> <span class="keyword">offset</span>&#125;]</span><br><span class="line">	[<span class="keyword">procedure</span> 存储过程名(参数...)]</span><br><span class="line">	[<span class="keyword">into</span> <span class="keyword">outfile</span> <span class="string">'文件名'</span> [<span class="built_in">character</span> <span class="keyword">set</span> 字符集]  # 将表中的行导出到文件中</span><br><span class="line">	export_options|<span class="keyword">into</span> <span class="keyword">dumpfile</span> <span class="string">'文件名'</span>|info 变量名 ...]</span><br><span class="line">	[<span class="keyword">for</span> <span class="keyword">update</span>|<span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>]] # 对结果集加锁，<span class="keyword">for</span> <span class="keyword">update</span>更推荐</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="选择列"><a href="#选择列" class="headerlink" title="选择列"></a>选择列</h3><p><strong>as 指定列别名</strong></p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学号 <span class="keyword">as</span> <span class="keyword">number</span> <span class="keyword">from</span> stu;   # 指定结果集别名</span><br></pre></td></tr></table></figure>
+<p>替换查询结果中的数据<br><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span></span><br><span class="line">	<span class="keyword">when</span> 条件<span class="number">1</span> <span class="keyword">then</span> 表达式<span class="number">1</span></span><br><span class="line">	<span class="keyword">when</span> 条件<span class="number">2</span> <span class="keyword">then</span> 表达式<span class="number">2</span></span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">else</span> 表达式n</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">EXP:</span><br><span class="line">	<span class="keyword">select</span> 编号,姓名</span><br><span class="line">	<span class="keyword">case</span></span><br><span class="line">	 <span class="keyword">when</span> 编号 <span class="keyword">is</span> null <span class="keyword">then</span> <span class="comment">'ff'</span></span><br><span class="line">	 <span class="keyword">else</span> <span class="comment">'ok'</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">from</span> stuinfo;</span><br></pre></td></tr></table></figure></p>
+<p><strong>计算列值</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 表达式 ...  # 可以进行加减乘除取余%等运算</span><br><span class="line"><span class="keyword">exp</span>：</span><br><span class="line"><span class="keyword">select</span> 学号,成绩*<span class="number">1.2</span> <span class="keyword">from</span> xs <span class="keyword">where</span> <span class="keyword">ID</span>=<span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合函数-aggregation-function"><a href="#聚合函数-aggregation-function" class="headerlink" title="聚合函数(aggregation function)"></a>聚合函数(aggregation function)</h4><p><strong>聚合函数常用于对一组值进行计算，返回单个值，通常与group by子句一起使用,作用于列</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数名</th>
+<th>说明</th>
+<th>语法</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">count</td>
+<td>求组中系数，返回int类型数据</td>
+<td>count({[all&#124;distinct] 表达式}&#124;*)</td>
+<td>&#42;将返回检索行总数目，包括其值包含null</td>
+</tr>
+<tr>
+<td style="text-align:center">max</td>
+<td>求最大值</td>
+<td>max([all&#124;distinct] 表达式)</td>
+<td>数据类型可以是数字、字符和时间日期类型</td>
+</tr>
+<tr>
+<td style="text-align:center">min</td>
+<td>求最小值</td>
+<td>略</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">sum</td>
+<td>返回表中所有值的和</td>
+<td>sum/avg([all&#124;distinct] 表达式)</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">avg</td>
+<td>组中平均值</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">std/stddev</td>
+<td>返回标准差</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">variance</td>
+<td>方差</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">group_concat</td>
+<td>返回由属于一组的列值连接组合而成的结果</td>
+<td>用法略</td>
+<td>该函数返回指定列的所有非NULL值，中间用逗号隔开，长度最大限制1024</td>
+</tr>
+<tr>
+<td style="text-align:center">bit_and</td>
+<td>逻辑或</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">bit_or</td>
+<td>逻辑与</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">bit_xor</td>
+<td>逻辑异或</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="FROM子句"><a href="#FROM子句" class="headerlink" title="FROM子句"></a>FROM子句</h3><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from table_reference ...</span><br><span class="line">	table_reference:</span><br><span class="line">表名 [[as] 表名别名] [&#123;use|ignore|force&#125; index (key_list)]  <span class="comment">/*查询表，use指使用索引，ignore指忽略索引*/</span></span><br><span class="line">|join_table                                                <span class="comment">/*连接表*/</span></span><br></pre></td></tr></table></figure>
+<p><strong>多表连接</strong><br>1)全连接，实质是表的等值连接<br>这种连接会产生所有可能的组合，也就是每个表的行数之积<br>“select 编号,ID from stuinfo,student;”这样会返回两个表行数之积,通常需要用where语句限制结果行数<br>2)JOIN连接<br><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">join_table:</span><br><span class="line">	table_reference [inner|<span class="type">cross</span>] join table_factor [join_condition]</span><br><span class="line">	|<span class="type">table_reference</span> straight_join table_factor</span><br><span class="line">	|<span class="type">table_reference</span> straight_join table_factor on conditional_expr</span><br><span class="line">	|<span class="type">table_reference</span> &#123;LEFT|<span class="type">RIGHT</span>&#125; [outer] join table_reference join_condition</span><br><span class="line">	|<span class="type">table_reference</span> natural [&#123;LEFT|<span class="type">RIGHT</span>&#125; [outer]] join_table_factor</span><br></pre></td></tr></table></figure></p>
+<p>table_reference指定要连接的表名<br>join_condition：<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">on</span> 条件</span><br><span class="line">|<span class="keyword">using</span> (列...)</span><br></pre></td></tr></table></figure></p>
+<p>on条件主要用于连接表，其他不属于连接表的条件可以使用where子句来指定，inner指内连接，是系统默认的方式。<br>exp:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 编号,<span class="keyword">ID</span> <span class="keyword">from</span> stuinfo <span class="keyword">join</span> student;</span><br></pre></td></tr></table></figure></p>
+<p>join还可以将自身进行连接，称为自连接，但是要指定不同的别名</p>
+<h3 id="WHERE子句"><a href="#WHERE子句" class="headerlink" title="WHERE子句"></a>WHERE子句</h3><p>where子句必须紧跟在from子句之后，用于确定选取行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">where</span> 条件</span><br></pre></td></tr></table></figure>
+<p>其中条件为查询语句<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">条件=<span class="symbol">:</span></span><br><span class="line">	&lt;precdicate&gt;                             </span><br><span class="line">	<span class="params">|&lt;precdicate&gt;&#123;<span class="keyword">and</span>|</span><span class="keyword">or</span>&#125;&lt;precdicate&gt;</span><br><span class="line">	<span class="params">|(条件)</span></span><br><span class="line"><span class="params">	|</span><span class="keyword">not</span> 条件</span><br></pre></td></tr></table></figure></p>
+<p>precidicate为判定运算，结果又TRUE，FALSE或UNKNOWN<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">&lt;precdicate&gt;</span>:</span><br><span class="line">	表达式 &#123;=|<span class="string">&lt;</span>|<span class="string">&lt;=</span>|<span class="string">&gt;=</span>|<span class="string">&lt;=&gt;</span>|<span class="string">&lt;&gt;</span>|<span class="string">!=&#125; 表达式                    # "&lt;=&gt;"相等或都等于空返回true，否则返回false，绝不会返回unknown  </span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式 [not] like 表达式 [escape 'escape_character']</span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式 [not] [regexp</span>|<span class="string">rlike] 表达式</span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式 [not] between 表达式 and 表达式</span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式 is [not] null</span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式[not] in (subquery </span>|<span class="string">表达式[,...n])</span></span><br><span class="line"><span class="string">	</span>|<span class="string">表达式 =</span>|<span class="string">&lt;</span>|<span class="string">&lt;=</span>|<span class="string">&gt;=</span>|<span class="string">&lt;=&gt;</span>|<span class="string">&lt;&gt;</span>|<span class="string">!=&#125; &#123;all</span>|<span class="string">some</span>|<span class="string">any&#125; (subquery)</span></span><br><span class="line"><span class="string">	</span>|<span class="string">exist (子查询)</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>模式匹配</strong></p>
+<h4 id="1-like运算符"><a href="#1-like运算符" class="headerlink" title="1)like运算符"></a>1)like运算符</h4><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 [not] like 表达式 [escape <span class="string">'escape_character'</span>]</span><br></pre></td></tr></table></figure>
+<p>模式匹配时，可用%和_进行模糊查询，%代表0个或多个字符,符号_代表单个字符<br>escape 转义字符，例如当要匹配的字符串中有_或%时，此时应通过该字符前的转义字符指明其为模式串中的字符，使用escape可以指定转义字符</p>
+<h4 id="2-regexp-正则表达式-，是mysql的一个功能。"><a href="#2-regexp-正则表达式-，是mysql的一个功能。" class="headerlink" title="2)regexp(正则表达式)，是mysql的一个功能。　"></a>2)regexp(正则表达式)，是mysql的一个功能。　</h4><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match_exp <span class="string">[not]</span><span class="string">[regexp|rlike]</span> match_exp</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特殊字符</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">^</td>
+<td style="text-align:center">匹配字符串的开始部分</td>
+</tr>
+<tr>
+<td style="text-align:center">$</td>
+<td style="text-align:center">匹配字符串结束部分</td>
+</tr>
+<tr>
+<td style="text-align:center">.</td>
+<td style="text-align:center">匹配任何一个字符</td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td style="text-align:center">匹配*之前的0个或多个字符的任何序列</td>
+</tr>
+<tr>
+<td style="text-align:center">+</td>
+<td style="text-align:center">匹配+之前的1个或多个字符的任何序列</td>
+</tr>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:center">匹配？之前的0个或多个字符</td>
+</tr>
+<tr>
+<td style="text-align:center">{n}</td>
+<td style="text-align:center">匹配括号前的内容出现n次的序列</td>
+</tr>
+<tr>
+<td style="text-align:center">()</td>
+<td style="text-align:center">匹配括号里的内容</td>
+</tr>
+<tr>
+<td style="text-align:center">[abc]</td>
+<td style="text-align:center">略</td>
+</tr>
+<tr>
+<td style="text-align:center">[a-z]</td>
+<td style="text-align:center">略</td>
+</tr>
+<tr>
+<td style="text-align:center">[^a-z]</td>
+<td style="text-align:center">略</td>
+</tr>
+<tr>
+<td style="text-align:center">&#124;</td>
+<td style="text-align:center">匹配符号左边或右边出现的字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">[[..]]</td>
+<td style="text-align:center">匹配方括号里出现的符号</td>
+</tr>
+<tr>
+<td style="text-align:center">[[:&lt;:]和[[:&gt;:]]</td>
+<td style="text-align:center">匹配一个单词的开始和结束</td>
+</tr>
+<tr>
+<td style="text-align:center">[[:]</td>
+<td style="text-align:center">匹配方括号里出现的字符串中的任意一个字符</td>
+</tr>
+</tbody>
+</table>
+<p><strong>范围比较(between或者in)</strong><br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exp</span> [<span class="keyword">not</span>] between <span class="built_in">exp1</span> <span class="keyword">and</span> <span class="built_in">exp2</span>   <span class="comment"># exp1必须小于exp2，表达式也可是字符串</span></span><br><span class="line"><span class="built_in">exp</span> <span class="keyword">in</span> (exps [,...n])             <span class="comment"># 该关键字主要用于表达子查询</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>空值比较</strong><br><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exp</span> <span class="keyword">is</span> [<span class="keyword">not</span>] <span class="literal">null</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>子查询</strong><br>    指使用另一个查询的结果作为条件的一部分，即查询的嵌套</p>
+<h4 id="1-in子查询"><a href="#1-in子查询" class="headerlink" title="1)in子查询"></a>1)in子查询</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exp</span> [<span class="literal">not</span>] <span class="keyword">in</span> (subquery)</span><br></pre></td></tr></table></figure>
+<p>in子查询只能返回一列数据，对于较复杂的查询可使用嵌套的子查询</p>
+<h4 id="2-比较子查询（使表达式的值与子查询的结果进行比较运算）"><a href="#2-比较子查询（使表达式的值与子查询的结果进行比较运算）" class="headerlink" title="2)比较子查询（使表达式的值与子查询的结果进行比较运算）"></a>2)比较子查询（使表达式的值与子查询的结果进行比较运算）</h4><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 &#123;<span class="variable">&lt;|&lt;=|=|&gt;</span>|<span class="string">&gt;=</span>|<span class="string">!=</span>|<span class="string">&lt;&gt;&#125; &#123;all</span>|<span class="string">some</span>|<span class="string">any&#125; (subquery)</span></span><br></pre></td></tr></table></figure>
+<p>all指定表达式要与结果集的每个值都进行比较，全部满足时才返回true，否则返回false。<br>some与any同义，找到满足的值就会返回true，否则返回false。</p>
+<h4 id="3-exists子查询"><a href="#3-exists子查询" class="headerlink" title="3)exists子查询"></a>3)exists子查询</h4><p>判断查询结果集是否为空表</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">not</span>] <span class="built_in">exists</span> (subquery)</span><br></pre></td></tr></table></figure>
+<p>以上各种子查询还可用在select的其他子句中，例如from语句，但是必须为子查询产生的一个中表定义一个别名</p>
+<h3 id="GROUP-BY子句"><a href="#GROUP-BY子句" class="headerlink" title="GROUP BY子句"></a>GROUP BY子句</h3><p>根据字段进行分组，所要查找的内容不得多于分组数<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="comment">&#123;列名|表达式|position&#125;</span> [<span class="keyword">asc</span>|<span class="keyword">desc</span>],... [<span class="keyword">with</span> rollup]</span><br></pre></td></tr></table></figure></p>
+<p>rollup用于对group by子句指定的各列产生汇总行。</p>
+<p><strong>举例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,username <span class="keyword">from</span> student <span class="keyword">where</span> job=<span class="string">'信息安全'</span> <span class="keyword">group</span> <span class="keyword">by</span> username;</span><br></pre></td></tr></table></figure>
+<p>上述语句执行时会报错，原因在于</p>
+<blockquote>
+<p><em>group by</em> 语句的执行过程为先执行group by子句，然后对gruop by 语句的汇总行再进行操作，本例中group by子句执行后只产生了一列(列名为username)，所以执行到查询name字段时会无法查询从而报错。<br>但是这个时候可以使用聚合函数来查询其他字段的信息，因为聚合函数可以作用于所有列，当然也可以增加group by 子句的字段</p>
+</blockquote>
+<p><strong>用例解析</strong></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) <span class="keyword">from</span> stuinfo<span class="built_in"> group </span>by 专业,性别 with rollup;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">专业</th>
+<th style="text-align:center">性别</th>
+<th style="text-align:center">count(编号)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">信息安全</td>
+<td style="text-align:center">女</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">信息安全</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">信息安全</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">土木工程</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">土木工程</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">女</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">20</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) <span class="keyword">from</span> stuinfo<span class="built_in"> group </span>by 性别,专业 with rollup;</span><br></pre></td></tr></table></figure>
+<p><strong>返回结果</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">专业</th>
+<th style="text-align:center">性别</th>
+<th style="text-align:center">count(编号)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">信息安全</td>
+<td style="text-align:center">女</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">女</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">女</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">信息安全</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">土木工程</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">计算机</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">男</td>
+<td style="text-align:center">16</td>
+</tr>
+<tr>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">20</td>
+</tr>
+</tbody>
+</table>
+<p>以上两个查询语句只是group by语句后面的顺序不同，该语句的组织方式是按列的排序的逆序进行汇总，例如第一例先对性别字段产生了汇总（针对专业相同的行），然后对专业名和性别名均不同的行产生了汇总行，如果列数是多列的话，也依然会这样依次汇总。</p>
+<h3 id="HAVING子句"><a href="#HAVING子句" class="headerlink" title="HAVING子句"></a>HAVING子句</h3><p>HAVING子句用于在group by子句后选择行，和WHERE子句类似，where子句用于在<em>from</em>  子句后选择行，区别是<font face="楷体"> having子句可以作用于聚合函数，而where子句不可以</font>。<br><strong>语法格式</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">having 条件</span><br></pre></td></tr></table></figure>
+<p><strong>举例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 专业,<span class="keyword">avg</span>(年龄) <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 年龄 &lt; <span class="number">96</span> <span class="keyword">group</span> <span class="keyword">by</span> 专业 <span class="keyword">having</span> <span class="keyword">avg</span>(年龄);</span><br></pre></td></tr></table></figure>
+<h3 id="ORDER-BY子句"><a href="#ORDER-BY子句" class="headerlink" title="ORDER BY子句"></a>ORDER BY子句</h3><p>如果不适用order by子句的话，结果集中的行的顺序将是不可预料的，使用该语句行可以对行的排序顺序方式进行指定，如果order by子句后面指定了多个条件，则会按照逆序方向依次排序。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">order by &#123;列名|表达式|position&#125; [asc|desc], ...</span><br></pre></td></tr></table></figure></p>
+<p><font face="fantasy">position</font> 表示结果集中该位置的列排序，是一个正整数。</p>
+<p><strong>举例</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from stuinfo order by 年龄;  # 根据年龄来排序</span><br></pre></td></tr></table></figure>
+<h3 id="LIMIT子句"><a href="#LIMIT子句" class="headerlink" title="LIMIT子句"></a>LIMIT子句</h3><p>LIMIT子句用来限制 <em>select</em>  语句返回的行数。</p>
+<p><strong>语法格式</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMIT &#123;[offset,] row_count | row_count OFFSET offset&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<blockquote>
+<p><em>offset</em> 为对于结果集首行的偏移量（首行偏移量为0），如offset=3，则会从第四行开始返回数据。</p>
+</blockquote>
+<p><strong>举例</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">2</span>;</span><br><span class="line">select * from stuinfo where 专业='信息安全' limit 2 offset 1; # 这两个语句是等价的</span><br></pre></td></tr></table></figure>
+<h3 id="UNION语句"><a href="#UNION语句" class="headerlink" title="UNION语句"></a>UNION语句</h3><p><code>UNION</code> 语句用来把多个 <em>select</em> 语句返回的结果组合到一个结果集中。</p>
+<p><strong>语法格式</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> ...</span><br><span class="line"><span class="keyword">union</span> [ALL | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ...</span><br><span class="line">[ <span class="keyword">union</span> [ALL | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ... ]</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong></p>
+<p>select语句为常规的select语句，但是必须遵守以下规则</p>
+<blockquote>
+<p>1、各个select语句对应位置的列应该具有相同的列名、类型和数目，<br>2、只有最后一个select语句可以使用 <code>into outfile</code><br>3、<code>order by</code> 和 <code>limit</code> 只能在整个语句最后指定，并对整个最终结果起作用。<br>4、使用union语句的时候，MySQL会自动剔除重复数据，所以<code>distinct</code>可以省去。</p>
+</blockquote>
+<p><strong>举例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">union</span> <span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'土木工程'</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">5</span> <span class="keyword">limit</span> <span class="number">6</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="HANDLER-语句"><a href="#HANDLER-语句" class="headerlink" title="HANDLER 语句"></a>HANDLER 语句</h3><p>前面使用的 <code>select</code> 语句通常用来返回行的集合，MySQL中还有另外一个可以返回行的语句： <em>handler</em> 语句。它能够一行一行的浏览表中的数据，这不是SQL标准，而是MySQL 的一个扩展，只适用于MyISAM表和InnoDB表。<br>使用该语句时要先打开一个表，然后在读这个表，使用完之后还必须关闭已经打开的表。</p>
+<p>  1、打开一个表</p>
+<p><strong>语法格式</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler tablename open [ [ as ] 别名 ];    # as用于指定别名</span><br></pre></td></tr></table></figure>
+<p>2、 浏览表中的行</p>
+<p><strong>语法格式1</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> &#123; <span class="keyword">first</span> | <span class="keyword">next</span> &#125; [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];</span><br></pre></td></tr></table></figure>
+<p>注意：此处的<code>limit</code> 字段用来控制返回的结果语句的行数，默认只有一行。</p>
+<p><strong>语法格式2</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;&lt;|&gt;|=|...&#125; (值...)</span><br><span class="line"> [where 条件] [limit ...];     # 以比较运算符为索引读取行</span><br><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;<span class="keyword">first</span> | <span class="keyword">next</span> | prev | <span class="keyword">last</span> &#125;</span><br><span class="line"> [where 条件] [limit ...];     # 以关键字来读取行</span><br></pre></td></tr></table></figure>
+<p> 3、关闭打开的表</p>
+<p><strong>语法格式</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">close</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="视图（view）"><a href="#视图（view）" class="headerlink" title="视图（view）"></a>视图（view）</h3><p>此处只对视图进行简单的介绍。<br>视图是从一个或多个表（视图）中导出（通过查询方式）的表，是一个 <em>虚表</em> ，即数据库中只存储视图的结构不存储具体数据，需要时再在表中进行查询使用。使用方便，安全性高。</p>
+<p><strong>语法格式</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span></span><br><span class="line">[<span class="keyword">or</span> <span class="keyword">replace</span>] # 用<span class="keyword">replace</span>能替代同名视图</span><br><span class="line">[definer = &#123;<span class="keyword">user</span>|<span class="keyword">current_user</span>&#125;]</span><br><span class="line"><span class="keyword">view</span> 视图名 [(列名 ...)]</span><br><span class="line"><span class="keyword">AS</span> <span class="keyword">select</span> 语句</span><br><span class="line">[<span class="keyword">with</span> [<span class="keyword">cascaded</span>|<span class="keyword">local</span>] <span class="keyword">check</span> <span class="keyword">option</span>]</span><br></pre></td></tr></table></figure>
+<p>执行查询、修改、删除等操作时与对表的操作类似。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2018/01/18/mysql3/" title="MySQL学习笔记(三)">http://chaosec.top/2018/01/18/mysql3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag"># SQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/07/mysql2/" rel="next" title="MySQL学习笔记(二)">
+                <i class="fa fa-chevron-left"></i> MySQL学习笔记(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/27/cumtctf2017/" rel="prev" title="CUMT-CTF2017冬">
+                CUMT-CTF2017冬 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SELECT语句"><span class="nav-number">1.</span> <span class="nav-text"><a href="#SELECT&#x8BED;&#x53E5;" class="headerlink" title="SELECT&#x8BED;&#x53E5;"></a>SELECT&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择列"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x9009;&#x62E9;&#x5217;" class="headerlink" title="&#x9009;&#x62E9;&#x5217;"></a>&#x9009;&#x62E9;&#x5217;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合函数-aggregation-function"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x805A;&#x5408;&#x51FD;&#x6570;-aggregation-function" class="headerlink" title="&#x805A;&#x5408;&#x51FD;&#x6570;(aggregation function)"></a>&#x805A;&#x5408;&#x51FD;&#x6570;(aggregation function)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FROM子句"><span class="nav-number">3.</span> <span class="nav-text"><a href="#FROM&#x5B50;&#x53E5;" class="headerlink" title="FROM&#x5B50;&#x53E5;"></a>FROM&#x5B50;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WHERE子句"><span class="nav-number">4.</span> <span class="nav-text"><a href="#WHERE&#x5B50;&#x53E5;" class="headerlink" title="WHERE&#x5B50;&#x53E5;"></a>WHERE&#x5B50;&#x53E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-like运算符"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-like&#x8FD0;&#x7B97;&#x7B26;" class="headerlink" title="1)like&#x8FD0;&#x7B97;&#x7B26;"></a>1)like&#x8FD0;&#x7B97;&#x7B26;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-regexp-正则表达式-，是mysql的一个功能。"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-regexp-&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;-&#xFF0C;&#x662F;mysql&#x7684;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x3002;" class="headerlink" title="2)regexp(&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;)&#xFF0C;&#x662F;mysql&#x7684;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x3002;&#x3000;"></a>2)regexp(&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;)&#xFF0C;&#x662F;mysql&#x7684;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x3002;&#x3000;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-in子查询"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#1-in&#x5B50;&#x67E5;&#x8BE2;" class="headerlink" title="1)in&#x5B50;&#x67E5;&#x8BE2;"></a>1)in&#x5B50;&#x67E5;&#x8BE2;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-比较子查询（使表达式的值与子查询的结果进行比较运算）"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#2-&#x6BD4;&#x8F83;&#x5B50;&#x67E5;&#x8BE2;&#xFF08;&#x4F7F;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x503C;&#x4E0E;&#x5B50;&#x67E5;&#x8BE2;&#x7684;&#x7ED3;&#x679C;&#x8FDB;&#x884C;&#x6BD4;&#x8F83;&#x8FD0;&#x7B97;&#xFF09;" class="headerlink" title="2)&#x6BD4;&#x8F83;&#x5B50;&#x67E5;&#x8BE2;&#xFF08;&#x4F7F;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x503C;&#x4E0E;&#x5B50;&#x67E5;&#x8BE2;&#x7684;&#x7ED3;&#x679C;&#x8FDB;&#x884C;&#x6BD4;&#x8F83;&#x8FD0;&#x7B97;&#xFF09;"></a>2)&#x6BD4;&#x8F83;&#x5B50;&#x67E5;&#x8BE2;&#xFF08;&#x4F7F;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x503C;&#x4E0E;&#x5B50;&#x67E5;&#x8BE2;&#x7684;&#x7ED3;&#x679C;&#x8FDB;&#x884C;&#x6BD4;&#x8F83;&#x8FD0;&#x7B97;&#xFF09;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-exists子查询"><span class="nav-number">4.5.</span> <span class="nav-text"><a href="#3-exists&#x5B50;&#x67E5;&#x8BE2;" class="headerlink" title="3)exists&#x5B50;&#x67E5;&#x8BE2;"></a>3)exists&#x5B50;&#x67E5;&#x8BE2;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GROUP-BY子句"><span class="nav-number">5.</span> <span class="nav-text"><a href="#GROUP-BY&#x5B50;&#x53E5;" class="headerlink" title="GROUP BY&#x5B50;&#x53E5;"></a>GROUP BY&#x5B50;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HAVING子句"><span class="nav-number">6.</span> <span class="nav-text"><a href="#HAVING&#x5B50;&#x53E5;" class="headerlink" title="HAVING&#x5B50;&#x53E5;"></a>HAVING&#x5B50;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ORDER-BY子句"><span class="nav-number">7.</span> <span class="nav-text"><a href="#ORDER-BY&#x5B50;&#x53E5;" class="headerlink" title="ORDER BY&#x5B50;&#x53E5;"></a>ORDER BY&#x5B50;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMIT子句"><span class="nav-number">8.</span> <span class="nav-text"><a href="#LIMIT&#x5B50;&#x53E5;" class="headerlink" title="LIMIT&#x5B50;&#x53E5;"></a>LIMIT&#x5B50;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNION语句"><span class="nav-number">9.</span> <span class="nav-text"><a href="#UNION&#x8BED;&#x53E5;" class="headerlink" title="UNION&#x8BED;&#x53E5;"></a>UNION&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HANDLER-语句"><span class="nav-number">10.</span> <span class="nav-text"><a href="#HANDLER-&#x8BED;&#x53E5;" class="headerlink" title="HANDLER &#x8BED;&#x53E5;"></a>HANDLER &#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图（view）"><span class="nav-number">11.</span> <span class="nav-text"><a href="#&#x89C6;&#x56FE;&#xFF08;view&#xFF09;" class="headerlink" title="&#x89C6;&#x56FE;&#xFF08;view&#xFF09;"></a>&#x89C6;&#x56FE;&#xFF08;view&#xFF09;</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

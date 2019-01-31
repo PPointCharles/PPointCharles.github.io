@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近在学习密码学，研究了一些密码学算法，特此记录一下。">
+<meta name="keywords" content="Crypto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="密码学作业记录（一）">
+<meta property="og:url" content="http://chaosec.top/2019/01/15/crypto1/index.html">
+<meta property="og:site_name" content="Charles&#39; Blog">
+<meta property="og:description" content="前言最近在学习密码学，研究了一些密码学算法，特此记录一下。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://chaosec.top/2019/01/15/crypto1/1.png">
+<meta property="og:image" content="http://chaosec.top/2019/01/15/crypto1/2.png">
+<meta property="og:image" content="http://chaosec.top/2019/01/15/crypto1/3.png">
+<meta property="og:image" content="http://chaosec.top/2019/01/15/crypto1/5.png">
+<meta property="og:image" content="http://chaosec.top/2019/01/15/crypto1/4.png">
+<meta property="og:updated_time" content="2019-01-30T11:44:17.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="密码学作业记录（一）">
+<meta name="twitter:description" content="前言最近在学习密码学，研究了一些密码学算法，特此记录一下。">
+<meta name="twitter:image" content="http://chaosec.top/2019/01/15/crypto1/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Charles' Blog" type="application/atom+xml"/>
+
+
+
+
+  <link rel="canonical" href="http://chaosec.top/2019/01/15/crypto1/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>密码学作业记录（一） | Charles' Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="bg_content">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Charles' Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2019/01/15/crypto1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="description" content="相逢意气为君饮"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charles' Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">密码学作业记录（一）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-15 22:28:46" itemprop="dateCreated datePublished" datetime="2019-01-15T22:28:46+08:00">2019-01-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-30 19:44:17" itemprop="dateModified" datetime="2019-01-30T19:44:17+08:00">2019-01-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Record/" itemprop="url" rel="index"><span itemprop="name">Record</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2019/01/15/crypto1/" class="leancloud_visitors" data-flag-title="密码学作业记录（一）">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在学习密码学，研究了一些密码学算法，特此记录一下。</p>
+<a id="more"></a>
+<h1 id="古典密码"><a href="#古典密码" class="headerlink" title="古典密码"></a>古典密码</h1><p>古典密码体制是基于古代落后的计算条件和落后的密码学与数学知识建立的，本部分选取了<strong>凯撒密码</strong>和<strong>仿射密码</strong>。</p>
+<h2 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h2><p>凯撒密码本质上是一种置换密码，且为一对一的置换加密方式。明文中的所有字母都在字母表上向后（或向前）按照一个固定数目进行偏移后被替换成密文。例如，当偏移量是3的时候，所有的字母A将被替换成D，B变成E，以此类推。这个加密方法是以罗马共和时期恺撒的名字命名的，当年恺撒曾用此方法与其将军们进行联系。</p>
+<p><em>代码如下</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 名密文输入范围是26个英文小写字母</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">mode = sys.argv[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">if</span> mode == <span class="string">"encrypt"</span>:</span><br><span class="line">	plain = raw_input(<span class="string">"Please input plaintext: "</span>)</span><br><span class="line">	key = input(<span class="string">"Please input key: "</span>)</span><br><span class="line">	cip = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(plain)):</span><br><span class="line">		temp = (ord(plain[i]) - ord(<span class="string">'a'</span>) + key) % <span class="number">26</span> + ord(<span class="string">'a'</span>)</span><br><span class="line">		cip += chr(temp)</span><br><span class="line">	print(<span class="string">"cipher: "</span> + cip)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> mode == <span class="string">"decrypt"</span>:</span><br><span class="line">	cipher = raw_input(<span class="string">"Please input cipher: "</span>)</span><br><span class="line">	key = input(<span class="string">"Please input key: "</span>)</span><br><span class="line">	pla = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">		temp = (ord(cipher[i])-ord(<span class="string">"a"</span>) - key) % <span class="number">26</span> + ord(<span class="string">'a'</span>)</span><br><span class="line">		pla += chr(temp)</span><br><span class="line">	print(<span class="string">"plaintext: "</span> + pla)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(sys.argv[<span class="number">1</span>],<span class="string">" is not supported:("</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/15/crypto1/1.png" alt="demo"></p>
+<blockquote>
+<p>安全性分析：可以看到，凯撒密码的加解密方式简单，手工即可实现，在古代落后的计算能力之下，该中算法拥有着很高的安全性，但是放在现在由于计算能力的提高，该算法表现出脆弱性，无法抵抗穷举攻击，因为对于一串明文，可能的加密组合只有26种，以现在的计算手段，对于任何攻击方式都表现出极大的脆弱性，当遭受<strong>已知明文攻击</strong>时完全没有抵抗性，故而现代密码体制中已不再采用该密码。</p>
+</blockquote>
+<h2 id="仿射密码"><a href="#仿射密码" class="headerlink" title="仿射密码"></a>仿射密码</h2><p>仿射密码的加密算法就是一个线性变换，及对任意的明文字符x，对应的密文字符为 <code>y≡e(x)≡ax+b(mod 26)</code>，其中a,b均为26以内的正整数，并且要求<code>gcd(a,26)=1</code>，函数e(x)称为仿射加密函数，解密时用<code>x≡d(e(x))≡a&#39;(e(x)-b)(mod 26)</code>来解密。</p>
+<p><em>代码如下：</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_re</span><span class="params">(a)</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">27</span>):</span><br><span class="line">		<span class="keyword">if</span> i*a % <span class="number">26</span> == <span class="number">1</span>:</span><br><span class="line">			<span class="keyword">return</span> i</span><br><span class="line"></span><br><span class="line"><span class="comment"># ex = ax+b</span></span><br><span class="line">mode = sys.argv[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">if</span> mode == <span class="string">"e"</span>:</span><br><span class="line">	p = str(input(<span class="string">"Plz input plain: "</span>))</span><br><span class="line">	a = int(input(<span class="string">"Plz input a: "</span>))</span><br><span class="line">	b = int(input(<span class="string">"Plz input b: "</span>))</span><br><span class="line">	c = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(p)):</span><br><span class="line">		t = ((ord(p[i]) - ord(<span class="string">'a'</span>)) * a + b) % <span class="number">26</span> + ord(<span class="string">'a'</span>)</span><br><span class="line">		c += chr(t)</span><br><span class="line">	print(<span class="string">"cipher: "</span> + c)</span><br><span class="line"><span class="keyword">elif</span> mode == <span class="string">"d"</span>:</span><br><span class="line">	<span class="comment"># a'(e(x)-b)</span></span><br><span class="line">	c = str(input(<span class="string">"Plz input cipher: "</span>))</span><br><span class="line">	a = int(input(<span class="string">"Plz input a: "</span>))</span><br><span class="line">	b = int(input(<span class="string">"Plz input b: "</span>))</span><br><span class="line">	p = <span class="string">""</span></span><br><span class="line">	_a = get_re(a)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(c)): </span><br><span class="line">		t = (ord(c[i]) - ord(<span class="string">'a'</span>) - b)*_a % <span class="number">26</span> + ord(<span class="string">'a'</span>)</span><br><span class="line">		p += chr(t)</span><br><span class="line">	print(<span class="string">"plain: "</span> + p)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">"Input Error:("</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>加密时按照加密公式给出，解密时用穷举法求出a的逆元从而解密。</p>
+</blockquote>
+<p><em>实例演示</em></p>
+<p><img src="/2019/01/15/crypto1/2.png" alt="demo"></p>
+<hr>
+<p>　　可以看到，仿射加密和凯撒加密本质都是一种一对一的加密方式，这种加密方式没有将字母出现的统计规律隐藏起来，在英文中对于足够长的英文文本来说，字符的出现频率是相对固定的，还有字母的有些组合出现频率也是相对固定的，这样就可以通过统计分析法来破解上述加密方式加密出来的密文。</p>
+<p><em>频率分析法破解仿射密码</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">假如我们已知一串密文 fmxvedkaphferbndkrxrsrefmorudsdkdvshvufedkaprkdlyevlrhhrh，</span><br><span class="line">此时可以通过频率分析法尝试爆破出明文</span><br></pre></td></tr></table></figure>
+<p><em>代码如下</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">dic = [<span class="string">'e'</span>,<span class="string">'t'</span>,<span class="string">'a'</span>,<span class="string">'o'</span>,<span class="string">'i'</span>,<span class="string">'n'</span>,<span class="string">'s'</span>,<span class="string">'h'</span>,<span class="string">'r'</span>,<span class="string">'d'</span>,<span class="string">'l'</span>,<span class="string">'c'</span>,<span class="string">'u'</span>,<span class="string">'m'</span>,<span class="string">'w'</span>,<span class="string">'f'</span>,<span class="string">'g'</span>,<span class="string">'y'</span>,<span class="string">'p'</span>,<span class="string">'b'</span>,<span class="string">'v'</span>,<span class="string">'k'</span>,<span class="string">'j'</span>,<span class="string">'x'</span>,<span class="string">'q'</span>,<span class="string">'z'</span>]</span><br><span class="line">freq = [<span class="number">0</span>] * <span class="number">26</span></span><br><span class="line">cipher = input(<span class="string">"Plz input cipher: "</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 频率统计</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">	t = ord(cipher[i])-ord(<span class="string">'a'</span>)</span><br><span class="line">	freq[t] += <span class="number">1</span>	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ab</span><span class="params">(x,y)</span>:</span></span><br><span class="line">	dic = [<span class="string">'e'</span>,<span class="string">'t'</span>,<span class="string">'a'</span>,<span class="string">'o'</span>,<span class="string">'i'</span>,<span class="string">'n'</span>,<span class="string">'s'</span>,<span class="string">'h'</span>,<span class="string">'r'</span>,<span class="string">'d'</span>,<span class="string">'l'</span>,<span class="string">'c'</span>,<span class="string">'u'</span>,<span class="string">'m'</span>,<span class="string">'w'</span>,<span class="string">'f'</span>,<span class="string">'g'</span>,<span class="string">'y'</span>,<span class="string">'p'</span>,<span class="string">'b'</span>,<span class="string">'v'</span>,<span class="string">'k'</span>,<span class="string">'j'</span>,<span class="string">'x'</span>,<span class="string">'q'</span>,<span class="string">'z'</span>]</span><br><span class="line">	repeat = []   <span class="comment"># 去除重复计算的项</span></span><br><span class="line">	<span class="keyword">for</span> one <span class="keyword">in</span> dic:</span><br><span class="line">		<span class="keyword">for</span> two <span class="keyword">in</span> dic:</span><br><span class="line">			o = ord(one) - ord(<span class="string">'a'</span>)</span><br><span class="line">			t = ord(two) - ord(<span class="string">'a'</span>)</span><br><span class="line">			oo = ord(x) - ord(<span class="string">'a'</span>)</span><br><span class="line">			tt = ord(y) - ord(<span class="string">'a'</span>)</span><br><span class="line">			<span class="comment"># oo = a*o+b</span></span><br><span class="line">			<span class="comment"># tt = a*t+b</span></span><br><span class="line">			<span class="keyword">if</span> o - t == <span class="number">0</span>:</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			a = ((oo-tt)//(o-t)) % <span class="number">26</span></span><br><span class="line">			b = (oo - a * o) % <span class="number">26</span></span><br><span class="line">			test =  int(gmpy2.gcd(a, <span class="number">26</span>))</span><br><span class="line">			<span class="keyword">if</span> test != <span class="number">1</span>:</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				_a = gmpy2.invert(a, <span class="number">26</span>)</span><br><span class="line">			plain = <span class="string">""</span></span><br><span class="line">			<span class="keyword">if</span> (a,b) <span class="keyword">in</span> repeat:</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			<span class="keyword">for</span> item <span class="keyword">in</span> cipher:</span><br><span class="line">				ex = ord(item) - ord(<span class="string">'a'</span>)</span><br><span class="line">				p = (_a * (ex - b)) % <span class="number">26</span></span><br><span class="line">				plain += chr(p+ord(<span class="string">'a'</span>))</span><br><span class="line">			repeat.append((a,b))</span><br><span class="line">			print(plain,end=<span class="string">""</span>)</span><br><span class="line">			print(<span class="string">"**"</span> + str(a) + <span class="string">"**"</span> + str(b))</span><br><span class="line">	print(<span class="string">"共"</span> + str(len(repeat)) + <span class="string">"项."</span>)</span><br><span class="line"></span><br><span class="line">x = chr(freq.index(max(freq)) + ord(<span class="string">'a'</span>))</span><br><span class="line">freq[freq.index(max(freq))] = <span class="number">0</span></span><br><span class="line">y = chr(freq.index(max(freq)) + ord(<span class="string">'a'</span>))</span><br><span class="line">get_ab(x,y)</span><br></pre></td></tr></table></figure>
+<p>代码思路是先统计密文的字母出现频率，由频率高低依次对应字母频次表，联立方程组，由于未知数只有a、b，所以只需要两个方程是即可解出，依次尝试不同的变换组合即可，直至得到有意义的明文，由于统计基数的原因，密文越长，则越可能早的得到有意义的密文。为了使结果显示更加有效，代码中过滤了冗余的待选明文项（即a、b相同的情况）。</p>
+<p><img src="/2019/01/15/crypto1/3.png" alt="demo"></p>
+<p>可以看到密文被成功破解</p>
+<hr>
+<p>　　从对古典密码分析中可以看到，一个密码体系要保证安全性，应该尽可能的隐藏语言特性，即密文均匀分布，且加密的可选字符区间应尽可能的大，否则无法抵抗穷举攻击。在现代密码体制中，这两点都有了比较好的保证。</p>
+<h1 id="分组密码"><a href="#分组密码" class="headerlink" title="分组密码"></a>分组密码</h1><h2 id="DES加密算法"><a href="#DES加密算法" class="headerlink" title="DES加密算法"></a>DES加密算法</h2><p>DES算法为密码体制中的对称密码体制，又被称为美国数据加密标准，是1972年美国IBM公司研制的对称密码体制加密算法。 明文按64位进行分组，密钥长64位，密钥事实上是56位参与DES运算（第8、16、24、32、40、48、56、64位是校验位， 使得每个密钥都有奇数个1）分组后的明文组和56位的密钥按位替代或交换的方法形成密文组。 </p>
+<p>DES加密流程如下图</p>
+<p><img src="/2019/01/15/crypto1/5.png" alt="demo"></p>
+<p>解密时只需要将机密流程逆序即可。</p>
+<p>算法大致步骤如下：</p>
+<ol>
+<li>初始置换</li>
+</ol>
+<p>​DES算法使用64位的密钥key将64位的明文输入块变为64位的密文输出块，并把输出块分为L0、R0两部分，每部分均为32位。初始置换规则可查表获得，这里不再赘述。初始置换是固定的、公开的函数，因此这个初始置换及逆初始置换都没有密码意义，主要目的是为了更好地将明文和密文分组。</p>
+<hr>
+<p>下一步是进行轮函数（F函数）迭代，F函数具体步骤如下</p>
+<ol>
+<li>扩展置换（E盒）</li>
+</ol>
+<p>初始置换结束后，将得到64位序列分成两组，各32位，而E盒将数据的右32位输入扩展为48位输出，改变了位的次序，重复了某些位。</p>
+<p>该步骤的目的是：a、产生与秘钥相同长度的数据以进行异或运算，R0是32位，子秘钥是48位，所以R0要先进行扩展置换之后与子秘钥进行异或运算；b、提供更长的结果，使得在替代运算时能够进行压缩。</p>
+<ol>
+<li>秘钥加运算</li>
+</ol>
+<p>该步骤非常简单，将E扩展输出的48位与48位子秘钥进行逐位异或，输出48位数据。</p>
+<ol>
+<li>代换盒（S盒）</li>
+</ol>
+<p>此步骤的功能是进行非线性变换，S盒是DES中唯一的非线性部分，经过S盒代换压缩之后，48位的数据重新被压缩成32位。</p>
+<p>代换压缩由8个不同的代替盒(S盒)完成。每个S-盒有6位输入，4位输出。所以48位的输入块被分成8个6位的分组，每一个分组对应一个S-盒代替操作。经过S-盒代替，形成8个4位分组结果</p>
+<p>S盒具有良好的非线性，输入的每一个比特与全部输入比特有关，两个输入相差1比特时，输入至少相差2比特，极大的保证了安全性。</p>
+<ol>
+<li>置换运算（P盒）</li>
+</ol>
+<p>置换运算（P盒）只是进行简单位置置换，而不进行扩展和压缩。</p>
+<p>至此<strong>F函数</strong>结束</p>
+<hr>
+<ol>
+<li>逆置换</li>
+</ol>
+<p>将初始置换进行16次的迭代，即进行16层的加密变换，这个运算过程我们暂时称为<strong>F函数</strong>。得到L16和R16，将此作为输入块，进行逆置换得到最终的密文输出块。</p>
+<p><em>代码如下：</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line">ip = [<span class="number">57</span>, <span class="number">49</span>, <span class="number">41</span>, <span class="number">33</span>, <span class="number">25</span>, <span class="number">17</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">59</span>, <span class="number">51</span>, <span class="number">43</span>, <span class="number">35</span>, <span class="number">27</span>, <span class="number">19</span>, </span><br><span class="line"><span class="number">11</span>, <span class="number">3</span>, <span class="number">61</span>, <span class="number">53</span>, <span class="number">45</span>, <span class="number">37</span>, <span class="number">29</span>, <span class="number">21</span>, <span class="number">13</span>, <span class="number">5</span>, <span class="number">63</span>, <span class="number">55</span>, <span class="number">47</span>, <span class="number">39</span>, <span class="number">31</span>, <span class="number">23</span>,</span><br><span class="line"><span class="number">15</span>, <span class="number">7</span>, <span class="number">56</span>, <span class="number">48</span>, <span class="number">40</span>, <span class="number">32</span>, <span class="number">24</span>, <span class="number">16</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">58</span>, <span class="number">50</span>, <span class="number">42</span>, <span class="number">34</span>, <span class="number">26</span>, <span class="number">18</span>, <span class="number">10</span>, <span class="number">2</span>, <span class="number">60</span>, </span><br><span class="line"><span class="number">52</span>, <span class="number">44</span>, <span class="number">36</span>, <span class="number">28</span>, <span class="number">20</span>, <span class="number">12</span>, <span class="number">4</span>, <span class="number">62</span>, <span class="number">54</span>, <span class="number">46</span>, <span class="number">38</span>, <span class="number">30</span>, <span class="number">22</span>, <span class="number">14</span>, <span class="number">6</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 逆矩阵</span></span><br><span class="line">_ip = [<span class="number">39</span>, <span class="number">7</span>, <span class="number">47</span>, <span class="number">15</span>, <span class="number">55</span>, <span class="number">23</span>, <span class="number">63</span>, <span class="number">31</span>, <span class="number">38</span>, <span class="number">6</span>, <span class="number">46</span>, <span class="number">14</span>, <span class="number">54</span>, <span class="number">22</span>, </span><br><span class="line"><span class="number">62</span>, <span class="number">30</span>, <span class="number">37</span>, <span class="number">5</span>, <span class="number">45</span>, <span class="number">13</span>, <span class="number">53</span>, <span class="number">21</span>, <span class="number">61</span>, <span class="number">29</span>, <span class="number">36</span>, <span class="number">4</span>, <span class="number">44</span>, <span class="number">12</span>, <span class="number">52</span>, <span class="number">20</span>, </span><br><span class="line"><span class="number">60</span>, <span class="number">28</span>, <span class="number">35</span>, <span class="number">3</span>, <span class="number">43</span>, <span class="number">11</span>, <span class="number">51</span>, <span class="number">19</span>, <span class="number">59</span>, <span class="number">27</span>, <span class="number">34</span>, <span class="number">2</span>, <span class="number">42</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">18</span>, </span><br><span class="line"><span class="number">58</span>, <span class="number">26</span>, <span class="number">33</span>, <span class="number">1</span>, <span class="number">41</span>, <span class="number">9</span>, <span class="number">49</span>, <span class="number">17</span>, <span class="number">57</span>, <span class="number">25</span>, <span class="number">32</span>, <span class="number">0</span>, <span class="number">40</span>, <span class="number">8</span>, <span class="number">48</span>, <span class="number">16</span>, <span class="number">56</span>, <span class="number">24</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化c、d数组</span></span><br><span class="line">c = [<span class="string">""</span>]*<span class="number">17</span></span><br><span class="line">d = [<span class="string">""</span>]*<span class="number">17</span></span><br><span class="line">k = [<span class="string">""</span>]*<span class="number">17</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 左右32位数组</span></span><br><span class="line">l = [<span class="string">""</span>]*<span class="number">17</span></span><br><span class="line">r = [<span class="string">""</span>]*<span class="number">17</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_secretkey</span><span class="params">(key, round)</span>:</span></span><br><span class="line">	pc1 = [<span class="number">56</span>, <span class="number">48</span>, <span class="number">40</span>, <span class="number">32</span>, <span class="number">24</span>, <span class="number">16</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">57</span>, <span class="number">49</span>, <span class="number">41</span>, <span class="number">33</span>, <span class="number">25</span>, <span class="number">17</span>, </span><br><span class="line">		<span class="number">9</span>, <span class="number">1</span>, <span class="number">58</span>, <span class="number">50</span>, <span class="number">42</span>, <span class="number">34</span>, <span class="number">26</span>, <span class="number">18</span>, <span class="number">10</span>, <span class="number">2</span>, <span class="number">59</span>, <span class="number">51</span>, <span class="number">43</span>, <span class="number">35</span>, <span class="number">62</span>, <span class="number">54</span>, </span><br><span class="line">		<span class="number">46</span>, <span class="number">38</span>, <span class="number">30</span>, <span class="number">22</span>, <span class="number">14</span>, <span class="number">6</span>, <span class="number">61</span>, <span class="number">53</span>, <span class="number">45</span>, <span class="number">37</span>, <span class="number">29</span>, <span class="number">21</span>, <span class="number">13</span>, <span class="number">5</span>, <span class="number">60</span>, <span class="number">52</span>, </span><br><span class="line">		<span class="number">4</span>, <span class="number">36</span>, <span class="number">28</span>, <span class="number">20</span>, <span class="number">12</span>, <span class="number">4</span>, <span class="number">27</span>, <span class="number">19</span>, <span class="number">11</span>, <span class="number">3</span>]</span><br><span class="line">	respc1 = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">56</span>):</span><br><span class="line">		respc1 += key[pc1[i]]</span><br><span class="line">	c[<span class="number">0</span>] = respc1[:<span class="number">28</span>]</span><br><span class="line">	d[<span class="number">0</span>] = respc1[<span class="number">28</span>:]</span><br><span class="line">	k[<span class="number">0</span>] = c[<span class="number">0</span>] + d[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,round+<span class="number">1</span>):</span><br><span class="line">		<span class="keyword">if</span> i <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">16</span>):</span><br><span class="line">			<span class="comment"># 左移1位</span></span><br><span class="line">			c[i] = c[i<span class="number">-1</span>][<span class="number">1</span>:] + c[i<span class="number">-1</span>][:<span class="number">1</span>]</span><br><span class="line">			d[i] = d[i<span class="number">-1</span>][<span class="number">1</span>:] + d[i<span class="number">-1</span>][:<span class="number">1</span>]</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			c[i] = c[i<span class="number">-1</span>][<span class="number">2</span>:] + c[i<span class="number">-1</span>][:<span class="number">2</span>]</span><br><span class="line">			d[i] = d[i<span class="number">-1</span>][<span class="number">2</span>:] + d[i<span class="number">-1</span>][:<span class="number">2</span>]</span><br><span class="line">	secret = c[round] + d[round]</span><br><span class="line">	pc2 = [<span class="number">14</span>,<span class="number">17</span>,<span class="number">11</span>,<span class="number">24</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">28</span>,<span class="number">15</span>,<span class="number">6</span>,<span class="number">21</span>,<span class="number">10</span>,<span class="number">23</span>,<span class="number">19</span>,<span class="number">12</span>,<span class="number">4</span>,<span class="number">26</span>,<span class="number">8</span>,</span><br><span class="line">		<span class="number">16</span>,<span class="number">7</span>,<span class="number">27</span>,<span class="number">20</span>,<span class="number">13</span>,<span class="number">2</span>,<span class="number">41</span>,<span class="number">52</span>,<span class="number">31</span>,<span class="number">37</span>,<span class="number">47</span>,<span class="number">55</span>,<span class="number">30</span>,<span class="number">40</span>,<span class="number">51</span>,<span class="number">45</span>,<span class="number">33</span>,<span class="number">48</span>,</span><br><span class="line">		<span class="number">44</span>,<span class="number">49</span>,<span class="number">39</span>,<span class="number">56</span>,<span class="number">34</span>,<span class="number">53</span>,<span class="number">46</span>,<span class="number">42</span>,<span class="number">50</span>,<span class="number">36</span>,<span class="number">29</span>,<span class="number">32</span>]</span><br><span class="line">	s_key = <span class="string">""</span> <span class="comment"># 生成本轮最终秘钥</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>):</span><br><span class="line">		s_key += secret[pc2[i]<span class="number">-1</span>]</span><br><span class="line">	<span class="keyword">return</span> s_key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始置换，输入为64位数据，8个ascii字符</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_replace</span><span class="params">(data)</span>:</span></span><br><span class="line">	re = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">64</span>):</span><br><span class="line">		re += data[ip[i]]</span><br><span class="line">	<span class="keyword">return</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展置换，输入为32位数据，输出为48位数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">e_replace</span><span class="params">(data)</span>:</span></span><br><span class="line">	e_box = [<span class="number">31</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, </span><br><span class="line">		<span class="number">12</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, </span><br><span class="line">		<span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">0</span>]</span><br><span class="line">	re = [<span class="string">'a'</span>] * <span class="number">48</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>):</span><br><span class="line">		re[i] = data[e_box[i]]</span><br><span class="line">	<span class="keyword">return</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 秘钥加处理</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">secret_plus</span><span class="params">(data, key)</span>:</span></span><br><span class="line">	out = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>):</span><br><span class="line">		out += str(int(data[i])^int(key[i]))</span><br><span class="line">	<span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="comment"># s盒置换，输入48位，输出32位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">s_replace</span><span class="params">(data)</span>:</span></span><br><span class="line">	s1 = [[<span class="number">14</span>,<span class="number">4</span>,<span class="number">13</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">15</span>,<span class="number">11</span>,<span class="number">8</span>,<span class="number">3</span>,<span class="number">10</span>,<span class="number">6</span>,<span class="number">12</span>,<span class="number">5</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">7</span>],</span><br><span class="line">		[<span class="number">0</span>,<span class="number">15</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">14</span>,<span class="number">2</span>,<span class="number">13</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">6</span>,<span class="number">12</span>,<span class="number">11</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">8</span>],</span><br><span class="line">		[<span class="number">4</span>,<span class="number">1</span>,<span class="number">14</span>,<span class="number">8</span>,<span class="number">13</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">11</span>,<span class="number">15</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">10</span>,<span class="number">5</span>,<span class="number">0</span>],</span><br><span class="line">		[<span class="number">15</span>,<span class="number">12</span>,<span class="number">8</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">11</span>,<span class="number">3</span>,<span class="number">14</span>,<span class="number">10</span>,<span class="number">0</span>,<span class="number">6</span>,<span class="number">13</span>]]</span><br><span class="line">	s2 = [[<span class="number">15</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">14</span>,<span class="number">6</span>,<span class="number">11</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">13</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">10</span>],</span><br><span class="line">		[<span class="number">3</span>,<span class="number">13</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">15</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">14</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">11</span>,<span class="number">5</span>],</span><br><span class="line">		[<span class="number">0</span>,<span class="number">14</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">10</span>,<span class="number">4</span>,<span class="number">13</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">15</span>],</span><br><span class="line">		[<span class="number">13</span>,<span class="number">8</span>,<span class="number">10</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">15</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">11</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">14</span>,<span class="number">9</span>]]</span><br><span class="line">	s3 = [[<span class="number">10</span>,<span class="number">0</span>,<span class="number">9</span>,<span class="number">14</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">15</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">13</span>,<span class="number">12</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>],</span><br><span class="line">		[<span class="number">13</span>,<span class="number">7</span>,<span class="number">0</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">10</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">5</span>,<span class="number">14</span>,<span class="number">12</span>,<span class="number">11</span>,<span class="number">15</span>,<span class="number">1</span>],</span><br><span class="line">		[<span class="number">13</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">15</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">11</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">12</span>,<span class="number">5</span>,<span class="number">10</span>,<span class="number">14</span>,<span class="number">7</span>],</span><br><span class="line">		[<span class="number">1</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">0</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">15</span>,<span class="number">14</span>,<span class="number">3</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">12</span>]]</span><br><span class="line">	s4 = [[<span class="number">7</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">5</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">4</span>,<span class="number">15</span>],</span><br><span class="line">		[<span class="number">13</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">12</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">14</span>,<span class="number">9</span>],</span><br><span class="line">		[<span class="number">10</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">12</span>,<span class="number">11</span>,<span class="number">7</span>,<span class="number">13</span>,<span class="number">15</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">14</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">4</span>],</span><br><span class="line">		[<span class="number">3</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="number">6</span>,<span class="number">10</span>,<span class="number">1</span>,<span class="number">13</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">14</span>]]</span><br><span class="line">	s5 = [[<span class="number">2</span>,<span class="number">12</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">15</span>,<span class="number">13</span>,<span class="number">0</span>,<span class="number">14</span>,<span class="number">9</span>],</span><br><span class="line">		[<span class="number">14</span>,<span class="number">11</span>,<span class="number">2</span>,<span class="number">12</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">13</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">0</span>,<span class="number">15</span>,<span class="number">10</span>,<span class="number">3</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">6</span>],</span><br><span class="line">		[<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">11</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">15</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">14</span>],</span><br><span class="line">		[<span class="number">11</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">14</span>,<span class="number">2</span>,<span class="number">13</span>,<span class="number">6</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">3</span>]]</span><br><span class="line">	s6 = [[<span class="number">12</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">15</span>,<span class="number">9</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">13</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">14</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">11</span>],</span><br><span class="line">		[<span class="number">10</span>,<span class="number">15</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">0</span>,<span class="number">11</span>,<span class="number">3</span>,<span class="number">8</span>],</span><br><span class="line">		[<span class="number">9</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">0</span>,<span class="number">4</span>,<span class="number">10</span>,<span class="number">1</span>,<span class="number">13</span>,<span class="number">11</span>,<span class="number">6</span>],</span><br><span class="line">		[<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">15</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">14</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="number">13</span>]]</span><br><span class="line">	s7 = [[<span class="number">4</span>,<span class="number">11</span>,<span class="number">2</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="number">13</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">10</span>,<span class="number">6</span>,<span class="number">1</span>],</span><br><span class="line">		[<span class="number">13</span>,<span class="number">0</span>,<span class="number">11</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">14</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">12</span>,<span class="number">2</span>,<span class="number">15</span>,<span class="number">8</span>,<span class="number">6</span>],</span><br><span class="line">		[<span class="number">1</span>,<span class="number">4</span>,<span class="number">11</span>,<span class="number">13</span>,<span class="number">12</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">14</span>,<span class="number">10</span>,<span class="number">15</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">9</span>,<span class="number">2</span>],</span><br><span class="line">		[<span class="number">6</span>,<span class="number">11</span>,<span class="number">13</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">10</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">0</span>,<span class="number">15</span>,<span class="number">14</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">12</span>]]</span><br><span class="line">	s8 = [[<span class="number">13</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">15</span>,<span class="number">11</span>,<span class="number">1</span>,<span class="number">10</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="number">14</span>,<span class="number">5</span>,<span class="number">0</span>,<span class="number">12</span>,<span class="number">7</span>],</span><br><span class="line">		[<span class="number">1</span>,<span class="number">15</span>,<span class="number">13</span>,<span class="number">8</span>,<span class="number">10</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">12</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">11</span>,<span class="number">0</span>,<span class="number">14</span>,<span class="number">9</span>,<span class="number">2</span>],</span><br><span class="line">		[<span class="number">7</span>,<span class="number">11</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">14</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">6</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">15</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">8</span>],</span><br><span class="line">		[<span class="number">2</span>,<span class="number">1</span>,<span class="number">14</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">10</span>,<span class="number">8</span>,<span class="number">13</span>,<span class="number">15</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">11</span>]]</span><br><span class="line">	re = []</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>//<span class="number">6</span>):</span><br><span class="line">	    re.append(data[<span class="number">6</span>*i:<span class="number">6</span>*i+<span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 开始进行s盒置换</span></span><br><span class="line">	dic = [s1,s2,s3,s4,s5,s6,s7,s8]</span><br><span class="line">	retn = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">		r = int(re[i][<span class="number">0</span>] + re[i][<span class="number">5</span>],<span class="number">2</span>)</span><br><span class="line">		c = int(re[i][<span class="number">1</span>:<span class="number">5</span>], <span class="number">2</span>)</span><br><span class="line">		temp = str(bin(dic[i][r][c]))[<span class="number">2</span>:]</span><br><span class="line">		temp = <span class="string">"0"</span>*(<span class="number">4</span>-len(temp)) + temp</span><br><span class="line">		retn += temp</span><br><span class="line">	<span class="comment"># print(len(retn))</span></span><br><span class="line">	<span class="keyword">return</span> retn</span><br><span class="line"></span><br><span class="line"><span class="comment"># p盒置换，输入输出均为32位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">p_replace</span><span class="params">(data)</span>:</span></span><br><span class="line">	p = [<span class="number">15</span>, <span class="number">6</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">28</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">14</span>, <span class="number">22</span>, <span class="number">25</span>, <span class="number">4</span>, <span class="number">17</span>, <span class="number">30</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">7</span>, </span><br><span class="line">		<span class="number">23</span>, <span class="number">13</span>, <span class="number">31</span>, <span class="number">26</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">18</span>, <span class="number">12</span>, <span class="number">29</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">24</span>]</span><br><span class="line">	re = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">		re  += data[p[i]]</span><br><span class="line">	<span class="keyword">return</span> re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># F函数，32位数据，子秘钥，轮数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f_function</span><span class="params">(data, key, round)</span>:</span></span><br><span class="line">	cipher = data   <span class="comment"># 左侧32位</span></span><br><span class="line">	cipher = e_replace(cipher)</span><br><span class="line">	cipher = secret_plus(cipher, key)</span><br><span class="line">	cipher = s_replace(cipher)</span><br><span class="line">	cipher = p_replace(cipher)</span><br><span class="line">	<span class="keyword">return</span> cipher</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_key_bin</span><span class="params">(key)</span>:</span></span><br><span class="line">	word = key</span><br><span class="line">	key = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> word:</span><br><span class="line">		key += <span class="string">f'<span class="subst">&#123;bin(ord(i))[<span class="number">2</span>:]:<span class="number">0</span>&gt;<span class="number">8</span>&#125;</span>'</span></span><br><span class="line">	<span class="keyword">return</span> key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 终极加密函数，参数为秘钥和明文(明文暂时测试为64位以内)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">des_encrypt</span><span class="params">(ptext, key)</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">17</span>):</span><br><span class="line">		l[i] = <span class="string">""</span></span><br><span class="line">		r[i] = <span class="string">""</span></span><br><span class="line">	key = convert_key_bin(key)</span><br><span class="line">	cipher = init_replace(ptext)</span><br><span class="line">	l[<span class="number">0</span>] = cipher[<span class="number">0</span>:<span class="number">32</span>]</span><br><span class="line">	r[<span class="number">0</span>] = cipher[<span class="number">32</span>:]</span><br><span class="line">	<span class="comment"># 进行16层循环</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">16</span>):</span><br><span class="line">		l[i] = r[i<span class="number">-1</span>]</span><br><span class="line">		secret_key = generate_secretkey(key,i) <span class="comment"># 生成子秘钥</span></span><br><span class="line">		f_result = f_function(r[i<span class="number">-1</span>],secret_key,i)</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">			r[i] += str(int(l[i<span class="number">-1</span>][j])^int(f_result[j]))</span><br><span class="line">	secret_key = generate_secretkey(key,<span class="number">16</span>)</span><br><span class="line">	f_result = f_function(r[<span class="number">15</span>],secret_key,<span class="number">16</span>)</span><br><span class="line">	l[<span class="number">16</span>] = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">		l[<span class="number">16</span>] += str(int(l[<span class="number">15</span>][j])^int(f_result[j]))</span><br><span class="line">	r[<span class="number">16</span>] = r[<span class="number">15</span>]</span><br><span class="line">	temp = l[<span class="number">16</span>] + r[<span class="number">16</span>]</span><br><span class="line">	final_cipher = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">64</span>):</span><br><span class="line">		final_cipher += temp[_ip[i]]</span><br><span class="line">	<span class="keyword">return</span> <span class="string">f'<span class="subst">&#123;hex(int(final_cipher,<span class="number">2</span>))[<span class="number">2</span>:]:<span class="number">0</span>&gt;<span class="number">16</span>&#125;</span>'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">des_decrypt</span><span class="params">(cipher,key)</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">17</span>):</span><br><span class="line">		l[i] = <span class="string">""</span></span><br><span class="line">		r[i] = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 恢复为64位密文</span></span><br><span class="line">	key = convert_key_bin(key)</span><br><span class="line">	temp = bin(int(cipher, <span class="number">16</span>))[<span class="number">2</span>:]</span><br><span class="line">	cipher = <span class="string">"0"</span>*(<span class="number">64</span>-len(temp)) + temp</span><br><span class="line">	cipher = init_replace(cipher)</span><br><span class="line">	l[<span class="number">16</span>] = cipher[:<span class="number">32</span>]</span><br><span class="line">	r[<span class="number">16</span>] = cipher[<span class="number">32</span>:]</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>,<span class="number">1</span>,<span class="number">-1</span>):</span><br><span class="line">		l[i<span class="number">-1</span>] = r[i]</span><br><span class="line">		secret_key = generate_secretkey(key,i) <span class="comment"># 生成子秘钥</span></span><br><span class="line">		f_result = f_function(r[i],secret_key,i)</span><br><span class="line">		r[i<span class="number">-1</span>] = <span class="string">""</span></span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">			r[i<span class="number">-1</span>] += str(int(l[i][j])^int(f_result[j]))</span><br><span class="line">	r[<span class="number">0</span>] = r[<span class="number">1</span>]</span><br><span class="line">	secret_key = generate_secretkey(key,<span class="number">1</span>)</span><br><span class="line">	l[<span class="number">0</span>] = <span class="string">""</span></span><br><span class="line">	f_result = f_function(r[<span class="number">1</span>],secret_key,<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">		l[<span class="number">0</span>] += str(int(l[<span class="number">1</span>][j])^int(f_result[j]))</span><br><span class="line">	temp = l[<span class="number">0</span>] + r[<span class="number">0</span>]</span><br><span class="line">	bintext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">64</span>):</span><br><span class="line">		bintext += temp[_ip[i]]</span><br><span class="line">	plaintext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">		plaintext += chr(int(bintext[<span class="number">8</span>*i:<span class="number">8</span>*i+<span class="number">8</span>],<span class="number">2</span>))</span><br><span class="line">	<span class="keyword">return</span> plaintext</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">str2bin</span><span class="params">(text)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> len(text) % <span class="number">8</span> != <span class="number">0</span>:</span><br><span class="line">		text = text + <span class="string">" "</span>*(<span class="number">8</span>-(len(text)%<span class="number">8</span>))</span><br><span class="line">	binplain = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> text:</span><br><span class="line">		binplain += <span class="string">'&#123;:0&gt;8&#125;'</span>.format(bin(ord(i))[<span class="number">2</span>:])</span><br><span class="line">	<span class="keyword">return</span> binplain</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(text, key)</span>:</span></span><br><span class="line">	longbinplain = str2bin(text)</span><br><span class="line">	group_plain = <span class="string">""</span></span><br><span class="line">	longcipher = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(longbinplain)//<span class="number">64</span>):</span><br><span class="line">		group_plain = <span class="string">""</span></span><br><span class="line">		group_plain = longbinplain[<span class="number">64</span>*i:<span class="number">64</span>*i+<span class="number">64</span>]</span><br><span class="line">		longcipher += des_encrypt(group_plain,key)</span><br><span class="line">	<span class="keyword">return</span> longcipher	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(cipher,key)</span>:</span></span><br><span class="line">	plaintext = <span class="string">""</span>	</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(cipher)//<span class="number">16</span>):</span><br><span class="line">		plaintext += des_decrypt(cipher[<span class="number">16</span>*i:<span class="number">16</span>*i+<span class="number">16</span>], key)</span><br><span class="line">	<span class="keyword">return</span> plaintext.rstrip()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	mode =  sys.argv[<span class="number">1</span>]</span><br><span class="line">	<span class="keyword">while</span> mode <span class="keyword">in</span> (<span class="string">"e"</span>,<span class="string">"d"</span>):</span><br><span class="line">		data = input(<span class="string">"Plz input data: "</span>)</span><br><span class="line">		key = str(input(<span class="string">"Plz input key: "</span>))</span><br><span class="line">		<span class="keyword">if</span> mode == <span class="string">"e"</span>:</span><br><span class="line">			ans = encrypt(data, key)</span><br><span class="line">			print(ans)</span><br><span class="line">		<span class="keyword">elif</span> mode == <span class="string">"d"</span>:</span><br><span class="line">			ans = decrypt(data, key)</span><br><span class="line">			print(ans)</span><br><span class="line">		mode = input(<span class="string">"quit or continue?\n"</span>)</span><br></pre></td></tr></table></figure>
+<p>为了增强通用性，增加代码重用性，该算法使用了包封装，从而使其能够被其它程序重用。该DES支持短信息加密，也支持长消息加密。为了使密文便于显示和存储转化为16进制显示</p>
+<p><em>实例演示：</em></p>
+<p><img src="/2019/01/15/crypto1/4.png" alt="demo"></p>
+<p><em>安全性分析</em></p>
+<p>​    DES算法具有极高的安全性，到目前为止，除了用穷举搜索法对DES算法进行攻击外，还没有发现更有效的办法。 而56位长的密钥的穷举空间为2^56，这意味着如果一台计算机的速度是每一秒钟检测一百万个密钥，则它搜索完全部密钥就需要将近2285年的时间，可见，这是难以实现的。然而，这并不等于说DES是不可破解的。而实际上，随着硬件技术和Internet的发展，其破解的可能性越来越大，而且，所需要的时间越来越少。使用经过特殊设计的硬件并行处理要几个小时。</p>
+<p>​    由DES算法的密钥生成步骤中我们可以看到：DES算法中只用到64位密钥中的其中56位，而第8、16、24、……64位8个位并未参与DES运算，这一点，向我们提出了一个应用上的要求，即DES的安全性是基于除了8，16，24，……64位外的其余56位的组合变化256才得以保证的。因此，在实际应用中，我们应避开使用第8，16，24，……64位作为有效数据位，而使用其它的56位作为有效数据位，才能保证DES算法安全可靠地发挥作用。如果不了解这一点，把密钥Key的8，16，24，….. .64位作为有效数据使用，将不能保证DES加密数据的安全性，对运用DES来达到保密作用的系统产生数据被破译的危险，这正是DES算法在应用上的误区，留下了被人攻击、被人破译的极大隐患。</p>
+<p>​    此外，由于DES算法各轮（F函数）的子密钥是通过改变初始密钥这种方式得到的，因此有些初始密钥成了弱密钥（weakkey）。初始密钥分成两部分，每部分各自独立的移动。如果每一部分的所有位都是0或1，那么算法的任意一个周期的密钥都是相同的。当密钥是全1、全0、或者一半全1、一半全0时，会发生这种情况。所以<em>我们在选择密钥时要进行检查，以防止产生弱密钥</em>。</p>
+<p>​    随着密码学的发展，差分分析和线性分析的发展对分组密码的安全性构成了挑战，也推动了分组密码设计技术的发展。</p>
+<p>​    随着计算机计算能力的提高与密码分析技术的进步，DES的密钥长度已经被证明不能够满足当前安全性能的需求，为了克服DES密钥空间小的缺陷，人们又提出了三重DES的变形形式，即使用多个不同的DES秘钥利用DES算法对明文进行多次加密，这样可以增加密钥量。</p>
+<p><em>算法实用性分析</em></p>
+<p>​    DES算法拥有着良好的安全性，目前最有效的破解方法依然是穷举攻击，所以在一些安全性要求相对不高的情况下可以使用DES算法，此外，由于DES的广泛的使用量，为了充分利用有关DES的软硬件资源，可以使用DES的改进算法如三重DES算法等。</p>
+<p>​    由于DES算法要进行多轮迭代，所以DES的运算速度相对较慢，此外，密码生命周期也比较短。</p>
+<hr>
+<p>​    分组密码与序列密码相比，具有扩散性好，插入敏感等优点，缺点是加解密处理速度慢、存在错误传播。用途上，在对于处理数据分组的应用，比如文件传递、电子邮件，分组密码非常合适。 </p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+  <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+  </div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您今天怎么辣么迷人！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>新城瑞雪</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://chaosec.top/2019/01/15/crypto1/" title="密码学作业记录（一）">http://chaosec.top/2019/01/15/crypto1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Crypto/" rel="tag"># Crypto</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/01/suanfa/" rel="next" title="简单算法记录">
+                <i class="fa fa-chevron-left"></i> 简单算法记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/15/crypto2/" rel="prev" title="密码学作业记录（二）">
+                密码学作业记录（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index-2.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#古典密码"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x53E4;&#x5178;&#x5BC6;&#x7801;" class="headerlink" title="&#x53E4;&#x5178;&#x5BC6;&#x7801;"></a>&#x53E4;&#x5178;&#x5BC6;&#x7801;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#凯撒密码"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x51EF;&#x6492;&#x5BC6;&#x7801;" class="headerlink" title="&#x51EF;&#x6492;&#x5BC6;&#x7801;"></a>&#x51EF;&#x6492;&#x5BC6;&#x7801;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#仿射密码"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x4EFF;&#x5C04;&#x5BC6;&#x7801;" class="headerlink" title="&#x4EFF;&#x5C04;&#x5BC6;&#x7801;"></a>&#x4EFF;&#x5C04;&#x5BC6;&#x7801;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分组密码"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5206;&#x7EC4;&#x5BC6;&#x7801;" class="headerlink" title="&#x5206;&#x7EC4;&#x5BC6;&#x7801;"></a>&#x5206;&#x7EC4;&#x5BC6;&#x7801;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DES加密算法"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#DES&#x52A0;&#x5BC6;&#x7B97;&#x6CD5;" class="headerlink" title="DES&#x52A0;&#x5BC6;&#x7B97;&#x6CD5;"></a>DES&#x52A0;&#x5BC6;&#x7B97;&#x6CD5;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
+                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
