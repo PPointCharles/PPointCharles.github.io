@@ -515,7 +515,7 @@
 <p>在输出hello world之后镜像也就关闭了，无法交互</p>
 <h2 id="启动交互式容器"><a href="#启动交互式容器" class="headerlink" title="启动交互式容器"></a>启动交互式容器</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="bash"> -i -t IMAGE /bin/bash</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>-i: –interactive=true|默认是false，为容器始终打开标准输入<br>-t: –tty,为容器分配一个伪tty终端</p>
+<p>-i: —interactive=true|默认是false，为容器始终打开标准输入<br>-t: —tty,为容器分配一个伪tty终端</p>
 </blockquote>
 <p>退出交互shell使用 <code>exit</code> 命令</p>
 <h2 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h2><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps <span class="string">[-a]</span> <span class="string">[-l]</span></span><br></pre></td></tr></table></figure>
@@ -633,7 +633,7 @@
 <p>在官方网站上进行搜索</p>
 </blockquote>
 <ul>
-<li>docker search [OPTIOINS] TREM<br>  –automated=false Only show automated builds<br>  –no-trunc=false Don’t truncate output<br>  -s,–stars=0 Only displays with at least stars</li>
+<li>docker search [OPTIOINS] TREM<br>  —automated=false Only show automated builds<br>  —no-trunc=false Don’t truncate output<br>  -s,—stars=0 Only displays with at least stars</li>
 </ul>
 <p><strong>EXAMPLE:</strong> </p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker search ubuntu</span></span><br></pre></td></tr></table></figure>
@@ -856,7 +856,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

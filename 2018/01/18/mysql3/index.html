@@ -462,6 +462,7 @@
 <p>替换查询结果中的数据<br><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span></span><br><span class="line">	<span class="keyword">when</span> 条件<span class="number">1</span> <span class="keyword">then</span> 表达式<span class="number">1</span></span><br><span class="line">	<span class="keyword">when</span> 条件<span class="number">2</span> <span class="keyword">then</span> 表达式<span class="number">2</span></span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">else</span> 表达式n</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">EXP:</span><br><span class="line">	<span class="keyword">select</span> 编号,姓名</span><br><span class="line">	<span class="keyword">case</span></span><br><span class="line">	 <span class="keyword">when</span> 编号 <span class="keyword">is</span> null <span class="keyword">then</span> <span class="comment">'ff'</span></span><br><span class="line">	 <span class="keyword">else</span> <span class="comment">'ok'</span></span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">from</span> stuinfo;</span><br></pre></td></tr></table></figure></p>
 <p><strong>计算列值</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 表达式 ...  # 可以进行加减乘除取余%等运算</span><br><span class="line"><span class="keyword">exp</span>：</span><br><span class="line"><span class="keyword">select</span> 学号,成绩*<span class="number">1.2</span> <span class="keyword">from</span> xs <span class="keyword">where</span> <span class="keyword">ID</span>=<span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
 <h4 id="聚合函数-aggregation-function"><a href="#聚合函数-aggregation-function" class="headerlink" title="聚合函数(aggregation function)"></a>聚合函数(aggregation function)</h4><p><strong>聚合函数常用于对一组值进行计算，返回单个值，通常与group by子句一起使用,作用于列</strong></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -540,6 +541,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="FROM子句"><a href="#FROM子句" class="headerlink" title="FROM子句"></a>FROM子句</h3><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from table_reference ...</span><br><span class="line">	table_reference:</span><br><span class="line">表名 [[as] 表名别名] [&#123;use|ignore|force&#125; index (key_list)]  <span class="comment">/*查询表，use指使用索引，ignore指忽略索引*/</span></span><br><span class="line">|join_table                                                <span class="comment">/*连接表*/</span></span><br></pre></td></tr></table></figure>
 <p><strong>多表连接</strong><br>1)全连接，实质是表的等值连接<br>这种连接会产生所有可能的组合，也就是每个表的行数之积<br>“select 编号,ID from stuinfo,student;”这样会返回两个表行数之积,通常需要用where语句限制结果行数<br>2)JOIN连接<br><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">join_table:</span><br><span class="line">	table_reference [inner|<span class="type">cross</span>] join table_factor [join_condition]</span><br><span class="line">	|<span class="type">table_reference</span> straight_join table_factor</span><br><span class="line">	|<span class="type">table_reference</span> straight_join table_factor on conditional_expr</span><br><span class="line">	|<span class="type">table_reference</span> &#123;LEFT|<span class="type">RIGHT</span>&#125; [outer] join table_reference join_condition</span><br><span class="line">	|<span class="type">table_reference</span> natural [&#123;LEFT|<span class="type">RIGHT</span>&#125; [outer]] join_table_factor</span><br></pre></td></tr></table></figure></p>
 <p>table_reference指定要连接的表名<br>join_condition：<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">on</span> 条件</span><br><span class="line">|<span class="keyword">using</span> (列...)</span><br></pre></td></tr></table></figure></p>
@@ -553,6 +555,7 @@
 <h4 id="1-like运算符"><a href="#1-like运算符" class="headerlink" title="1)like运算符"></a>1)like运算符</h4><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 [not] like 表达式 [escape <span class="string">'escape_character'</span>]</span><br></pre></td></tr></table></figure>
 <p>模式匹配时，可用%和_进行模糊查询，%代表0个或多个字符,符号_代表单个字符<br>escape 转义字符，例如当要匹配的字符串中有_或%时，此时应通过该字符前的转义字符指明其为模式串中的字符，使用escape可以指定转义字符</p>
 <h4 id="2-regexp-正则表达式-，是mysql的一个功能。"><a href="#2-regexp-正则表达式-，是mysql的一个功能。" class="headerlink" title="2)regexp(正则表达式)，是mysql的一个功能。　"></a>2)regexp(正则表达式)，是mysql的一个功能。　</h4><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match_exp <span class="string">[not]</span><span class="string">[regexp|rlike]</span> match_exp</span><br></pre></td></tr></table></figure>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -602,7 +605,7 @@
 <td style="text-align:center">略</td>
 </tr>
 <tr>
-<td style="text-align:center">[^a-z]</td>
+<td style="text-align:center"><sup><a href="#fn_a-z" id="reffn_a-z">a-z</a></sup></td>
 <td style="text-align:center">略</td>
 </tr>
 <tr>
@@ -623,6 +626,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p><strong>范围比较(between或者in)</strong><br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exp</span> [<span class="keyword">not</span>] between <span class="built_in">exp1</span> <span class="keyword">and</span> <span class="built_in">exp2</span>   <span class="comment"># exp1必须小于exp2，表达式也可是字符串</span></span><br><span class="line"><span class="built_in">exp</span> <span class="keyword">in</span> (exps [,...n])             <span class="comment"># 该关键字主要用于表达子查询</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>空值比较</strong><br><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exp</span> <span class="keyword">is</span> [<span class="keyword">not</span>] <span class="literal">null</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>子查询</strong><br>    指使用另一个查询的结果作为条件的一部分，即查询的嵌套</p>
@@ -644,6 +648,7 @@
 <p><strong>用例解析</strong></p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) <span class="keyword">from</span> stuinfo<span class="built_in"> group </span>by 专业,性别 with rollup;</span><br></pre></td></tr></table></figure>
 <p><strong>返回结果</strong></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -700,8 +705,10 @@
 </tr>
 </tbody>
 </table>
+</div>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) <span class="keyword">from</span> stuinfo<span class="built_in"> group </span>by 性别,专业 with rollup;</span><br></pre></td></tr></table></figure>
 <p><strong>返回结果</strong></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -753,6 +760,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>以上两个查询语句只是group by语句后面的顺序不同，该语句的组织方式是按列的排序的逆序进行汇总，例如第一例先对性别字段产生了汇总（针对专业相同的行），然后对专业名和性别名均不同的行产生了汇总行，如果列数是多列的话，也依然会这样依次汇总。</p>
 <h3 id="HAVING子句"><a href="#HAVING子句" class="headerlink" title="HAVING子句"></a>HAVING子句</h3><p>HAVING子句用于在group by子句后选择行，和WHERE子句类似，where子句用于在<em>from</em>  子句后选择行，区别是<font face="楷体"> having子句可以作用于聚合函数，而where子句不可以</font>。<br><strong>语法格式</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">having 条件</span><br></pre></td></tr></table></figure>
@@ -978,7 +986,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

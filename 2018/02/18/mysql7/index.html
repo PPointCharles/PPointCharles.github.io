@@ -474,7 +474,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> student <span class="keyword">where</span> job=<span class="string">'计算机科学与技术'</span></span><br><span class="line">	<span class="keyword">into</span> <span class="keyword">outfile</span> <span class="string">'D:/myfile.txt'</span></span><br><span class="line">		<span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span></span><br><span class="line">			<span class="keyword">optionally</span> <span class="keyword">enclosed</span> <span class="keyword">by</span> <span class="string">'"'</span></span><br><span class="line">		<span class="keyword">lines</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'?'</span>;</span><br></pre></td></tr></table></figure>
 <p>执行此语句产生报错：</p>
 <blockquote>
-<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement</p>
+<p>ERROR 1290 (HY000): The MySQL server is running with the —secure-file-priv option so it cannot execute this statement</p>
 </blockquote>
 <p>这是因为MySQL对默认导出的目录有权限限制，使用命令<strong><font face="隶书">show variables like ‘%secure_file%’</font></strong> 可以查看此目录，必须导入到指定目录中才可以。</p>
 <blockquote>
@@ -665,7 +665,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

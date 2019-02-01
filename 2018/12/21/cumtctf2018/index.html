@@ -99,7 +99,7 @@
   <meta name="description" content="前言2018校赛第一轮月赛记录，做的有点不好，看了题目感觉都不是很难，自己放弃的太快了。">
 <meta name="keywords" content="CTF">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cumtctf2018">
+<meta property="og:title" content="CUMTCTF第一轮月赛">
 <meta property="og:url" content="http://chaosec.top/2018/12/21/cumtctf2018/index.html">
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="前言2018校赛第一轮月赛记录，做的有点不好，看了题目感觉都不是很难，自己放弃的太快了。">
@@ -118,9 +118,9 @@
 <meta property="og:image" content="http://chaosec.top/2018/12/21/cumtctf2018/15.png">
 <meta property="og:image" content="http://chaosec.top/2018/12/21/cumtctf2018/13.png">
 <meta property="og:image" content="http://chaosec.top/2018/12/21/cumtctf2018/12.png">
-<meta property="og:updated_time" content="2019-01-30T11:49:22.242Z">
+<meta property="og:updated_time" content="2019-01-31T04:27:16.203Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cumtctf2018">
+<meta name="twitter:title" content="CUMTCTF第一轮月赛">
 <meta name="twitter:description" content="前言2018校赛第一轮月赛记录，做的有点不好，看了题目感觉都不是很难，自己放弃的太快了。">
 <meta name="twitter:image" content="http://chaosec.top/2018/12/21/cumtctf2018/1.png">
 
@@ -141,7 +141,7 @@
   };
 </script>
 
-  <title>cumtctf2018 | Charles' Blog</title>
+  <title>CUMTCTF第一轮月赛 | Charles' Blog</title>
   
 
 
@@ -363,7 +363,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">cumtctf2018
+          <h1 class="post-title" itemprop="name headline">CUMTCTF第一轮月赛
 
               
             
@@ -406,12 +406,30 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-30 19:49:22" itemprop="dateModified" datetime="2019-01-30T19:49:22+08:00">2019-01-30</time>
+                <time title="修改时间：2019-01-31 12:27:16" itemprop="dateModified" datetime="2019-01-31T12:27:16+08:00">2019-01-31</time>
               
             
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -420,7 +438,7 @@
 
           
           
-            <span id="/2018/12/21/cumtctf2018/" class="leancloud_visitors" data-flag-title="cumtctf2018">
+            <span id="/2018/12/21/cumtctf2018/" class="leancloud_visitors" data-flag-title="CUMTCTF第一轮月赛">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -508,6 +526,7 @@
 <p>下面是队友做出来的题目，一并记录一下</p>
 <h2 id="古典密码签到题"><a href="#古典密码签到题" class="headerlink" title="古典密码签到题"></a>古典密码签到题</h2><p>​    由题目提示可知这题是棋盘密码，棋盘密码是多表代换，但并不知道加密所使用的密钥则无法进行解密。</p>
 <p>根据所给的密文内容可知，密钥为k，s，y，n，b，个字符</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -562,6 +581,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>通过不断变换行列的k，s，y，n，b字符顺序进行爆破（其中行列字符顺序一致），找出含有关键字的明文消息。一共有5个字符的全排列，即5！种方式。</p>
 <p>脚本参考<a href="https://ctf-wiki.github.io/ctf-wiki/crypto/classical/polyalphabetic/" target="_blank" rel="noopener">https://ctf-wiki.github.io/ctf-wiki/crypto/classical/polyalphabetic/</a></p>
 <p>通过itertools库中的permutations可实现对5个字符的全排列，固定密码表的内容。</p>
@@ -648,7 +668,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://chaosec.top/2018/12/21/cumtctf2018/" title="cumtctf2018">http://chaosec.top/2018/12/21/cumtctf2018/</a>
+    <a href="http://chaosec.top/2018/12/21/cumtctf2018/" title="CUMTCTF第一轮月赛">http://chaosec.top/2018/12/21/cumtctf2018/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -756,7 +776,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

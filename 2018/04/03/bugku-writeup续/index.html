@@ -484,6 +484,7 @@
 </blockquote>
 <p>把三个校验码都跑一下，然后提取其中相对有意义的结果拼起来可以得到解压密码 <code>_CRC32_i5_n0t_s4f3</code> ，第一层解开！</p>
 <p>第二层是维吉尼亚密码，题目给出了近一万条密钥，直接暴力破解肯定是不可能的，但是我们发现密文第一个单词为 <code>rla</code> 只有三个字母，我们可以推测这三个字母的含义，我想了几个可能的情况</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -515,6 +516,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>查表发现只有第一个可以找到对应密钥，尝试解密一下</p>
 <blockquote>
 <p>the vigenere cipher is a method of encrypting alphabetic text by using a series of different caesar ciphers based on the letters of a keyword it is a simple form of polyalphabetic substitution so password is vigenere cipher funny</p>
@@ -810,7 +812,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

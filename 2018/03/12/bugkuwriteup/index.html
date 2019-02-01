@@ -544,6 +544,7 @@
 <h2 id="前女友-SKCTF"><a href="#前女友-SKCTF" class="headerlink" title="前女友(SKCTF)"></a>前女友(SKCTF)</h2><p>查看页面可知，是一段单身狗的诉说，查看元素发现竟然藏了一条链接，点击发现代码<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'v1'</span>]) &amp;&amp; <span class="keyword">isset</span>($_GET[<span class="string">'v2'</span>]) &amp;&amp; <span class="keyword">isset</span>($_GET[<span class="string">'v3'</span>]))&#123;</span></span><br><span class="line"><span class="php">    $v1 = $_GET[<span class="string">'v1'</span>];</span></span><br><span class="line"><span class="php">    $v2 = $_GET[<span class="string">'v2'</span>];</span></span><br><span class="line"><span class="php">    $v3 = $_GET[<span class="string">'v3'</span>];</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>($v1 != $v2 &amp;&amp; md5($v1) == md5($v2))&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(!strcmp($v3, $flag))&#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">echo</span> $flag;</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure></p>
 <p>很简单的绕过<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="built_in">v1</span><span class="number">=240610708</span>&amp;<span class="built_in">v2</span><span class="symbol">=QNKCDZO</span>&amp;<span class="built_in">v3</span>[]<span class="number">=1</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="login1-SKCTF"><a href="#login1-SKCTF" class="headerlink" title="login1(SKCTF)"></a>login1(SKCTF)</h2><p>看提示可知本题是SQL约束攻击，具体原理查看<a href="http://blog.csdn.net/qq_32400847/article/details/54137747" target="_blank" rel="noopener">传送门</a>，创建一个用户</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -558,6 +559,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>注册成功后用<code>admin</code>为用户名， <code>Aa123456</code>登录即可</p>
 <figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SKCTF&#123;<span class="number">4</span>D<span class="name">m1</span><span class="symbol">n_HaV3</span>_GreAt_p<span class="number">0</span>w<span class="number">3</span>R&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><p>题目提示<font face="futura">are you from google?</font>，我以为是说浏览器，但实际上是说<strong><font face="futura">HTTP_REFERER</font></strong>，告诉服务器我是从哪个页面链接过来的，服务器基此可以获得一些信息用于处理。然后就是抓包发送即可，构造的referrer：<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span><span class="comment">//www.google.com</span></span><br></pre></td></tr></table></figure></p>
@@ -574,7 +576,7 @@
 </blockquote>
 <p>还得改个东西</p>
 <blockquote>
-<p>Content-Type: Multipart/form-data; boundary=—————————265001916915724 </p>
+<p>Content-Type: Multipart/form-data; boundary=—————————————-265001916915724 </p>
 </blockquote>
 <p>把第一个<strong><font face="futura">m</font></strong>大写，有关介绍看个<a href="http://blog.csdn.net/five3/article/details/7181521" target="_blank" rel="noopener">链接</a>,这种绕过有点冷门，再放个<a href="https://www.tuicool.com/articles/vmuYz23?utm_medium=hao.caibaojian.com&amp;utm_source=hao.caibaojian.com" target="_blank" rel="noopener">链接2</a></p>
 <hr>
@@ -833,7 +835,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
