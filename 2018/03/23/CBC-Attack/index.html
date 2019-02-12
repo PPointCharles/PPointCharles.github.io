@@ -104,14 +104,14 @@
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="前言最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目传送门。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/1.png">
-<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/2.png">
-<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/3.png">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/CBC-Attack/1.png">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/CBC-Attack/2.png">
+<meta property="og:image" content="http://chaosec.top/2018/03/23/CBC-Attack/CBC-Attack/3.png">
 <meta property="og:updated_time" content="2019-01-30T11:44:12.629Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CBC字节翻转攻击">
 <meta name="twitter:description" content="前言最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目传送门。">
-<meta name="twitter:image" content="http://chaosec.top/2018/03/23/CBC-Attack/1.png">
+<meta name="twitter:image" content="http://chaosec.top/2018/03/23/CBC-Attack/CBC-Attack/1.png">
 
 
 
@@ -461,7 +461,7 @@
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h1><p>最近连着看了几篇CBC翻转攻击相关的文章，又正好遇到了这样的题目，所以来做一波看看一下。题目就是bugku上面的这道题目<a href="http://118.89.219.210:49168/index.php" target="_blank" rel="noopener">传送门</a>。</p>
 <a id="more"></a>
 <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a><strong>原理</strong></h1><p>CBC攻击方法的精髓在于通过损坏密文字节来改变明文字节，从而达到绕过过滤器或者提权等目的。贴一张图片</p>
-<p><img src="/2018/03/23/CBC-Attack/1.png" alt="加密原理"></p>
+<p><img src="CBC-Attack/1.png" alt="加密原理"></p>
 <blockquote>
 <p><font face="futura">plaintext:</font>待加密的数据</p>
 <p><font face="futura">Ⅳ：</font>用于随机化加密的比特块，保证即使对相同明文多次加密，也可以得到不同的密文</p>
@@ -472,11 +472,11 @@
 <p>1.首先将明文分组(常见的以16字节为一组)，位数不足的使用特殊字符填充。<br>2.生成一个随机的初始化向量(IV)和一个密钥。<br>3.将IV和第一组明文异或。<br>4.用密钥对3中xor后产生的密文加密。<br>5.用4中产生的密文对第二组明文进行xor操作。<br>6.用密钥对5中产生的密文加密。<br>7.重复4-7，到最后一组明文。<br>8.将IV和加密后的密文拼接在一起，得到最终的密文。</p>
 <p>从第一块开始，首先与一个初始向量iv异或（iv只在第一处作用），然后把异或的结果配合key进行加密，得到第一块的密文，并且把加密的结果与下一块的明文进行异或，一直这样进行下去。因此这种模式最重要的特点就是：<em>前一块的密文用来产生后一块的密文</em>。</p>
 <p><strong>解密过程：</strong></p>
-<p><img src="/2018/03/23/CBC-Attack/2.png" alt="解密过程"></p>
+<p><img src="CBC-Attack/2.png" alt="解密过程"></p>
 <p>解密过程就是加密过程的逆过程</p>
 <p>1.从密文中提取出IV，然后将密文分组。<br>2.使用密钥对第一组的密文解密，然后和IV进行xor得到明文。<br>3.使用密钥对第二组密文解密，然后和2中的密文xor得到明文。<br>4.重复2-3，直到最后一组密文。</p>
 <p><strong>攻击原理图</strong></p>
-<p><img src="/2018/03/23/CBC-Attack/3.png" alt="攻击过程"></p>
+<p><img src="CBC-Attack/3.png" alt="攻击过程"></p>
 <p>这里可以注意到前一块Ciphertext用来产生下一块明文，如果我们改变前一块Ciphertext中的一个字节，然后和下一块解密后的密文xor，就可以得到一个不同的明文，而这个明文是我们可以控制的。利用这一点，我们就欺骗服务端或者绕过过滤器。</p>
 <p>介绍一下异或的概念</p>
 <blockquote>
@@ -686,7 +686,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

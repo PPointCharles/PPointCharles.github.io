@@ -104,14 +104,14 @@
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="Docker简介最近要和同学做一个PHP项目需要用到docker，正好也对这个东东挺好奇的，顺便来学习一波，何为docker呢？docker的本质其实就是容器，类似于虚拟机，但是又比虚拟机更加小巧，容器技术是基于linux的内核特性(Namespace和Cgroups)的一项技术，所以在其上只能运行类linux系统而不能运行Windows系统，使用虚拟机部署文件时既需要应用和应用依赖的库，还需要完">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/1.jpg">
-<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/2.jpg">
-<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/3.jpg">
+<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/docker1/1.jpg">
+<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/docker1/2.jpg">
+<meta property="og:image" content="http://chaosec.top/2018/04/20/docker1/docker1/3.jpg">
 <meta property="og:updated_time" content="2019-01-30T11:55:43.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker简介与简单页面搭建">
 <meta name="twitter:description" content="Docker简介最近要和同学做一个PHP项目需要用到docker，正好也对这个东东挺好奇的，顺便来学习一波，何为docker呢？docker的本质其实就是容器，类似于虚拟机，但是又比虚拟机更加小巧，容器技术是基于linux的内核特性(Namespace和Cgroups)的一项技术，所以在其上只能运行类linux系统而不能运行Windows系统，使用虚拟机部署文件时既需要应用和应用依赖的库，还需要完">
-<meta name="twitter:image" content="http://chaosec.top/2018/04/20/docker1/1.jpg">
+<meta name="twitter:image" content="http://chaosec.top/2018/04/20/docker1/docker1/1.jpg">
 
 
 
@@ -460,7 +460,7 @@
       
         <h1 id="Docker简介"><a href="#Docker简介" class="headerlink" title="Docker简介"></a>Docker简介</h1><p>最近要和同学做一个PHP项目需要用到docker，正好也对这个东东挺好奇的，顺便来学习一波，何为docker呢？docker的本质其实就是容器，类似于虚拟机，但是又比虚拟机更加小巧，容器技术是基于linux的内核特性(Namespace和Cgroups)的一项技术，所以在其上只能运行类linux系统而不能运行Windows系统，使用虚拟机部署文件时既需要应用和应用依赖的库，还需要完整的操作系统，但是容器的话则只需要应用和应用依赖的库即可，但是在docker之前容器的应用并不广泛，原因在于容器的自动化程度不高，部署复杂，而docker的出现则弥补了这些缺点，所以能够得到业界广泛的使用。</p>
 <a id="more"></a>
-<p><img src="/2018/04/20/docker1/1.jpg" alt=""></p>
+<p><img src="docker1/1.jpg" alt=""></p>
 <h1 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h1><h2 id="安装前检查"><a href="#安装前检查" class="headerlink" title="安装前检查"></a>安装前检查</h2><ol>
 <li>内核版本(具体支持哪些版本可以在官网查看)</li>
 </ol>
@@ -510,7 +510,7 @@
 <p>注销当前账户再重新登录即可运行docker命令啦！</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">version</span></span><br></pre></td></tr></table></figure>
 <h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>Windows安装比较简单，到网址下载之后按照要求安装即可</p>
-<p><img src="/2018/04/20/docker1/2.jpg" alt=""></p>
+<p><img src="docker1/2.jpg" alt=""></p>
 <h1 id="Docker的基本操作"><a href="#Docker的基本操作" class="headerlink" title="Docker的基本操作"></a>Docker的基本操作</h1><h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="bash"> centos <span class="built_in">echo</span> <span class="string">'hello world'</span></span></span><br></pre></td></tr></table></figure>
 <p>在输出hello world之后镜像也就关闭了，无法交互</p>
 <h2 id="启动交互式容器"><a href="#启动交互式容器" class="headerlink" title="启动交互式容器"></a>启动交互式容器</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="bash"> -i -t IMAGE /bin/bash</span></span><br></pre></td></tr></table></figure>
@@ -566,7 +566,7 @@
 <blockquote>
 <p>-P: 对容器所有的端口进行映射<br>-p: 指定映射哪些容器的端口</p>
 </blockquote>
-<p><img src="/2018/04/20/docker1/3.jpg" alt=""></p>
+<p><img src="docker1/3.jpg" alt=""></p>
 <ol>
 <li>开始部署</li>
 </ol>
@@ -860,7 +860,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

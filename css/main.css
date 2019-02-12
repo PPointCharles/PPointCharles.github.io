@@ -1935,6 +1935,25 @@ pre .javascript .function {
   border: 1px solid #eee;
   opacity: 1;
 }
+.site-author-image {
+  border-radius: 100%;
+}
+.site-author-image {
+  -webkit-transition: -webkit-transform 1s ease-out;
+  -moz-transition: -moz-transform 1s ease-out;
+  -ms-transition: -ms-transform 1s ease-out;
+  transition: transform 1s ease-out;
+}
+.site-author-image:hover {
+  -webkit-transform: rotateZ(360deg);
+  -moz-transform: rotateZ(360deg);
+  -ms-transform: rotate(360deg);
+  -webkit-transform: rotateZ(360deg);
+  -moz-transform: rotateZ(360deg);
+  -ms-transform: rotateZ(360deg);
+  -o-transform: rotateZ(360deg);
+  transform: rotateZ(360deg);
+}
 .site-author-name {
   margin: 0;
   text-align: center;
@@ -2020,7 +2039,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff1fff;
+  background: #541db5;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3205,40 +3224,40 @@ ul.breadcrumb li+li:last-child {
   font-size: 1.7em;
 }
 .post-body h1 {
-  font-size: 2.5em;
+  font-size: 2.2em;
   border-bottom: 1px solid #eee;
 }
 .post-body h1 code {
   font-size: 1em;
 }
 .post-body h2 {
-  font-size: 2em;
+  font-size: 1.6em;
   border-bottom: 1px solid #eee;
 }
 .post-body h2 code {
   font-size: 1em;
 }
 .post-body h3 {
-  font-size: 1.5em;
+  font-size: 1.1em;
   border-bottom: 1px dotted #eee;
 }
 .post-body h3 code {
   font-size: 1em;
 }
 .post-body h4 {
-  font-size: 1em;
+  font-size: 0.8em;
 }
 .post-body h4 code {
   font-size: 1em;
 }
 .post-body h5 {
-  font-size: 0.9em;
+  font-size: 0.7em;
 }
 .post-body h5 code {
   font-size: 1em;
 }
 .post-body h6 {
-  font-size: 0.8em;
+  font-size: 0.6em;
 }
 .post-body h6 code {
   font-size: 1em;
