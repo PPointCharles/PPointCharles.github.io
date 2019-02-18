@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -97,19 +97,19 @@
 
 
   <meta name="description" content="题目复现">
-<meta name="keywords" content="CTF,web,misc">
+<meta name="keywords" content="CTF,Web,Misc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SWPUCTF2018复现">
 <meta property="og:url" content="http://chaosec.top/2018/12/20/SWPUCTF2018/index.html">
 <meta property="og:site_name" content="Charles&#39; Blog">
 <meta property="og:description" content="题目复现">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://chaosec.top/2018/12/20/SWPUCTF2018/SWPUCTF2018/1.png">
-<meta property="og:updated_time" content="2019-01-30T11:52:34.721Z">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://chaosec.top/2018/12/20/SWPUCTF2018/1.png">
+<meta property="og:updated_time" content="2019-02-16T08:30:36.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SWPUCTF2018复现">
 <meta name="twitter:description" content="题目复现">
-<meta name="twitter:image" content="http://chaosec.top/2018/12/20/SWPUCTF2018/SWPUCTF2018/1.png">
+<meta name="twitter:image" content="http://chaosec.top/2018/12/20/SWPUCTF2018/1.png">
 
 
 
@@ -169,7 +169,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -204,7 +204,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
+    <button aria-label="Toggle navigation bar">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -232,7 +232,7 @@
 
     
 
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
 
   </li>
         
@@ -249,7 +249,7 @@
 
     
 
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
 
   </li>
 
@@ -260,7 +260,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
         </li>
       
     </ul>
@@ -281,7 +281,7 @@
     </span>
     <div class="local-search-input-wrapper">
       <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
+             placeholder="Searching..." spellcheck="false"
              type="text" id="local-search-input">
     </div>
   </div>
@@ -369,14 +369,14 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
 
               
                 
               
 
-              <time title="创建时间：2018-12-20 13:00:25" itemprop="dateCreated datePublished" datetime="2018-12-20T13:00:25+08:00">2018-12-20</time>
+              <time title="Created: 2018-12-20 13:00:25" itemprop="dateCreated datePublished" datetime="2018-12-20T13:00:25+08:00">2018-12-20</time>
             
 
             
@@ -391,9 +391,9 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">更新于</span>
+                  <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="修改时间：2019-01-30 19:52:34" itemprop="dateModified" datetime="2019-01-30T19:52:34+08:00">2019-01-30</time>
+                <time title="Modified: 2019-02-16 16:30:36" itemprop="dateModified" datetime="2019-02-16T16:30:36+08:00">2019-02-16</time>
               
             
           </span>
@@ -407,7 +407,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/复现/" itemprop="url" rel="index"><span itemprop="name">复现</span></a></span>
@@ -431,7 +431,7 @@
                 <i class="fa fa-eye"></i>
               </span>
               
-                <span class="post-meta-item-text">阅读次数：</span>
+                <span class="post-meta-item-text">Views: </span>
               
                 <span class="leancloud-visitors-count"></span>
             </span>
@@ -467,7 +467,7 @@
 <p>可以看出题目使用了md_srand()函数来产生随机数，而PHP中产生的是伪随机数，即只要我们知道种子的话，那么后续产生的随机数我们也就都可以知道，所以现在就是要爆破随机数种子，可以用php_me_seed工具来爆破，速度快一些，但是我们要先将数据处理为该工具能够识别的输入参数</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$pass = <span class="string">"b1o2OrrgqYPMkzK"</span>;</span><br><span class="line">$str_rand = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">$len = strlen($str_rand) <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">for</span> ($i=<span class="number">0</span>; $i&lt;strlen($pass); $i++)&#123;</span><br><span class="line">	<span class="keyword">if</span>($i&lt;=(<span class="number">15</span>/<span class="number">2</span>))&#123;</span><br><span class="line">		$number = strpos($str_rand,$pass[i]);</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">"$number $number 0 $len"</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		$number = $len + <span class="number">1</span> - strpos($str_rand,$pass[i]);</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">"$number $number 0 $len"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样可以得到我们爆破的种子</p>
-<p><img src="SWPUCTF2018/1.png" alt=""></p>
+<p><img src="/2018/12/20/SWPUCTF2018/1.png" alt=""></p>
 <p>然后用该种子来生成24位的优惠码（这儿当时想不通哪来的24位，原来就是把代码中长度15改为24就可以了Orz）,此时注意php版本不同的话相同的种子也会产生不同的序列，看网站响应头可知该网站php版本为7.2，所以用对应版本生成优惠码即可</p>
 <p>然后就是后半段的命令执行绕过了</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//support</span></span><br><span class="line">	<span class="keyword">if</span> (preg_match(<span class="string">"/^\d+\.\d+\.\d+\.\d+$/im"</span>,$ip))&#123;</span><br><span class="line">        <span class="keyword">if</span> (!preg_match(<span class="string">"/\?|flag|&#125;|cat|echo|\*/i"</span>,$ip))&#123;</span><br><span class="line">               <span class="comment">//执行命令</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">              <span class="comment">//flag字段和某些字符被过滤!</span></span><br><span class="line">        &#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             <span class="comment">// 你的输入不正确!</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
@@ -525,21 +525,21 @@
         <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
   <div>您今天怎么辣么迷人！</div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
+    <span>Donate</span>
   </button>
   <div id="QR" style="display: none;">
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 微信支付"/>
-        <p>微信支付</p>
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 WeChat Pay"/>
+        <p>WeChat Pay</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 支付宝"/>
-        <p>支付宝</p>
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 Alipay"/>
+        <p>Alipay</p>
       </div>
     
 
@@ -563,14 +563,14 @@
 
 <ul class="post-copyright">
   <li class="post-copyright-author">
-    <strong>本文作者： </strong>新城瑞雪</li>
+    <strong>Post author:  </strong>新城瑞雪</li>
   <li class="post-copyright-link">
-    <strong>本文链接：</strong>
+    <strong>Post link: </strong>
     
     <a href="http://chaosec.top/2018/12/20/SWPUCTF2018/" title="SWPUCTF2018复现">http://chaosec.top/2018/12/20/SWPUCTF2018/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
 </ul>
 
       </div>
@@ -582,9 +582,9 @@
           
             <a href="/tags/CTF/" rel="tag"># CTF</a>
           
-            <a href="/tags/web/" rel="tag"># web</a>
+            <a href="/tags/Web/" rel="tag"># Web</a>
           
-            <a href="/tags/misc/" rel="tag"># misc</a>
+            <a href="/tags/Misc/" rel="tag"># Misc</a>
           
         </div>
       
@@ -656,10 +656,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -684,7 +684,7 @@
                   <a href="/archives">
                 
                     <span class="site-state-item-count">32</span>
-                    <span class="site-state-item-name">日志</span>
+                    <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
               
@@ -709,7 +709,7 @@
                       
                     
                     <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">分类</span>
+                    <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
               
@@ -751,10 +751,8 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">14</span>
-                    <span class="site-state-item-name">标签</span>
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
               
