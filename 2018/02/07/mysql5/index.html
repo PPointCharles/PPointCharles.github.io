@@ -460,7 +460,7 @@
 <h1 id="部分常量值"><a href="#部分常量值" class="headerlink" title="部分常量值"></a><strong>部分常量值</strong></h1><h2 id="十六进制常量"><a href="#十六进制常量" class="headerlink" title="十六进制常量"></a><strong>十六进制常量</strong></h2><p>十六进制常量通常被当做字符串来存储，在字符串前面加一个x或者X，注意数字不能超出16进制的范围，如果在前面几加0x的话就不需要加引号了，十六进制默认作为字符串来处理，如果想作为数字处理的话，使用 <em>CAST(… AS UNSIGNED)</em> 语句，比如 <code>select 0x41,cast(0x41 as unsigned);</code>, <code>HEX()</code>函数可将字符串转换为十六进制。</p>
 <h2 id="位字段值"><a href="#位字段值" class="headerlink" title="位字段值"></a><strong>位字段值</strong></h2><p>一般使用b’value’来表示二进制值。 <code>BIN()</code>可以把位字段常量转为二进制显示， <code>OCT()</code>转为数字显示。</p>
 <h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a><strong>变量</strong></h1><h2 id="用户变量"><a href="#用户变量" class="headerlink" title="用户变量"></a><strong>用户变量</strong></h2><p>语法格式</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> @<span class="attribute">user_variables1</span>=expression1[,<span class="attribute">user_variables2</span>=expression2...]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set @user_variables1=expression1[,user_variables2=expression2...]</span><br></pre></td></tr></table></figure>
 <h2 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a><strong>系统变量</strong></h2><p>分为全局变量(GLOBAL)和局部变量(LOCAL &#124; SESSION)</p>
 <h1 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a><strong>常用函数</strong></h1><h2 id="1、数学函数-数学函数支持嵌套使用"><a href="#1、数学函数-数学函数支持嵌套使用" class="headerlink" title="1、数学函数(数学函数支持嵌套使用)"></a>1、数学函数(数学函数支持嵌套使用)</h2><h3 id="1、great-和-least-函数：-获取一组数中的最大值和最小值"><a href="#1、great-和-least-函数：-获取一组数中的最大值和最小值" class="headerlink" title="1、great() 和 least()函数： 获取一组数中的最大值和最小值"></a>1、<em>great()</em> 和 <em>least()函数</em>： 获取一组数中的最大值和最小值</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">great(1,2,3)<span class="comment">--&gt;3     least(1,2,3)--&gt;1</span></span><br></pre></td></tr></table></figure>
 <p>注意：MySQL中函数名与括号之间不能有空格</p>
@@ -471,7 +471,7 @@
 <p><em>round()</em> 用于获得一个数的四舍五入的整数值。</p>
 <p><em>truncate(a,b)</em> 用于把一个数字a截取为一个指定小数位数b的数字</p>
 </blockquote>
-<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate<span class="function"><span class="params">(<span class="number">1.54578</span>,<span class="number">2</span>)</span>--&gt;</span><span class="number">1.54</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate(1.54578,2)--&gt;1.54</span><br></pre></td></tr></table></figure>
 <h3 id="4、-abs-函数"><a href="#4、-abs-函数" class="headerlink" title="4、 abs() 函数"></a>4、 <em>abs()</em> 函数</h3><blockquote>
 <p>获取绝对值</p>
 </blockquote>
@@ -491,12 +491,12 @@
 <h2 id="3、字符串函数"><a href="#3、字符串函数" class="headerlink" title="3、字符串函数"></a>3、字符串函数</h2><h3 id="1、-ascii-char-函数"><a href="#1、-ascii-char-函数" class="headerlink" title="1、 ascii(char) 函数"></a>1、 <em>ascii(char)</em> 函数</h3><blockquote>
 <p>返回字符表达式最左端字符的ASCII值，返回值为整型</p>
 </blockquote>
-<h3 id="2、-char-函数"><a href="#2、-char-函数" class="headerlink" title="2、 char() 函数"></a>2、 <em>char()</em> 函数</h3><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">char</span>(<span class="params">x1,x2,x3,...</span>)</span></span><br></pre></td></tr></table></figure>
+<h3 id="2、-char-函数"><a href="#2、-char-函数" class="headerlink" title="2、 char() 函数"></a>2、 <em>char()</em> 函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char(x1,x2,x3,...)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>将x1,x2,x3的ascii码转换为字符，组成一个字符串。</p>
 </blockquote>
 <h3 id="3、-left-和-right-函数"><a href="#3、-left-和-right-函数" class="headerlink" title="3、 left() 和 right 函数"></a>3、 <em>left()</em> 和 <em>right</em> 函数</h3><p><code>left&#124;right (str,x)</code> 返回字符串str左边或右边的前x个字符</p>
-<h3 id="4、-trim-和-ltrim-和-rtrim-函数"><a href="#4、-trim-和-ltrim-和-rtrim-函数" class="headerlink" title="4、 trim 和 ltrim 和 rtrim 函数"></a>4、 <em>trim</em> 和 <em>ltrim</em> 和 <em>rtrim</em> 函数</h3><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trim</span>|<span class="built_in">ltrim</span>|<span class="built_in">rtrim</span>(str)</span><br></pre></td></tr></table></figure>
+<h3 id="4、-trim-和-ltrim-和-rtrim-函数"><a href="#4、-trim-和-ltrim-和-rtrim-函数" class="headerlink" title="4、 trim 和 ltrim 和 rtrim 函数"></a>4、 <em>trim</em> 和 <em>ltrim</em> 和 <em>rtrim</em> 函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trim|ltrim|rtrim(str)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p><em>ltrim</em> 和 <em>rtrim</em> 分别删除字符串左边和右边的空格，<em>trim</em> 则删除左右两边的空格。</p>
 </blockquote>
@@ -516,19 +516,19 @@
 <h3 id="9、-strcmp-s1-s2"><a href="#9、-strcmp-s1-s2" class="headerlink" title="9、 strcmp(s1,s2)"></a>9、 <em>strcmp(s1,s2)</em></h3><blockquote>
 <p>字符串比较函数</p>
 </blockquote>
-<h2 id="4、-类型转换函数"><a href="#4、-类型转换函数" class="headerlink" title="4、 类型转换函数"></a>4、 类型转换函数</h2><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cast</span>(<span class="built_in">expr</span>,<span class="type">AS</span> <span class="keyword">type</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="4、-类型转换函数"><a href="#4、-类型转换函数" class="headerlink" title="4、 类型转换函数"></a>4、 类型转换函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast(expr,AS type)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>expr是要转化的值，type是转换后的数据类型，类型有<em>binary</em> , <em>char</em> , <em>date</em> , <em>date</em> , <em>time</em> , <em>datetime</em> , <em>signed</em> , <em>unsigned</em> 。</p>
 </blockquote>
-<h2 id="5、-控制流函数"><a href="#5、-控制流函数" class="headerlink" title="5、 控制流函数"></a>5、 控制流函数</h2><h3 id="1、-ifnull-和-nullif-函数"><a href="#1、-ifnull-和-nullif-函数" class="headerlink" title="1、 ifnull() 和 nullif() 函数"></a>1、 <em>ifnull()</em> 和 <em>nullif()</em> 函数</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">ifnull</span><span class="params">(expr1,expr2)</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="5、-控制流函数"><a href="#5、-控制流函数" class="headerlink" title="5、 控制流函数"></a>5、 控制流函数</h2><h3 id="1、-ifnull-和-nullif-函数"><a href="#1、-ifnull-和-nullif-函数" class="headerlink" title="1、 ifnull() 和 nullif() 函数"></a>1、 <em>ifnull()</em> 和 <em>nullif()</em> 函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifnull(expr1,expr2)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>判断参数expr1是否为null，如果expr1为null，则返回expr2，否则返回expr1。</p>
 </blockquote>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">nullif</span><span class="params">(expr1,expr2)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nullif(expr1,expr2)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>判断两个参数是否相等，如果相等返回null，否则返回第一个参数。</p>
 </blockquote>
-<h3 id="2、-if-函数"><a href="#2、-if-函数" class="headerlink" title="2、 if() 函数"></a>2、 <em>if()</em> 函数</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span><span class="params">(expr1,expr2,expr3)</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="2、-if-函数"><a href="#2、-if-函数" class="headerlink" title="2、 if() 函数"></a>2、 <em>if()</em> 函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(expr1,expr2,expr3)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>函数会判断expr1是否为真，如果表达式为真则返回第二个参数，如果为假返回第三个参数。</p>
 </blockquote>
@@ -716,7 +716,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -784,7 +784,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

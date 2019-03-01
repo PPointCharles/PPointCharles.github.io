@@ -468,7 +468,7 @@
 <p>​RSA算法原理非常简单，256字节的状态向量S= {0，1，…，255}，用比特字节表示为S= {00000000, 00000001, ….，11111111}。用一个可变长度为1~256字节（8~8048位）的密钥来初始化256字节的状态向量S={S[0], S[1], …, S[255]}，任何时候，S都包含0~255的8位无符号数的排列组合。加密和解密时，密码流中的每一个字节k由S产生，通过系统的方式随机从S的256个元素中选取一个。每产生一个字节k，S的元素都要被再次排列。具体步骤如下:<br>​    </p>
 <ul>
 <li><p>步骤一：S向量原状态：  </p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">​S=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,...,<span class="number">255</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">​S=[0,1,2,...,255]</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>步骤二：创建临时向量T（256位），如果密钥K的长度为256位，则直接将K赋给T，否则一直重复复制K，直到填满256位的向量T </p>
 </li>
@@ -846,7 +846,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -914,7 +914,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

