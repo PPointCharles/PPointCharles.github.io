@@ -107,10 +107,11 @@
 <meta property="og:image" content="https://i.loli.net/2019/03/01/5c78e10f13d0e.png">
 <meta property="og:image" content="https://ww1.yunjiexi.club/2019/03/01/DNhiB.png">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0ndyh1byuj30np08mab6.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0obpka93uj30gu09tdgm.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0nintgmmpj30it04jjrs.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niotgawjj30op04vq3g.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niuqccozj30m105maae.jpg">
-<meta property="og:updated_time" content="2019-03-01T16:12:19.747Z">
+<meta property="og:updated_time" content="2019-03-02T04:56:24.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS20冲关之旅">
 <meta name="twitter:description" content="前言最近学到了xss漏洞，来做一下这个xss题目">
@@ -257,6 +258,23 @@
     <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
 
   </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-soul">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/soul" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br/>soul</a>
+
+  </li>
 
       
       
@@ -381,7 +399,7 @@
                 
               
 
-              <time title="Created: 2019-03-02 00:09:49 / Modified: 00:12:19" itemprop="dateCreated datePublished" datetime="2019-03-02T00:09:49+08:00">2019-03-02</time>
+              <time title="Created: 2019-03-02 00:09:49 / Modified: 12:56:24" itemprop="dateCreated datePublished" datetime="2019-03-02T00:09:49+08:00">2019-03-02</time>
             
 
             
@@ -418,18 +436,15 @@
 
           
           
-            <span id="/2019/03/02/xss20/" class="leancloud_visitors" data-flag-title="XSS20冲关之旅">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
 
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
           
 
           
@@ -472,7 +487,33 @@
 <p>可以看到对于a标签来说只过滤了双引号，还有将<code>script</code>替换成了<code>scr_ipt</code>，由于过滤了双引号，所以我们之前的闭合双引号构造其它标签的方法就不行了，只能在<code>href=&quot;&quot;</code>上面做文章，本来我们可以提交<code>javascript:alert()</code>，但是题目污染了script敏感词，不过我们可以使用html实体编码绕过（即&amp;#开头的编码方式）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/xss20/level8.php?keyword=java&amp;#115;cript:alert(&apos;xss&apos;)</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$str = strtolower($_GET[<span class="string">"keyword"</span>]);</span><br><span class="line">$str2=str_replace(<span class="string">"script"</span>,<span class="string">"scr_ipt"</span>,$str);</span><br><span class="line">$str3=str_replace(<span class="string">"on"</span>,<span class="string">"o_n"</span>,$str2);</span><br><span class="line">$str4=str_replace(<span class="string">"src"</span>,<span class="string">"sr_c"</span>,$str3);</span><br><span class="line">$str5=str_replace(<span class="string">"data"</span>,<span class="string">"da_ta"</span>,$str4);</span><br><span class="line">$str6=str_replace(<span class="string">"href"</span>,<span class="string">"hr_ef"</span>,$str5);</span><br><span class="line">$str7=str_replace(<span class="string">'"'</span>,<span class="string">'&amp;quot'</span>,$str6);</span><br></pre></td></tr></table></figure>
 <p>查看后台代码可知题目果然就是直接将敏感词转换，所以确实存在编码绕过的问题的</p>
-<p>？？？？此时为什么全部编码就不行呢？</p>
+<hr>
+<h1 id="浏览器解码方式与XSS"><a href="#浏览器解码方式与XSS" class="headerlink" title="浏览器解码方式与XSS"></a>浏览器解码方式与XSS</h1><p>在上一关中，我们利用html实体编码实现了弹窗， 想要探究这些问题的原理，我们就必须去了解一下浏览器究竟是怎么解码的</p>
+<p><img src="https://ws1.sinaimg.cn/large/0072Lfvtly1g0obpka93uj30gu09tdgm.jpg" alt=""></p>
+<p>浏览器在解析时，首先由浏览器解析HTML生成DOM树，然后解析CSS生成CSSDOM树，之后JS解释器才开始进行解析执行， 如果碰到URL的话会由URL解释器进行解码，为了我们研究问题，我们可以粗略的把浏览器分为三部分HTML解释器，URL解释器，JS解释器，顺序简化为<code>HTML-&gt;URL-&gt;JS</code><br>各种解释器能够识别的编码方式</p>
+<ul>
+<li>HTML解释器识别的是HTML实体编码，也就是&amp;#xx这种的</li>
+<li>URL解释器可以识别URL编码</li>
+<li>JS解释器可以识别Unicode编码，类似\uxxx</li>
+</ul>
+<blockquote>
+<p>浏览器最早开始解析HTML，将标签转化为内容树中的DOM 节点，此时识别标签的时候，HTML 解析器是无法识别那些被实体编码的内容的，只有建立起DOM 树，才能对每个节点的内容进行识别，如果出现实体编码，则会进行实体解码。在此基础上，JavaScript DOM API 参与进来，可以对DOM 树进行修改，改变DOM树的结构和内容。<br>这段话说的比较清楚了，在dom树构建之时，html实体编码是没有被自解码的，那么此时dom树的节点结构就已经被固定了。后续自解码以后并不会影响到dom树/节点/标签的结构。这个道理和sql中的预编译是有些类似的。之后的自解码以后获得的&lt;&gt;将不会被解析成新的节点。 但并不是说dom树构建完毕后就不能被改变了。js是可以操作节点进行增删改操作的。</p>
+</blockquote>
+<p>我们来探讨一下下面四个写法是否能够成功执行JS</p>
+<ol>
+<li><code>&lt;a href=javascript:al\u65rt(1)&gt;click&lt;/a&gt;</code></li>
+<li><code>&lt;a href=javascript:al%65rt(1)&gt;click&lt;/a&gt;</code></li>
+<li><code>&lt;a href=javascript:al&amp;#101;rt(1)&gt;click&lt;/a&gt;</code></li>
+<li><code>&lt;a href=jav%61script:alert(1)&gt;click4&lt;/a&gt;</code></li>
+</ol>
+<p>第一种写法无法实现弹窗，因为HTML和url都无法识别unicode编码，只有JS可以解码，但是在JS解释之前alert的e是被编码的状态，JS不会认为该语句是可以执行的，因为有一个被编码的字符e，如果此时修改为<code>alert(&#39;\u65&#39;)</code>就可以被成功执行</p>
+<p>第二种写法可以实现弹窗，因为url解码是在js解码之前的，所以在JS执行之前已经得到完整的JS代码了，所以可以执行</p>
+<p>第三种写法自然也可以实现弹窗，因为HMLT解码更早，在url解码之前，所以自然能够执行</p>
+<p>第四种写法无法执行，因为在url识别阶段，解码得到的javascript，此时自然不会将JavaScript看做是伪协议，所以跳转链接会产生错误，可以与第二种写法进行比对</p>
+<blockquote>
+<p>回到第8题，我们也就可以理解了，如果我们将<code>javacript</code>全部进行html实体编码，显然也是可以执行成功的，但是进行url编码则无法成功，与上面第4个例子的原理是一样的</p>
+</blockquote>
+<hr>
 <h1 id="XSS-9"><a href="#XSS-9" class="headerlink" title="XSS-9"></a>XSS-9</h1><p>测试可知依然存在上述的编码绕过问题，但是本题加入了一个链接检测，如果链接不合法就会被拦截，经过测试发现只要链接中出现<code>http://</code>就会被判定为合法链接，之后我们再用注释将这段字符注释掉即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/xss20/level9.php?keyword=java&amp;#115cript:alert()/*http://*/</span><br></pre></td></tr></table></figure>
 <p>查看代码可以看到过滤果然就是我们猜测的内容<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">false</span>===strpos($str7,<span class="string">'http://'</span>))</span><br></pre></td></tr></table></figure></p>
@@ -499,12 +540,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/xss20/level19.php?arg01=version&amp;arg02=%3Ca%20href=%22javascript:alert(document.domain)%22%3Exss_by_SST%3C/a%3E</span><br></pre></td></tr></table></figure>
 <h1 id="XSS-20"><a href="#XSS-20" class="headerlink" title="XSS-20"></a>XSS-20</h1><p>payload看不懂</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/xss20/level20.php?arg01=id&amp;arg02=\%22))&#125;catch(e)&#123;&#125;if(!self.a)self.a=!alert(document.cookie)//%26width%26height</span><br></pre></td></tr></table></figure>
-<p>有时间载研究吧，这个用的另一种脚本语言</p>
+<p>有时间再研究吧，这个用的另一种脚本语言</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对于XSS的绕过，可以采用双写，大小写，闭合标签，利用过滤不完全的漏洞来使用标签</p>
 <blockquote>
 <p>XSS一般利用js脚步读取用户浏览器中的Cookie，而如果在服务器端对Cookie 设置了HttpOnly 属性，那么js脚本就不能读取到cookie，但是浏览器还是能够正常使用cookie</p>
 </blockquote>
 <p>总的来说，对于XSS攻击，我们要对<strong>输入参数进行过滤，对输出进行编码转义，白名单和黑名单相结合。</strong></p>
+<p><strong><em>reference:</em></strong><br><a href="https://www.cnblogs.com/escape-w/p/10162831.html" target="_blank" rel="noopener">https://www.cnblogs.com/escape-w/p/10162831.html</a><br><a href="https://blog.csdn.net/he_and/article/details/80588409" target="_blank" rel="noopener">https://blog.csdn.net/he_and/article/details/80588409</a></p>
 
       
     </div>
@@ -829,7 +871,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-1"><span class="nav-number">2.</span> <span class="nav-text"><a href="#XSS-1" class="headerlink" title="XSS-1"></a>XSS-1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-2"><span class="nav-number">3.</span> <span class="nav-text"><a href="#XSS-2" class="headerlink" title="XSS-2"></a>XSS-2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-3"><span class="nav-number">4.</span> <span class="nav-text"><a href="#XSS-3" class="headerlink" title="XSS-3"></a>XSS-3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-4"><span class="nav-number">5.</span> <span class="nav-text"><a href="#XSS-4" class="headerlink" title="XSS-4"></a>XSS-4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-5"><span class="nav-number">6.</span> <span class="nav-text"><a href="#XSS-5" class="headerlink" title="XSS-5"></a>XSS-5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-6"><span class="nav-number">7.</span> <span class="nav-text"><a href="#XSS-6" class="headerlink" title="XSS-6"></a>XSS-6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-7"><span class="nav-number">8.</span> <span class="nav-text"><a href="#XSS-7" class="headerlink" title="XSS-7"></a>XSS-7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-8"><span class="nav-number">9.</span> <span class="nav-text"><a href="#XSS-8" class="headerlink" title="XSS-8"></a>XSS-8</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-9"><span class="nav-number">10.</span> <span class="nav-text"><a href="#XSS-9" class="headerlink" title="XSS-9"></a>XSS-9</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-10"><span class="nav-number">11.</span> <span class="nav-text"><a href="#XSS-10" class="headerlink" title="XSS-10"></a>XSS-10</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-11"><span class="nav-number">12.</span> <span class="nav-text"><a href="#XSS-11" class="headerlink" title="XSS-11"></a>XSS-11</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-12"><span class="nav-number">13.</span> <span class="nav-text"><a href="#XSS-12" class="headerlink" title="XSS-12"></a>XSS-12</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-13"><span class="nav-number">14.</span> <span class="nav-text"><a href="#XSS-13" class="headerlink" title="XSS-13"></a>XSS-13</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-14"><span class="nav-number">15.</span> <span class="nav-text"><a href="#XSS-14" class="headerlink" title="XSS-14"></a>XSS-14</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-15"><span class="nav-number">16.</span> <span class="nav-text"><a href="#XSS-15" class="headerlink" title="XSS-15"></a>XSS-15</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-16"><span class="nav-number">17.</span> <span class="nav-text"><a href="#XSS-16" class="headerlink" title="XSS-16"></a>XSS-16</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-17"><span class="nav-number">18.</span> <span class="nav-text"><a href="#XSS-17" class="headerlink" title="XSS-17"></a>XSS-17</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-18"><span class="nav-number">19.</span> <span class="nav-text"><a href="#XSS-18" class="headerlink" title="XSS-18"></a>XSS-18</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-19"><span class="nav-number">20.</span> <span class="nav-text"><a href="#XSS-19" class="headerlink" title="XSS-19"></a>XSS-19</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-20"><span class="nav-number">21.</span> <span class="nav-text"><a href="#XSS-20" class="headerlink" title="XSS-20"></a>XSS-20</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">22.</span> <span class="nav-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-1"><span class="nav-number">2.</span> <span class="nav-text"><a href="#XSS-1" class="headerlink" title="XSS-1"></a>XSS-1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-2"><span class="nav-number">3.</span> <span class="nav-text"><a href="#XSS-2" class="headerlink" title="XSS-2"></a>XSS-2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-3"><span class="nav-number">4.</span> <span class="nav-text"><a href="#XSS-3" class="headerlink" title="XSS-3"></a>XSS-3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-4"><span class="nav-number">5.</span> <span class="nav-text"><a href="#XSS-4" class="headerlink" title="XSS-4"></a>XSS-4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-5"><span class="nav-number">6.</span> <span class="nav-text"><a href="#XSS-5" class="headerlink" title="XSS-5"></a>XSS-5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-6"><span class="nav-number">7.</span> <span class="nav-text"><a href="#XSS-6" class="headerlink" title="XSS-6"></a>XSS-6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-7"><span class="nav-number">8.</span> <span class="nav-text"><a href="#XSS-7" class="headerlink" title="XSS-7"></a>XSS-7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-8"><span class="nav-number">9.</span> <span class="nav-text"><a href="#XSS-8" class="headerlink" title="XSS-8"></a>XSS-8</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器解码方式与XSS"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x6D4F;&#x89C8;&#x5668;&#x89E3;&#x7801;&#x65B9;&#x5F0F;&#x4E0E;XSS" class="headerlink" title="&#x6D4F;&#x89C8;&#x5668;&#x89E3;&#x7801;&#x65B9;&#x5F0F;&#x4E0E;XSS"></a>&#x6D4F;&#x89C8;&#x5668;&#x89E3;&#x7801;&#x65B9;&#x5F0F;&#x4E0E;XSS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-9"><span class="nav-number">11.</span> <span class="nav-text"><a href="#XSS-9" class="headerlink" title="XSS-9"></a>XSS-9</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-10"><span class="nav-number">12.</span> <span class="nav-text"><a href="#XSS-10" class="headerlink" title="XSS-10"></a>XSS-10</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-11"><span class="nav-number">13.</span> <span class="nav-text"><a href="#XSS-11" class="headerlink" title="XSS-11"></a>XSS-11</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-12"><span class="nav-number">14.</span> <span class="nav-text"><a href="#XSS-12" class="headerlink" title="XSS-12"></a>XSS-12</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-13"><span class="nav-number">15.</span> <span class="nav-text"><a href="#XSS-13" class="headerlink" title="XSS-13"></a>XSS-13</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-14"><span class="nav-number">16.</span> <span class="nav-text"><a href="#XSS-14" class="headerlink" title="XSS-14"></a>XSS-14</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-15"><span class="nav-number">17.</span> <span class="nav-text"><a href="#XSS-15" class="headerlink" title="XSS-15"></a>XSS-15</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-16"><span class="nav-number">18.</span> <span class="nav-text"><a href="#XSS-16" class="headerlink" title="XSS-16"></a>XSS-16</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-17"><span class="nav-number">19.</span> <span class="nav-text"><a href="#XSS-17" class="headerlink" title="XSS-17"></a>XSS-17</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-18"><span class="nav-number">20.</span> <span class="nav-text"><a href="#XSS-18" class="headerlink" title="XSS-18"></a>XSS-18</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-19"><span class="nav-number">21.</span> <span class="nav-text"><a href="#XSS-19" class="headerlink" title="XSS-19"></a>XSS-19</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-20"><span class="nav-number">22.</span> <span class="nav-text"><a href="#XSS-20" class="headerlink" title="XSS-20"></a>XSS-20</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">23.</span> <span class="nav-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li></ol></div>
             
 
           </div>
@@ -869,6 +911,32 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1319,69 +1387,6 @@
 
 
   
-  
-  <script>
-    
-    function addCount(Counter) {
-      var $visitors = $('.leancloud_visitors');
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
-        .done(function({ results }) {
-          if (results.length > 0) {
-            var counter = results[0];
-            
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
-            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
-            
-              .fail(function ({ responseJSON }) {
-                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
-              })
-          } else {
-            
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
-                .done(function() {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function() {
-                  console.log('Failed to create');
-                });
-            
-          }
-        })
-        .fail(function ({ responseJSON }) {
-          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
-        });
-    }
-    
-
-    $(function() {
-      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz')
-        .done(function({ api_server }) {
-          var Counter = function(method, url, data) {
-            return $.ajax({
-              method: method,
-              url: 'https://' + api_server + '/1.1' + url,
-              headers: {
-                'X-LC-Id': 'vSSOfqeDl62sLdrNdF2Kqigh-gzGzoHsz',
-                'X-LC-Key': 'FKDjLVri4dF3W2GHPq9mP2WR',
-                'Content-Type': 'application/json',
-              },
-              data: data
-            });
-          };
-          
-            addCount(Counter);
-          
-        });
-    });
-  </script>
-
-
 
   
 
