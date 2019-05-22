@@ -108,10 +108,10 @@
 <meta property="og:image" content="https://ww1.yunjiexi.club/2019/03/01/DNhiB.png">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0ndyh1byuj30np08mab6.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0obpka93uj30gu09tdgm.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0nintgmmpj30it04jjrs.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niotgawjj30op04vq3g.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niuqccozj30m105maae.jpg">
-<meta property="og:updated_time" content="2019-05-16T09:17:33.289Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/0072Lfvtly1g0nintgmmpj30it04jjrs.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/0072Lfvtly1g0niotgawjj30op04vq3g.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/0072Lfvtly1g0niuqccozj30m105maae.jpg">
+<meta property="og:updated_time" content="2019-05-20T12:32:32.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS20冲关之旅">
 <meta name="twitter:description" content="前言最近学到了xss漏洞，来做一下这个xss题目">
@@ -416,7 +416,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-05-16 17:17:33" itemprop="dateModified" datetime="2019-05-16T17:17:33+08:00">2019-05-16</time>
+                <time title="Modified: 2019-05-20 20:32:32" itemprop="dateModified" datetime="2019-05-20T20:32:32+08:00">2019-05-20</time>
               
             
           </span>
@@ -532,10 +532,10 @@
 <h1 id="XSS-10"><a href="#XSS-10" class="headerlink" title="XSS-10"></a>XSS-10</h1><p>本题主要考察隐藏元素的寻找，因为本题不在是前面题目用keyword的内容来替代，查看源代码可知有一个新表单存在三个参数，因为类型是<code>hidden</code>所以看不到，测试发现第三个参数是有效参数，而且只过滤了<code>&lt;&gt;</code>两个符号，所以我们用之前的payload即可，在设置<code>type=text</code>使其可见</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/xss20/level10.php?keyword=aaa&amp;t_link=addd&amp;t_history=ffads&amp;t_sort=&quot; onclick=&quot;window.alert()&quot; type=&quot;text</span><br></pre></td></tr></table></figure>
 <h1 id="XSS-11"><a href="#XSS-11" class="headerlink" title="XSS-11"></a>XSS-11</h1><p>题目中的t_sort字段过滤比较严格，无法绕过，但是题目在访问的时候消息头中会存在<code>Referer</code>字段，该字段存在注入的问题</p>
-<p><img src="https://ws1.sinaimg.cn/large/0072Lfvtly1g0nintgmmpj30it04jjrs.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niotgawjj30op04vq3g.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/0072Lfvtly1g0nintgmmpj30it04jjrs.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/0072Lfvtly1g0niotgawjj30op04vq3g.jpg" alt=""></p>
 <p>测试<code>&lt;&gt;script&#39;&quot;</code>，发现<code>&lt;&gt;</code>被过滤了，其余正常，所以payload就很简单了，和前面一样，只是位置变了而已</p>
-<p><img src="https://ws1.sinaimg.cn/large/0072Lfvtly1g0niuqccozj30m105maae.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/0072Lfvtly1g0niuqccozj30m105maae.jpg" alt=""></p>
 <h1 id="XSS-12"><a href="#XSS-12" class="headerlink" title="XSS-12"></a>XSS-12</h1><p>和上体基本一样，只不过本题是UA头的xss</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot; onclick=&quot;window.alert()&quot; type=&quot;text</span><br></pre></td></tr></table></figure>
 <h1 id="XSS-13"><a href="#XSS-13" class="headerlink" title="XSS-13"></a>XSS-13</h1><p>cookie的xss</p>
@@ -555,7 +555,7 @@
 <p>有时间再研究吧，这个用的另一种脚本语言</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对于XSS的绕过，可以采用双写，大小写，闭合标签，利用过滤不完全的漏洞来使用标签</p>
 <blockquote>
-<p>XSS一般利用js脚步读取用户浏览器中的Cookie，而如果在服务器端对Cookie 设置了HttpOnly 属性，那么js脚本就不能读取到cookie，但是浏览器还是能够正常使用cookie</p>
+<p>XSS一般利用js脚本读取用户浏览器中的Cookie，而如果在服务器端对Cookie 设置了HttpOnly 属性，那么js脚本就不能读取到cookie，但是浏览器还是能够正常使用cookie</p>
 </blockquote>
 <p>总的来说，对于XSS攻击，我们要对<strong>输入参数进行过滤，对输出进行编码转义，白名单和黑名单相结合。</strong></p>
 <p><strong><em>reference:</em></strong><br><a href="https://www.cnblogs.com/escape-w/p/10162831.html" target="_blank" rel="noopener">https://www.cnblogs.com/escape-w/p/10162831.html</a><br><a href="https://blog.csdn.net/he_and/article/details/80588409" target="_blank" rel="noopener">https://blog.csdn.net/he_and/article/details/80588409</a></p>
@@ -743,7 +743,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -780,6 +780,8 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
