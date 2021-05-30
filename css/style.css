@@ -230,7 +230,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: Consolas;
   font-size: 1em;
 }
 
@@ -658,6 +658,7 @@ article code {
   color: #c7254e;
   white-space: normal;
   border-radius: 0;
+  font-family: Consolas;
 }
 article p {
   margin: 2rem 0;

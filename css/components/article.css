@@ -136,6 +136,7 @@ article code {
   color: #c7254e;
   white-space: normal;
   border-radius: 0;
+  font-family: Consolas;
 }
 article p {
   margin: 2rem 0;
