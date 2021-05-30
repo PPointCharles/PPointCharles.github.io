@@ -1,55 +1,101 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/assets/avatar.jpg?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="Mysql操作表,例如SELECT语句等。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记(三)">
-<meta property="og:url" content="http://chaosec.top/2018/01/18/mysql3/index.html">
-<meta property="og:site_name" content="Aesm1p&#39; Blog">
-<meta property="og:description" content="Mysql操作表,例如SELECT语句等。">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-01-18T05:13:19.000Z">
-<meta property="article:modified_time" content="2018-07-31T01:40:59.947Z">
-<meta property="article:author" content="Aesm1p">
-<meta property="article:tag" content="SQL">
-<meta name="twitter:card" content="summary"><title>MySQL学习笔记(三) | Aesm1p' Blog</title><link ref="canonical" href="http://chaosec.top/2018/01/18/mysql3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
-var CONFIG = {
-  root: '/',
-  algolia: undefined,
-  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
-  sidebar: undefined,
-  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
-  postWidget: {"endText":true},
-  nightMode: {"enable":true},
-  back2top: {"enable":true},
-  codeblock: {"style":"carbon","highlight":"light","wordWrap":false},
-  reward: true,
-  fancybox: true,
-  zoomImage: {"gapAside":"50px"},
-  galleryWaterfall: undefined,
-  lazyload: false,
-  pjax: undefined,
-  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
-  shortcuts: undefined,
-  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
-  sourcePath: {"js":"js","css":"css","images":"images"},
-};
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>MySQL学习笔记(三) | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="javascript:;" onclick="return false;"><span class="header-nav-menu-item__icon"><i class="fas fa-shapes"></i></span><span class="header-nav-menu-item__text">Article</span></a><div class="header-nav-submenu"><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/archives/"><span class="header-nav-submenu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-submenu-item__text">Archives</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/categories/"><span class="header-nav-submenu-item__icon"><i class="fab fa-buffer"></i></span><span class="header-nav-submenu-item__text">Categories</span></a></div><div class="header-nav-submenu-item"><a class="header-nav-submenu-item__link" href="/tags/"><span class="header-nav-submenu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-submenu-item__text">Tags</span></a></div></div></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-address-card"></i></span><span class="header-nav-menu-item__text">About</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">Search</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">MySQL学习笔记(三)</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon" data-popover="Created Time" data-popover-pos="up"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__value">2018-01-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon" data-popover="Updated Time" data-popover-pos="up"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__value">2018-07-31</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon" data-popover="Words Count" data-popover-pos="up"><i class="far fa-file-word"></i></span><span class="post-meta-item__value">2,893</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon" data-popover="Reading Time" data-popover-pos="up"><i class="far fa-clock"></i></span><span class="post-meta-item__value">19m</span></span></div></header><div class="post-body"><p>Mysql操作表,例如SELECT语句等。<br><a id="more"></a></p>
+  
+  <meta name="author" content="Aesm1p">
+  
 
-        <h3 id="SELECT语句">
-          <a href="#SELECT语句" class="heading-link"><i class="fas fa-link"></i></a>SELECT语句</h3>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">	[all|distinct|distinctrow] # 指定是否重复行应被返回，如不指定默认值为all</span><br><span class="line">	[high_priority] # 优先级设置</span><br><span class="line">	[straight_join] # 促使mysql把表联合在一起,加快查询速度</span><br><span class="line">	[sql_small_result] [sql_big_result] [sql_buffer_result] # 设置结果集的显示</span><br><span class="line">	[sql_cache|sql_no_cache] [sql_calc_found_rows] # cache指定是否要把结果集存储在查询表缓存中，第三个选项指定结果集的行数，忽略limit</span><br><span class="line">	列名表达式 ...</span><br><span class="line">	[from 表或视图 ... [...]]</span><br><span class="line">	[where 条件]</span><br><span class="line">	[group by &#123;列名|表达式|position&#125; [asc|desc],... [with rollup]]</span><br><span class="line">	[having 条件]</span><br><span class="line">	[order by &#123;列名|表达式|position&#125; [asc|desc],...]</span><br><span class="line">	[limit &#123;[offset,] row_count|row_count OFFSET offset&#125;]</span><br><span class="line">	[procedure 存储过程名(参数...)]</span><br><span class="line">	[into outfile &#39;文件名&#39; [character set 字符集]  # 将表中的行导出到文件中</span><br><span class="line">	export_options|into dumpfile &#39;文件名&#39;|info 变量名 ...]</span><br><span class="line">	[for update|lock in share mode]] # 对结果集加锁，for update更推荐</span><br></pre></td></tr></table></div></figure>
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="SQL">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="MySQL学习笔记(三)"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>MySQL学习笔记(三)</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/01/18/mysql3/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-01-18T05:13:19.000Z">
+          2018-01-18
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>Mysql操作表,例如SELECT语句等。<br><a id="more"></a></p>
+<h3 id="SELECT语句"><a href="#SELECT语句" class="headerlink" title="SELECT语句"></a>SELECT语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">	[all|distinct|distinctrow] # 指定是否重复行应被返回，如不指定默认值为all</span><br><span class="line">	[high_priority] # 优先级设置</span><br><span class="line">	[straight_join] # 促使mysql把表联合在一起,加快查询速度</span><br><span class="line">	[sql_small_result] [sql_big_result] [sql_buffer_result] # 设置结果集的显示</span><br><span class="line">	[sql_cache|sql_no_cache] [sql_calc_found_rows] # cache指定是否要把结果集存储在查询表缓存中，第三个选项指定结果集的行数，忽略limit</span><br><span class="line">	列名表达式 ...</span><br><span class="line">	[from 表或视图 ... [...]]</span><br><span class="line">	[where 条件]</span><br><span class="line">	[group by &#123;列名|表达式|position&#125; [asc|desc],... [with rollup]]</span><br><span class="line">	[having 条件]</span><br><span class="line">	[order by &#123;列名|表达式|position&#125; [asc|desc],...]</span><br><span class="line">	[limit &#123;[offset,] row_count|row_count OFFSET offset&#125;]</span><br><span class="line">	[procedure 存储过程名(参数...)]</span><br><span class="line">	[into outfile &#39;文件名&#39; [character set 字符集]  # 将表中的行导出到文件中</span><br><span class="line">	export_options|into dumpfile &#39;文件名&#39;|info 变量名 ...]</span><br><span class="line">	[for update|lock in share mode]] # 对结果集加锁，for update更推荐</span><br></pre></td></tr></table></figure>
 <hr>
-
-        <h3 id="选择列">
-          <a href="#选择列" class="heading-link"><i class="fas fa-link"></i></a>选择列</h3>
-      <p><strong>as 指定列别名</strong></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 学号 as number from stu;   # 指定结果集别名</span><br></pre></td></tr></table></div></figure>
-<p>替换查询结果中的数据<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">case</span><br><span class="line">	when 条件1 then 表达式1</span><br><span class="line">	when 条件2 then 表达式2</span><br><span class="line">	...</span><br><span class="line">	else 表达式n</span><br><span class="line">end</span><br><span class="line">EXP:</span><br><span class="line">	select 编号,姓名</span><br><span class="line">	case</span><br><span class="line">	 when 编号 is null then &#39;ff&#39;</span><br><span class="line">	 else &#39;ok&#39;</span><br><span class="line">	end</span><br><span class="line">	from stuinfo;</span><br></pre></td></tr></table></div></figure><br><strong>计算列值</strong><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select 表达式 ...  # 可以进行加减乘除取余%等运算</span><br><span class="line">exp：</span><br><span class="line">select 学号,成绩*1.2 from xs where ID&#x3D;1;</span><br></pre></td></tr></table></div></figure></p>
-
-        <h4 id="聚合函数-aggregation-function">
-          <a href="#聚合函数-aggregation-function" class="heading-link"><i class="fas fa-link"></i></a>聚合函数(aggregation function)</h4>
-      <p><strong>聚合函数常用于对一组值进行计算，返回单个值，通常与group by子句一起使用,作用于列</strong></p>
+<h3 id="选择列"><a href="#选择列" class="headerlink" title="选择列"></a>选择列</h3><p><strong>as 指定列别名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 学号 as number from stu;   # 指定结果集别名</span><br></pre></td></tr></table></figure>
+<p>替换查询结果中的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">case</span><br><span class="line">	when 条件1 then 表达式1</span><br><span class="line">	when 条件2 then 表达式2</span><br><span class="line">	...</span><br><span class="line">	else 表达式n</span><br><span class="line">end</span><br><span class="line">EXP:</span><br><span class="line">	select 编号,姓名</span><br><span class="line">	case</span><br><span class="line">	 when 编号 is null then &#39;ff&#39;</span><br><span class="line">	 else &#39;ok&#39;</span><br><span class="line">	end</span><br><span class="line">	from stuinfo;</span><br></pre></td></tr></table></figure><br><strong>计算列值</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select 表达式 ...  # 可以进行加减乘除取余%等运算</span><br><span class="line">exp：</span><br><span class="line">select 学号,成绩*1.2 from xs where ID&#x3D;1;</span><br></pre></td></tr></table></figure></p>
+<h4 id="聚合函数-aggregation-function"><a href="#聚合函数-aggregation-function" class="headerlink" title="聚合函数(aggregation function)"></a>聚合函数(aggregation function)</h4><p><strong>聚合函数常用于对一组值进行计算，返回单个值，通常与group by子句一起使用,作用于列</strong></p>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">函数名</th>
@@ -126,30 +172,18 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td></td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
-
-        <h3 id="FROM子句">
-          <a href="#FROM子句" class="heading-link"><i class="fas fa-link"></i></a>FROM子句</h3>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from table_reference ...</span><br><span class="line">	table_reference:</span><br><span class="line">表名 [[as] 表名别名] [&#123;use|ignore|force&#125; index (key_list)]  &#x2F;*查询表，use指使用索引，ignore指忽略索引*&#x2F;</span><br><span class="line">|join_table                                                &#x2F;*连接表*&#x2F;</span><br></pre></td></tr></table></div></figure>
-<p><strong>多表连接</strong><br>1)全连接，实质是表的等值连接<br>这种连接会产生所有可能的组合，也就是每个表的行数之积<br>“select 编号,ID from stuinfo,student;”这样会返回两个表行数之积,通常需要用where语句限制结果行数<br>2)JOIN连接<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">join_table:</span><br><span class="line">	table_reference [inner|cross] join table_factor [join_condition]</span><br><span class="line">	|table_reference straight_join table_factor</span><br><span class="line">	|table_reference straight_join table_factor on conditional_expr</span><br><span class="line">	|table_reference &#123;LEFT|RIGHT&#125; [outer] join table_reference join_condition</span><br><span class="line">	|table_reference natural [&#123;LEFT|RIGHT&#125; [outer]] join_table_factor</span><br></pre></td></tr></table></div></figure><br>table_reference指定要连接的表名<br>join_condition：<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">on 条件</span><br><span class="line">|using (列...)</span><br></pre></td></tr></table></div></figure><br>on条件主要用于连接表，其他不属于连接表的条件可以使用where子句来指定，inner指内连接，是系统默认的方式。<br>exp:<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 编号,ID from stuinfo join student;</span><br></pre></td></tr></table></div></figure><br>join还可以将自身进行连接，称为自连接，但是要指定不同的别名</p>
-
-        <h3 id="WHERE子句">
-          <a href="#WHERE子句" class="heading-link"><i class="fas fa-link"></i></a>WHERE子句</h3>
-      <p>where子句必须紧跟在from子句之后，用于确定选取行</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where 条件</span><br></pre></td></tr></table></div></figure>
-<p>其中条件为查询语句<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">条件&#x3D;:</span><br><span class="line">	&lt;precdicate&gt;                             </span><br><span class="line">	|&lt;precdicate&gt;&#123;and|or&#125;&lt;precdicate&gt;</span><br><span class="line">	|(条件)</span><br><span class="line">	|not 条件</span><br></pre></td></tr></table></div></figure><br>precidicate为判定运算，结果又TRUE，FALSE或UNKNOWN<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;precdicate&gt;:</span><br><span class="line">	表达式 &#123;&#x3D;|&lt;|&lt;&#x3D;|&gt;&#x3D;|&lt;&#x3D;&gt;|&lt;&gt;|!&#x3D;&#125; 表达式                    # &quot;&lt;&#x3D;&gt;&quot;相等或都等于空返回true，否则返回false，绝不会返回unknown  </span><br><span class="line">	|表达式 [not] like 表达式 [escape &#39;escape_character&#39;]</span><br><span class="line">	|表达式 [not] [regexp|rlike] 表达式</span><br><span class="line">	|表达式 [not] between 表达式 and 表达式</span><br><span class="line">	|表达式 is [not] null</span><br><span class="line">	|表达式[not] in (subquery |表达式[,...n])</span><br><span class="line">	|表达式 &#x3D;|&lt;|&lt;&#x3D;|&gt;&#x3D;|&lt;&#x3D;&gt;|&lt;&gt;|!&#x3D;&#125; &#123;all|some|any&#125; (subquery)</span><br><span class="line">	|exist (子查询)</span><br></pre></td></tr></table></div></figure><br><strong>模式匹配</strong></p>
-
-        <h4 id="1-like运算符">
-          <a href="#1-like运算符" class="heading-link"><i class="fas fa-link"></i></a>1)like运算符</h4>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 [not] like 表达式 [escape &#39;escape_character&#39;]</span><br></pre></td></tr></table></div></figure>
+<h3 id="FROM子句"><a href="#FROM子句" class="headerlink" title="FROM子句"></a>FROM子句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from table_reference ...</span><br><span class="line">	table_reference:</span><br><span class="line">表名 [[as] 表名别名] [&#123;use|ignore|force&#125; index (key_list)]  &#x2F;*查询表，use指使用索引，ignore指忽略索引*&#x2F;</span><br><span class="line">|join_table                                                &#x2F;*连接表*&#x2F;</span><br></pre></td></tr></table></figure>
+<p><strong>多表连接</strong><br>1)全连接，实质是表的等值连接<br>这种连接会产生所有可能的组合，也就是每个表的行数之积<br>“select 编号,ID from stuinfo,student;”这样会返回两个表行数之积,通常需要用where语句限制结果行数<br>2)JOIN连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">join_table:</span><br><span class="line">	table_reference [inner|cross] join table_factor [join_condition]</span><br><span class="line">	|table_reference straight_join table_factor</span><br><span class="line">	|table_reference straight_join table_factor on conditional_expr</span><br><span class="line">	|table_reference &#123;LEFT|RIGHT&#125; [outer] join table_reference join_condition</span><br><span class="line">	|table_reference natural [&#123;LEFT|RIGHT&#125; [outer]] join_table_factor</span><br></pre></td></tr></table></figure><br>table_reference指定要连接的表名<br>join_condition：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">on 条件</span><br><span class="line">|using (列...)</span><br></pre></td></tr></table></figure><br>on条件主要用于连接表，其他不属于连接表的条件可以使用where子句来指定，inner指内连接，是系统默认的方式。<br>exp:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 编号,ID from stuinfo join student;</span><br></pre></td></tr></table></figure><br>join还可以将自身进行连接，称为自连接，但是要指定不同的别名</p>
+<h3 id="WHERE子句"><a href="#WHERE子句" class="headerlink" title="WHERE子句"></a>WHERE子句</h3><p>where子句必须紧跟在from子句之后，用于确定选取行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where 条件</span><br></pre></td></tr></table></figure>
+<p>其中条件为查询语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">条件&#x3D;:</span><br><span class="line">	&lt;precdicate&gt;                             </span><br><span class="line">	|&lt;precdicate&gt;&#123;and|or&#125;&lt;precdicate&gt;</span><br><span class="line">	|(条件)</span><br><span class="line">	|not 条件</span><br></pre></td></tr></table></figure><br>precidicate为判定运算，结果又TRUE，FALSE或UNKNOWN<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;precdicate&gt;:</span><br><span class="line">	表达式 &#123;&#x3D;|&lt;|&lt;&#x3D;|&gt;&#x3D;|&lt;&#x3D;&gt;|&lt;&gt;|!&#x3D;&#125; 表达式                    # &quot;&lt;&#x3D;&gt;&quot;相等或都等于空返回true，否则返回false，绝不会返回unknown  </span><br><span class="line">	|表达式 [not] like 表达式 [escape &#39;escape_character&#39;]</span><br><span class="line">	|表达式 [not] [regexp|rlike] 表达式</span><br><span class="line">	|表达式 [not] between 表达式 and 表达式</span><br><span class="line">	|表达式 is [not] null</span><br><span class="line">	|表达式[not] in (subquery |表达式[,...n])</span><br><span class="line">	|表达式 &#x3D;|&lt;|&lt;&#x3D;|&gt;&#x3D;|&lt;&#x3D;&gt;|&lt;&gt;|!&#x3D;&#125; &#123;all|some|any&#125; (subquery)</span><br><span class="line">	|exist (子查询)</span><br></pre></td></tr></table></figure><br><strong>模式匹配</strong></p>
+<h4 id="1-like运算符"><a href="#1-like运算符" class="headerlink" title="1)like运算符"></a>1)like运算符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 [not] like 表达式 [escape &#39;escape_character&#39;]</span><br></pre></td></tr></table></figure>
 <p>模式匹配时，可用%和_进行模糊查询，%代表0个或多个字符,符号_代表单个字符<br>escape 转义字符，例如当要匹配的字符串中有_或%时，此时应通过该字符前的转义字符指明其为模式串中的字符，使用escape可以指定转义字符</p>
-
-        <h4 id="2-regexp-正则表达式-，是mysql的一个功能。">
-          <a href="#2-regexp-正则表达式-，是mysql的一个功能。" class="heading-link"><i class="fas fa-link"></i></a>2)regexp(正则表达式)，是mysql的一个功能。</h4>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match_exp [not][regexp|rlike] match_exp</span><br></pre></td></tr></table></div></figure>
+<h4 id="2-regexp-正则表达式-，是mysql的一个功能。"><a href="#2-regexp-正则表达式-，是mysql的一个功能。" class="headerlink" title="2)regexp(正则表达式)，是mysql的一个功能。　"></a>2)regexp(正则表达式)，是mysql的一个功能。　</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match_exp [not][regexp|rlike] match_exp</span><br></pre></td></tr></table></figure>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">特殊字符</th>
@@ -218,40 +252,28 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td style="text-align:center">匹配方括号里出现的字符串中的任意一个字符</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
-<p><strong>范围比较(between或者in)</strong><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exp [not] between exp1 and exp2   # exp1必须小于exp2，表达式也可是字符串</span><br><span class="line">exp in (exps [,...n])             # 该关键字主要用于表达子查询</span><br></pre></td></tr></table></div></figure><br><strong>空值比较</strong><br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exp is [not] null</span><br></pre></td></tr></table></div></figure><br><strong>子查询</strong><br>    指使用另一个查询的结果作为条件的一部分，即查询的嵌套</p>
-
-        <h4 id="1-in子查询">
-          <a href="#1-in子查询" class="heading-link"><i class="fas fa-link"></i></a>1)in子查询</h4>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exp [not] in (subquery)</span><br></pre></td></tr></table></div></figure>
+<p><strong>范围比较(between或者in)</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exp [not] between exp1 and exp2   # exp1必须小于exp2，表达式也可是字符串</span><br><span class="line">exp in (exps [,...n])             # 该关键字主要用于表达子查询</span><br></pre></td></tr></table></figure><br><strong>空值比较</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exp is [not] null</span><br></pre></td></tr></table></figure><br><strong>子查询</strong><br>    指使用另一个查询的结果作为条件的一部分，即查询的嵌套</p>
+<h4 id="1-in子查询"><a href="#1-in子查询" class="headerlink" title="1)in子查询"></a>1)in子查询</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exp [not] in (subquery)</span><br></pre></td></tr></table></figure>
 <p>in子查询只能返回一列数据，对于较复杂的查询可使用嵌套的子查询</p>
-
-        <h4 id="2-比较子查询（使表达式的值与子查询的结果进行比较运算）">
-          <a href="#2-比较子查询（使表达式的值与子查询的结果进行比较运算）" class="heading-link"><i class="fas fa-link"></i></a>2)比较子查询（使表达式的值与子查询的结果进行比较运算）</h4>
-      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 &#123;&lt;|&lt;&#x3D;|&#x3D;|&gt;|&gt;&#x3D;|!&#x3D;|&lt;&gt;&#125; &#123;all|some|any&#125; (subquery)</span><br></pre></td></tr></table></div></figure>
+<h4 id="2-比较子查询（使表达式的值与子查询的结果进行比较运算）"><a href="#2-比较子查询（使表达式的值与子查询的结果进行比较运算）" class="headerlink" title="2)比较子查询（使表达式的值与子查询的结果进行比较运算）"></a>2)比较子查询（使表达式的值与子查询的结果进行比较运算）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表达式 &#123;&lt;|&lt;&#x3D;|&#x3D;|&gt;|&gt;&#x3D;|!&#x3D;|&lt;&gt;&#125; &#123;all|some|any&#125; (subquery)</span><br></pre></td></tr></table></figure>
 <p>all指定表达式要与结果集的每个值都进行比较，全部满足时才返回true，否则返回false。<br>some与any同义，找到满足的值就会返回true，否则返回false。</p>
-
-        <h4 id="3-exists子查询">
-          <a href="#3-exists子查询" class="heading-link"><i class="fas fa-link"></i></a>3)exists子查询</h4>
-      <p>判断查询结果集是否为空表</p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[not] exists (subquery)</span><br></pre></td></tr></table></div></figure>
+<h4 id="3-exists子查询"><a href="#3-exists子查询" class="headerlink" title="3)exists子查询"></a>3)exists子查询</h4><p>判断查询结果集是否为空表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[not] exists (subquery)</span><br></pre></td></tr></table></figure>
 <p>以上各种子查询还可用在select的其他子句中，例如from语句，但是必须为子查询产生的一个中表定义一个别名</p>
-
-        <h3 id="GROUP-BY子句">
-          <a href="#GROUP-BY子句" class="heading-link"><i class="fas fa-link"></i></a>GROUP BY子句</h3>
-      <p>根据字段进行分组，所要查找的内容不得多于分组数<br><figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">group by &#123;列名|表达式|position&#125; [asc|desc],... [with rollup]</span><br></pre></td></tr></table></div></figure><br>rollup用于对group by子句指定的各列产生汇总行。</p>
+<h3 id="GROUP-BY子句"><a href="#GROUP-BY子句" class="headerlink" title="GROUP BY子句"></a>GROUP BY子句</h3><p>根据字段进行分组，所要查找的内容不得多于分组数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">group by &#123;列名|表达式|position&#125; [asc|desc],... [with rollup]</span><br></pre></td></tr></table></figure><br>rollup用于对group by子句指定的各列产生汇总行。</p>
 <p><strong>举例</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,username <span class="keyword">from</span> student <span class="keyword">where</span> job=<span class="string">'信息安全'</span> <span class="keyword">group</span> <span class="keyword">by</span> username;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,username <span class="keyword">from</span> student <span class="keyword">where</span> job=<span class="string">'信息安全'</span> <span class="keyword">group</span> <span class="keyword">by</span> username;</span><br></pre></td></tr></table></figure>
 <p>上述语句执行时会报错，原因在于</p>
 <blockquote>
 <p><em>group by</em> 语句的执行过程为先执行group by子句，然后对gruop by 语句的汇总行再进行操作，本例中group by子句执行后只产生了一列(列名为username)，所以执行到查询name字段时会无法查询从而报错。<br>但是这个时候可以使用聚合函数来查询其他字段的信息，因为聚合函数可以作用于所有列，当然也可以增加group by 子句的字段</p>
 </blockquote>
 <p><strong>用例解析</strong></p>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) from stuinfo group by 专业,性别 with rollup;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) from stuinfo group by 专业,性别 with rollup;</span><br></pre></td></tr></table></figure>
 <p><strong>返回结果</strong></p>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">专业</th>
@@ -306,12 +328,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td style="text-align:center">20</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
-<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) from stuinfo group by 性别,专业 with rollup;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 专业,性别,count(编号) from stuinfo group by 性别,专业 with rollup;</span><br></pre></td></tr></table></figure>
 <p><strong>返回结果</strong></p>
 <div class="table-container">
-<div class="table-container"><table>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">专业</th>
@@ -361,309 +383,123 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></he
 <td style="text-align:center">20</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 </div>
 <p>以上两个查询语句只是group by语句后面的顺序不同，该语句的组织方式是按列的排序的逆序进行汇总，例如第一例先对性别字段产生了汇总（针对专业相同的行），然后对专业名和性别名均不同的行产生了汇总行，如果列数是多列的话，也依然会这样依次汇总。</p>
-
-        <h3 id="HAVING子句">
-          <a href="#HAVING子句" class="heading-link"><i class="fas fa-link"></i></a>HAVING子句</h3>
-      <p>HAVING子句用于在group by子句后选择行，和WHERE子句类似，where子句用于在<em>from</em>  子句后选择行，区别是<font face="楷体"> having子句可以作用于聚合函数，而where子句不可以</font>。<br><strong>语法格式</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">having 条件</span><br></pre></td></tr></table></div></figure>
+<h3 id="HAVING子句"><a href="#HAVING子句" class="headerlink" title="HAVING子句"></a>HAVING子句</h3><p>HAVING子句用于在group by子句后选择行，和WHERE子句类似，where子句用于在<em>from</em>  子句后选择行，区别是<font face="楷体"> having子句可以作用于聚合函数，而where子句不可以</font>。<br><strong>语法格式</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">having 条件</span><br></pre></td></tr></table></figure>
 <p><strong>举例</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 专业,<span class="keyword">avg</span>(年龄) <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 年龄 &lt; <span class="number">96</span> <span class="keyword">group</span> <span class="keyword">by</span> 专业 <span class="keyword">having</span> <span class="keyword">avg</span>(年龄);</span><br></pre></td></tr></table></div></figure>
-
-        <h3 id="ORDER-BY子句">
-          <a href="#ORDER-BY子句" class="heading-link"><i class="fas fa-link"></i></a>ORDER BY子句</h3>
-      <p>如果不适用order by子句的话，结果集中的行的顺序将是不可预料的，使用该语句行可以对行的排序顺序方式进行指定，如果order by子句后面指定了多个条件，则会按照逆序方向依次排序。<br><figure class="highlight"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">order by &#123;列名|表达式|position&#125; [asc|desc], ...</span><br></pre></td></tr></table></div></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 专业,<span class="keyword">avg</span>(年龄) <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 年龄 &lt; <span class="number">96</span> <span class="keyword">group</span> <span class="keyword">by</span> 专业 <span class="keyword">having</span> <span class="keyword">avg</span>(年龄);</span><br></pre></td></tr></table></figure>
+<h3 id="ORDER-BY子句"><a href="#ORDER-BY子句" class="headerlink" title="ORDER BY子句"></a>ORDER BY子句</h3><p>如果不适用order by子句的话，结果集中的行的顺序将是不可预料的，使用该语句行可以对行的排序顺序方式进行指定，如果order by子句后面指定了多个条件，则会按照逆序方向依次排序。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">order by &#123;列名|表达式|position&#125; [asc|desc], ...</span><br></pre></td></tr></table></figure></p>
 <p><font face="fantasy">position</font> 表示结果集中该位置的列排序，是一个正整数。</p>
 <p><strong>举例</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">order</span> <span class="keyword">by</span> 年龄;  <span class="comment"># 根据年龄来排序</span></span><br></pre></td></tr></table></div></figure>
-
-        <h3 id="LIMIT子句">
-          <a href="#LIMIT子句" class="heading-link"><i class="fas fa-link"></i></a>LIMIT子句</h3>
-      <p>LIMIT子句用来限制 <em>select</em>  语句返回的行数。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">order</span> <span class="keyword">by</span> 年龄;  <span class="comment"># 根据年龄来排序</span></span><br></pre></td></tr></table></figure>
+<h3 id="LIMIT子句"><a href="#LIMIT子句" class="headerlink" title="LIMIT子句"></a>LIMIT子句</h3><p>LIMIT子句用来限制 <em>select</em>  语句返回的行数。</p>
 <p><strong>语法格式</strong></p>
-<figure class="highlight"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMIT &#123;[offset,] row_count | row_count OFFSET offset&#125;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMIT &#123;[offset,] row_count | row_count OFFSET offset&#125;</span><br></pre></td></tr></table></figure>
 <p>说明：</p>
 <blockquote>
 <p><em>offset</em> 为对于结果集首行的偏移量（首行偏移量为0），如offset=3，则会从第四行开始返回数据。</p>
 </blockquote>
 <p><strong>举例</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">2</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">limit</span> <span class="number">2</span> <span class="keyword">offset</span> <span class="number">1</span>; <span class="comment"># 这两个语句是等价的</span></span><br></pre></td></tr></table></div></figure>
-
-        <h3 id="UNION语句">
-          <a href="#UNION语句" class="heading-link"><i class="fas fa-link"></i></a>UNION语句</h3>
-      <p><code>UNION</code> 语句用来把多个 <em>select</em> 语句返回的结果组合到一个结果集中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">2</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">limit</span> <span class="number">2</span> <span class="keyword">offset</span> <span class="number">1</span>; <span class="comment"># 这两个语句是等价的</span></span><br></pre></td></tr></table></figure>
+<h3 id="UNION语句"><a href="#UNION语句" class="headerlink" title="UNION语句"></a>UNION语句</h3><p><code>UNION</code> 语句用来把多个 <em>select</em> 语句返回的结果组合到一个结果集中。</p>
 <p><strong>语法格式</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> ...</span><br><span class="line"><span class="keyword">union</span> [<span class="keyword">ALL</span> | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ...</span><br><span class="line">[ <span class="keyword">union</span> [<span class="keyword">ALL</span> | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ... ]</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> ...</span><br><span class="line"><span class="keyword">union</span> [<span class="keyword">ALL</span> | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ...</span><br><span class="line">[ <span class="keyword">union</span> [<span class="keyword">ALL</span> | <span class="keyword">DISTINCT</span>] <span class="keyword">select</span> ... ]</span><br></pre></td></tr></table></figure>
 <p><strong>说明</strong></p>
 <p>select语句为常规的select语句，但是必须遵守以下规则</p>
 <blockquote>
 <p>1、各个select语句对应位置的列应该具有相同的列名、类型和数目，<br>2、只有最后一个select语句可以使用 <code>into outfile</code><br>3、<code>order by</code> 和 <code>limit</code> 只能在整个语句最后指定，并对整个最终结果起作用。<br>4、使用union语句的时候，MySQL会自动剔除重复数据，所以<code>distinct</code>可以省去。</p>
 </blockquote>
 <p><strong>举例</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">union</span> <span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'土木工程'</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">5</span> <span class="keyword">limit</span> <span class="number">6</span>;</span><br></pre></td></tr></table></div></figure>
-
-        <h3 id="HANDLER-语句">
-          <a href="#HANDLER-语句" class="heading-link"><i class="fas fa-link"></i></a>HANDLER 语句</h3>
-      <p>前面使用的 <code>select</code> 语句通常用来返回行的集合，MySQL中还有另外一个可以返回行的语句： <em>handler</em> 语句。它能够一行一行的浏览表中的数据，这不是SQL标准，而是MySQL 的一个扩展，只适用于MyISAM表和InnoDB表。<br>使用该语句时要先打开一个表，然后在读这个表，使用完之后还必须关闭已经打开的表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'信息安全'</span> <span class="keyword">union</span> <span class="keyword">select</span> * <span class="keyword">from</span> stuinfo <span class="keyword">where</span> 专业=<span class="string">'土木工程'</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">5</span> <span class="keyword">limit</span> <span class="number">6</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="HANDLER-语句"><a href="#HANDLER-语句" class="headerlink" title="HANDLER 语句"></a>HANDLER 语句</h3><p>前面使用的 <code>select</code> 语句通常用来返回行的集合，MySQL中还有另外一个可以返回行的语句： <em>handler</em> 语句。它能够一行一行的浏览表中的数据，这不是SQL标准，而是MySQL 的一个扩展，只适用于MyISAM表和InnoDB表。<br>使用该语句时要先打开一个表，然后在读这个表，使用完之后还必须关闭已经打开的表。</p>
 <p>  1、打开一个表</p>
 <p><strong>语法格式</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">open</span> [ [ <span class="keyword">as</span> ] 别名 ];    <span class="comment"># as用于指定别名</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">open</span> [ [ <span class="keyword">as</span> ] 别名 ];    <span class="comment"># as用于指定别名</span></span><br></pre></td></tr></table></figure>
 <p>2、 浏览表中的行</p>
 <p><strong>语法格式1</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> &#123; <span class="keyword">first</span> | <span class="keyword">next</span> &#125; [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> &#123; <span class="keyword">first</span> | <span class="keyword">next</span> &#125; [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];</span><br></pre></td></tr></table></figure>
 <p>注意：此处的<code>limit</code> 字段用来控制返回的结果语句的行数，默认只有一行。</p>
 <p><strong>语法格式2</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;&lt;|&gt;|=|...&#125; (值...)</span><br><span class="line"> [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];     <span class="comment"># 以比较运算符为索引读取行</span></span><br><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;<span class="keyword">first</span> | <span class="keyword">next</span> | prev | <span class="keyword">last</span> &#125;</span><br><span class="line"> [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];     <span class="comment"># 以关键字来读取行</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;&lt;|&gt;|=|...&#125; (值...)</span><br><span class="line"> [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];     <span class="comment"># 以比较运算符为索引读取行</span></span><br><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">read</span> 索引名 &#123;<span class="keyword">first</span> | <span class="keyword">next</span> | prev | <span class="keyword">last</span> &#125;</span><br><span class="line"> [<span class="keyword">where</span> 条件] [<span class="keyword">limit</span> ...];     <span class="comment"># 以关键字来读取行</span></span><br></pre></td></tr></table></figure>
 <p> 3、关闭打开的表</p>
 <p><strong>语法格式</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">close</span>;</span><br></pre></td></tr></table></div></figure>
-
-        <h3 id="视图（view）">
-          <a href="#视图（view）" class="heading-link"><i class="fas fa-link"></i></a>视图（view）</h3>
-      <p>此处只对视图进行简单的介绍。<br>视图是从一个或多个表（视图）中导出（通过查询方式）的表，是一个 <em>虚表</em> ，即数据库中只存储视图的结构不存储具体数据，需要时再在表中进行查询使用。使用方便，安全性高。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> tablename <span class="keyword">close</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="视图（view）"><a href="#视图（view）" class="headerlink" title="视图（view）"></a>视图（view）</h3><p>此处只对视图进行简单的介绍。<br>视图是从一个或多个表（视图）中导出（通过查询方式）的表，是一个 <em>虚表</em> ，即数据库中只存储视图的结构不存储具体数据，需要时再在表中进行查询使用。使用方便，安全性高。</p>
 <p><strong>语法格式</strong></p>
-<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span></span><br><span class="line">[<span class="keyword">or</span> <span class="keyword">replace</span>] <span class="comment"># 用replace能替代同名视图</span></span><br><span class="line">[definer = &#123;<span class="keyword">user</span>|<span class="keyword">current_user</span>&#125;]</span><br><span class="line"><span class="keyword">view</span> 视图名 [(列名 ...)]</span><br><span class="line"><span class="keyword">AS</span> <span class="keyword">select</span> 语句</span><br><span class="line">[<span class="keyword">with</span> [<span class="keyword">cascaded</span>|<span class="keyword">local</span>] <span class="keyword">check</span> <span class="keyword">option</span>]</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span></span><br><span class="line">[<span class="keyword">or</span> <span class="keyword">replace</span>] <span class="comment"># 用replace能替代同名视图</span></span><br><span class="line">[definer = &#123;<span class="keyword">user</span>|<span class="keyword">current_user</span>&#125;]</span><br><span class="line"><span class="keyword">view</span> 视图名 [(列名 ...)]</span><br><span class="line"><span class="keyword">AS</span> <span class="keyword">select</span> 语句</span><br><span class="line">[<span class="keyword">with</span> [<span class="keyword">cascaded</span>|<span class="keyword">local</span>] <span class="keyword">check</span> <span class="keyword">option</span>]</span><br></pre></td></tr></table></figure>
 <p>执行查询、修改、删除等操作时与对表的操作类似。</p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://chaosec.top">Aesm1p</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://chaosec.top/2018/01/18/mysql3/">http://chaosec.top/2018/01/18/mysql3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://chaosec.top/tags/SQL/">SQL</a></span></div><div class="post-reward reward"><div class="reward-button">Buy me a coffee</div><div class="reward-qrcode"><span class="reward-qrcode-alipay"><img class="reward-qrcode-alipay__img" src="/assets/reward-alipay.jpg"><div class="reward-qrcode-alipay__text">Alipay</div></span><span class="reward-qrcode-wechat"><img class="reward-qrcode-wechat__img" src="/assets/reward-wechat.png"><div class="reward-qrcode-wechat__text">Wechat</div></span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2018/01/27/cumtctf2017/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">CUMT-CTF2017冬</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2018/01/07/mysql2/"><span class="paginator-prev__text">MySQL学习笔记(二)</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Aesm1p</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="Search for Posts (Support multiple keywords)"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="255,165,0" opacity="0.6" count="99" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script>function initSearch() {
-  var isXML = true;
-  var search_path = 'search.json';
 
-  if (!search_path) {
-    search_path = 'search.xml';
-  } else if (/json$/i.test(search_path)) {
-    isXML = false;
-  }
+      
+    </div>
 
-  var path = '/' + search_path;
-  $.ajax({
-    url: path,
-    dataType: isXML ? 'xml' : 'json',
-    async: true,
-    success: function (res) {
-      var datas = isXML ? $('entry', res).map(function () {
-        // 将 XML 转为 JSON
-        return {
-          title: $('title', this).text(),
-          content: $('content', this).text(),
-          url: $('url', this).text()
-        };
-      }).get() : res;
-      var $input = $('.search-input input');
-      var $result = $('.search-results');
-      // 搜索对象（标题、内容）的权重，影响显示顺序
-      var WEIGHT = { title: 100, content: 1 };
-      var searchPost = function () {
-        var searchText = $input.val().toLowerCase().trim();
-        // 根据空白字符分隔关键字
-        var keywords = searchText.split(/[\s]+/);
-        // 搜索结果
-        var matchPosts = [];
+  </div>
 
-        // 有多个关键字时，将原文字整个保存下来
-        if (keywords.length > 1) {
-          keywords.push(searchText);
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/资料/">资料</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/SQL/">SQL</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
         }
-        // 防止未输入字符时搜索
-        if (searchText.length > 0) {
-          datas.forEach(function (data) {
-            var isMatch  = false;
-            // 没有标题的文章使用预设的 i18n 变量代替
-            var title = (data.title && data.title.trim()) || '[ Untitled ]';
-            var titleLower = title && title.toLowerCase();
-            // 删除 HTML 标签 和 所有空白字符
-            var content = data.content && data.content.replace(/<[^>]+>/g, '');
-            var contentLower = content && content.toLowerCase();
-            // 删除重复的 /
-            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
-            // 标题中匹配到的关键词
-            var titleHitSlice = [];
-            // 内容中匹配到的关键词
-            var contentHitSlice = [];
-
-            keywords.forEach(function (keyword) {
-              /**
-              * 获取匹配的关键词的索引
-              * @param {String} keyword 要匹配的关键字
-              * @param {String} text 原文字
-              * @param {Boolean} caseSensitive 是否区分大小写
-              * @param {Number} weight 匹配对象的权重。权重大的优先显示
-              * @return {Array}
-              */
-              function getIndexByword (word, text, caseSensitive, weight) {
-                if (!word || !text) {
-                  return [];
-                };
-
-                var startIndex = 0; // 每次匹配的开始索引
-                var index = -1;     // 匹配到的索引值
-                var result = [];    // 匹配结果
-
-                if (!caseSensitive) {
-                  word = word.toLowerCase();
-                  text = text.toLowerCase();
-                }
-
-                while((index = text.indexOf(word, startIndex)) !== -1) {
-                  var hasMatch = false;
-                  // 索引位置相同的关键词，保留长度较长的
-                  titleHitSlice.forEach(function (hit) {
-                    if (hit.index === index && hit.word.length < word.length) {
-                      hit.word = word;
-                      hasMatch = true;
-                    }
-                  });
-                  startIndex = index + word.length;
-                  !hasMatch && result.push({ index: index, word: word, weight: weight });
-                }
-                return result;
-              }
-              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
-              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
-            });
-
-            var hitTitle = titleHitSlice.length;
-            var hitContent = contentHitSlice.length;
-
-            if (hitTitle > 0 || hitContent > 0) {
-              isMatch = true;
-            }
-            if (isMatch) {
-              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
-                // 按照匹配文字的索引的递增顺序排序
-                hit.sort(function (left, right) {
-                  return left.index - right.index;
-                });
-              });
-              /**
-              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
-              * @param {String} text 原文本
-              * @param {Array} hitSlice 匹配项的索引信息
-              * @param {Number} start 开始索引
-              * @param {Number} end 结束索引
-              * @return {String}
-              */
-              function highlightKeyword (text, hitSlice, start, end) {
-                if (!text || !hitSlice || !hitSlice.length) {
-                  return;
-                }
-
-                var result = '';
-                var startIndex = start;
-                var endIndex = end;
-                hitSlice.forEach(function (hit) {
-                  if (hit.index < startIndex) {
-                    return;
-                  }
-
-                  var hitWordEnd = hit.index + hit.word.length;
-                  result += text.slice(startIndex, hit.index);
-                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
-                  startIndex = hitWordEnd;
-                });
-                result += text.slice(startIndex, endIndex);
-                return result;
-              }
-
-              var postData = {};
-              // 文章总的搜索权重
-              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
-              // 标记匹配关键词后的标题
-              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
-              // 标记匹配关键词后的内容
-              var postContent;
-              // 显示内容的长度
-              var SHOW_WORD_LENGTH = 200;
-              // 命中关键词前的字符显示长度
-              var SHOW_WORD_FRONT_LENGTH = 20;
-              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
-
-              // 截取匹配的第一个字符，前后共 200 个字符来显示
-              if (contentHitSlice.length > 0) {
-                var firstIndex = contentHitSlice[0].index;
-                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
-                var end = firstIndex + SHOW_WORD_END_LENGTH;
-                postContent = highlightKeyword(content, contentHitSlice, start, end);
-              } else { // 未匹配到内容，直接截取前 200 个字符来显示
-                postContent = content.slice(0, SHOW_WORD_LENGTH);
-              }
-              postData.title = postTitle;
-              postData.content = postContent;
-              postData.url = postURL;
-              postData.weight = postWeight;
-              matchPosts.push(postData);
-            }
-          });
-        }
-
-        var resultInnerHtml = '';
-        if (matchPosts.length) {
-          // 按权重递增的顺序排序，使权重大的优先显示
-          matchPosts.sort(function (left, right) {
-            return right.weight - left.weight;
-          });
-          resultInnerHtml += '<ul>';
-          matchPosts.forEach(function (post) {
-            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
-            resultInnerHtml += post.title;
-            resultInnerHtml += '</a><div class="search-results-content">';
-            resultInnerHtml += post.content;
-            resultInnerHtml += '</div></li>';
-          });
-          resultInnerHtml += '</ul>';
-        } else {
-          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
-        }
-        $result.html(resultInnerHtml);
-      };
-      $input.on('input', searchPost);
-      $input.on('keyup', function (e) {
-        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
-          searchPost();
-        }
-      });
-    }
-  });
-}
-
-function closeSearch () {
-  $('body').css({ overflow: 'auto' });
-  $('.search-popup').css({ display: 'none' });
-  $('.search-mask').css({ display: 'none' });
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-  Stun.utils.pjaxReloadLocalSearch = function () {
-    $('.header-nav-search').on('click', function (e) {
-      e.stopPropagation();
-      $('body').css('overflow', 'hidden');
-      $('.search-popup')
-        .velocity('stop')
-        .velocity('transition.expandIn', {
-          duration: 300,
-          complete: function () {
-            $('.search-popup input').focus();
-          }
-        });
-      $('.search-mask')
-        .velocity('stop')
-        .velocity('transition.fadeIn', {
-          duration: 300
-        });
-
-      initSearch();
     });
-    $('.search-mask, .search-close').on('click', function () {
-      closeSearch();
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
     });
-    $(document).on('keydown', function (e) {
-      // Escape <=> 27
-      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
-        closeSearch();
-      }
-    });
-  };
-
-  Stun.utils.pjaxReloadLocalSearch();
-}, false);</script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script type="application/json" src="/search.json"></script></body></html>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
