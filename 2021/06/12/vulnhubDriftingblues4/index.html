@@ -73,9 +73,9 @@
 
   <div class="article-top-meta">
     <span class="posted-on">
-      <a href="/2021/06/07/vulnhubDriftingblues4/" rel="bookmark">
-        <time class="entry-date published" datetime="2021-06-07T12:23:22.000Z">
-          2021-06-07
+      <a href="/2021/06/12/vulnhubDriftingblues4/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-06-12T12:23:22.000Z">
+          2021-06-12
         </time>
       </a>
     </span>
@@ -87,7 +87,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <p><img src="/2021/06/07/vulnhubDriftingblues4/1.jpeg" alt></p>
+        <p><img src="/2021/06/12/vulnhubDriftingblues4/1.jpeg" alt></p>
 <a id="more"></a>
 <h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- -sT -sV -A -oA nmap -vv 192.168.56.111</span><br></pre></td></tr></table></figure>
 <p>开放端口为21,22，80端口</p>
@@ -99,7 +99,7 @@
 <p>访问/imfuckingmad.txt页面，是一段brainfuck编码的字符，解码一下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">man we are a tech company and still getting hacked??? what the shit??? enough is enough!!! </span><br><span class="line">#</span><br><span class="line">##</span><br><span class="line">...</span><br><span class="line">#</span><br><span class="line">&#x2F;iTiS3Cr3TbiTCh.png</span><br></pre></td></tr></table></figure>
 <p>访问该图片发现是一个二维码，指向一个网址，是一张图片</p>
-<p><img src="/2021/06/07/vulnhubDriftingblues4/1.png" alt></p>
+<p><img src="/2021/06/12/vulnhubDriftingblues4/1.png" alt></p>
 <p>给了一些用户名，收集信息发现ssh只支持公钥登录，那么就只能在ftp上使用了，所以我们进行密码爆破</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l luther -P &#x2F;opt&#x2F;SecLists&#x2F;Passwords&#x2F;Common-Credentials&#x2F;common-passwords-win.txt 192.168.56.111 ftp</span><br></pre></td></tr></table></figure>
 <p>但是爆破失败，无奈动用更大字典</p>
